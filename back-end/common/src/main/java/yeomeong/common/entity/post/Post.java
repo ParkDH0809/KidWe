@@ -1,26 +1,25 @@
-package yeomeong.common.member;
+package yeomeong.common.entity.post;
 
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Date;
 
 @Entity
 @Getter
 @Setter
-public abstract class Member {
+public abstract class Post {
 
     @Id @GeneratedValue
-    @JoinColumn(name = "member_id")
     private Long id;
 
-    private String name;
+    private Date createdDate;
 
-    private String email;
+    private String content;
 
-    private String password;
-
+    private String picture;
 }

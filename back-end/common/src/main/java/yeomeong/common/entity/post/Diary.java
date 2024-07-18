@@ -1,10 +1,9 @@
-package yeomeong.common.post.diary;
+package yeomeong.common.entity.post;
 
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
-import yeomeong.common.member.teacher.Teacher;
-import yeomeong.common.post.Post;
+import yeomeong.common.entity.member.Teacher;
 
 
 @Entity

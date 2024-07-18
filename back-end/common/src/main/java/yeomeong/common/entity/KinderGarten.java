@@ -1,4 +1,4 @@
-package yeomeong.common.kindergarten;
+package yeomeong.common.entity;
 
 
 import jakarta.persistence.Entity;
@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
-import yeomeong.common.ban.Ban;
 
 import java.util.ArrayList;
 import java.util.List;

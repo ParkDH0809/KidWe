@@ -1,4 +1,4 @@
-package yeomeong.common.member.teacher;
+package yeomeong.common.entity.member;
 
 
 import jakarta.persistence.Entity;
@@ -7,12 +7,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
-import yeomeong.common.ban.Ban;
-import yeomeong.common.member.Member;
-import yeomeong.common.post.announcement.Announcement;
-import yeomeong.common.post.dailynote.DailyNote;
-import yeomeong.common.post.diary.Diary;
-import yeomeong.common.post.memo.Memo;
+import yeomeong.common.entity.Ban;
+import yeomeong.common.entity.post.Announcement;
+import yeomeong.common.entity.post.DailyNote;
+import yeomeong.common.entity.post.Diary;
+import yeomeong.common.entity.post.Memo;
 
 import java.util.ArrayList;
 import java.util.List;
