@@ -9,17 +9,15 @@ import lombok.Setter;
 
 import java.util.Date;
 
-@Entity
 @Getter
 @Setter
 public abstract class Post {
 
-    @Id @GeneratedValue
-    private Long id;
-
     private Date createdDate;
 
     private String content;
+
+    private boolean isStored;
 
     private String picture;
 }

@@ -6,24 +6,27 @@ import lombok.Getter;
 import lombok.Setter;
 import yeomeong.common.entity.member.Teacher;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 @Entity
 @Getter
 @Setter
-public class Ban {
+public class CalendarNote {
 
     @Id @GeneratedValue
-    @JoinColumn(name = "ban_id")
     private Long id;
 
-    private String name;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    private KinderGarten kinderGarten;
+    private Teacher teacher;
 
-    @OneToMany(mappedBy = "teacher")
-    private List<Teacher> teachers = new ArrayList<>();
+    private String content;
+
+    private String category;
+
+    private Date startDate;
+
+    private Date endDate;
+
+    private Date createdDate;
 
 }

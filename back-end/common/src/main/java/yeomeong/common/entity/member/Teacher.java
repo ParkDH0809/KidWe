@@ -1,10 +1,8 @@
 package yeomeong.common.entity.member;
 
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 import yeomeong.common.entity.Ban;
@@ -21,7 +19,6 @@ import java.util.List;
 @Setter
 public class Teacher extends Member {
 
-
     @ManyToOne
     private Ban ban;
 
@@ -35,7 +32,5 @@ public class Teacher extends Member {
     private List<Memo> memos = new ArrayList<>();
     @OneToMany
     private List<Diary> diaries = new ArrayList<>();
-
-
 
 }

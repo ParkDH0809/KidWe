@@ -1,20 +1,20 @@
 package yeomeong.common.entity.member;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import yeomeong.common.entity.post.DailyNote;
 
-@Entity
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
-public abstract class Member {
+@Entity
+public class Member {
 
     @Id @GeneratedValue
-    @JoinColumn(name = "member_id")
     private Long id;
 
     private String name;
@@ -23,4 +23,9 @@ public abstract class Member {
 
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private rtype rtype; //[DIRECTOR, TEACHER, GUARDIAN ]
+
+    @OneToMany
+    private List<DailyNote> dailyNotes = new ArrayList<>();
 }

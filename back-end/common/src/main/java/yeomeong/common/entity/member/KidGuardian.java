@@ -1,23 +1,22 @@
-package yeomeong.common.entity.post;
+package yeomeong.common.entity.member;
 
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import yeomeong.common.entity.member.Teacher;
+
 
 @Entity
-@Setter
 @Getter
-public class Memo extends Post {
+@Setter
+public class KidGuardian {
 
     @Id @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Teacher teacher;
+    private Kid kid;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private DailyNote dailyNote;
-
+    private Guardian guardian;
 }

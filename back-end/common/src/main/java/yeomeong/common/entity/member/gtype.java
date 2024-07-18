@@ -1,4 +1,6 @@
 package yeomeong.common.entity.member;
 
-public class kidParent {
+public enum gtype {
+
+    MALE, FEMALE
 }

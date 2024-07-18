@@ -8,6 +8,7 @@ import yeomeong.common.entity.Ban;
 import yeomeong.common.entity.Bus;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -17,15 +18,31 @@ public class Kid {
 
     @Id
     @GeneratedValue
-    @JoinColumn(name = "kid_id")
     private Long id;
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private Ban ban;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Bus bus;
 
-    @OneToMany
-    private List<kidParent> kidParents = new ArrayList<>();
+    @OneToMany(mappedBy = "kid")
+    private List<KidGuardian> kidGuardians = new ArrayList<>();
 
+    private String name;
+
+    @Enumerated(EnumType.STRING)
+    private gtype gender; //MALE , FEMALE
+
+    private double tall;
+
+    private double weight;
+
+    private Date birthday;
+
+    private String allergies;
+
+    private Date startAttendanceDate;
+
+    private String picture;
 }
