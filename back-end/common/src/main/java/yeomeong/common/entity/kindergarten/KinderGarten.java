@@ -1,10 +1,7 @@
-package yeomeong.common.entity;
+package yeomeong.common.entity.kindergarten;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,7 +19,10 @@ public class KinderGarten {
 
     private String name;
 
-    @OneToMany
+    @OneToOne
+    private Bus bus;
+
+    @OneToMany(mappedBy = "kindergarten")
     private List<Ban> bans = new ArrayList<>();
 
     private String address;

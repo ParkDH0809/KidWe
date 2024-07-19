@@ -1,4 +1,4 @@
-package yeomeong.common.entity;
+package yeomeong.common.entity.kindergarten;
 
 
 import jakarta.persistence.Entity;

@@ -4,8 +4,8 @@ package yeomeong.common.entity.member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import yeomeong.common.entity.Ban;
-import yeomeong.common.entity.Bus;
+import yeomeong.common.entity.kindergarten.Ban;
+import yeomeong.common.entity.kindergarten.Bus;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,16 +20,15 @@ public class Kid {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Ban ban;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Bus bus;
-
-    @OneToMany(mappedBy = "kid")
-    private List<KidGuardian> kidGuardians = new ArrayList<>();
-
     private String name;
+
+    private Date birthday;
+
+    private Date startAttendanceDate;
+
+    private String picture;
+
+    private String allergies;
 
     @Enumerated(EnumType.STRING)
     private gtype gender; //MALE , FEMALE
@@ -38,11 +37,19 @@ public class Kid {
 
     private double weight;
 
-    private Date birthday;
+    private boolean isTake;
 
-    private String allergies;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Ban ban;
 
-    private Date startAttendanceDate;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Bus bus;
 
-    private String picture;
+    @OneToMany(mappedBy = "kid")
+    private List<KidMember> kidMembers = new ArrayList<>();
+
+
+
+
+
 }

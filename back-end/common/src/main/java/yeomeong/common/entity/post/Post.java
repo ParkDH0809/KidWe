@@ -1,6 +1,7 @@
 package yeomeong.common.entity.post;
 
 
+import jakarta.persistence.Embeddable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -11,7 +12,8 @@ import java.util.Date;
 
 @Getter
 @Setter
-public abstract class Post {
+@Embeddable
+public class Post {
 
     private Date createdDate;
 

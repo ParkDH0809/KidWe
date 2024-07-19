@@ -5,22 +5,23 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import yeomeong.common.entity.kindergarten.Ban;
+import yeomeong.common.entity.member.Kid;
 
-@Entity
-@Setter
 @Getter
-public class  Announcement {
-
+@Setter
+@Entity
+public class KidMemo {
     @Id @GeneratedValue
     private Long id;
-
-    @Embedded
-    private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Ban ban;
 
-    @Enumerated
-    private announcementCategory type; // ??
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Memo memo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Kid kid;
+
 
 }

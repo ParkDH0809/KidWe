@@ -1,12 +1,16 @@
 package yeomeong.common.entity.post.comment;
 
 
+import jakarta.persistence.Embeddable;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Time;
 
 @Getter
-public abstract class Comment {
+@Setter
+@Embeddable
+public class Comment {
 
     private String content;
 

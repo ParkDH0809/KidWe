@@ -14,4 +14,9 @@ public class AnnouncementComment extends Comment{
     @Id @GeneratedValue
     private Long id;
 
+    @Embedded
+    private Comment comment;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Announcement announcement;
 }
