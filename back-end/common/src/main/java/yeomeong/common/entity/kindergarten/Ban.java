@@ -15,13 +15,12 @@ import java.util.List;
 public class Ban {
 
     @Id @GeneratedValue
-    @JoinColumn(name = "ban_id")
     private Long id;
 
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private KinderGarten kinderGarten;
+    private Kindergarten kindergarten;
 
     @OneToMany(mappedBy = "ban")
     private List<Kid> kids = new ArrayList<>();

@@ -8,7 +8,7 @@ import lombok.Setter;
 @Entity
 @Setter
 @Getter
-public class Memo extends Post {
+public class Memo {
 
     @Id @GeneratedValue
     private Long id;

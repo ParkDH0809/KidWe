@@ -4,9 +4,11 @@ package yeomeong.common.entity.medication;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import yeomeong.common.entity.kindergarten.Kindergarten;
 import yeomeong.common.entity.member.Kid;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 @Entity
 @Getter
@@ -18,6 +20,9 @@ public class Medication {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Kid kid;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Kindergarten kinderGarten;
 
     private String symptom;
 
@@ -37,8 +42,8 @@ public class Medication {
 
     private String others;
 
-    private Date medicationStartDate;
-    private Date medicationExecuteDate;
+    private LocalDate medicationStartDate;
+    private LocalDate medicationExecuteDate;
 
     private String signUrl;
 

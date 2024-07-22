@@ -12,7 +12,11 @@ public class HomeconsentService {
 
     private final HomeconsentRepository homeconsentRepository;
 
-    public Homeconsent findById(Long id) {
-
+    public Homeconsent findById(Long homesentId) {
+        return homeconsentRepository.findOne(homesentId);
     }
+
+//    public Homeconsent findById(Long id) {
+//
+//    }
 }

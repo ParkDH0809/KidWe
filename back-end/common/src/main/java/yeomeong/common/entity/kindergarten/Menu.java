@@ -16,7 +16,7 @@ public class Menu {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private KinderGarten kinderGarten;
+    private Kindergarten kinderGarten;
 
     private String lunch;
     private String lunchAllergies;
