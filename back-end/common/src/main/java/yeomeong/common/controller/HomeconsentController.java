@@ -2,6 +2,7 @@ package yeomeong.common.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +20,10 @@ public class HomeconsentController {
 
     @GetMapping("{ban_id}/{year_month}")
     public ResponseEntity<Homeconsent> getHomeconsent(@PathVariable Long id ){
-        homeconsentService.findById(id);
 
+        Homeconsent homeconsent = homeconsentService.findById(id);
+
+        return ResponseEntity.ok(homeconsent);
     }
 
 

@@ -1,11 +1,12 @@
 spring:
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017/yellowhat
+  datasource:
+    url: jdbc:mysql://localhost:3306/SSAFY_DB
+    username: root
+    password: SSAFY
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     properties:
       hibernate:
         format_sql: true

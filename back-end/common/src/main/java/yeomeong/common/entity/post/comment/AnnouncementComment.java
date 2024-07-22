@@ -9,7 +9,7 @@ import yeomeong.common.entity.post.Announcement;
 @Entity
 @Setter
 @Getter
-public class AnnouncementComment extends Comment{
+public class AnnouncementComment {
 
     @Id @GeneratedValue
     private Long id;
