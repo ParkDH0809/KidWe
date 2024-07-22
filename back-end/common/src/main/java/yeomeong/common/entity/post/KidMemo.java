@@ -22,6 +22,4 @@ public class KidMemo {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Kid kid;
-
-
 }

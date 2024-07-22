@@ -1,22 +1,20 @@
 package yeomeong.common.entity.post;
 
-
-import jakarta.persistence.*;
+import org.springframework.data.mongodb.core.mapping.Document;
+import java.sql.Time;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
+import yeomeong.common.entity.member.Kid;
 
-@Entity
+@Document(collection = "memo")
 @Setter
 @Getter
-public class Memo extends Post {
 
-    @Id @GeneratedValue
+public class Memo {
     private Long id;
-
-    @Embedded
-    private Post post;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private DailyNote dailyNote;
-
+    private Time createdTime;
+    private List<Kid> kids;
+    private List<Tag> tags;
+    private String content;
 }

@@ -13,6 +13,6 @@ public class Diary extends Post {
     @Id @GeneratedValue
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Teacher teacher;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    private Teacher teacher;
 }
