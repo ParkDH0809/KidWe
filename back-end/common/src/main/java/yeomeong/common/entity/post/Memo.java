@@ -1,7 +1,7 @@
 package yeomeong.common.entity.post;
 
-
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +9,6 @@ import lombok.Setter;
 @Setter
 @Getter
 public class Memo extends Post {
-
     @Id @GeneratedValue
     private Long id;
 
@@ -18,5 +17,4 @@ public class Memo extends Post {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private DailyNote dailyNote;
-
 }

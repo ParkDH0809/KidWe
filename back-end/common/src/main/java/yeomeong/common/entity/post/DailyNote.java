@@ -18,7 +18,7 @@ public class DailyNote {
     @Id @GeneratedValue
     private Long id;
 
-    @OneToMany(mappedBy = "dailyNote")
+    //@OneToMany(mappedBy = "dailyNote")
     private List<Memo> memos = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
