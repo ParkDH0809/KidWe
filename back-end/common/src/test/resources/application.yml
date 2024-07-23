@@ -1,8 +1,9 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/SSAFY_DB
+    url: jdbc:mysql://localhost:3306/yellowhat
     username: root
-    password: SSAFY
+    password: ssafy
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
@@ -11,6 +12,9 @@ spring:
       hibernate:
         format_sql: true
 
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/yellowhat
 
 logging.level:
   org.hibernate.SQL: debug

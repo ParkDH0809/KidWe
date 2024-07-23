@@ -1,18 +1,10 @@
 package yeomeong.common.controller;
 
 
-import jdk.jfr.Description;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import yeomeong.common.dto.medication.MedicationByKidAndMonthDto;
-import yeomeong.common.entity.medication.Medication;
 import yeomeong.common.service.MedicationService;
-
-import java.util.List;
 
 
 @RestController
