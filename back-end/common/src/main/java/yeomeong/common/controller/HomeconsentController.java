@@ -18,12 +18,10 @@ public class HomeconsentController {
     private HomeconsentService homeconsentService;
 
     @GetMapping("{ban_id}/{year_month}")
-    public ResponseEntity<Homeconsent> getHomeconsent(@PathVariable Long id ){
+    public ResponseEntity<Homeconsent> getHomeconsent(@PathVariable Long ban_id ){
 
-        Homeconsent homeconsent = homeconsentService.findById(id);
+        Homeconsent homeconsent = homeconsentService.findById(ban_id);
 
         return ResponseEntity.ok(homeconsent);
     }
-
-
 }

@@ -3,7 +3,9 @@ package yeomeong.common.entity.jpa.medication;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import yeomeong.common.entity.jpa.kindergarten.Ban;
 import yeomeong.common.entity.jpa.kindergarten.Kindergarten;
 import yeomeong.common.entity.jpa.member.Kid;
 
@@ -13,38 +15,50 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Medication {
 
     @Id @GeneratedValue
     private Long id;
 
+    private String name;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Kid kid;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Kindergarten kinderGarten;
+    private Ban ban;
 
     private String symptom;
 
-    @Enumerated(EnumType.STRING)
-    private dtype dtype; // PILL, POWDER, LIQUID
+    private String type;
 
     private String medicineUrl;
 
-    private double capacity;
-
-    @Enumerated(EnumType.STRING)
-    private utype utype;
+    private String capacity;
 
     private String medicationExecuteTime;
+
+    private String numberOfDoses;
 
     private String storageMethod;
 
     private String others;
 
-    private LocalDate medicationStartDate;
     private LocalDate medicationExecuteDate;
 
     private String signUrl;
 
+    public Medication(Long id, LocalDate medicationExecuteDate, String symptom, String medicineUrl, String type, String capacity, String numberOfDoses, String medicationExecuteTime, String storageMethod, String others, String signUrl){
+        this.medicationExecuteDate = medicationExecuteDate;
+        this.symptom = symptom;
+        this.medicineUrl = medicineUrl;
+        this.type = type;
+        this.capacity = capacity;
+        this.numberOfDoses = numberOfDoses;
+        this.medicationExecuteTime = medicationExecuteTime;
+        this.storageMethod = storageMethod;
+        this.others = others;
+        this.signUrl = signUrl;
+    }
 }
