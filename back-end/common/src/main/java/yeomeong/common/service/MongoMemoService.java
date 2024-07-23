@@ -1,9 +1,9 @@
 package yeomeong.common.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import yeomeong.common.entity.member.Kid;
-import yeomeong.common.entity.post.MongoMemo;
-import yeomeong.common.repository.MongoMemoRepository;
+import yeomeong.common.entity.jpa.member.Kid;
+import yeomeong.common.entity.mongo.MongoMemo;
+import yeomeong.common.repository.mongo.MongoMemoRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,7 +26,7 @@ public class MongoMemoService {
     }
 
     // 메모ID로 메모 가져오기
-    public Optional<MongoMemo> getMongoMemoById(Long id) {
+    public Optional<MongoMemo> getMongoMemoById(String id) {
         return mongoMemoRepository.findById(id);
     }
 
@@ -51,7 +51,7 @@ public class MongoMemoService {
     }
 
     // 메모 삭제하기
-    public void deleteMongoMemo(Long id) {
+    public void deleteMongoMemo(String id) {
         mongoMemoRepository.deleteById(id);
     }
 }
