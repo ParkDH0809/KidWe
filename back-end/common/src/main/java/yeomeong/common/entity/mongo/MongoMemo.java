@@ -2,18 +2,13 @@ package yeomeong.common.entity.mongo;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.data.mongodb.core.mapping.Document;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import yeomeong.common.entity.jpa.member.Kid;
 
 @Getter
 @Setter
@@ -21,46 +16,46 @@ import yeomeong.common.entity.jpa.member.Kid;
 @AllArgsConstructor
 
 @Document(collection = "memo")
-//@EnableMongoAuditing
-//@EnableMongoRepositories
 public class MongoMemo {
     @Id @Field("memo_id")
+    // String 아니고 Long이어도 되는지 확인하기
     private String id;
 
-    private LocalDateTime createdTime;
-//    private Integer createdYear;
-//    private Integer createdMonth;
-//    private Integer createdDay;
+    private Integer createdYear;
+    private Integer createdMonth;
+    private Integer createdDay;
+    private Integer createdHour;
+    private Integer createdMinute;
+    private Integer createdSecond;
 
-    private List<Kid> kids;
+    private Integer memoYear;
+    private Integer memoMonth;
+    private Integer memoDay;
+    private Integer memoHour;
+    private Integer memoMinute;
+    private Integer memoSecond;
+
+    private List<Long> kids;
 
     private List<MongoTag> tags;
 
     private String content;
 
-    // 아이 한명만 등록
-    public void setKid(Kid kid) {
-        if(kids==null)kids = new ArrayList<>();
-        kids.add(kid);
-    }
-
-    // 아이 여러명 등록
-    public void setKids(List<Kid> kids) {
+    // 아이들 등록
+    public void setKids(List<Long> kids) {
         if(this.kids==null) this.kids = new ArrayList<>();
-        this.kids.addAll(kids);
+        for(Long kidId : kids){
+            if(!this.kids.contains((kidId))) this.kids.add(kidId);
+        }
     }
 
-    // 태그 하나만 등록 - 이미 있는 태그인 경우 count만 올려주기
-    public void setTag(MongoTag tag) {
-        // 코드 수정하기
-        if(tags == null) tags = new ArrayList<>();
-        tags.add(tag);
-    }
-
-    // 태그 여러개 등록 - 이미 있는 태그인 경우 count만 올려주기
-    public void setTags(List<MongoTag> tags) {
-        // 코드 수정하기
+    // 태그들 등록
+    public void setTags(Long teacherId, List<MongoTag> tags) {
+        // 유효한 선생님ID인지 확인해야 할까?
         if(this.tags == null) this.tags = new ArrayList<>();
-        this.tags.addAll(tags);
+        // 이미 서비스 딴에서 teacherTag도 각각 처리한 상태
+        for(MongoTag tag : tags){
+            if(!this.tags.contains(tag)) this.tags.add(tag);
+        }
     }
 }
