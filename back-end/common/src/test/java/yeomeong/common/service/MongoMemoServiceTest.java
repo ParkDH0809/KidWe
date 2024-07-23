@@ -44,11 +44,11 @@ public class MongoMemoServiceTest {
     @Test
     public void testGetAllMongoMemos() {
         MongoMemo memo1 = new MongoMemo();
-        memo1.setContent("Memo 1");
+        memo1.setContent("Memo 3");
         memo1.setCreatedTime(LocalDateTime.now());
 
         MongoMemo memo2 = new MongoMemo();
-        memo2.setContent("Memo 2");
+        memo2.setContent("Memo 4");
         memo2.setCreatedTime(LocalDateTime.now());
 
         mongoMemoService.createMongoMemo(memo1);
