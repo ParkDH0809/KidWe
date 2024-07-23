@@ -1,4 +1,17 @@
 spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/yellowhat
+    username: root
+    password: ssafy
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+
   data:
     mongodb:
       uri: mongodb://localhost:27017/yellowhat
