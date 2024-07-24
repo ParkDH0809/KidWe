@@ -32,9 +32,9 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private atype memberStatus; //ACCEPT, DECLINE, PENDING
 
-    @ManyToOne(fetch = FetchType.LAZY) @Nullable
+    @ManyToOne(fetch = FetchType.LAZY)
     private Ban ban;
 
-    @OneToMany @Nullable
+    @OneToMany
     private List<KidMember> kidMember = new ArrayList<>();
 }

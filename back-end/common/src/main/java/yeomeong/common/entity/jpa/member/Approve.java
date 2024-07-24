@@ -12,10 +12,10 @@ public class Approve {
     @Id @GeneratedValue
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Kid kid;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Member requester;
 
     @Enumerated

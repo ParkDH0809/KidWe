@@ -53,7 +53,6 @@ class MedicationRepositoryTest {
 
         memberRepository.save(member);
         Medication medication =new Medication();
-        medication.setKinderGarten(kinderGarten);
         medication.setMedicationExecuteDate(LocalDate.parse("2024-06-06"));
 
         medicationRepository.save(medication);

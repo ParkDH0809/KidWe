@@ -3,19 +3,18 @@ package yeomeong.common.repository.jpa;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import yeomeong.common.entity.jpa.kindergarten.Ban;
+import yeomeong.common.entity.jpa.member.Kid;
 
 @Repository
 @RequiredArgsConstructor
-public class BanRepository {
+public class KidRepository {
 
     private final EntityManager em;
 
-    public void save(Ban ban){
-        em.persist(ban);
+    public void save(Kid kid){
+        em.persist(kid);
     }
-
-    public Ban findOne(Long banId) {
-        return em.find(Ban.class,banId);
+    public Kid findOne(Long kidId){
+       return em.find(Kid.class, kidId);
     }
 }

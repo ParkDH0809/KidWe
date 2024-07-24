@@ -33,9 +33,9 @@ public class DailyNote {
     @Embedded
     private Post post;
 
-    @JoinColumn(name = "member_id")
+    @JoinColumn
     private Long receiverId;
 
-    @JoinColumn(name = "member_id")
+    @JoinColumn
     private Long writerId;
 }
