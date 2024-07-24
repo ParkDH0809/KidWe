@@ -1,5 +1,7 @@
 package yeomeong.common.entity.jpa.member;
 
 public enum rtype {
-    DIRECTOR, TEACHER, GUARDIAN
+
+    ROLE_DIRECTOR, ROLE_TEACHER, ROLE_GUARDIAN
+
 }
