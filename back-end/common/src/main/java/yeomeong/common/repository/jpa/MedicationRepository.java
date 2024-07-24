@@ -17,6 +17,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
+
 public class MedicationRepository {
 
     private final EntityManager em;

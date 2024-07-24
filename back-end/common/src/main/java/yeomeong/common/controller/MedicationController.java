@@ -1,6 +1,7 @@
 package yeomeong.common.controller;
 
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Description;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/medications")
 @RequiredArgsConstructor
+@Tag(name = "투약의뢰서", description = "투약의뢰서 조회, 생성, 삭제 API")
 public class MedicationController {
 
 
@@ -57,10 +59,12 @@ public class MedicationController {
         return ResponseEntity.ok(medicationDetailDto);
     }
 
+
     @Description("투약의뢰서 생성하기")
-    @PostMapping()
+    @PostMapping("/{kid_id}")
     public ResponseEntity<MedicationCreateDto> createMedication(
-            @RequestBody MedicationCreateDto medicationCreateDto, Long kidId){
+            @RequestBody MedicationCreateDto medicationCreateDto,
+            @PathVariable("kid_id") Long kidId){
 
         medicationService.createMedication(medicationCreateDto,kidId);
 

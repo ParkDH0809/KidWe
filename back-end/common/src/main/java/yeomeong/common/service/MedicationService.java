@@ -3,6 +3,7 @@ package yeomeong.common.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import yeomeong.common.dto.medication.MedicationByKidAndMonthDto;
 import yeomeong.common.dto.medication.MedicationByKidDto;
 import yeomeong.common.dto.medication.MedicationCreateDto;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MedicationService {
 
     private final MedicationRepository medicationRepository;
@@ -35,10 +37,13 @@ public class MedicationService {
     }
 
     //투약의뢰서 생성하기
+    @Transactional
     public void createMedication(MedicationCreateDto medicationCreateDto, Long kidId){
+
         medicationRepository.createMedication(medicationCreateDto, kidId);
     }
 
+    //투약의뢰서 제거하기
     public void removeMedication(Long medicationId){
         medicationRepository.removeMedication(medicationId);
     }
