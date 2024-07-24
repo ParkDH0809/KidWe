@@ -25,7 +25,7 @@ public class MemberService {
         try {
             memberRepository.save(member);
         } catch (RuntimeException e) {
-            throw new CustomException(ErrorCode.DUPLICATED_USER_EMAIL);
+            throw new CustomException(ErrorCode.INVALID_INPUT_VALUE);
         }
     }
 
