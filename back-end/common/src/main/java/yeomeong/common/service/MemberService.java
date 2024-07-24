@@ -34,4 +34,8 @@ public class MemberService {
         }
     }
 
+    public Member getMemberByEmail(String email) {
+        return memberRepository.findByEmail(email);
+    }
+
 }

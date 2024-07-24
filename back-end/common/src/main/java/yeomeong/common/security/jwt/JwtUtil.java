@@ -15,6 +15,7 @@ import java.util.Date;
 public class JwtUtil {
 
     private static final String JTW_PREFIX = "Bearer ";
+    private static final String MEMBER_EMAIL = "email";
 
     @Value("${spring.application.name}")
     private String issuer;
@@ -30,7 +31,6 @@ public class JwtUtil {
     private static long ACCESS_EXPIRED_TIME;
     private static long REFRESH_EXPIRED_TIME;
 
-    private static String MEMBER_EMAIL = "email";
 
     @PostConstruct
     public void init() {
@@ -63,6 +63,11 @@ public class JwtUtil {
     public static String getLoginEmail(String token) {
         return decodeJwt(token).get(MEMBER_EMAIL).toString();
     }
+
+    public static Long getExpiredTime(String token) {
+        return decodeJwt(token).getExpiration().getTime();
+    }
+
 
     public static boolean isExpired(String token) {
         Date expiredDate = decodeJwt(token).getExpiration();
