@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Set;
 
 
-@Document(collation = "tagperteacher")
+@Document(collection = "tagperteacher")
 public class MongoTagPerTeacher {
     private String id;
     private Set<MongoTag> tags;
@@ -14,7 +14,7 @@ public class MongoTagPerTeacher {
 
     }
 
-    MongoTagPerTeacher(String id, Set<MongoTag> tags) {
+    public MongoTagPerTeacher(String id, Set<MongoTag> tags) {
         this.id = id;
         this.tags = tags;
     }
