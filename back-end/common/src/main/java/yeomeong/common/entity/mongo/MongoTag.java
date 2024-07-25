@@ -17,4 +17,8 @@ public class MongoTag {
     private String content;
     private wtype morpheme;
     private Long count;
+
+    public long addCount(){
+        return this.count += 1;
+    }
 }
