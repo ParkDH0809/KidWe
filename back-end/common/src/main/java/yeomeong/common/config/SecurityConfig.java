@@ -15,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import yeomeong.common.security.*;
+import yeomeong.common.security.jwt.JwtService;
 import yeomeong.common.service.MemberService;
 
 @Configuration
@@ -28,7 +29,7 @@ public class SecurityConfig {
     private final LoginFailureHandler loginFailureHandler;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, MemberService memberService) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, MemberService memberService, JwtService jwtService) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
@@ -38,11 +39,17 @@ public class SecurityConfig {
                         .successHandler(loginSuccessHandler))
                 .authorizeHttpRequests(
                         authorize -> authorize
-                                .requestMatchers(HttpMethod.POST, "/login", "/join", "/").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/login", "/join").permitAll()
                                 .anyRequest().authenticated()
                 )
-                .addFilterBefore(new JwtAuthenticationFilter(memberService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationFilter(memberService, jwtService), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jsonUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        http
+                .logout((logout) -> logout
+                        .logoutSuccessUrl("/logoutsuccess")
+                        .permitAll()
+                );
 
         return http.build();
     }

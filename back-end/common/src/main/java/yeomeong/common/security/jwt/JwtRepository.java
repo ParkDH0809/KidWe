@@ -19,13 +19,17 @@ public class JwtRepository {
 
     public void save(String key, String value, long expirationMinutes){
         ValueOperations<String, String> values = redisTemplate.opsForValue();
-        values.set(key, value, Duration.ofMinutes(expirationMinutes));
-        log.info("만료 시간, 분: {}", Duration.ofMinutes(expirationMinutes));
+        values.set(key, value, Duration.ofSeconds(expirationMinutes));
+        log.info("만료 시간, 분: {}", Duration.ofSeconds(expirationMinutes));
     }
 
     public String findByKey(String key) {
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         return valueOperations.get(key);
+    }
+
+    public void deleteRefreshToken(String email) {
+        redisTemplate.delete(email);
     }
 
 }

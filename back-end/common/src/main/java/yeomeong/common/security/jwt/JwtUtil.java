@@ -63,12 +63,13 @@ public class JwtUtil {
     }
 
     public static String getLoginEmail(String token) {
-        log.info("[getLoginEmail] token: {}", token);
+        log.info("[jwtUtil - getLoginEmail] token: {}", token);
         return decodeJwt(token).get(MEMBER_EMAIL).toString();
     }
 
     public static Long getExpiredTime(String token) {
-        return decodeJwt(token).getExpiration().getTime();
+        log.debug("[jwtUtil - getExpiredTime] expiration time: {}",  (decodeJwt(token).getExpiration().getTime() - System.currentTimeMillis()) / 1000);
+        return (decodeJwt(token).getExpiration().getTime() - System.currentTimeMillis()) / 1000;
     }
 
     public static boolean isExpired(String token) {
