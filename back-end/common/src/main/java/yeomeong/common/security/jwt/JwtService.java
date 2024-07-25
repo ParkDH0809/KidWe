@@ -6,13 +6,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class RefreshTokenService {
+public class JwtService {
 
     @Value("${jwt.token.refresh-expired-time}")
     private long refreshExpiredTime;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final JwtRepository refreshTokenRepository;
 
-    public RefreshTokenService(RefreshTokenRepository refreshTokenRepository) {
+    public JwtService(JwtRepository refreshTokenRepository) {
         this.refreshTokenRepository = refreshTokenRepository;
     }
 

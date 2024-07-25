@@ -9,11 +9,11 @@ import java.time.Duration;
 
 @Slf4j
 @Repository
-public class RefreshTokenRepository {
+public class JwtRepository {
 
     private final RedisTemplate<String, String> redisTemplate;
 
-    public RefreshTokenRepository(RedisTemplate<String, String> redisTemplate) {
+    public JwtRepository(RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
@@ -27,4 +27,5 @@ public class RefreshTokenRepository {
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         return valueOperations.get(email);
     }
+
 }
