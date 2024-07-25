@@ -1,19 +1,13 @@
 package yeomeong.common.entity.mongo;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
-@Setter
-@Getter
 @Document("tag")
 public class MongoTag {
-    @Id @Field("tag_id")
-    private String id;
     @Field("created_time")
     private LocalDateTime createdTime;
     @Field("updated_time")
@@ -22,13 +16,8 @@ public class MongoTag {
     private wtype morpheme;
     private Long count;
 
-    MongoTag(){
-
-    }
-
     // 태그 생성 시
-    public MongoTag(String id, String content, wtype morpheme){
-        this.id = id;
+    public MongoTag(String content, wtype morpheme) {
         this.createdTime = LocalDateTime.now();
         this.updatedTime = createdTime;
         this.content = content;
@@ -36,16 +25,12 @@ public class MongoTag {
         this.count = 1L;
     }
 
-    public String getId() {
-        return this.id;
-    }
-
     public LocalDateTime getCreatedTime() {
         return this.createdTime;
     }
 
     public void setUpdatedTime(LocalDateTime updatedTime) {
-         this.updatedTime = updatedTime;
+        this.updatedTime = updatedTime;
     }
 
     public LocalDateTime getUpdatedTime() {
@@ -60,15 +45,25 @@ public class MongoTag {
         return this.morpheme.name();
     }
 
-    public void setCount(){
+    public void setCount() {
         this.count += 1L;
     }
 
-    public Long getCount(){
+    public Long getCount() {
         return this.count;
     }
 
-    public Boolean equals(MongoTag mongoTag){
-        return this.content.equals(mongoTag.getContent());
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MongoTag mongoTag = (MongoTag) o;
+        return Objects.equals(content, mongoTag.content) &&
+                morpheme == mongoTag.morpheme;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(content, morpheme);
     }
 }
