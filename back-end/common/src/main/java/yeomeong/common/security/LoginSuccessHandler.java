@@ -12,7 +12,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 import yeomeong.common.dto.member.LoginResponseDto;
 import yeomeong.common.security.jwt.JwtUtil;
-import yeomeong.common.security.jwt.RefreshTokenService;
+import yeomeong.common.security.jwt.JwtService;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -22,10 +22,10 @@ import java.nio.charset.StandardCharsets;
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private final ObjectMapper objectMapper;
-    private RefreshTokenService refreshTokenService;
+    private JwtService refreshTokenService;
 
     @Autowired
-    public LoginSuccessHandler(RefreshTokenService refreshTokenService) {
+    public LoginSuccessHandler(JwtService refreshTokenService) {
         this.refreshTokenService = refreshTokenService;
         this.objectMapper = new ObjectMapper();
     }
@@ -39,7 +39,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         LoginResponseDto loginResponseDto = new LoginResponseDto(accessToken, refreshToken);
 
-        refreshTokenService.addRefreshToken(authentication.getName(), refreshToken);
+        refreshTokenService.saveRefreshToken(authentication.getName(), refreshToken);
 
         response.setStatus(HttpStatus.OK.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

@@ -23,9 +23,9 @@ public class JwtRepository {
         log.info("만료 시간, 분: {}", Duration.ofMinutes(expirationMinutes));
     }
 
-    public String findByEmail(String email) {
+    public String findByKey(String key) {
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-        return valueOperations.get(email);
+        return valueOperations.get(key);
     }
 
 }
