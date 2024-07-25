@@ -1,46 +1,31 @@
 package yeomeong.common.security.jwt;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class JwtService {
 
     private final static String LOGOUT = "logout";
     private final JwtRepository refreshTokenRepository;
 
-    @Value("${jwt.token.refresh-expired-time}")
-    private long refreshExpiredTime;
-
-    public JwtService(JwtRepository refreshTokenRepository) {
-        this.refreshTokenRepository = refreshTokenRepository;
-    }
-
     public void saveRefreshToken(String email, String refreshToken) {
-        refreshTokenRepository.save(email, refreshToken, refreshExpiredTime);
+        refreshTokenRepository.save(email, refreshToken, JwtUtil.getExpiredTime(refreshToken));
     }
 
     public void saveLogoutAccessToken(String accessToken) {
-        log.debug("[JwtService - saveLogoutAccessToken] {}", accessToken);
-        refreshTokenRepository.save(accessToken, LOGOUT, JwtUtil.getExpiredTime(JwtUtil.removeBearerPrefix(accessToken)));
+        refreshTokenRepository.save(accessToken, LOGOUT, JwtUtil.getExpiredTime(accessToken));
     }
 
     public boolean isCorrectToken(String refreshToken) {
-        if(refreshTokenRepository.findByKey(JwtUtil.getLoginEmail(JwtUtil.removeBearerPrefix(refreshToken))) == null) {
-            log.debug("[JwtService - isCorrectToken] Refresh token과 email 정보가 일치하지 않음");
-            return false;
-        }
-        return true;
+        return refreshTokenRepository.findByKey(JwtUtil.getLoginEmail(refreshToken)) != null;
     }
 
     public boolean isLogoutAccessToken(String accessToken) {
-        return refreshTokenRepository.findByKey(JwtUtil.getLoginEmail(JwtUtil.removeBearerPrefix(accessToken))) != null;
-    }
-
-    public String createAccessToken(String token) {
-        return JwtUtil.createAccessToken(JwtUtil.getLoginEmail(JwtUtil.removeBearerPrefix(token)));
+        return refreshTokenRepository.hasKey(accessToken);
     }
 
     public void deleteRefreshToken(String email) {

@@ -25,6 +25,7 @@ public class SecurityConfig {
 
     private final ObjectMapper objectMapper;
     private final UserDetailsServiceImpl userDetailsService;
+    private final AuthenticationProviderImpl authenticationProvider;
     private final LoginSuccessHandler loginSuccessHandler;
     private final LoginFailureHandler loginFailureHandler;
 
@@ -34,9 +35,13 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        http
                 .formLogin(config -> config
-                        .successHandler(loginSuccessHandler))
+                        .successHandler(loginSuccessHandler));
+
+        http
                 .authorizeHttpRequests(
                         authorize -> authorize
                                 .requestMatchers(HttpMethod.POST, "/login", "/join").permitAll()
@@ -47,7 +52,7 @@ public class SecurityConfig {
 
         http
                 .logout((logout) -> logout
-                        .logoutSuccessUrl("/logoutsuccess")
+                        .logoutSuccessUrl("/logoutSuccess")
                         .permitAll()
                 );
 
@@ -56,7 +61,8 @@ public class SecurityConfig {
 
     @Bean
     public JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordAuthenticationFilter() {
-        JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordAuthenticationFilter = new JsonUsernamePasswordAuthenticationFilter(objectMapper, loginSuccessHandler, loginFailureHandler);
+        JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordAuthenticationFilter
+                = new JsonUsernamePasswordAuthenticationFilter(objectMapper, loginSuccessHandler, loginFailureHandler, authenticationProvider);
         jsonUsernamePasswordAuthenticationFilter.setAuthenticationManager(authenticationManager());
         return jsonUsernamePasswordAuthenticationFilter;
     }

@@ -28,6 +28,10 @@ public class JwtRepository {
         return valueOperations.get(key);
     }
 
+    public boolean hasKey(String key) {
+        return Boolean.TRUE.equals(redisTemplate.hasKey(key));
+    }
+
     public void deleteRefreshToken(String email) {
         redisTemplate.delete(email);
     }

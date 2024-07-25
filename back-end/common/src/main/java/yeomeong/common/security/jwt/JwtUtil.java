@@ -21,10 +21,13 @@ public class JwtUtil {
 
     @Value("${spring.application.name}")
     private String issuer;
+
     @Value("${jwt.token.secret}")
     private String secretKey;
+
     @Value("${jwt.token.access-expired-time}")
     private long accessExpiredTime;
+
     @Value("${jwt.token.refresh-expired-time}")
     private long refreshExpiredTime;
 
@@ -32,7 +35,6 @@ public class JwtUtil {
     private static String ISSUER;
     private static long ACCESS_EXPIRED_TIME;
     private static long REFRESH_EXPIRED_TIME;
-
 
     @PostConstruct
     public void init() {
@@ -43,6 +45,7 @@ public class JwtUtil {
     }
 
     public static String createAccessToken(String email){
+        log.debug("[jwtUtil - createAccessToken] email: {}", email);
         return JTW_PREFIX + Jwts.builder()
                 .issuer(ISSUER)
                 .issuedAt(new Date(System.currentTimeMillis()))
@@ -53,6 +56,7 @@ public class JwtUtil {
     }
 
     public static String createRefreshToken(String email){
+        log.debug("[jwtUtil - createRefreshToken] email: {}", email);
         return JTW_PREFIX + Jwts.builder()
                 .issuer(ISSUER)
                 .issuedAt(new Date(System.currentTimeMillis()))
@@ -64,17 +68,21 @@ public class JwtUtil {
 
     public static String getLoginEmail(String token) {
         log.info("[jwtUtil - getLoginEmail] token: {}", token);
-        return decodeJwt(token).get(MEMBER_EMAIL).toString();
+         return isStartWithJwtPrefix(token)
+                ? decodeJwt(removeJwtPrefix(token)).get(MEMBER_EMAIL).toString()
+                : decodeJwt(token).get(MEMBER_EMAIL).toString();
     }
 
     public static Long getExpiredTime(String token) {
-        log.debug("[jwtUtil - getExpiredTime] expiration time: {}",  (decodeJwt(token).getExpiration().getTime() - System.currentTimeMillis()) / 1000);
-        return (decodeJwt(token).getExpiration().getTime() - System.currentTimeMillis()) / 1000;
+        return isStartWithJwtPrefix(token)
+                ? (decodeJwt(removeJwtPrefix(token)).getExpiration().getTime() - System.currentTimeMillis()) / 1000
+                : (decodeJwt(token).getExpiration().getTime() - System.currentTimeMillis()) / 1000;
     }
 
     public static boolean isExpired(String token) {
-        Date expiredDate = decodeJwt(token).getExpiration();
-        return expiredDate.before(new Date());
+        return isStartWithJwtPrefix(token)
+            ? decodeJwt(removeJwtPrefix(token)).getExpiration().before(new Date())
+            : decodeJwt(token).getExpiration().before(new Date());
     }
 
     public static Claims decodeJwt(String token) {
@@ -85,8 +93,13 @@ public class JwtUtil {
                 .getPayload();
     }
 
-    public static String removeBearerPrefix(String token) {
+    public static String removeJwtPrefix(String token) {
+        log.debug("[jwtUtil - removeJwtPrefix] token: {}", token);
         return token.split(" ")[1];
+    }
+
+    private static boolean isStartWithJwtPrefix(String token) {
+        return token.startsWith(JTW_PREFIX);
     }
 
 }

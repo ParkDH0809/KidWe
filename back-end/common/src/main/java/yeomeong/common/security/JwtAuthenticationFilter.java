@@ -52,17 +52,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = JwtUtil.removeBearerPrefix(authorizationHeader);
-        if(JwtUtil.isExpired(token)) {
+        if(JwtUtil.isExpired(authorizationHeader)) {
             log.debug("[JwtAuthenticationFilter] Token is expired");
             filterChain.doFilter(request, response);
             return;
         }
 
-
-
         log.debug("[JwtAuthenticationFilter] Token is valid");
-        Member loginMember = memberService.getMemberByEmail(JwtUtil.getLoginEmail(token));
+        Member loginMember = memberService.getMemberByEmail(JwtUtil.getLoginEmail(authorizationHeader));
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 loginMember.getEmail(), loginMember.getPassword(), List.of(new SimpleGrantedAuthority(loginMember.getRole().toString())));

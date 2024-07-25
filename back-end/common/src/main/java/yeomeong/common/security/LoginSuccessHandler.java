@@ -4,15 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import yeomeong.common.dto.member.LoginResponseDto;
-import yeomeong.common.security.jwt.JwtUtil;
 import yeomeong.common.security.jwt.JwtService;
+import yeomeong.common.security.jwt.JwtUtil;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -22,24 +21,16 @@ import java.nio.charset.StandardCharsets;
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private final ObjectMapper objectMapper;
-    private JwtService refreshTokenService;
-
-    @Autowired
-    public LoginSuccessHandler(JwtService refreshTokenService) {
-        this.refreshTokenService = refreshTokenService;
-        this.objectMapper = new ObjectMapper();
-    }
+    private final JwtService jwtService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException {
-
         String accessToken = JwtUtil.createAccessToken(authentication.getName());
         String refreshToken = JwtUtil.createRefreshToken(authentication.getName());
 
         LoginResponseDto loginResponseDto = new LoginResponseDto(accessToken, refreshToken);
-
-        refreshTokenService.saveRefreshToken(authentication.getName(), refreshToken);
+        jwtService.saveRefreshToken(authentication.getName(), refreshToken);
 
         response.setStatus(HttpStatus.OK.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
