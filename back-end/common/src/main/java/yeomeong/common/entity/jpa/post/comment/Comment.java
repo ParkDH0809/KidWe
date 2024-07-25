@@ -6,11 +6,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Time;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Getter
 @Setter
 @Embeddable
 public class Comment {
+
+    private Long writerId;
 
     private String content;
 
@@ -20,5 +24,5 @@ public class Comment {
 
     private boolean isDeleted;
 
-    private Time createdTime;
+    private LocalDateTime createdDateTime;
 }

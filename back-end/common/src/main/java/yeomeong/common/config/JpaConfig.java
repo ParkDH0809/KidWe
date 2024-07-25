@@ -13,7 +13,8 @@ import javax.sql.DataSource;
 @EnableJpaRepositories(
         basePackages = {
                 "yeomeong.common.entity.jpa",
-                "yeomeong.common.repository.jpa"
+                "yeomeong.common.repository.jpa",
+                "yeomeong.common.dto"
         }
 )
 public class JpaConfig {

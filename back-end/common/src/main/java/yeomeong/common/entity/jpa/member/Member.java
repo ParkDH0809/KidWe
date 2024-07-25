@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import yeomeong.common.entity.jpa.kindergarten.Ban;
+import yeomeong.common.entity.jpa.post.Announcement;
 
 import java.util.ArrayList;
 import java.util.List;
