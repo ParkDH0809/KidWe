@@ -4,12 +4,17 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Getter;
 import lombok.Setter;
 
-@Document(collation = "tag")
-@Setter
-@Getter
+import java.time.LocalDateTime;
 
+@Getter
+@Setter
+
+@Document("tag")
 public class MongoTag {
-    private Long id;
+    private String id;
+    private LocalDateTime createdTime;
+    private LocalDateTime updatedTime;
     private String content;
-    // 주어 or 서술어
+    private wtype morpheme;
+    private Long count;
 }
