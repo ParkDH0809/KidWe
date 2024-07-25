@@ -4,19 +4,20 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "memo")
 public class MongoMemo {
-    @Indexed(unique = true)
+    @Field("memo_id") @Indexed(unique = true)
     private String id;
     @Field("created_time")
     private LocalDateTime createdTime;;
-    @Field("updated_time")
+    @Field("updated_time") @Indexed(direction = IndexDirection.DESCENDING)
     private LocalDateTime updatedTime;;
-    @Field("is_deleted") @Indexed(unique=true, background = true,)
+    @Field("is_deleted")
     private Boolean isDeleted;
 
     private String lesson;
@@ -25,9 +26,7 @@ public class MongoMemo {
     private String content;
 
     public MongoMemo() {
-        this.isDeleted = false;
-        this.kids = new HashSet<Long>();
-        this.tags = new HashSet<MongoTag>();
+
     }
 
     public MongoMemo(String id){
@@ -37,13 +36,6 @@ public class MongoMemo {
         this.kids = new HashSet<Long>();
         this.tags = new HashSet<MongoTag>();
         this.content = "";
-    }
-
-    public MongoMemo(String id, String content) {
-        this.id = id;
-        this.createdTime = LocalDateTime.now();
-        this.updatedTime = createdTime;
-        this.content = content;
     }
 
     public MongoMemo(String id, LocalDateTime updatedTime, String lesson, Set<Long> kids, Set<MongoTag> tags, String content){
@@ -67,7 +59,6 @@ public class MongoMemo {
     public void setUpdatedTime(LocalDateTime updatedTime){
         this.updatedTime = updatedTime;
     }
-
     public LocalDateTime getUpdatedTime(){
         return updatedTime;
     }
@@ -75,7 +66,6 @@ public class MongoMemo {
     public void setIsDeleted(Boolean isDeleted){
         this.isDeleted = isDeleted;
     }
-
     public Boolean getIsDeleted(){
         return isDeleted;
     }
@@ -83,7 +73,6 @@ public class MongoMemo {
     public void setLesson(String lesson){
         this.lesson = lesson;
     }
-
     public String getLesson(){
         return lesson;
     }
@@ -91,11 +80,9 @@ public class MongoMemo {
     public void setKid(Long kidId) {
         this.kids.add(kidId);
     }
-
     public void setKids(Set<Long> kidIds) {
         this.kids.addAll(kidIds);
     }
-
     public Set<Long> getKids(){
         return this.kids;
     }
@@ -103,11 +90,9 @@ public class MongoMemo {
     public void setTag(String teacherId, MongoTag tag) {
         this.tags.add(tag);
     }
-
     public void setTags(String teacherId, Set<MongoTag> tags) {
         this.tags.addAll(tags);
     }
-
     public Set<MongoTag> getTags(){
         return this.tags;
     }
@@ -115,7 +100,6 @@ public class MongoMemo {
     public void setContent(String content) {
         this.content = content;
     }
-
     public String getContent(){
         return this.content;
     }
@@ -123,6 +107,10 @@ public class MongoMemo {
     public boolean isContainKid(Long kidId){
         if(kids.contains(kidId)) return true;
         return false;
+    }
+
+    public String toString(){
+        return "ID : " + this.id + "\nTime : " + this.updatedTime + "\nLesson : " + this.lesson + "\nContent : " + this.content;
     }
 
     public boolean equals(MongoMemo memo) {

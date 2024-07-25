@@ -1,10 +1,13 @@
 package yeomeong.common.entity.mongo;
 
-public class MongoSequenceIndex {
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collation = "sequence")
+public class MongoSequence {
     private String collectionName;
     private Integer index;
 
-    public MongoSequenceIndex(String collectionName) {
+    public MongoSequence(String collectionName) {
         this.collectionName = collectionName;
         this.index = 0;
     }
