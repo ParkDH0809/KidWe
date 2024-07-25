@@ -7,7 +7,7 @@ import yeomeong.common.entity.jpa.member.Kid;
 import java.time.LocalDate;
 import java.util.*;
 
-@Document("memoperteacher")
+@Document(collection = "memoperteacher")
 public class MongoMemoPerTeacher {
     @Id
     private String id;
@@ -26,6 +26,14 @@ public class MongoMemoPerTeacher {
         this.id = teacherId;
         this.memos = new ArrayList<MongoMemoPerDate>();
         memos.add(mongoMemoPerDate);
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
     }
 
     private MongoMemoPerDate fineMemoPerDate(LocalDate date) {

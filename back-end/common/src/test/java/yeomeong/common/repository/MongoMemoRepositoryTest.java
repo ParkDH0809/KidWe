@@ -32,7 +32,7 @@ public class MongoMemoRepositoryTest {
 
         String content = "Test content";
 
-        MongoMemo memo = new MongoMemo(testId, updateTime, kids, tags, content);
+        MongoMemo memo = new MongoMemo(testId, updateTime, "lesson",kids, tags, content);
 
         // 저장
         MongoMemo savedMemo = repository.save(memo);
@@ -46,7 +46,7 @@ public class MongoMemoRepositoryTest {
         assertEquals(content, foundMemo.getContent());
 
         // 저장
-        MongoMemo createdMemo = repository.save(new MongoMemo("100", updateTime, kids, tags, content));
+        MongoMemo createdMemo = repository.save(new MongoMemo("100", updateTime, "lesson2", kids, tags, content));
     }
 
     @Test

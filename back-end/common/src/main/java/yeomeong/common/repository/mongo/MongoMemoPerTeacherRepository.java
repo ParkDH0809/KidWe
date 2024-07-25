@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import yeomeong.common.entity.mongo.MongoMemoPerTeacher;
 
 @Repository
-public interface MongoTeacherMemoRepository extends MongoRepository<MongoMemoPerTeacher, String>, MongoTeacherMemoRepositoryCustom{
+public interface MongoMemoPerTeacherRepository extends MongoRepository<MongoMemoPerTeacher, String>{
 
 }
 

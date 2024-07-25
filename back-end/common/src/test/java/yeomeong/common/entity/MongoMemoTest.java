@@ -40,7 +40,7 @@ public class MongoMemoTest {
 
         String content = "Test content";
 
-        MongoMemo memo = new MongoMemo(testId, now, kids, tags, content);
+        MongoMemo memo = new MongoMemo(testId, now, "lesson",kids, tags, content);
 
         assertNotNull(memo.getId());
         assertEquals(testId, memo.getId());
