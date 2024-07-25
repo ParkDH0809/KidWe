@@ -9,6 +9,5 @@ import java.util.Date;
 @Setter
 public class HomeconsentByKidAndMonthDto {
 
-
     private Long id;
 }

@@ -1,6 +1,7 @@
 package yeomeong.common.entity.jpa.kindergarten;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +23,7 @@ public class Ban {
     @ManyToOne(fetch = FetchType.LAZY)
     private Kindergarten kindergarten;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "ban")
     private List<Kid> kids = new ArrayList<>();
 

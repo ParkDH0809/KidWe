@@ -6,9 +6,8 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Getter
 @Setter
-
+@Getter
 @Document("tag")
 public class MongoTag {
     private String id;
@@ -17,4 +16,21 @@ public class MongoTag {
     private String content;
     private wtype morpheme;
     private Long count;
+
+    MongoTag(){
+
+    }
+
+    public MongoTag(String id){
+        this.id = id;
+        createdTime = LocalDateTime.now();
+        updatedTime = createdTime;
+        content = "";
+        morpheme = null;
+        count = 0L;
+    }
+
+    public long addCount(){
+        return this.count += 1;
+    }
 }

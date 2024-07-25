@@ -10,7 +10,6 @@ import java.util.Date;
 @Getter
 public class MedicationByKidAndMonthDto {
 
-
-    private Date medicationExecuteDate;
     private String kidName;
+    private String banName;
 }
