@@ -4,27 +4,38 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "memo")
 public class MongoMemo {
+    @Indexed(unique = true)
     private String id;
-    private LocalDateTime createdTime;
-    private LocalDateTime updatedTime;
-    private LocalDateTime deletedTime;
+    @Field("created_time")
+    private LocalDateTime createdTime;;
+    @Field("updated_time")
+    private LocalDateTime updatedTime;;
+    @Field("is_deleted") @Indexed(unique=true, background = true,)
+    private Boolean isDeleted;
+
     private String lesson;
-    private Set<Long> kids = new HashSet<Long>();
-    private Set<MongoTag> tags = new HashSet<MongoTag>();
+    private Set<Long> kids;
+    private Set<MongoTag> tags;
     private String content;
 
     public MongoMemo() {
-
+        this.isDeleted = false;
+        this.kids = new HashSet<Long>();
+        this.tags = new HashSet<MongoTag>();
     }
 
     public MongoMemo(String id){
         this.id = id;
         this.createdTime = LocalDateTime.now();
         this.updatedTime = createdTime;
+        this.kids = new HashSet<Long>();
+        this.tags = new HashSet<MongoTag>();
         this.content = "";
     }
 
@@ -61,12 +72,12 @@ public class MongoMemo {
         return updatedTime;
     }
 
-    public void setDeletedTime(LocalDateTime deletedTime){
-        this.deletedTime = deletedTime;
+    public void setIsDeleted(Boolean isDeleted){
+        this.isDeleted = isDeleted;
     }
 
-    public LocalDateTime getDeletedTime(){
-        return deletedTime;
+    public Boolean getIsDeleted(){
+        return isDeleted;
     }
 
     public void setLesson(String lesson){
@@ -112,5 +123,10 @@ public class MongoMemo {
     public boolean isContainKid(Long kidId){
         if(kids.contains(kidId)) return true;
         return false;
+    }
+
+    public boolean equals(MongoMemo memo) {
+        if((memo == null) || (memo.getId() == null)) return false;
+        return (this.id.equals(memo.getId()));
     }
 }
