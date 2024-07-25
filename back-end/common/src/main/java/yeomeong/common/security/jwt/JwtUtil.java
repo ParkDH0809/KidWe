@@ -3,6 +3,7 @@ package yeomeong.common.security.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Component
+@Slf4j
 public class JwtUtil {
 
     private static final String JTW_PREFIX = "Bearer ";
@@ -61,13 +63,13 @@ public class JwtUtil {
     }
 
     public static String getLoginEmail(String token) {
+        log.info("[getLoginEmail] token: {}", token);
         return decodeJwt(token).get(MEMBER_EMAIL).toString();
     }
 
     public static Long getExpiredTime(String token) {
         return decodeJwt(token).getExpiration().getTime();
     }
-
 
     public static boolean isExpired(String token) {
         Date expiredDate = decodeJwt(token).getExpiration();

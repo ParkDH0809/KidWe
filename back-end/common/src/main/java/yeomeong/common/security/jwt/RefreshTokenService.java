@@ -1,40 +1,35 @@
 package yeomeong.common.security.jwt;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class RefreshTokenService {
 
+    @Value("${jwt.token.refresh-expired-time}")
+    private long refreshExpiredTime;
     private final RefreshTokenRepository refreshTokenRepository;
 
     public RefreshTokenService(RefreshTokenRepository refreshTokenRepository) {
         this.refreshTokenRepository = refreshTokenRepository;
     }
 
-    public void addRefreshToken(RefreshToken refreshToken) {
-        refreshTokenRepository.save(refreshToken);
+    public void addRefreshToken(String email, String refreshToken) {
+        refreshTokenRepository.save(email, refreshToken, refreshExpiredTime);
     }
 
-    public boolean findRefreshToken(String refreshToken) {
-        if(!refreshTokenRepository.existsByRefreshToken(refreshToken)) {
-            System.out.println("refreshToken not found");
+    public boolean isCorrectToken(String refreshToken) {
+        if(refreshTokenRepository.findByEmail(JwtUtil.getLoginEmail(JwtUtil.removeBearerPrefix(refreshToken))) == null) {
+            log.info("[Request - new Refresh Token] Refresh token과 email 정보가 일치하지 않음");
             return false;
         }
-
-        if(!JwtUtil.getLoginEmail(JwtUtil.removeBearerPrefix(refreshToken)).equals(getMemberEmail(refreshToken))) {
-            System.out.println("refreshToken not found");
-            return false;
-        }
-
         return true;
     }
 
-    public String getMemberEmail(String refreshToken) {
-        return refreshTokenRepository.findByRefreshToken(refreshToken).getMemberEmail();
-    }
-
-    public String createAccessToken(String email) {
-        return JwtUtil.createAccessToken(email);
+    public String createAccessToken(String token) {
+        return JwtUtil.createAccessToken(JwtUtil.getLoginEmail(JwtUtil.removeBearerPrefix(token)));
     }
 
 }
