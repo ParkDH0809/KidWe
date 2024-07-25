@@ -2,13 +2,13 @@ package yeomeong.common.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import yeomeong.common.repository.mongo.MongoTeacherMemoRepository;
+import yeomeong.common.repository.mongo.MongoTeacherTagRepository;
 
 @Service
 public class MongoTeacherTagService {
 
     @Autowired
-    private MongoTeacherMemoRepository mongoTeacherMemoRepository;
+    private MongoTeacherTagRepository mongoTeacherMemoRepository;
 
     // 선생님별 태그 생성하기
 

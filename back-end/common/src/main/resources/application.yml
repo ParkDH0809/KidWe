@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/yellowhat
+    url: jdbc:mysql://i11a808.p.ssafy.io:3306/yellowhat
     username: root
     password: ssafy
     driver-class-name: com.mysql.cj.jdbc.Driver

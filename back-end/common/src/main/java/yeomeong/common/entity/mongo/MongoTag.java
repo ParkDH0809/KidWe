@@ -4,30 +4,17 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Getter;
 import lombok.Setter;
 
-@Document("tag")
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 
+@Document("tag")
 public class MongoTag {
     private String id;
-
-    private Integer createdYear;
-    private Integer createdMonth;
-    private Integer createdDay;
-    private Integer createdHour;
-    private Integer createdMinute;
-    private Integer createdSecond;
-
-    private Integer updatedYear;
-    private Integer updatedMonth;
-    private Integer updatedDay;
-    private Integer updatedHour;
-    private Integer updatedMinute;
-    private Integer updatedSecond;
-
+    private LocalDateTime createdTime;
+    private LocalDateTime updatedTime;
     private String content;
-
     private wtype morpheme;
-
     private Long count;
 }
