@@ -27,9 +27,14 @@ public class MemberController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<RefreshResponseDto> refresh(@RequestHeader("Authorization") String refreshToken) {
+    public ResponseEntity<?> refresh(@RequestHeader("Authorization") String refreshToken) {
         if (jwtService.isCorrectToken(refreshToken)) {
-            return ResponseEntity.ok(RefreshResponseDto.builder().accessToken(JwtUtil.createAccessToken(refreshToken)).build());
+            return ResponseEntity.ok(
+                RefreshResponseDto
+                    .builder()
+                    .accessToken(JwtUtil.createAccessToken(JwtUtil.getLoginEmail(refreshToken)))
+                    .build()
+            );
         }
         return null;
     }

@@ -24,6 +24,10 @@ public class JwtService {
         return refreshTokenRepository.findByKey(JwtUtil.getLoginEmail(refreshToken)) != null;
     }
 
+    public boolean isRefreshToken(String refreshToken) {
+        return refreshTokenRepository.findByKey(JwtUtil.getLoginEmail(refreshToken)).equals(refreshToken);
+    }
+
     public boolean isLogoutAccessToken(String accessToken) {
         return refreshTokenRepository.hasKey(accessToken);
     }
