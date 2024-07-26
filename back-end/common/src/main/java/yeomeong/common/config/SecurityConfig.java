@@ -15,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import yeomeong.common.security.*;
+import yeomeong.common.security.jwt.JwtService;
 import yeomeong.common.service.MemberService;
 
 @Configuration
@@ -24,32 +25,46 @@ public class SecurityConfig {
 
     private final ObjectMapper objectMapper;
     private final UserDetailsServiceImpl userDetailsService;
+    private final AuthenticationProviderImpl authenticationProvider;
     private final LoginSuccessHandler loginSuccessHandler;
     private final LoginFailureHandler loginFailureHandler;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, MemberService memberService) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, MemberService memberService, JwtService jwtService) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        http
                 .formLogin(config -> config
-                        .successHandler(loginSuccessHandler))
+                        .successHandler(loginSuccessHandler));
+
+        http
                 .authorizeHttpRequests(
                         authorize -> authorize
-                                .requestMatchers(HttpMethod.POST, "/login", "/join", "/").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/login", "/join").permitAll()
                                 .anyRequest().authenticated()
-                )
-                .addFilterBefore(new JwtAuthenticationFilter(memberService), UsernamePasswordAuthenticationFilter.class)
+                );
+
+        http
+                .addFilterBefore(new JwtAuthenticationFilter(memberService, jwtService), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jsonUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        http
+                .logout((logout) -> logout
+                        .logoutSuccessUrl("/logoutSuccess")
+                        .permitAll()
+                );
 
         return http.build();
     }
 
     @Bean
     public JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordAuthenticationFilter() {
-        JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordAuthenticationFilter = new JsonUsernamePasswordAuthenticationFilter(objectMapper, loginSuccessHandler, loginFailureHandler);
+        JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordAuthenticationFilter
+                = new JsonUsernamePasswordAuthenticationFilter(objectMapper, loginSuccessHandler, loginFailureHandler, authenticationProvider);
         jsonUsernamePasswordAuthenticationFilter.setAuthenticationManager(authenticationManager());
         return jsonUsernamePasswordAuthenticationFilter;
     }

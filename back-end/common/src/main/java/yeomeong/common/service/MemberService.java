@@ -1,6 +1,7 @@
 package yeomeong.common.service;
 
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import yeomeong.common.repository.jpa.MemberRepository;
 
 @Service
 @Transactional
+@Slf4j
 public class MemberService {
 
     @Autowired
@@ -35,6 +37,7 @@ public class MemberService {
     }
 
     public Member getMemberByEmail(String email) {
+        log.debug("[Member Service] email {}", email);
         return memberRepository.findByEmail(email);
     }
 

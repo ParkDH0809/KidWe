@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,18 +27,16 @@ public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthentica
             new AntPathRequestMatcher(DEFAULT_LOGIN_REQUEST_URL, HTTP_METHOD);
 
     private final ObjectMapper objectMapper;
-
-    @Autowired
-    private AuthenticationProviderImpl authenticationProvider;
+    private final AuthenticationProviderImpl authenticationProvider;
 
     public JsonUsernamePasswordAuthenticationFilter(ObjectMapper objectMapper,
                                                     AuthenticationSuccessHandler authenticationSuccessHandler,
-                                                    AuthenticationFailureHandler authenticationFailureHandler
+                                                    AuthenticationFailureHandler authenticationFailureHandler,
+                                                    AuthenticationProviderImpl authenticationProvider
     ) {
-
         super(DEFAULT_LOGIN_PATH_REQUEST_MATCHER);
-
         this.objectMapper = objectMapper;
+        this.authenticationProvider = authenticationProvider;
         setAuthenticationSuccessHandler(authenticationSuccessHandler);
         setAuthenticationFailureHandler(authenticationFailureHandler);
     }

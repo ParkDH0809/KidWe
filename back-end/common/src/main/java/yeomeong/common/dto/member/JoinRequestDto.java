@@ -28,4 +28,5 @@ public class JoinRequestDto {
                 .role(rtype.valueOf(joinRequestDto.getRole()))
                 .build();
     }
+
 }

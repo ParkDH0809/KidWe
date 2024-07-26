@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import yeomeong.common.entity.jpa.member.Member;
+import yeomeong.common.security.jwt.JwtService;
 import yeomeong.common.security.jwt.JwtUtil;
 import yeomeong.common.service.MemberService;
 
@@ -26,32 +27,51 @@ import java.util.List;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final MemberService memberService;
+    private final JwtService jwtService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        log.info("[JWT filter start]");
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+        FilterChain filterChain) throws ServletException, IOException {
+        log.debug("[JwtAuthenticationFilter start]");
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if(authorizationHeader == null) {
+        if (authorizationHeader == null) {
+            log.debug("[JwtAuthenticationFilter] Authorization header is null");
             filterChain.doFilter(request, response);
             return;
         }
 
-        if(!authorizationHeader.startsWith("Bearer ")) {
+        if (!authorizationHeader.startsWith("Bearer ")) {
+            log.debug("[JwtAuthenticationFilter] Authorization header is not starting with Bearer");
             filterChain.doFilter(request, response);
             return;
         }
 
-        String token = JwtUtil.removeBearerPrefix(authorizationHeader);
-        if(JwtUtil.isExpired(token)) {
+        if(jwtService.isRefreshToken(authorizationHeader) && !request.getRequestURI().equals("/refresh")) {
+            log.debug("[JwtAuthenticationFilter] This token is refresh token");
             filterChain.doFilter(request, response);
             return;
         }
 
-        Member loginMember = memberService.getMemberByEmail(JwtUtil.getLoginEmail(token));
+        if (jwtService.isLogoutAccessToken(authorizationHeader)) {
+            log.debug("[JwtAuthenticationFilter] Logout access token");
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        if (JwtUtil.isExpired(authorizationHeader)) {
+            log.debug("[JwtAuthenticationFilter] Token is expired");
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        log.debug("[JwtAuthenticationFilter] Token is valid");
+        Member loginMember = memberService.getMemberByEmail(
+            JwtUtil.getLoginEmail(authorizationHeader));
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                loginMember.getEmail(), loginMember.getPassword(), List.of(new SimpleGrantedAuthority(loginMember.getRole().toString())));
+            loginMember.getEmail(), loginMember.getPassword(),
+            List.of(new SimpleGrantedAuthority(loginMember.getRole().toString())));
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
