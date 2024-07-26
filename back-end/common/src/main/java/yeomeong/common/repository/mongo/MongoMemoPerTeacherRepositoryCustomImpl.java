@@ -2,9 +2,8 @@ package yeomeong.common.repository.mongo;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
-import yeomeong.common.entity.jpa.member.Kid;
 import yeomeong.common.entity.mongo.MongoMemo;
 import yeomeong.common.entity.mongo.MongoMemoPerTeacher;
 
@@ -13,7 +12,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class MongoMemoPerTeacherRepositoryImpl{
+public class MongoMemoPerTeacherRepositoryCustomImpl implements MongoMemoPerTeacherRepositoryCustom {
     @Autowired
     private MongoMemoPerTeacherRepository mongoMemoPerTeacherRepository;
 
