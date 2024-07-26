@@ -2,6 +2,7 @@ package yeomeong.common.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import yeomeong.common.dto.post.announcement.AnnouncementCreateDto;
 import yeomeong.common.dto.post.announcement.AnnouncementDetailDto;
 import yeomeong.common.dto.post.announcement.AnnouncementListDto;
@@ -11,10 +12,12 @@ import yeomeong.common.entity.jpa.post.Announcement;
 import yeomeong.common.repository.jpa.AnnouncementRepository;
 import yeomeong.common.repository.jpa.MemberRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AnnouncementService {
 
     private final AnnouncementRepository announcementRepository;
@@ -24,6 +27,7 @@ public class AnnouncementService {
      * 유치원별 공지사항 생성하기 (원장님)
      * 반 별 공지사항 생성하기 (선생님)
      */
+    @Transactional
     public void createAnnouncementByKindergarten(Long memberId, AnnouncementCreateDto announcementCreateDto){
         Announcement announcement =new Announcement(announcementCreateDto.getPost(),
                 memberRepository.findOne(memberId));
@@ -35,16 +39,36 @@ public class AnnouncementService {
      * 반별 공지사항 조회하기
      * 공지사항 조회하기
      */
-
-     public void getAnnouncementList(Long memberId){
+     public List<AnnouncementListDto> getAnnouncementList(Long memberId){
          Member member = memberRepository.findOne(memberId);
 
-//         if(member.getRole() == rtype.DIRECTOR){
-//           return announcementRepository.getAnnouncementByDirector(member.getBan().getKindergarten().getId());
-//         } //원장님일 때 해당 유치원 공지사항 모두 가져오기
-//         else {
-//            return announcementRepository.getAnnouncementByParent(member.getBan().getId());
-//         } //선생님이나 학부모일 땐 해당 반 다 가져오기
+         List<AnnouncementListDto> announcementDtoList = new ArrayList<>();
+
+         if(member.getRole() == rtype.DIRECTOR){ //원장님일 때 해당 유치원 공지사항 모두 가져오기
+             List<AnnouncementListDto> announcementByAll = announcementRepository.getAnnouncementByAll(member.getBan().getKindergarten().getId());
+             List<AnnouncementListDto> announcementByAllBan = announcementRepository.getAnnouncementByAllBan(member.getBan().getKindergarten().getId());
+
+             announcementDtoList.addAll(announcementByAll);
+             announcementDtoList.addAll(announcementByAllBan);
+
+         }
+         else {
+             List<AnnouncementListDto> announcementByAll = announcementRepository.getAnnouncementByAll(member.getBan().getKindergarten().getId());
+             List<AnnouncementListDto> announcementByBan = announcementRepository.getAnnouncementByAllBan(member.getBan().getId());
+
+             announcementDtoList.addAll(announcementByAll);
+             announcementDtoList.addAll(announcementByBan);
+
+         } //선생님이나 학부모일 땐 해당 반 + 전체 공지 다 가져오기
+
+         for(AnnouncementListDto announcementOne : announcementDtoList){
+             if(announcementOne.getMemberBan() == null){
+                 announcementOne.setMemberBan("전체 공지");
+             }
+         }
+         announcementDtoList.sort((o1, o2) -> o2.getCreatedDate().compareTo(o1.getCreatedDate()));
+
+         return announcementDtoList;
      }
 
 
@@ -56,10 +80,15 @@ public class AnnouncementService {
          return  new AnnouncementDetailDto(
                  announcement.getMember().getId(),
                  announcement.getPost(),
+                 announcement.getVote(),
                  announcement.getCommentList());
+
 
     }
 
+
+    //공지사항 수정하기
+    @Transactional
     public void updateAnnouncement(Long announcementId, AnnouncementCreateDto announcementCreateDto) {
 
          Announcement announcement = announcementRepository.findById(announcementId)
@@ -68,4 +97,13 @@ public class AnnouncementService {
          announcement.setPost(announcementCreateDto.getPost());
          announcementRepository.save(announcement);
     }
+
+
+    //공지사항 삭제하기
+    @Transactional
+    public void deleteAnnouncement(Long announcementId) {
+         announcementRepository.deleteById(announcementId);
+    }
+
+
 }

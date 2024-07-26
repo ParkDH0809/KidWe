@@ -1,6 +1,7 @@
 package yeomeong.common.entity.jpa.member;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,6 +46,7 @@ public class Kid {
     @ManyToOne(fetch = FetchType.LAZY)
     private Bus bus;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "kid")
     private List<KidMember> kidMembers = new ArrayList<>();
 

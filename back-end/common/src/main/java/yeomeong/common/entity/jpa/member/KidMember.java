@@ -18,5 +18,5 @@ public class KidMember {
     private Kid kid;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member parent;
+    private Member member;
 }

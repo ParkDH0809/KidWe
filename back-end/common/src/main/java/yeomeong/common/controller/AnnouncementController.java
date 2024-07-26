@@ -6,10 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import yeomeong.common.dto.post.announcement.AnnouncementCreateDto;
-import yeomeong.common.dto.post.announcement.AnnouncementDetailDto;
-import yeomeong.common.dto.post.announcement.AnnouncementListDto;
+import yeomeong.common.dto.post.announcement.*;
 import yeomeong.common.service.AnnouncementService;
+import yeomeong.common.service.VoteService;
 
 import java.util.List;
 
@@ -20,6 +19,7 @@ import java.util.List;
 public class AnnouncementController {
 
     private final AnnouncementService announcementService;
+    private final VoteService voteService;
 
     //유치원 공지사항 생성하기
     @PostMapping("")
@@ -32,13 +32,13 @@ public class AnnouncementController {
     }
 
     //유치원 공지사항 조회하기 ( {선생님,학부모} , 원장님 따로 )
-//    @GetMapping("/list/{member_id}")
-//    public ResponseEntity<List<AnnouncementListDto>> getAnnouncementList(
-//            @PathVariable("member_id") Long memberId){
-//
-//        List<AnnouncementListDto> announcementListDtos = announcementService.getAnnouncementList(memberId);
-//        return ResponseEntity.ok(announcementListDtos);
-//    }
+    @GetMapping("/list/{member_id}")
+    public ResponseEntity<List<AnnouncementListDto>> getAnnouncementList(
+            @PathVariable("member_id") Long memberId){
+
+        List<AnnouncementListDto> announcementListDtos = announcementService.getAnnouncementList(memberId);
+        return ResponseEntity.ok(announcementListDtos);
+    }
 
 
     //유치원 공지사항 상세보기
@@ -61,5 +61,37 @@ public class AnnouncementController {
 
         return ResponseEntity.ok(announcementCreateDto);
     }
+
+    //유치원 공지사항 삭제하기
+    @DeleteMapping("/{announcement_id}")
+    public ResponseEntity<Void> deleteAnnouncement(
+            @PathVariable("announcement_id") Long announcementId){
+        announcementService.deleteAnnouncement(announcementId);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    //공지사항에 투표 생성하기
+    @PostMapping("/{announcement_id}/vote")
+    public ResponseEntity<VoteCreateDto> createVote(
+            @PathVariable ("announcement_id") Long announcement_id,
+            @RequestBody VoteCreateDto voteCreateDto){
+
+        voteService.createVote(announcement_id, voteCreateDto);
+
+        return ResponseEntity.ok().build();
+    }
+
+    //투표하기
+    @PostMapping("/{vote_id}")
+    public ResponseEntity<VoteResultDto> addVote(
+            @PathVariable("vote_id") Long voteId,
+             String voteItem){
+
+        VoteResultDto result = voteService.doVote(voteId, voteItem);
+
+        return ResponseEntity.ok(result);
+    }
+
 
 }

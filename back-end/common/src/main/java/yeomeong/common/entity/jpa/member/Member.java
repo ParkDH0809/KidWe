@@ -1,6 +1,7 @@
 package yeomeong.common.entity.jpa.member;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -36,6 +37,7 @@ public class Member {
     @ManyToOne(fetch = FetchType.LAZY)
     private Ban ban;
 
-    @OneToMany
+    @JsonIgnore
+    @OneToMany(mappedBy = "member")
     private List<KidMember> kidMember = new ArrayList<>();
 }

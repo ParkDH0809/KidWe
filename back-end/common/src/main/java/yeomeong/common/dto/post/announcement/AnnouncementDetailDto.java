@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import yeomeong.common.entity.jpa.post.Post;
+import yeomeong.common.entity.jpa.post.Vote;
 import yeomeong.common.entity.jpa.post.comment.AnnouncementComment;
 
 import java.util.List;
@@ -16,6 +17,8 @@ public class AnnouncementDetailDto {
     private Long writerId;
 
     private Post post;
+
+    private Vote vote;
 
     private List<AnnouncementComment> comment;
 
