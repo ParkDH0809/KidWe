@@ -20,11 +20,7 @@ public class JwtService {
         refreshTokenRepository.save(accessToken, LOGOUT, JwtUtil.getExpiredTime(accessToken));
     }
 
-    public boolean isCorrectToken(String refreshToken) {
-        return refreshTokenRepository.findByKey(JwtUtil.getLoginEmail(refreshToken)) != null;
-    }
-
-    public boolean isRefreshToken(String refreshToken) {
+    public boolean isCorrectRefreshToken(String refreshToken) {
         return refreshTokenRepository.findByKey(JwtUtil.getLoginEmail(refreshToken)).equals(refreshToken);
     }
 
