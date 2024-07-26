@@ -12,10 +12,6 @@ spring:
       hibernate:
         format_sql: true
 
-  data:
-    mongodb:
-      uri: mongodb://i11a808.p.ssafy.io:27017/yellowhat
-
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.orm.jdbc.bind: trace
