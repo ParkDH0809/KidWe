@@ -36,7 +36,7 @@ public class MemoRepositoryTest {
     @Test
     public void testFindByTeacherIdAndUpdatedTimeBetweenDates() {
         LocalDate date = LocalDate.now();
-        List<Memo> memos = memoRepository.findByTeacherIdAndUpdatedTimeBetweenDates(1L, date);
+        List<Memo> memos = memoRepository.findByTeacherIdAndDate(1L, date);
 
         assertThat(memos).hasSize(2);
         assertThat(memos.get(0).getTeacher_id()).isEqualTo(1L);
@@ -46,7 +46,7 @@ public class MemoRepositoryTest {
     public void testFindByTeacherIdAndUpdatedTimeBetweenDatesAndKidId() {
         LocalDate date = LocalDate.now();
 
-        List<Memo> memos = memoRepository.findByTeacherIdAndUpdatedTimeBetweenDatesAndKidId(1L, date, 1L);
+        List<Memo> memos = memoRepository.findByTeacherIdAndDateAndKidId(1L, date, 1L);
 
         assertThat(memos).hasSize(1);
         assertThat(memos.get(0).getKids()).contains(1L);
