@@ -1,4 +1,4 @@
-package com.common.yeomeon.mongoback;
+package yeomeong.common;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
