@@ -1,15 +1,17 @@
 package yeomeong.common.entity.mongo;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-@Document(collection = "memo")
+@RequiredArgsConstructor
 public class MongoMemo {
     @Field("memo_id") @Indexed(unique = true)
     private String id;
@@ -21,24 +23,20 @@ public class MongoMemo {
     private Boolean isDeleted;
 
     private String lesson;
-    private Set<Long> kids;
-    private Set<MongoTag> tags;
+    private List<Long> kids;
+    private List<MongoTag> tags;
     private String content;
-
-    public MongoMemo() {
-
-    }
 
     public MongoMemo(String id){
         this.id = id;
         this.createdTime = LocalDateTime.now();
         this.updatedTime = createdTime;
-        this.kids = new HashSet<Long>();
-        this.tags = new HashSet<MongoTag>();
+        this.kids = new LinkedList<Long>();
+        this.tags = new LinkedList<MongoTag>();
         this.content = "";
     }
 
-    public MongoMemo(String id, LocalDateTime updatedTime, String lesson, Set<Long> kids, Set<MongoTag> tags, String content){
+    public MongoMemo(String id, LocalDateTime updatedTime, String lesson, List<Long> kids, List<MongoTag> tags, String content){
         this.id = id;
         this.createdTime = LocalDateTime.now();
         this.updatedTime = updatedTime;
@@ -83,7 +81,7 @@ public class MongoMemo {
     public void setKids(Set<Long> kidIds) {
         this.kids.addAll(kidIds);
     }
-    public Set<Long> getKids(){
+    public List<Long> getKids(){
         return this.kids;
     }
 
@@ -93,7 +91,7 @@ public class MongoMemo {
     public void setTags(String teacherId, Set<MongoTag> tags) {
         this.tags.addAll(tags);
     }
-    public Set<MongoTag> getTags(){
+    public List<MongoTag> getTags(){
         return this.tags;
     }
 
@@ -102,6 +100,10 @@ public class MongoMemo {
     }
     public String getContent(){
         return this.content;
+    }
+
+    public LocalDate getDate(){
+        return this.getUpdatedTime().toLocalDate();
     }
 
     public boolean isContainKid(Long kidId){

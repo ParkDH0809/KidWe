@@ -1,5 +1,6 @@
 package yeomeong.common.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import yeomeong.common.entity.mongo.MongoTag;
@@ -9,13 +10,9 @@ import yeomeong.common.repository.mongo.MongoTagPerTeacherRepository;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class MongoTagPerTeacherService {
     private final MongoTagPerTeacherRepository mongoTagPerTeacherRepository;
-
-    @Autowired
-    public MongoTagPerTeacherService(MongoTagPerTeacherRepository mongoTagPerTeacherRepository) {
-        this.mongoTagPerTeacherRepository = mongoTagPerTeacherRepository;
-    }
 
     // 선생님별 태그 업데이트하기
     public void updateTag(String teacherId, List<MongoTag> candTags) {

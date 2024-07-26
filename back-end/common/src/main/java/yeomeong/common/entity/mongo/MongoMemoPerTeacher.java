@@ -1,5 +1,6 @@
 package yeomeong.common.entity.mongo;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import yeomeong.common.entity.jpa.member.Kid;
@@ -7,73 +8,44 @@ import yeomeong.common.entity.jpa.member.Kid;
 import java.time.LocalDate;
 import java.util.*;
 
+@RequiredArgsConstructor
 @Document(collection = "memoperteacher")
 public class MongoMemoPerTeacher {
-    @Id
     private String id;
-    private List<MongoMemoPerDate> memos = new ArrayList<MongoMemoPerDate>();
-
-    public MongoMemoPerTeacher() {
-
-    }
+    private Map<LocalDate, List<MongoMemo>> memos = new HashMap<>();
 
     public MongoMemoPerTeacher(String teacherId) {
         this.id = teacherId;
-        this.memos = new ArrayList<MongoMemoPerDate>();
-    }
-
-    public MongoMemoPerTeacher(String teacherId, MongoMemoPerDate mongoMemoPerDate) {
-        this.id = teacherId;
-        this.memos = new ArrayList<MongoMemoPerDate>();
-        memos.add(mongoMemoPerDate);
-    }
-
-    public void setId(String id) {
-        this.id = id;
+        this.memos = new HashMap<LocalDate, List<MongoMemo>>();
     }
 
     public String getId() {
         return id;
     }
 
-    private MongoMemoPerDate fineMemoPerDate(LocalDate date) {
-        for(MongoMemoPerDate memo : memos) {
-            if(memo.getDate().equals(date)) {
-                return memo;
-            }
+    public void setMemo(MongoMemo mongoMemo) {
+
+    }
+
+    public List<MongoMemo> getMemos(LocalDate date) {
+        if(!memos.containsKey(date)) return null;
+        return memos.get(date);
+    }
+
+    public MongoMemo getMemo(LocalDate date, String id) {
+        if(!memos.containsKey(date)) return null;
+        for(MongoMemo targetMemo : memos.get(date)) {
+            if(targetMemo.getId().equals(id)) return targetMemo;
         }
         return null;
     }
 
-    public void setMemos(MongoMemoPerDate mongoMemoPerDate) {
-        memos.add(mongoMemoPerDate);
-    }
+    public List<MongoMemo> getMemosPerDateAndKid(LocalDate date, Long kid) {
+        if(!memos.containsKey(date)) return null;
 
-    public List<MongoMemoPerDate> getMemos() {
-        return memos;
-    };
-
-    public void setMemoPerDate(LocalDate date, MongoMemo mongoMemo) {
-        MongoMemoPerDate memosPerDate = fineMemoPerDate(date);
-        memosPerDate.setMemo(mongoMemo);
-    }
-
-    public void setMemosPerDate(LocalDate date, Set<MongoMemo> mongoMemos) {
-
-        MongoMemoPerDate memosPerDate = fineMemoPerDate(date);
-        memosPerDate.setMemos(mongoMemos);
-    }
-
-    public MongoMemoPerDate getMemosPerDate(LocalDate date){
-        return fineMemoPerDate(date);
-    }
-
-    public Set<MongoMemo> getMemosPerDateAndKids(LocalDate date, Kid kids) {
-        Set<MongoMemo> memosPerDateAndKids = new HashSet<MongoMemo>();
-
-        MongoMemoPerDate memosPerDate = fineMemoPerDate(date);
-        for(MongoMemo memo : memosPerDate.getMemos()){
-            if(memo.getKids().contains(kids)){
+        List<MongoMemo> memosPerDateAndKids = new LinkedList<MongoMemo>();
+        for(MongoMemo memo : memos.get(date)){
+            if(memo.getKids().contains(kid)){
                 memosPerDateAndKids.add(memo);
             }
         }
