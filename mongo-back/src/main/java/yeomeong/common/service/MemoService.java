@@ -18,17 +18,16 @@ public class MemoService {
     // 메모 생성하기
     public Memo createMemo(Memo memo) {
         memo.setCreatedTime(LocalDateTime.now());
-        memo.setUpdatedTime(LocalDateTime.now());
         return memoRepository.save(memo);
     }
 
     // 날짜별 메모 조회하기
-    public List<Memo> getMemosByDateRange(Long teacherId, LocalDate date) {
+    public List<Memo> getMemosByTeacherIdAndDate(Long teacherId, LocalDate date) {
         return memoRepository.findByTeacherIdAndDate(teacherId, date);
     }
 
     // 날짜별 아이별 메모 조회하기
-    public List<Memo> getMemosByTeacherIdAndDateRangeAndKidIds(Long teacherId, LocalDate date, Long kidId) {
+    public List<Memo> getMemosByTeacherIdAndDateAndKidId(Long teacherId, LocalDate date, Long kidId) {
         return memoRepository.findByTeacherIdAndDateAndKidId(teacherId, date, kidId);
     }
 
@@ -51,6 +50,13 @@ public class MemoService {
 
     // 메모 삭제하기
     public void deleteMemo(String id) {
-        memoRepository.deleteById(id);
+        Optional<Memo> optionalMemo = memoRepository.findById(id);
+        if (optionalMemo.isPresent()) {
+            Memo memo = optionalMemo.get();
+            memo.setIsDeleted(true);
+            memoRepository.save(memo);
+        } else {
+            throw new RuntimeException("Memo not found with id " + id);
+        }
     }
 }
