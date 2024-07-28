@@ -29,8 +29,23 @@ public class Comment {
     private LocalDateTime createdDateTime;
 
     public Comment(String content, Long writerId) {
-        this.content = content;
         this.writerId = writerId;
+        this.content = content;
         this.createdDateTime = LocalDateTime.now();
+        this.group = 0;
+        this.depth = false;
+        this.isDeleted = false;
+    }
+
+    public Comment(Long commentParentId ,Long writerId, String content ){
+
+        this.writerId = writerId;
+        this.content = content;
+        this.createdDateTime = LocalDateTime.now();
+
+        this.depth = true;
+        this.group += 1;
+
+
     }
 }
