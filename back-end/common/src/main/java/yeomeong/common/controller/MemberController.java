@@ -2,6 +2,7 @@ package yeomeong.common.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import yeomeong.common.dto.member.JoinRequestDto;
@@ -21,14 +22,14 @@ public class MemberController {
     JwtService jwtService;
 
     @PostMapping("/join")
-    public ResponseEntity<String> join(@RequestBody JoinRequestDto joinRequestDto) {
+    public ResponseEntity<Void> join(@RequestBody JoinRequestDto joinRequestDto) {
         memberService.joinMember(joinRequestDto);
-        return ResponseEntity.ok("회원가입 완료");
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PostMapping("/refresh")
     public ResponseEntity<?> refresh(@RequestHeader("Authorization") String refreshToken) {
-        if (jwtService.isCorrectToken(refreshToken)) {
+        if (jwtService.isTokenStored(refreshToken)) {
             return ResponseEntity.ok(
                 RefreshResponseDto
                     .builder()
@@ -45,14 +46,11 @@ public class MemberController {
     }
 
     @GetMapping("/logoutSuccess")
-    public ResponseEntity<String> logout(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<Void> logout(@RequestHeader("Authorization") String token) {
         log.info("[LOGOUT] {}", token);
-        if (!jwtService.isCorrectToken(token)) {
-            return null;
-        }
         jwtService.saveLogoutAccessToken(token);
         jwtService.deleteRefreshToken(JwtUtil.getLoginEmail(token));
-        return ResponseEntity.ok("logout success");
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }

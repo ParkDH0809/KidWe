@@ -1,5 +1,6 @@
 package yeomeong.common.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -7,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +16,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import yeomeong.common.entity.jpa.member.Member;
+import yeomeong.common.exception.CustomException;
+import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.security.jwt.JwtService;
 import yeomeong.common.security.jwt.JwtUtil;
 import yeomeong.common.service.MemberService;
@@ -22,7 +26,6 @@ import java.io.IOException;
 import java.util.List;
 
 @Slf4j
-@Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -47,8 +50,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        if(jwtService.isRefreshToken(authorizationHeader) && !request.getRequestURI().equals("/refresh")) {
+        if(jwtService.isTokenStored(authorizationHeader) && !request.getRequestURI().equals("/refresh")) {
             log.debug("[JwtAuthenticationFilter] This token is refresh token");
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        if(!jwtService.isTokenStored(authorizationHeader) && request.getRequestURI().equals("/refresh")) {
+            log.debug("[JwtAuthenticationFilter] This token is access token");
             filterChain.doFilter(request, response);
             return;
         }

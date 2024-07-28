@@ -46,7 +46,7 @@ public class JwtUtil {
 
     public static String createAccessToken(String email){
         log.debug("[jwtUtil - createAccessToken] email: {}", email);
-        return JTW_PREFIX + Jwts.builder()
+        return Jwts.builder()
                 .issuer(ISSUER)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + ACCESS_EXPIRED_TIME))
@@ -57,7 +57,7 @@ public class JwtUtil {
 
     public static String createRefreshToken(String email){
         log.debug("[jwtUtil - createRefreshToken] email: {}", email);
-        return JTW_PREFIX + Jwts.builder()
+        return Jwts.builder()
                 .issuer(ISSUER)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + REFRESH_EXPIRED_TIME))
@@ -67,7 +67,6 @@ public class JwtUtil {
     }
 
     public static String getLoginEmail(String token) {
-        log.info("[jwtUtil - getLoginEmail] token: {}", token);
          return isStartWithJwtPrefix(token)
                 ? decodeJwt(removeJwtPrefix(token)).get(MEMBER_EMAIL).toString()
                 : decodeJwt(token).get(MEMBER_EMAIL).toString();
@@ -94,7 +93,6 @@ public class JwtUtil {
     }
 
     public static String removeJwtPrefix(String token) {
-        log.debug("[jwtUtil - removeJwtPrefix] token: {}", token);
         return token.split(" ")[1];
     }
 
