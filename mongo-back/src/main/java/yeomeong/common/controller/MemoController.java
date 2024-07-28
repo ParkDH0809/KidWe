@@ -1,7 +1,6 @@
 package yeomeong.common.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import yeomeong.common.document.Memo;
 import yeomeong.common.service.MemoService;
@@ -15,6 +14,7 @@ public class MemoController {
     private final MemoService memoService;
 
     @PostMapping("memo")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody
     public void createMemo(@RequestBody Memo memo) {
         memoService.createMemo(memo);
     }
