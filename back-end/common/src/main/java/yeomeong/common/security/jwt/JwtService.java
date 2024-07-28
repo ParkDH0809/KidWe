@@ -20,8 +20,8 @@ public class JwtService {
         refreshTokenRepository.save(accessToken, LOGOUT, JwtUtil.getExpiredTime(accessToken));
     }
 
-    public boolean isCorrectRefreshToken(String refreshToken) {
-        return refreshTokenRepository.findByKey(JwtUtil.getLoginEmail(refreshToken)).equals(refreshToken);
+    public boolean isTokenStored(String token) {
+        return refreshTokenRepository.findByKey(JwtUtil.getLoginEmail(token)).equals(JwtUtil.removeJwtPrefix(token));
     }
 
     public boolean isLogoutAccessToken(String accessToken) {
@@ -29,7 +29,7 @@ public class JwtService {
     }
 
     public void deleteRefreshToken(String email) {
-        refreshTokenRepository.deleteRefreshToken(email);
+        refreshTokenRepository.delete(email);
     }
 
 }

@@ -26,13 +26,12 @@ import java.io.IOException;
 import java.util.List;
 
 @Slf4j
-@Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final MemberService memberService;
     private final JwtService jwtService;
-    private final ObjectMapper objectMapper;
+//    private final ObjectMapper objectMapper;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -48,18 +47,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (!authorizationHeader.startsWith("Bearer ")) {
             log.debug("[JwtAuthenticationFilter] Authorization header is not starting with Bearer");
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
-            objectMapper.writeValue(response.getWriter(),
-                new CustomException(ErrorCode.INVALID_TOKEN));
+            filterChain.doFilter(request, response);
+            return;
         }
 
-        if(jwtService.isCorrectRefreshToken(authorizationHeader) && !request.getRequestURI().equals("/refresh")) {
+        if(jwtService.isTokenStored(authorizationHeader) && !request.getRequestURI().equals("/refresh")) {
             log.debug("[JwtAuthenticationFilter] This token is refresh token");
             filterChain.doFilter(request, response);
             return;
         }
 
-        if(!jwtService.isCorrectRefreshToken(authorizationHeader) && request.getRequestURI().equals("/refresh")) {
+        if(!jwtService.isTokenStored(authorizationHeader) && request.getRequestURI().equals("/refresh")) {
             log.debug("[JwtAuthenticationFilter] This token is access token");
             filterChain.doFilter(request, response);
             return;
