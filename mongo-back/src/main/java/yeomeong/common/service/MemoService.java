@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import yeomeong.common.document.Memo;
 import yeomeong.common.dto.MemoRequestDto;
+import yeomeong.common.dto.MemoResponseDto;
 import yeomeong.common.repository.MemoRepository;
 
 import java.time.LocalDate;
@@ -22,46 +23,55 @@ public class MemoService {
         return memoRepository.save(memoRequestDto.toDocument());
     }
 
+    public Memo getMemo(String id){
+        return memoRepository.findMemoById(id);
+    }
+
     // 날짜별 메모 조회하기
-    public List<Memo> getMemosByTeacherIdAndDate(Long teacherId, String date) {
-        System.out.println(teacherId);
-        System.out.println(date);
-        return memoRepository.findByTeacherIdAndDate(teacherId, date);
+    public List<MemoResponseDto> getMemosByTeacherIdAndDate(Long teacherId, String date) {
+        List<Memo> memos = memoRepository.findByTeacherIdAndDate(teacherId, date);
+        if(memos == null){
+            return null;
+        }
+
+        List<MemoResponseDto> memoResponseDtos = new ArrayList<>();
+        for(Memo memo : memos){
+            memoResponseDtos.add(new MemoResponseDto(memo));
+        }
+        return memoResponseDtos;
     }
 
     // 날짜별 아이별 메모 조회하기
-    public List<Memo> getMemosByTeacherIdAndDateAndKidId(Long teacherId, String date, Long kidId) {
-        return memoRepository.findByTeacherIdAndDateAndKidId(teacherId, date, kidId);
+    public List<MemoResponseDto> getMemosByTeacherIdAndDateAndKidId(Long teacherId, String date, Long kidId) {
+        List<Memo> memos = memoRepository.findByTeacherIdAndDateAndKidId(teacherId, date, kidId);
+        if(memos == null){
+            return null;
+        }
+
+        List<MemoResponseDto> memoResponseDtos = new ArrayList<>();
+        for(Memo memo : memos){
+            memoResponseDtos.add(new MemoResponseDto(memo));
+        }
+        return memoResponseDtos;
     }
 
     // 메모 수정하기
-    public Memo updateMemo(String id, Memo updatedMemo) {
-        Optional<Memo> optionalMemo = memoRepository.findById(id);
-        System.out.println(id);
-        if (optionalMemo.isPresent()) {
-            Memo memo = optionalMemo.get();
-            memo.setUpdatedTime(updatedMemo.getUpdatedTime());
-            memo.setIsDeleted(updatedMemo.getIsDeleted());
-            memo.setLesson(updatedMemo.getLesson());
-            memo.setKids(updatedMemo.getKids());
-            memo.setTags(updatedMemo.getTags());
-            memo.setContent(updatedMemo.getContent());
-            memo.setUpdatedTime(LocalDateTime.now());
-            return memoRepository.save(memo);
-        } else {
-            throw new RuntimeException("Memo not found with id " + id);
+    public MemoResponseDto updateMemo(String id, MemoRequestDto updatedMemo) {
+        Optional<Memo> memo = memoRepository.findById(id);
+        if(memo.isPresent()){
+            Memo existMemo = memo.get();
+            if(existMemo.getIsDeleted() == true) return null;
+            existMemo = updatedMemo.toDocument();
+            return new MemoResponseDto(memoRepository.save(existMemo));
         }
+
+        return null;
     }
 
     // 메모 삭제하기
     public void deleteMemo(String id) {
-        Optional<Memo> optionalMemo = memoRepository.findById(id);
-        if (optionalMemo.isPresent()) {
-            Memo memo = optionalMemo.get();
-            memo.setIsDeleted(true);
-            memoRepository.save(memo);
-        } else {
-            throw new RuntimeException("Memo not found with id " + id);
-        }
+        Memo memo = memoRepository.findMemoById(id);
+        memo.setIsDeleted(true);
+        memoRepository.save(memo);
     }
 }
