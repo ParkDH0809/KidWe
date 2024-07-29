@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class MedicationByKidDto {
 
-    private String kidID;
+    private String kidId;
 
 }
