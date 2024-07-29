@@ -37,20 +37,7 @@ public class MemberController {
                     .build()
             );
         }
-        return null;
-    }
-
-    @GetMapping("/")
-    public ResponseEntity<String> home() {
-        return ResponseEntity.ok("home");
-    }
-
-    @GetMapping("/logoutSuccess")
-    public ResponseEntity<Void> logout(@RequestHeader("Authorization") String token) {
-        log.info("[LOGOUT] {}", token);
-        jwtService.saveLogoutAccessToken(token);
-        jwtService.deleteRefreshToken(JwtUtil.getLoginEmail(token));
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
 }
