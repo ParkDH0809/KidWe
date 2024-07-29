@@ -3,12 +3,12 @@ spring:
     url: jdbc:mysql://i11a808.p.ssafy.io:3306/yellowhat
     username: root
     password: ssafy
-  data:
-    mongodb:
-      uri: mongodb://i11a808.p.ssafy.io:27017/yellowhat
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
-      hibernate:
-        ddl-auto: create-drop
+    hibernate:
+      ddl-auto: create-drop
+    properties:
       properties:
         hibernate:
           format_sql: true
