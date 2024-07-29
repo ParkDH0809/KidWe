@@ -1,4 +1,4 @@
 spring:
   data:
     mongodb:
-       uri: mongodb://i11a808.p.ssafy.io:27017/yellowhat
+       uri: mongodb://i11a808.p.ssafy.io:27017/kidwe

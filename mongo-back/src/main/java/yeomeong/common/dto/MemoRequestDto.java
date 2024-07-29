@@ -29,6 +29,8 @@ public class MemoRequestDto {
                 .teacherId(this.teacherId)
                 .createdTime(this.createdTime==null?LocalDateTime.now():this.createdTime)
                 .updatedTime(this.updatedTime==null?this.createdTime:this.updatedTime)
+                .date(this.updatedTime.toLocalDate().toString())
+                .isDeleted(this.isDeleted==null?false:this.isDeleted)
                 .lesson(this.lesson==null?"":this.lesson)
                 .kids(this.kids==null?new ArrayList<>():this.kids)
                 .tags(this.tags==null?new ArrayList<>():this.tags)

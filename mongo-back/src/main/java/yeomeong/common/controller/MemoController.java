@@ -1,9 +1,12 @@
 package yeomeong.common.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import yeomeong.common.document.Memo;
-import yeomeong.common.dto.MemoDto;
+import yeomeong.common.dto.MemoRequestDto;
 import yeomeong.common.service.MemoService;
 
 import java.time.LocalDate;
@@ -11,31 +14,40 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/memo")
+
 public class MemoController {
     private final MemoService memoService;
 
-    @PostMapping("memo")
-    public void createMemo(@RequestBody MemoDto memoDto) {
+    @PostMapping("/")
+    public void createMemo(@RequestBody MemoRequestDto memoDto) {
         memoService.createMemo(memoDto);
     }
 
-    @GetMapping("memo/{teacher_id}/{date}")
-    public List<Memo> getMemo(@PathVariable Long teacherId, @PathVariable LocalDate date) {
-        return memoService.getMemosByTeacherIdAndDate(teacherId, date);
+    @GetMapping("/{teacher_id}/{date}")
+    public ResponseEntity<List<Memo>> getMemo(@PathVariable("teacher_id") Long teacherId,
+                                              @PathVariable("date") String date) {
+        List<Memo> memos = memoService.getMemosByTeacherIdAndDate(teacherId, date);
+
+        if (memos.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(memos, HttpStatus.OK);
+        }
     }
 
-    @GetMapping("memo/{teacher_id}/{date}/{kid_id}")
-    public List<Memo> getMemoPerKid(@PathVariable Long teacherId, @PathVariable LocalDate date, @PathVariable Long kidId) {
+    @GetMapping("/{teacher_id}/{date}/{kid_id}")
+    public List<Memo> getMemoPerKid(@PathVariable("teacher_id") Long teacherId, @PathVariable("date") String date, @PathVariable("kid_id") Long kidId) {
         return memoService.getMemosByTeacherIdAndDateAndKidId(teacherId, date, kidId);
     }
 
-    @PutMapping("memo/{memo_id}")
-    public void updateMemo(@PathVariable String memoId, @RequestBody Memo memo) {
+    @PutMapping("/{memo_id}")
+    public void updateMemo(@PathVariable("memo_id") String memoId, @RequestBody Memo memo) {
         memoService.updateMemo(memoId, memo);
     }
 
-    @DeleteMapping("memo/{memo_id}")
-    public void deleteMemo(@PathVariable String memoId) {
+    @DeleteMapping("/{memo_id}")
+    public void deleteMemo(@PathVariable("memo_id") String memoId) {
         memoService.deleteMemo(memoId);
     }
 }
