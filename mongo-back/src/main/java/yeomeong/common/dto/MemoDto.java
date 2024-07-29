@@ -13,8 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemoDto {
-    private String id;
-    private Long teacher_id;
+    private Long teacherId;
 
     private LocalDateTime createdTime;;
     private LocalDateTime updatedTime;
