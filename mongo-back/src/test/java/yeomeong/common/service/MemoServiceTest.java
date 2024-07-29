@@ -47,7 +47,7 @@ class MemoServiceTest {
         List<Memo> memos = Arrays.asList(new Memo(), new Memo());
         when(memoRepository.findByTeacherIdAndDate(anyLong(), any(LocalDate.class))).thenReturn(memos);
 
-        List<Memo> result = memoService.getMemosByDateRange(teacherId, date);
+        List<Memo> result = memoService.getMemosByTeacherIdAndDate(teacherId, date);
 
         assertNotNull(result);
         assertEquals(2, result.size());
@@ -62,7 +62,7 @@ class MemoServiceTest {
         List<Memo> memos = Arrays.asList(new Memo(), new Memo());
         when(memoRepository.findByTeacherIdAndDateAndKidId(anyLong(), any(LocalDate.class), anyLong())).thenReturn(memos);
 
-        List<Memo> result = memoService.getMemosByTeacherIdAndDateRangeAndKidIds(teacherId, date, kidId);
+        List<Memo> result = memoService.getMemosByTeacherIdAndDateAndKidId(teacherId, date, kidId);
 
         assertNotNull(result);
         assertEquals(2, result.size());

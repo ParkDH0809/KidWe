@@ -3,6 +3,7 @@ package yeomeong.common.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import yeomeong.common.document.Memo;
+import yeomeong.common.dto.MemoDto;
 import yeomeong.common.service.MemoService;
 
 import java.time.LocalDate;
@@ -14,9 +15,8 @@ public class MemoController {
     private final MemoService memoService;
 
     @PostMapping("memo")
-    @io.swagger.v3.oas.annotations.parameters.RequestBody
-    public void createMemo(@RequestBody Memo memo) {
-        memoService.createMemo(memo);
+    public void createMemo(@RequestBody MemoDto memoDto) {
+        memoService.createMemo(memoDto);
     }
 
     @GetMapping("memo/{teacher_id}/{date}")

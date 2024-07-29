@@ -3,6 +3,7 @@ package yeomeong.common.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import yeomeong.common.document.Memo;
+import yeomeong.common.dto.MemoDto;
 import yeomeong.common.repository.MemoRepository;
 
 import java.time.LocalDate;
@@ -16,8 +17,17 @@ public class MemoService {
     private final MemoRepository memoRepository;
 
     // 메모 생성하기
-    public Memo createMemo(Memo memo) {
-        memo.setCreatedTime(LocalDateTime.now());
+    public Memo createMemo(MemoDto memoDto) {
+        Memo memo = new Memo();
+        memo.setId(memoDto.getId());
+        memo.setCreatedTime(memoDto.getCreatedTime()==null?LocalDateTime.now():memoDto.getCreatedTime());
+        memo.setUpdatedTime(memoDto.getUpdatedTime()==null?memo.getUpdatedTime():memoDto.getUpdatedTime());
+        memo.setIsDeleted(memoDto.getIsDeleted()==null?false:memoDto.getIsDeleted());
+        memo.setLesson(memoDto.getLesson());
+        memo.setKids(memoDto.getKids());
+        memo.setTags(memoDto.getTags());
+        memo.setContent(memoDto.getContent());
+
         return memoRepository.save(memo);
     }
 
