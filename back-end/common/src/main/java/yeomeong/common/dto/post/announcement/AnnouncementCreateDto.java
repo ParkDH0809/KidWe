@@ -3,7 +3,7 @@ package yeomeong.common.dto.post.announcement;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import yeomeong.common.entity.jpa.post.Post;
+import yeomeong.common.entity.post.Post;
 
 @Data
 @NoArgsConstructor

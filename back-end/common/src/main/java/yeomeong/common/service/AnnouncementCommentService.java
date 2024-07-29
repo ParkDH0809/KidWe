@@ -5,11 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import yeomeong.common.dto.post.announcement.AnnouncementCommentCreateDto;
 import yeomeong.common.dto.post.announcement.CommentChildDto;
-import yeomeong.common.entity.jpa.post.Announcement;
-import yeomeong.common.entity.jpa.post.comment.AnnouncementComment;
-import yeomeong.common.entity.jpa.post.comment.Comment;
-import yeomeong.common.repository.jpa.AnnouncementCommentRepository;
-import yeomeong.common.repository.jpa.AnnouncementRepository;
+import yeomeong.common.entity.post.Announcement;
+import yeomeong.common.entity.post.comment.AnnouncementComment;
+import yeomeong.common.entity.post.comment.Comment;
+import yeomeong.common.repository.AnnouncementCommentRepository;
+import yeomeong.common.repository.AnnouncementRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -54,7 +54,7 @@ public class AnnouncementCommentService {
         if(!announcementComment.getComment().isDepth()) //대댓글이 기존에 없는 친구라면
             announcementComment.getComment().setDepth(true);
 
-        announcementComment.getComment().setGroup(announcementComment.getComment().getGroup()+1); //대댓글 하나 추가 됨.
+        announcementComment.getComment().setCommentGroup(announcementComment.getComment().getCommentGroup()+1); //대댓글 하나 추가 됨.
 
         AnnouncementComment announcementCommentChild = new AnnouncementComment(childComment, announcementComment.getAnnouncement());
 

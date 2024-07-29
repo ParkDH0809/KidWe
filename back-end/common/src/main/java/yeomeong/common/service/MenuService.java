@@ -7,10 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 import yeomeong.common.dto.menu.request.MenuByDayRequestDto;
 import yeomeong.common.dto.menu.request.MenuCreateDto;
 import yeomeong.common.dto.menu.response.MenuByDayResponseDto;
-import yeomeong.common.entity.jpa.kindergarten.Kindergarten;
-import yeomeong.common.entity.jpa.kindergarten.Menu;
-import yeomeong.common.repository.jpa.KindergartenRepository;
-import yeomeong.common.repository.jpa.MenuRepository;
+import yeomeong.common.entity.kindergarten.Kindergarten;
+import yeomeong.common.entity.kindergarten.Menu;
+import yeomeong.common.repository.KindergartenRepository;
+import yeomeong.common.repository.MenuRepository;
 
 
 @Service
