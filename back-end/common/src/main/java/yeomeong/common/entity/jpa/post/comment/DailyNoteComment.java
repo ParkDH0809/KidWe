@@ -19,4 +19,5 @@ public class DailyNoteComment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private DailyNote dailyNotes;
+
 }

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import yeomeong.common.entity.jpa.kindergarten.Ban;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -23,8 +24,8 @@ public class Schedule {
 
     private String content;
 
-    private Date startDate;
+    private LocalDate startDate;
 
-    private Date endDate;
+    private LocalDate endDate;
 
 }

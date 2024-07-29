@@ -8,6 +8,9 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Time;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Getter
@@ -15,7 +18,9 @@ import java.util.Date;
 @Embeddable
 public class Post {
 
-    private Date createdDate;
+    private LocalDateTime createdDateTime;
+
+    private String title;
 
     private String content;
 
