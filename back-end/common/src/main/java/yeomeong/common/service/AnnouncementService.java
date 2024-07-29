@@ -1,0 +1,109 @@
+package yeomeong.common.service;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import yeomeong.common.dto.post.announcement.AnnouncementCreateDto;
+import yeomeong.common.dto.post.announcement.AnnouncementDetailDto;
+import yeomeong.common.dto.post.announcement.AnnouncementListDto;
+import yeomeong.common.entity.member.Member;
+import yeomeong.common.entity.member.rtype;
+import yeomeong.common.entity.post.Announcement;
+import yeomeong.common.repository.AnnouncementRepository;
+import yeomeong.common.repository.MemberRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class AnnouncementService {
+
+    private final AnnouncementRepository announcementRepository;
+    private final MemberService memberService;
+
+    /**
+     * 유치원별 공지사항 생성하기 (원장님)
+     * 반 별 공지사항 생성하기 (선생님)
+     */
+    @Transactional
+    public void createAnnouncementByKindergarten(Long memberId, AnnouncementCreateDto announcementCreateDto){
+        Announcement announcement =new Announcement(announcementCreateDto.getPost(),
+            memberService.getMemberById(memberId));
+
+        announcementRepository.save(announcement);
+    }
+
+     /** 유치원별 공지사항 조회하기
+     * 반별 공지사항 조회하기
+     * 공지사항 조회하기
+     */
+     public List<AnnouncementListDto> getAnnouncementList(Long memberId){
+         Member member = memberService.getMemberById(memberId);
+
+         List<AnnouncementListDto> announcementDtoList = new ArrayList<>();
+
+         if(member.getRole() == rtype.ROLE_DIRECTOR){ //원장님일 때 해당 유치원 공지사항 모두 가져오기
+             List<AnnouncementListDto> announcementByAll = announcementRepository.getAnnouncementByAll(member.getBan().getKindergarten().getId());
+             List<AnnouncementListDto> announcementByAllBan = announcementRepository.getAnnouncementByAllBan(member.getBan().getKindergarten().getId());
+
+             announcementDtoList.addAll(announcementByAll);
+             announcementDtoList.addAll(announcementByAllBan);
+
+         }
+         else {
+             List<AnnouncementListDto> announcementByAll = announcementRepository.getAnnouncementByAll(member.getBan().getKindergarten().getId());
+             List<AnnouncementListDto> announcementByBan = announcementRepository.getAnnouncementByAllBan(member.getBan().getId());
+
+             announcementDtoList.addAll(announcementByAll);
+             announcementDtoList.addAll(announcementByBan);
+
+         } //선생님이나 학부모일 땐 해당 반 + 전체 공지 다 가져오기
+
+         for(AnnouncementListDto announcementOne : announcementDtoList){
+             if(announcementOne.getMemberBan() == null){
+                 announcementOne.setMemberBan("전체 공지");
+             }
+         }
+         announcementDtoList.sort((o1, o2) -> o2.getCreatedDate().compareTo(o1.getCreatedDate()));
+
+         return announcementDtoList;
+     }
+
+
+    public AnnouncementDetailDto getAnnouncementDetail(Long announcementId) {
+
+         Announcement announcement = announcementRepository.findById(announcementId)
+                 .orElseThrow(() -> new RuntimeException("해당 공지사항을 찾을 수 없습니다."));
+
+         return  new AnnouncementDetailDto(
+                 announcement.getMember().getId(),
+                 announcement.getPost(),
+                 announcement.getVote(),
+                 announcement.getCommentList());
+
+
+    }
+
+
+    //공지사항 수정하기
+    @Transactional
+    public void updateAnnouncement(Long announcementId, AnnouncementCreateDto announcementCreateDto) {
+
+         Announcement announcement = announcementRepository.findById(announcementId)
+                 .orElseThrow(() -> new RuntimeException("해당 공지사항을 수정할 수 없습니다."));
+
+         announcement.setPost(announcementCreateDto.getPost());
+         announcementRepository.save(announcement);
+    }
+
+
+    //공지사항 삭제하기
+    @Transactional
+    public void deleteAnnouncement(Long announcementId) {
+         announcementRepository.deleteById(announcementId);
+    }
+
+
+}

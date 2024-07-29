@@ -1,6 +1,9 @@
 spring:
+  application:
+    name: kidwe
+
   datasource:
-    url: jdbc:mysql://localhost:3306/yellowhat
+    url: jdbc:mysql://i11a808.p.ssafy.io:3306/yellowhat
     username: root
     password: ssafy
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -9,12 +12,23 @@ spring:
     hibernate:
       ddl-auto: create-drop
     properties:
-      hibernate:
-        format_sql: true
+      properties:
+        hibernate:
+          format_sql: true
 
   data:
-    mongodb:
-      uri: mongodb://localhost:27017/yellowhat
+    redis:
+      host: i11a808.p.ssafy.io
+      port: 6379
+      password: ssafy
 
 logging.level:
-  org.hibernate.SQL: debug
+    org.hibernate.SQL: debug
+    org.hibernate.orm.jdbc.bind: trace
+
+jwt:
+  token:
+    header: Authorization
+    secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+    access-expired-time: 1800000 #30m
+    refresh-expired-time: 1209600000 #14d
