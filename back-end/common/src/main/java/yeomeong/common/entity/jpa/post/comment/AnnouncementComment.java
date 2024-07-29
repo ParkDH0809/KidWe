@@ -22,8 +22,12 @@ public class AnnouncementComment {
     @ManyToOne(fetch = FetchType.LAZY)
     private Announcement announcement;
 
+
+
     public AnnouncementComment(Comment comment, Announcement announcement) {
         this.comment= comment;
         this.announcement = announcement;
     }
+
+
 }
