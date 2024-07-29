@@ -26,12 +26,13 @@ public class  Announcement {
     @Embedded
     private Post post;
 
+    private boolean stored;
+
     @OneToOne(mappedBy = "announcement",fetch = FetchType.LAZY)
     private Vote vote;
 
     @OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL)
     private List<AnnouncementComment> commentList = new ArrayList<>(); // ??
-
 
     public Announcement(Post post, Member member) {
         this.post = post;

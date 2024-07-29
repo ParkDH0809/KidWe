@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import yeomeong.common.entity.jpa.post.Announcement;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Setter
 @Getter
@@ -16,18 +19,24 @@ public class AnnouncementComment {
     @Id @GeneratedValue
     private Long id;
 
-    @Embedded
-    private Comment comment;
+    private  Long memberId;
+
+    private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Announcement announcement;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private AnnouncementComment parentComment;
+
+    @OneToMany(mappedBy = "parentComment",cascade = CascadeType.ALL)
+    private List<AnnouncementComment> replies =new ArrayList<>();
 
 
-    public AnnouncementComment(Comment comment, Announcement announcement) {
-        this.comment= comment;
+    public AnnouncementComment(Long memberId, String content, Announcement announcement) {
+        this.memberId = memberId;
+        this.content = content;
         this.announcement = announcement;
     }
-
 
 }

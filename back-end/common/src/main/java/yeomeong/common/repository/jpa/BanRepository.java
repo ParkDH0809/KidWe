@@ -1,21 +1,10 @@
 package yeomeong.common.repository.jpa;
 
-import jakarta.persistence.EntityManager;
-import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import yeomeong.common.entity.jpa.kindergarten.Ban;
 
 @Repository
-@RequiredArgsConstructor
-public class BanRepository {
+public interface BanRepository  extends JpaRepository<Ban,Long> {
 
-    private final EntityManager em;
-
-    public void save(Ban ban){
-        em.persist(ban);
-    }
-
-    public Ban findOne(Long banId) {
-        return em.find(Ban.class,banId);
-    }
 }

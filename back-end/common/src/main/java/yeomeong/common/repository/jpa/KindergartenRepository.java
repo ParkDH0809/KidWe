@@ -12,8 +12,5 @@ import java.util.Optional;
 @Repository
 public interface KindergartenRepository extends JpaRepository<Kindergarten,Long> {
 
-    @Override
-    Optional<Kindergarten> findById(Long id);
-
 
 }

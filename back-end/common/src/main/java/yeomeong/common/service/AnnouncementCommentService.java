@@ -3,16 +3,17 @@ package yeomeong.common.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import yeomeong.common.dto.post.announcement.AnnouncementCommentCreateDto;
 import yeomeong.common.dto.post.announcement.CommentChildDto;
 import yeomeong.common.entity.jpa.post.Announcement;
 import yeomeong.common.entity.jpa.post.comment.AnnouncementComment;
-import yeomeong.common.entity.jpa.post.comment.Comment;
 import yeomeong.common.repository.jpa.AnnouncementCommentRepository;
 import yeomeong.common.repository.jpa.AnnouncementRepository;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AnnouncementCommentService {
 
     AnnouncementRepository announcementRepository;
@@ -29,14 +30,15 @@ public class AnnouncementCommentService {
         Announcement announcement = announcementRepository.findById(announcementId)
                 .orElseThrow(() -> new RuntimeException("해당 공지사항을 찾을 수 없습니다."));
 
-        Comment comment = new Comment(announcementCommentCreateDto.getContent(), memberId);
-        AnnouncementComment announcementComment =new AnnouncementComment(comment,announcement);
-
+        AnnouncementComment announcementComment =new AnnouncementComment(memberId,announcementCommentCreateDto.getContent(),announcement);
 
         announcement.getCommentList().add(announcementComment);
+
+        announcementCommentRepository.save(announcementComment);
+
     }
 
-    //공지사항 댓글 삭제하기
+    //공지사항 (대)댓글 삭제하기
     public void deleteComment(Long announcementCommentId) {
         AnnouncementComment comment = announcementCommentRepository.findById(announcementCommentId)
                 .orElseThrow(() -> new RuntimeException("해당 공지사항 댓글을 찾을 수 없습니다"));
@@ -46,20 +48,16 @@ public class AnnouncementCommentService {
 
     //공지사항 대댓글 작성하기
     public void createCommentChildren(Long announcementCommentParentId, Long memberId, CommentChildDto commentChildDto){
-        AnnouncementComment announcementComment = announcementCommentRepository.findById(announcementCommentParentId)
+        AnnouncementComment parentComment = announcementCommentRepository.findById(announcementCommentParentId)
                 .orElseThrow(() -> new RuntimeException("해당 부모 댓글을 찾을 수 없습니다."));
 
-        Comment childComment = new Comment(commentChildDto.getContent(), memberId); //새롭게 만들어진 comment
+        AnnouncementComment childComment = new AnnouncementComment(memberId,commentChildDto.getContent(),parentComment.getAnnouncement());
+        childComment.setParentComment(parentComment);
 
-        if(!announcementComment.getComment().isDepth()) //대댓글이 기존에 없는 친구라면
-            announcementComment.getComment().setDepth(true);
+         //새롭게 만들어진 comment
+        parentComment.getReplies().add(childComment);
 
-        announcementComment.getComment().setGroup(announcementComment.getComment().getGroup()+1); //대댓글 하나 추가 됨.
-
-        AnnouncementComment announcementCommentChild = new AnnouncementComment(childComment, announcementComment.getAnnouncement());
-
+        announcementCommentRepository.save(childComment);
     }
 
-
-    //공지사항 대댓글 삭제하기
 }

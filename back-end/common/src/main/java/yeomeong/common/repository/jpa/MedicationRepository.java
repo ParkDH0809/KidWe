@@ -32,7 +32,8 @@ public class MedicationRepository {
      *  학부모랑 선생님에 따라 다르게 쿼리 구현
      */
     public List<MedicationByKidAndMonthDto> medicationByKidAndMonthDtoList(Long banId, int year, int month){
-        Ban ban = banRepository.findOne(banId);
+        Ban ban = banRepository.findById(banId)
+                .orElseThrow(() -> new RuntimeException("해당 반을 찾을 수 없습니다"));
 
         //한 유치원의 모든 반에 대한 투약의뢰서
         return em.createQuery("select m.kid.name, " +

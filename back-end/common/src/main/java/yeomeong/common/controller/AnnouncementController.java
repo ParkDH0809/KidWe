@@ -93,5 +93,32 @@ public class AnnouncementController {
         return ResponseEntity.ok(result);
     }
 
+    //임시저장 목록 불러오기
+    @GetMapping("/{member_id}")
+    public ResponseEntity<List<AnnouncementStorageListDto>> getAnnouncementStorageList(
+            @PathVariable("member_id") Long memberId){
+
+       return ResponseEntity.ok(announcementService.getAnnouncementStorage(memberId));
+
+    }
+
+    //임시저장 게시글 불러오기
+    @GetMapping("/{announcement_id}")
+    public ResponseEntity<AnnouncementCreateDto> getAnnouncementisStored(
+            @PathVariable("announcement_id") Long announcementId){
+
+        return ResponseEntity.ok(announcementService.getAnnouncementStoredDetail(announcementId));
+    }
+
+    //임시저장 생성하기
+    @PostMapping("/{member_id}")
+    public ResponseEntity<Void> createAnnouncementStored(
+            @PathVariable("member_id") Long memberId,
+            @RequestBody AnnouncementCreateDto announcementCreateDto){
+
+        announcementService.createAnnouncementStorage(memberId,announcementCreateDto);
+
+        return ResponseEntity.ok().build();
+    }
 
 }

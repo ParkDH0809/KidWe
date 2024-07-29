@@ -31,7 +31,6 @@ public class VoteService {
 
         announcement.setVote(vote);
 
-//        announcementRepository.save(announcement);
         voteRepository.save(vote);
     }
 

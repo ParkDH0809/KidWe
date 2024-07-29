@@ -3,9 +3,7 @@ package yeomeong.common.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import yeomeong.common.dto.post.announcement.AnnouncementCreateDto;
-import yeomeong.common.dto.post.announcement.AnnouncementDetailDto;
-import yeomeong.common.dto.post.announcement.AnnouncementListDto;
+import yeomeong.common.dto.post.announcement.*;
 import yeomeong.common.entity.jpa.member.Member;
 import yeomeong.common.entity.jpa.member.rtype;
 import yeomeong.common.entity.jpa.post.Announcement;
@@ -30,7 +28,9 @@ public class AnnouncementService {
     @Transactional
     public void createAnnouncementByKindergarten(Long memberId, AnnouncementCreateDto announcementCreateDto){
         Announcement announcement =new Announcement(announcementCreateDto.getPost(),
-                memberRepository.findOne(memberId));
+                memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("해당 멤버를 찾을 수 없습니다.")));
+
+        announcement.setStored(false);
 
         announcementRepository.save(announcement);
     }
@@ -40,7 +40,8 @@ public class AnnouncementService {
      * 공지사항 조회하기
      */
      public List<AnnouncementListDto> getAnnouncementList(Long memberId){
-         Member member = memberRepository.findOne(memberId);
+         Member member = memberRepository.findById(memberId)
+                 .orElseThrow(() -> new RuntimeException("해당 멤버를 찾을 수 없습니다."));
 
          List<AnnouncementListDto> announcementDtoList = new ArrayList<>();
 
@@ -66,7 +67,7 @@ public class AnnouncementService {
                  announcementOne.setMemberBan("전체 공지");
              }
          }
-         announcementDtoList.sort((o1, o2) -> o2.getCreatedDate().compareTo(o1.getCreatedDate()));
+         announcementDtoList.sort((o1, o2) -> o2.getCreatedDate().compareTo(o1.getCreatedDate())); //시간 별 정렬
 
          return announcementDtoList;
      }
@@ -82,7 +83,6 @@ public class AnnouncementService {
                  announcement.getPost(),
                  announcement.getVote(),
                  announcement.getCommentList());
-
 
     }
 
@@ -105,5 +105,42 @@ public class AnnouncementService {
          announcementRepository.deleteById(announcementId);
     }
 
+    /**
+     * 공지사항 임시저장 CRUD
+     */
+    //임시저장하기
+    @Transactional
+    public void createAnnouncementStorage(Long memberId, AnnouncementCreateDto announcementCreateDto){
 
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("해당 멤버를 찾을 수 없습니다."));
+        Announcement announcement = new Announcement(announcementCreateDto.getPost(), member);
+        announcement.setStored(true);
+        announcementRepository.save(announcement);
+    }
+
+    //임시저장 목록 불러오기
+    public List<AnnouncementStorageListDto> getAnnouncementStorage(Long memberId){
+
+
+        List<Announcement> announcementList = announcementRepository.findAllByStoredTrueAndMember_Id(memberId);
+
+        List<AnnouncementStorageListDto> announcementStorageList = new ArrayList<>();
+
+        for(Announcement announcement : announcementList) {
+            announcementStorageList.add(new AnnouncementStorageListDto(announcement.getPost().getTitle(),
+                    announcement.getPost().getCreatedDateTime().toLocalDate(),announcement.getId()));
+        }
+
+        return announcementStorageList;
+    }
+
+    //불러온 임시저장 선택하기
+    public AnnouncementCreateDto getAnnouncementStoredDetail(Long announcementId){
+        Announcement announcement = announcementRepository.findById(announcementId)
+                .orElseThrow(() -> new RuntimeException("해당 임시저장 공지사항을 찾을 수 없습니다"));
+
+        return new AnnouncementCreateDto(announcement.getPost());
+    }
 }
+

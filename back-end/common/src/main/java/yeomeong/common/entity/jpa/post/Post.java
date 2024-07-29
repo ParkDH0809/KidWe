@@ -24,7 +24,5 @@ public class Post {
 
     private String content;
 
-    private boolean isStored;
-
     private String picture;
 }
