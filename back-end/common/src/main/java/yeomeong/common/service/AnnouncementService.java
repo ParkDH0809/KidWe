@@ -6,11 +6,11 @@ import org.springframework.transaction.annotation.Transactional;
 import yeomeong.common.dto.post.announcement.AnnouncementCreateDto;
 import yeomeong.common.dto.post.announcement.AnnouncementDetailDto;
 import yeomeong.common.dto.post.announcement.AnnouncementListDto;
-import yeomeong.common.entity.jpa.member.Member;
-import yeomeong.common.entity.jpa.member.rtype;
-import yeomeong.common.entity.jpa.post.Announcement;
-import yeomeong.common.repository.jpa.AnnouncementRepository;
-import yeomeong.common.repository.jpa.MemberRepository;
+import yeomeong.common.entity.member.Member;
+import yeomeong.common.entity.member.rtype;
+import yeomeong.common.entity.post.Announcement;
+import yeomeong.common.repository.AnnouncementRepository;
+import yeomeong.common.repository.MemberRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.List;
 public class AnnouncementService {
 
     private final AnnouncementRepository announcementRepository;
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
     /**
      * 유치원별 공지사항 생성하기 (원장님)
@@ -30,7 +30,7 @@ public class AnnouncementService {
     @Transactional
     public void createAnnouncementByKindergarten(Long memberId, AnnouncementCreateDto announcementCreateDto){
         Announcement announcement =new Announcement(announcementCreateDto.getPost(),
-                memberRepository.findOne(memberId));
+            memberService.getMemberById(memberId));
 
         announcementRepository.save(announcement);
     }
@@ -40,11 +40,11 @@ public class AnnouncementService {
      * 공지사항 조회하기
      */
      public List<AnnouncementListDto> getAnnouncementList(Long memberId){
-         Member member = memberRepository.findOne(memberId);
+         Member member = memberService.getMemberById(memberId);
 
          List<AnnouncementListDto> announcementDtoList = new ArrayList<>();
 
-         if(member.getRole() == rtype.DIRECTOR){ //원장님일 때 해당 유치원 공지사항 모두 가져오기
+         if(member.getRole() == rtype.ROLE_DIRECTOR){ //원장님일 때 해당 유치원 공지사항 모두 가져오기
              List<AnnouncementListDto> announcementByAll = announcementRepository.getAnnouncementByAll(member.getBan().getKindergarten().getId());
              List<AnnouncementListDto> announcementByAllBan = announcementRepository.getAnnouncementByAllBan(member.getBan().getKindergarten().getId());
 

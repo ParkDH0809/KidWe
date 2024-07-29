@@ -8,7 +8,7 @@ import yeomeong.common.dto.medication.MedicationByKidAndMonthDto;
 import yeomeong.common.dto.medication.MedicationByKidDto;
 import yeomeong.common.dto.medication.MedicationCreateDto;
 import yeomeong.common.dto.medication.MedicationDetailDto;
-import yeomeong.common.repository.jpa.MedicationRepository;
+import yeomeong.common.repository.MedicationRepository;
 
 import java.util.List;
 

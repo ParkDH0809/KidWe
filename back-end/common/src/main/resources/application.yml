@@ -1,4 +1,7 @@
 spring:
+  application:
+    name: kidwe
+
   datasource:
     url: jdbc:mysql://i11a808.p.ssafy.io:3306/yellowhat
     username: root
@@ -13,7 +16,19 @@ spring:
         hibernate:
           format_sql: true
 
+  data:
+    redis:
+      host: i11a808.p.ssafy.io
+      port: 6379
+      password: ssafy
 
 logging.level:
     org.hibernate.SQL: debug
     org.hibernate.orm.jdbc.bind: trace
+
+jwt:
+  token:
+    header: Authorization
+    secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+    access-expired-time: 1800000 #30m
+    refresh-expired-time: 1209600000 #14d

@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import yeomeong.common.dto.member.JoinRequestDto;
-import yeomeong.common.entity.jpa.member.Member;
+import yeomeong.common.entity.member.Member;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
-import yeomeong.common.repository.jpa.MemberRepository;
+import yeomeong.common.repository.MemberRepository;
 
 @Service
 @Transactional
@@ -39,6 +39,10 @@ public class MemberService {
     public Member getMemberByEmail(String email) {
         log.debug("[Member Service] email {}", email);
         return memberRepository.findByEmail(email);
+    }
+
+    public Member getMemberById(Long id) {
+        return memberRepository.findById(id).orElseThrow(() -> new CustomException(  ErrorCode.INVALID_INPUT_VALUE));
     }
 
 }

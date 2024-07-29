@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import yeomeong.common.entity.jpa.member.Member;
-import yeomeong.common.entity.jpa.member.rtype;
+import yeomeong.common.entity.member.Member;
+import yeomeong.common.entity.member.rtype;
 
 @Getter
 @Setter
