@@ -14,11 +14,15 @@ public interface MemoRepository extends MongoRepository<Memo, String> {
     @Query("{ '_id' : ?0, 'is_deleted' : false }")
     Memo findMemoById(String id);
 
-    // 선생님별 날짜(updatedTime의 date만 추출)별 메모 가져오기
+    // 삭제되지 않은 경우에만 선생님의 메모ID로 메모 가져오기
+    @Query("{ '_id' : ?0, 'teacher_id' : ?1, 'is_deleted' : false }")
+    Memo findMemoByTeacherIdAndId(String id, Long teacherId);
+
+    // 삭제되지 않은 경우에만 선생님별 날짜(updatedTime의 date만 추출)별 메모 가져오기
     @Query("{ 'teacher_id': ?0, 'date': ?1, 'is_deleted' : false}")
     List<Memo> findByTeacherIdAndDate(Long teacherId, String date);
 
-    // 선생님별 날짜별 메모 중 해당 kid_id를 포함하고 있는 메모 가져오기
+    // 삭제되지 않은 경우에만 선생님별 날짜별 메모 중 해당 kid_id를 포함하고 있는 메모 가져오기
     @Query("{ 'teacher_id': ?0,  'date': ?1 , 'is_deleted' : false, 'kids': ?2}")
     List<Memo> findByTeacherIdAndDateAndKidId(Long teacherId, String date, Long kidId);
 }

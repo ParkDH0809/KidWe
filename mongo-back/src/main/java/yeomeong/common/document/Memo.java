@@ -33,6 +33,6 @@ public class Memo {
 
     private String lesson;
     private List<Long> kids;
-    private List<String> tags;
+    private List<Tag> tags;
     private String content;
 }
