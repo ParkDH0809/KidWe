@@ -53,7 +53,7 @@ public class SecurityConfig {
                 );
 
         http
-                .addFilterBefore(new JwtAuthenticationFilter(memberService, jwtService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationFilter(memberService, jwtService, userDetailsService), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jsonUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         http
