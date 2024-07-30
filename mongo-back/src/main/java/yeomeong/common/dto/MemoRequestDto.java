@@ -10,6 +10,7 @@ import java.util.List;
 
 @Data
 public class MemoRequestDto {
+
     private LocalDateTime updatedTime;
 
     private String lesson;
@@ -17,24 +18,24 @@ public class MemoRequestDto {
     private List<TagRequestDto> tagRequestDtos;
     private String content;
 
-    public Memo toDocument(Long teacherId){
+    public Memo toDocument(Long teacherId) {
         List<Tag> tags = new ArrayList<>();
-        if(tagRequestDtos != null && !tagRequestDtos.isEmpty()){
-            for(TagRequestDto tagRequestDto : tagRequestDtos){
+        if (tagRequestDtos != null && !tagRequestDtos.isEmpty()) {
+            for (TagRequestDto tagRequestDto : tagRequestDtos) {
                 tags.add(tagRequestDto.toDocument());
             }
         }
 
         LocalDateTime now = LocalDateTime.now();
         return Memo.builder()
-                .teacherId(teacherId)
-                .createdTime(now)
-                .updatedTime(this.updatedTime==null?now:this.updatedTime)
-                .date(this.updatedTime.toLocalDate().toString())
-                .isDeleted(false)
-                .lesson(this.lesson==null?"":this.lesson)
-                .kids(this.kids==null?new ArrayList<>():this.kids)
-                .content(this.content==null?"":this.content)
-                .build();
+            .teacherId(teacherId)
+            .createdTime(now)
+            .updatedTime(this.updatedTime == null ? now : this.updatedTime)
+            .date(this.updatedTime.toLocalDate().toString())
+            .isDeleted(false)
+            .lesson(this.lesson == null ? "" : this.lesson)
+            .kids(this.kids == null ? new ArrayList<>() : this.kids)
+            .content(this.content == null ? "" : this.content)
+            .build();
     }
 }

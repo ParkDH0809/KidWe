@@ -19,13 +19,17 @@ import java.util.List;
 
 @Document(collection = "memo")
 public class Memo {
+
     @Id
     private String id;
-    @Field("teacher_id") @Indexed
+    @Field("teacher_id")
+    @Indexed
     private Long teacherId;
     @Field("created_time")
-    private LocalDateTime createdTime;;
-    @Field("updated_time") @Indexed(direction = IndexDirection.DESCENDING)
+    private LocalDateTime createdTime;
+    ;
+    @Field("updated_time")
+    @Indexed(direction = IndexDirection.DESCENDING)
     private LocalDateTime updatedTime;
     private String date;
     @Field("is_deleted")

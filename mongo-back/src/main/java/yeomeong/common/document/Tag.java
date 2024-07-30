@@ -14,10 +14,12 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "tag")
 public class Tag {
+
     @Id
     private String id;
 
-    @Field(name = "teacher_id") @Indexed
+    @Field(name = "teacher_id")
+    @Indexed
     private Long teacherId;
 
     private String content;

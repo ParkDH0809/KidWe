@@ -20,20 +20,21 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class MemoService {
+
     private final MemoRepository memoRepository;
     private final TagRepository tagRepository;
 
     private List<Tag> updateTag(List<TagRequestDto> tagRequestDtos) {
         // 메모의 tag 생성&수정(빈도수 1 증가)하기
-        if(tagRequestDtos == null){
+        if (tagRequestDtos == null) {
             return null;
         }
 
         List<Tag> tags = new ArrayList<Tag>();
-        if(tagRequestDtos != null && !tagRequestDtos.isEmpty()) {
+        if (tagRequestDtos != null && !tagRequestDtos.isEmpty()) {
             for (TagRequestDto tagRequestDto : tagRequestDtos) {
                 // 이미 존재한하는 Tag라면 수정(빈도수 1 증가)하기
-                if (tagRequestDto.getId()!=null) {
+                if (tagRequestDto.getId() != null) {
                     Tag oldTag = tagRepository.findById(tagRequestDto.getId()).orElse(null);
                     if (oldTag == null) {
                         return null;
@@ -48,7 +49,9 @@ public class MemoService {
             }
         }
         return tags;
-    };
+    }
+
+    ;
 
     // 메모 생성하기
     public MemoResponseDto createMemo(Long teacherId, MemoRequestDto memoRequestDto) {
@@ -58,33 +61,34 @@ public class MemoService {
         return new MemoResponseDto(memoRepository.save(updatedTagAndNotUpdatedMemo));
     }
 
-    public Memo getMemo(String id){
+    public Memo getMemo(String id) {
         return memoRepository.findMemoById(id);
     }
 
     // 날짜별 메모 조회하기
     public List<MemoResponseDto> getMemosByTeacherIdAndDate(Long teacherId, String date) {
         List<Memo> memos = memoRepository.findByTeacherIdAndDate(teacherId, date);
-        if(memos == null){
+        if (memos == null) {
             return null;
         }
 
         List<MemoResponseDto> memoResponseDtos = new ArrayList<>();
-        for(Memo memo : memos){
+        for (Memo memo : memos) {
             memoResponseDtos.add(new MemoResponseDto(memo));
         }
         return memoResponseDtos;
     }
 
     // 날짜별 아이별 메모 조회하기
-    public List<MemoResponseDto> getMemosByTeacherIdAndDateAndKidId(Long teacherId, String date, Long kidId) {
+    public List<MemoResponseDto> getMemosByTeacherIdAndDateAndKidId(Long teacherId, String date,
+        Long kidId) {
         List<Memo> memos = memoRepository.findByTeacherIdAndDateAndKidId(teacherId, date, kidId);
-        if(memos == null){
+        if (memos == null) {
             return null;
         }
 
         List<MemoResponseDto> memoResponseDtos = new ArrayList<>();
-        for(Memo memo : memos){
+        for (Memo memo : memos) {
             memoResponseDtos.add(new MemoResponseDto(memo));
         }
         return memoResponseDtos;
@@ -93,7 +97,7 @@ public class MemoService {
     // 메모 수정하기
     public MemoResponseDto updateMemo(Long teacherId, String id, MemoRequestDto updatedMemoDto) {
         Memo memo = memoRepository.findMemoByTeacherIdAndId(id, teacherId);
-        if(memo!=null){
+        if (memo != null) {
             List<Tag> tags = updateTag(updatedMemoDto.getTagRequestDtos());
 
             memo = updatedMemoDto.toDocument(teacherId);

@@ -1,10 +1,11 @@
 package yeomeong.common.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import yeomeong.common.document.Tag;
 import yeomeong.common.dto.TagRequestDto;
 import yeomeong.common.dto.TagResponseDto;
 import yeomeong.common.service.TagService;
@@ -15,7 +16,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/tag")
+@Tag(name = "태그", description = "태그 관련 API")
 public class TagController {
+
     private final TagService tagService;
 
 //    @PostMapping("/")
@@ -29,13 +32,14 @@ public class TagController {
 //        }
 //    }
 
+    @Operation(summary = "태그 조회", description = "선생님ID로 Tag들을 조회해옵니다.")
     @GetMapping("/{teacher_id}")
-    public ResponseEntity<List<TagResponseDto>> getTags(@PathVariable("teacher_id") Long teacherId) {
+    public ResponseEntity<List<TagResponseDto>> getTags(
+        @PathVariable("teacher_id") Long teacherId) {
         List<TagResponseDto> tags = tagService.getTagsByTeacherId(teacherId);
-        if(tags == null) {
+        if (tags == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        else{
+        } else {
             return new ResponseEntity<>(tags, HttpStatus.OK);
         }
     }

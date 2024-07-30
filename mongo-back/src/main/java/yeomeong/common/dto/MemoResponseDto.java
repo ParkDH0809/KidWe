@@ -10,6 +10,7 @@ import java.util.List;
 
 @Data
 public class MemoResponseDto {
+
     private String id;
 
     private Long teacherId;
@@ -31,8 +32,8 @@ public class MemoResponseDto {
         this.lesson = memo.getLesson();
         this.kids = memo.getKids();
         this.tagResponseDtos = new ArrayList<TagResponseDto>();
-        if(memo.getTags() != null && !memo.getTags().isEmpty()) {
-            for(Tag tag : memo.getTags()) {
+        if (memo.getTags() != null && !memo.getTags().isEmpty()) {
+            for (Tag tag : memo.getTags()) {
                 tagResponseDtos.add(new TagResponseDto(tag));
             }
         }
