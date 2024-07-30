@@ -2,10 +2,10 @@ package yeomeong.common.service;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import yeomeong.common.dto.member.JoinRequestDto;
+import yeomeong.common.dto.member.MemberProfileResponseDto;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
@@ -16,11 +16,13 @@ import yeomeong.common.repository.MemberRepository;
 @Slf4j
 public class MemberService {
 
-    @Autowired
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
+        this.memberRepository = memberRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public void joinMember(JoinRequestDto joinRequestDto) {
         Member member = JoinRequestDto.toMemberEntity(joinRequestDto);
@@ -42,7 +44,25 @@ public class MemberService {
     }
 
     public Member getMemberById(Long id) {
-        return memberRepository.findById(id).orElseThrow(() -> new CustomException(  ErrorCode.INVALID_INPUT_VALUE));
+        return memberRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE));
+    }
+
+    public MemberProfileResponseDto getMemberProfile(String email) {
+        Member member = memberRepository.findByEmail(email);
+        return MemberProfileResponseDto
+            .builder()
+            .id(member.getId())
+            .name(member.getName())
+            .email(member.getEmail())
+            .tel(member.getTel())
+            .role(member.getRole())
+            .ban(member.getBan())
+            .kindergarten(member.getKindergarten())
+            .build();
+    }
+
+    public void deleteMember(String email) {
+        memberRepository.deleteMemberByEmail(email);
     }
 
 }

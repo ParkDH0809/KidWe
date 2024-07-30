@@ -16,6 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import yeomeong.common.security.*;
 import yeomeong.common.security.jwt.JwtService;
+import yeomeong.common.security.jwt.JwtUtil;
 import yeomeong.common.service.MemberService;
 
 @Configuration
@@ -52,7 +53,7 @@ public class SecurityConfig {
                 );
 
         http
-                .addFilterBefore(new JwtAuthenticationFilter(memberService, jwtService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationFilter(memberService, jwtService, userDetailsService), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jsonUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         http
@@ -63,8 +64,11 @@ public class SecurityConfig {
 
         http
                 .logout((logout) -> logout
-                        .logoutSuccessUrl("/logoutSuccess")
                         .permitAll()
+                        .logoutSuccessHandler(((request, response, authentication) -> {
+                            jwtService.saveLogoutAccessToken(request.getHeader("Authorization"));
+                            jwtService.deleteRefreshToken(JwtUtil.getLoginEmail(request.getHeader("Authorization")));
+                        }))
                 );
 
         return http.build();

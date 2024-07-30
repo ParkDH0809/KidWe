@@ -4,10 +4,12 @@ package yeomeong.common.entity.member;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import yeomeong.common.entity.kindergarten.Ban;
 
 import java.util.ArrayList;
 import java.util.List;
+import yeomeong.common.entity.kindergarten.Kindergarten;
 
 @Getter
 @Setter
@@ -37,7 +39,13 @@ public class Member {
     @ManyToOne(fetch = FetchType.LAZY)
     private Ban ban;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Kindergarten kindergarten;
+
     @JsonIgnore
     @OneToMany(mappedBy = "member")
     private List<KidMember> kidMember = new ArrayList<>();
+
+    @ColumnDefault("false")
+    private Boolean isDeleted;
 }

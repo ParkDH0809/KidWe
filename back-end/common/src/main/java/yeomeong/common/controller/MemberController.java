@@ -1,55 +1,36 @@
 package yeomeong.common.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import yeomeong.common.dto.member.JoinRequestDto;
-import yeomeong.common.dto.member.RefreshResponseDto;
-import yeomeong.common.security.jwt.JwtService;
-import yeomeong.common.security.jwt.JwtUtil;
+import yeomeong.common.dto.member.MemberProfileResponseDto;
 import yeomeong.common.service.MemberService;
 
 @Slf4j
-@RestController
+@RestController("/member")
+@Tag(name = "사용자 API", description = "사용자 관련 API")
 public class MemberController {
 
-    @Autowired
-    MemberService memberService;
+    final MemberService memberService;
 
-    @Autowired
-    JwtService jwtService;
-
-    @PostMapping("/join")
-    public ResponseEntity<Void> join(@RequestBody JoinRequestDto joinRequestDto) {
-        memberService.joinMember(joinRequestDto);
-        return ResponseEntity.status(HttpStatus.OK).build();
+    public MemberController(MemberService memberService) {
+        this.memberService = memberService;
     }
 
-    @PostMapping("/refresh")
-    public ResponseEntity<?> refresh(@RequestHeader("Authorization") String refreshToken) {
-        if (jwtService.isTokenStored(refreshToken)) {
-            return ResponseEntity.ok(
-                RefreshResponseDto
-                    .builder()
-                    .accessToken(JwtUtil.createAccessToken(JwtUtil.getLoginEmail(refreshToken)))
-                    .build()
-            );
-        }
-        return null;
+    @Operation(summary = "사용자 조회", description = "특정 사용자 정보를 조회합니다.")
+    @GetMapping("/profile")
+    public ResponseEntity<MemberProfileResponseDto> getMemberProfile(Authentication authentication) {
+        return ResponseEntity.status(HttpStatus.OK).body(memberService.getMemberProfile(authentication.getName()));
     }
 
-    @GetMapping("/")
-    public ResponseEntity<String> home() {
-        return ResponseEntity.ok("home");
-    }
-
-    @GetMapping("/logoutSuccess")
-    public ResponseEntity<Void> logout(@RequestHeader("Authorization") String token) {
-        log.info("[LOGOUT] {}", token);
-        jwtService.saveLogoutAccessToken(token);
-        jwtService.deleteRefreshToken(JwtUtil.getLoginEmail(token));
+    @Operation(summary = "사용자 삭제", description = "특정 사용자를 삭제합니다.")
+    @DeleteMapping("/profile")
+    public ResponseEntity<Void> updateMemberProfile(Authentication authentication) {
+        memberService.deleteMember(authentication.getName());
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
