@@ -4,6 +4,7 @@ package yeomeong.common.entity.member;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import yeomeong.common.entity.kindergarten.Ban;
 
 import java.util.ArrayList;
@@ -44,4 +45,7 @@ public class Member {
     @JsonIgnore
     @OneToMany(mappedBy = "member")
     private List<KidMember> kidMember = new ArrayList<>();
+
+    @ColumnDefault("false")
+    private Boolean isDeleted;
 }

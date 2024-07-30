@@ -2,7 +2,6 @@ package yeomeong.common.service;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import yeomeong.common.dto.member.JoinRequestDto;
@@ -60,6 +59,10 @@ public class MemberService {
             .ban(member.getBan())
             .kindergarten(member.getKindergarten())
             .build();
+    }
+
+    public void deleteMember(String email) {
+        memberRepository.deleteMemberByEmail(email);
     }
 
 }
