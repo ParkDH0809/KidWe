@@ -13,7 +13,7 @@ public class MemoRequestDto {
     private LocalDateTime updatedTime;
 
     private String lesson;
-    private List<Long> kids;
+    private List<Kid> kids;
     private List<TagRequestDto> tagRequestDtos;
     private String content;
 

@@ -17,7 +17,7 @@ public class MemoResponseDto {
     private LocalDateTime updatedTime;
 
     private String lesson;
-    private List<Long> kids;
+    private List<Kid> kids;
     private List<TagResponseDto> tagResponseDtos;
     private String content;
 
