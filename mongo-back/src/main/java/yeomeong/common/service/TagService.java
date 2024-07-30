@@ -7,6 +7,7 @@ import yeomeong.common.dto.TagRequestDto;
 import yeomeong.common.dto.TagResponseDto;
 import yeomeong.common.repository.TagRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -15,29 +16,47 @@ public class TagService {
     private final TagRepository tagRepository;
 
     //선생님별로 Tag 조회하기
-    public List<Tag> getTagsByTeacherId(Long teacherId){
+    public List<TagResponseDto> getTagsByTeacherId(Long teacherId){
         List<Tag> tags = tagRepository.findTagByTeacherId(teacherId);
         if(tags == null) return null;
-        return tags;
+
+        List<TagResponseDto> tagResponseDtos = new ArrayList<>();
+        for(Tag tag : tags){
+            tagResponseDtos.add(new TagResponseDto(tag));
+        }
+        return tagResponseDtos;
     }
 
     //Tag 생성하기
-    public Tag createTag(TagRequestDto tagRequestDto){
+    public TagResponseDto createTag(TagRequestDto tagRequestDto){
         Tag isExistTag = tagRepository.findTagByTeacherIdAndContet(tagRequestDto.getTeacherId(), tagRequestDto.getContent());
         if(isExistTag == null){
             System.out.println(tagRequestDto.getTeacherId());
-            return tagRepository.save(tagRequestDto.toDocument());
+            return new TagResponseDto(tagRepository.save(tagRequestDto.toDocument()));
         }
         return null;
     }
 
     //Tag 수정하기
-    public Tag updateTag(Tag updatedTag){
-        Tag oldTag = tagRepository.findTagByTeacherIdAndContet(updatedTag.getTeacherId(), updatedTag.getContent());
-        if(oldTag == null){
+    public List<TagResponseDto> updateTag(Long teacheriId, List<TagRequestDto> updatedTagIds){
+        List<Tag> oldTags = tagRepository.findTagByTeacherId(teacheriId);
+        if(oldTags == null){
             return null;
         }
-        updatedTag.setCount(updatedTag.getCount() + 1);
-        return tagRepository.save(updatedTag);
+
+        List<TagResponseDto> updatedTags = new ArrayList<>();
+        for(Tag oldTag : oldTags){
+            for(TagRequestDto updateTagRequestDto : updatedTagIds){
+                if(updateTagRequestDto.getId().equals(oldTag.getId())){
+                    oldTag.setCount(oldTag.getCount()+1);
+                    updatedTags.add(new TagResponseDto(tagRepository.save(oldTag)));
+                }
+                else{
+                    updatedTags.add(new TagResponseDto(oldTag));
+                }
+            }
+
+        }
+        return updatedTags;
     }
 }

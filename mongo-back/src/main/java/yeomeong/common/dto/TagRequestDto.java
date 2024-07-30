@@ -6,16 +6,18 @@ import yeomeong.common.document.mtype;
 
 @Data
 public class TagRequestDto {
+    private String id;
+
     private Long teacherId;
 
     private String content;
-    private mtype morpheme;
 
     public Tag toDocument(){
         Tag tag = Tag.builder()
+                .id(this.id)
                 .teacherId(this.teacherId)
                 .content(this.content)
-                .morpheme(this.morpheme)
+                //content의 morpheme은 서버에서 정해준다
                 .count(1L)
                 .build();
         return tag;
