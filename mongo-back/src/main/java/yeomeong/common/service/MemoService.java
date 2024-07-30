@@ -57,14 +57,12 @@ public class MemoService {
 
     // 메모 수정하기
     public MemoResponseDto updateMemo(String id, MemoRequestDto updatedMemo) {
-        Optional<Memo> memo = memoRepository.findById(id);
-        if(memo.isPresent()){
-            Memo existMemo = memo.get();
-            if(existMemo.getIsDeleted() == true) return null;
-            existMemo = updatedMemo.toDocument();
-            return new MemoResponseDto(memoRepository.save(existMemo));
+        Memo memo = memoRepository.findMemoById(id);
+        if(memo!=null){
+            memo = updatedMemo.toDocument();
+            memo.setId(id);
+            return new MemoResponseDto(memoRepository.save(memo));
         }
-
         return null;
     }
 
