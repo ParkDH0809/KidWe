@@ -26,6 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final MemberService memberService;
     private final JwtService jwtService;
+    private final UserDetailsServiceImpl userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -74,7 +75,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             JwtUtil.getLoginEmail(authorizationHeader));
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-            loginMember.getEmail(), loginMember.getPassword(),
+            userDetailsService.loadUserByUsername(loginMember.getEmail()),
+             loginMember.getPassword(),
             List.of(new SimpleGrantedAuthority(loginMember.getRole().toString())));
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
