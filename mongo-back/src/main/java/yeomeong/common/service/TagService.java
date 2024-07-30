@@ -3,10 +3,8 @@ package yeomeong.common.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import yeomeong.common.document.Tag;
-import yeomeong.common.dto.TagResponseDto;
 import yeomeong.common.repository.TagRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
