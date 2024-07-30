@@ -31,7 +31,6 @@ public class TagService {
     public TagResponseDto createTag(TagRequestDto tagRequestDto){
         Tag isExistTag = tagRepository.findTagByTeacherIdAndContet(tagRequestDto.getTeacherId(), tagRequestDto.getContent());
         if(isExistTag == null){
-            System.out.println(tagRequestDto.getTeacherId());
             return new TagResponseDto(tagRepository.save(tagRequestDto.toDocument()));
         }
         return null;

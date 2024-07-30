@@ -18,16 +18,16 @@ import java.util.List;
 public class TagController {
     private final TagService tagService;
 
-    @PostMapping("/")
-    public ResponseEntity<TagResponseDto> createTag(@RequestBody TagRequestDto tagRequestDto) {
-        TagResponseDto createdTag = tagService.createTag(tagRequestDto);
-        if(createdTag == null) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        else{
-            return new ResponseEntity<>(createdTag, HttpStatus.CREATED);
-        }
-    }
+//    @PostMapping("/")
+//    public ResponseEntity<TagResponseDto> createTag(@RequestBody TagRequestDto tagRequestDto) {
+//        TagResponseDto createdTag = tagService.createTag(tagRequestDto);
+//        if(createdTag == null) {
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//        else{
+//            return new ResponseEntity<>(createdTag, HttpStatus.CREATED);
+//        }
+//    }
 
     @GetMapping("/{teacher_id}")
     public ResponseEntity<List<TagResponseDto>> getTags(@PathVariable("teacher_id") Long teacherId) {
@@ -40,12 +40,12 @@ public class TagController {
         }
     }
 
-    @PutMapping("/{teacher_id}")
-    public ResponseEntity<List<TagResponseDto>> updateTags(@PathVariable("teacher_id") Long teacherId, @RequestBody List<TagRequestDto> tagRequestDtos){
-        List<TagResponseDto> updatedTags = tagService.updateTag(teacherId, tagRequestDtos);
-        if(updatedTags == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(updatedTags, HttpStatus.OK);
-    }
+//    @PutMapping("/{teacher_id}")
+//    public ResponseEntity<List<TagResponseDto>> updateTags(@PathVariable("teacher_id") Long teacherId, @RequestBody List<TagRequestDto> tagRequestDtos){
+//        List<TagResponseDto> updatedTags = tagService.updateTag(teacherId, tagRequestDtos);
+//        if(updatedTags == null) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        return new ResponseEntity<>(updatedTags, HttpStatus.OK);
+//    }
 }

@@ -6,8 +6,8 @@ import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import yeomeong.common.dto.Kid;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class Memo {
     private Boolean isDeleted;
 
     private String lesson;
-    private List<Long> kids;
-    private List<String> tags;
+    private List<Kid> kids;
+    private List<Tag> tags;
     private String content;
 }
