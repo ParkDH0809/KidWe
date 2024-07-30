@@ -48,11 +48,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         authorize -> authorize
                                 .requestMatchers(HttpMethod.POST, "/login", "/join").permitAll()
-                                .anyRequest().authenticated()
+//                                .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 );
 
         http
-                .addFilterBefore(new JwtAuthenticationFilter(memberService, jwtService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationFilter(memberService, jwtService, userDetailsService), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jsonUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         http

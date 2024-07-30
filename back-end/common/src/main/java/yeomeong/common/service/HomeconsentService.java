@@ -3,8 +3,8 @@ package yeomeong.common.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import yeomeong.common.entity.jpa.Homeconsent;
-import yeomeong.common.repository.jpa.HomeconsentRepository;
+import yeomeong.common.entity.Homeconsent;
+import yeomeong.common.repository.HomeconsentRepository;
 
 @Service
 @RequiredArgsConstructor

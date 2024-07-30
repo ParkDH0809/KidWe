@@ -3,7 +3,7 @@ package yeomeong.common.security;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import yeomeong.common.entity.jpa.member.Member;
+import yeomeong.common.entity.member.Member;
 
 import java.util.Collection;
 import java.util.List;
