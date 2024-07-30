@@ -12,9 +12,9 @@ import yeomeong.common.service.MemoService;
 import java.util.List;
 
 @RequiredArgsConstructor
+
 @RestController
 @RequestMapping("/memo")
-
 public class MemoController {
     private final MemoService memoService;
 
