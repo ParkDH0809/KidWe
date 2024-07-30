@@ -20,8 +20,9 @@ public class MedicationService {
     private final MedicationRepository medicationRepository;
 
 
-    //반 별 월 별 투약의뢰서 가져오기 ( 선생님  )
+    //반 별 월 별 투약의뢰서 가져오기 (   )
     public List<MedicationByKidAndMonthDto> getMedicationsByBanAndMonth(Long banId, int year, int month) {
+
 
         return medicationRepository.medicationByKidAndMonthDtoList(banId,year,month);
     }
@@ -47,7 +48,6 @@ public class MedicationService {
     public void removeMedication(Long medicationId){
         medicationRepository.removeMedication(medicationId);
     }
-
 
 }
 

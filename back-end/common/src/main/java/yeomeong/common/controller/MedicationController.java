@@ -26,8 +26,8 @@ public class MedicationController {
     private final MedicationService medicationService;
 
 
-    @Description("반 별 특정월 투약의뢰서 조회하기")
-    @GetMapping("/{ban_id}/{year}/{month}")
+    @Description("반 별 특정월 투약의뢰서 조회하기 (원장, 선생)")
+    @GetMapping("ban/{ban_id}/{year}/{month}")
     public ResponseEntity<List<MedicationByKidAndMonthDto>> getMedicationByBanAndMonth(
             @PathVariable("ban_id") Long banId,
             @PathVariable("year") int year,
@@ -38,8 +38,9 @@ public class MedicationController {
         return ResponseEntity.ok(medications);
     }
 
-    @Description("아이별 투약의뢰서 조회하기")
-    @GetMapping("/{kid_id}/{year}/{month}")
+
+    @Description("아이의 투약의뢰서 조회하기 (학부모용)")
+    @GetMapping("kid/{kid_id}/{year}/{month}")
     public ResponseEntity<List<MedicationByKidDto>> getMedicationByKid(
             @PathVariable("kid_id") Long kidId,
             @PathVariable("year") int year,

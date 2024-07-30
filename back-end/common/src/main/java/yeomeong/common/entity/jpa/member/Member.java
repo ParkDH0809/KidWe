@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import yeomeong.common.entity.jpa.kindergarten.Ban;
+import yeomeong.common.entity.jpa.kindergarten.Kindergarten;
 import yeomeong.common.entity.jpa.post.Announcement;
 
 import java.util.ArrayList;
@@ -36,6 +37,9 @@ public class Member {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Ban ban;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Kindergarten kindergarten;
 
     @JsonIgnore
     @OneToMany(mappedBy = "member")

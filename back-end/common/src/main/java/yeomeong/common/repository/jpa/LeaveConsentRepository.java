@@ -1,16 +1,25 @@
 package yeomeong.common.repository.jpa;
 
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 import yeomeong.common.dto.leaveconsent.LeaveConsentByMonthAndBanListDto;
 import yeomeong.common.entity.jpa.LeaveConsent;
 
-import java.time.LocalDate;
 import java.util.List;
 
-@Repository
-public interface LeaveConsentRepository extends JpaRepository<LeaveConsent,Long> {
+public interface LeaveConsentRepository {
 
-    public List<LeaveConsentByMonthAndBanListDto> findAllByKid_Ban_IdAndYearAndMonth(Long banId, int year, int month);
+
+    public void save(LeaveConsent leaveConsent);
+
+    //원장, 선생용
+    public List<LeaveConsentByMonthAndBanListDto> findAllByBan_IdAndYearAndMonth(Long banId, int year, int month);
+
+
+    //학부모용
+    public List<LeaveConsentByMonthAndBanListDto> findAllByKid_IdAndYearAndMonth(Long kidId, int year, int month);
+
+
+    public void remove(LeaveConsent leaveConsent);
+
+    public LeaveConsent findById(Long leaveConsentId);
 }

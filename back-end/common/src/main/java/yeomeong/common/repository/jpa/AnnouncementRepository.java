@@ -22,7 +22,7 @@ public interface AnnouncementRepository extends JpaRepository<Announcement,Long>
             "a.post.createdDateTime," +
             "size(a.commentList)) " +
             " FROM Announcement a " +
-            "WHERE a.member.ban.kindergarten.id = :kindergartenId AND a.member.ban.name = null " +
+            "WHERE a.member.kindergarten.id = :kindergartenId AND a.member.ban.name = null " +
             "AND a.stored = false ")
     List<AnnouncementListDto> getAnnouncementByAll(@Param("kindergartenId") Long kindergartenId);
 
@@ -44,7 +44,7 @@ public interface AnnouncementRepository extends JpaRepository<Announcement,Long>
             "a.post.createdDateTime," +
             "size(a.commentList)) " +
             " FROM Announcement a " +
-            "WHERE a.member.ban.kindergarten.id = :kindergartenId AND a.member.ban.name != null" +
+            "WHERE a.member.kindergarten.id = :kindergartenId AND a.member.ban.name != null" +
             " and a.stored = false")
     List<AnnouncementListDto> getAnnouncementByAllBan(@Param("kindergartenId") Long kindergartenId);
 
