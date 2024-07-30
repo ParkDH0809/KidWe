@@ -3,12 +3,9 @@ package yeomeong.common.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import yeomeong.common.document.Tag;
-import yeomeong.common.dto.TagResponseDto;
+import yeomeong.common.dto.TagRequestDto;
 import yeomeong.common.service.TagService;
 
 import java.util.List;
@@ -20,9 +17,20 @@ import java.util.List;
 public class TagController {
     private final TagService tagService;
 
+    @PostMapping("/")
+    public ResponseEntity<Tag> createTag(@RequestBody TagRequestDto tagRequestDto) {
+        Tag createdTag = tagService.createTag(tagRequestDto);
+        if(createdTag == null) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        else{
+            return new ResponseEntity<>(createdTag, HttpStatus.CREATED);
+        }
+    }
+
     @GetMapping("/{teacher_id}")
-    public ResponseEntity<List<Tag>> getTag(@PathVariable("teahcer_id") Long teacher_id) {
-        List<Tag> tags = tagService.getTagsByTeacherId(teacher_id);
+    public ResponseEntity<List<Tag>> getTags(@PathVariable("teacher_id") Long teacherId) {
+        List<Tag> tags = tagService.getTagsByTeacherId(teacherId);
         if(tags == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

@@ -3,6 +3,8 @@ package yeomeong.common.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import yeomeong.common.document.Tag;
+import yeomeong.common.dto.TagRequestDto;
+import yeomeong.common.dto.TagResponseDto;
 import yeomeong.common.repository.TagRepository;
 
 import java.util.List;
@@ -20,10 +22,11 @@ public class TagService {
     }
 
     //Tag 생성하기
-    public Tag createTag(Tag tag){
-        Tag isExistTag = tagRepository.findTagByTeacherIdAndContet(tag.getTeacherId(), tag.getContent());
+    public Tag createTag(TagRequestDto tagRequestDto){
+        Tag isExistTag = tagRepository.findTagByTeacherIdAndContet(tagRequestDto.getTeacherId(), tagRequestDto.getContent());
         if(isExistTag == null){
-            return tagRepository.save(tag);
+            System.out.println(tagRequestDto.getTeacherId());
+            return tagRepository.save(tagRequestDto.toDocument());
         }
         return null;
     }
@@ -32,7 +35,7 @@ public class TagService {
     public Tag updateTag(Tag updatedTag){
         Tag oldTag = tagRepository.findTagByTeacherIdAndContet(updatedTag.getTeacherId(), updatedTag.getContent());
         if(oldTag == null){
-            return createTag(updatedTag);
+            return null;
         }
         updatedTag.setCount(updatedTag.getCount() + 1);
         return tagRepository.save(updatedTag);
