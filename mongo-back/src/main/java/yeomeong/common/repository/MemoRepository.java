@@ -10,6 +10,7 @@ import java.util.List;
 
 @Repository
 public interface MemoRepository extends MongoRepository<Memo, String> {
+    // 삭제되지 않은 경우에만 메모ID로 메모 가져오기 
     @Query("{ '_id' : ?0, 'is_deleted' : false }")
     Memo findMemoById(String id);
 

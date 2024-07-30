@@ -16,6 +16,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+
 @Document(collection = "memo")
 public class Memo {
     @Id
