@@ -8,6 +8,7 @@ import yeomeong.common.dto.post.announcement.*;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.member.rtype;
 import yeomeong.common.entity.post.Announcement;
+import yeomeong.common.entity.post.comment.AnnouncementComment;
 import yeomeong.common.repository.AnnouncementRepository;
 import yeomeong.common.repository.MemberRepository;
 
@@ -79,11 +80,20 @@ public class AnnouncementService {
          Announcement announcement = announcementRepository.findById(announcementId)
                  .orElseThrow(() -> new RuntimeException("해당 공지사항을 찾을 수 없습니다."));
 
+        List<AnnouncementCommentDto> announcementCommentDto = new ArrayList<>();
+
+        for(AnnouncementComment announcementComment : announcement.getCommentList()) {
+            announcementCommentDto.add(new AnnouncementCommentDto(announcementComment.getId(),
+                    announcement.getMember().getName(),
+                    announcementComment.getContent(),
+                    announcementComment.getLocalDateTime()));
+            }
+
          return  new AnnouncementDetailDto(
                  announcement.getMember().getBan().getName(),
                  announcement.getPost(),
                  announcement.getVote().getItems(),
-                 announcement.getCommentList());
+                 announcementCommentDto);
 
     }
 

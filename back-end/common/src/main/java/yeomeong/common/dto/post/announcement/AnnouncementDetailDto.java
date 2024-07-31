@@ -21,6 +21,6 @@ public class AnnouncementDetailDto {
 
     private List<VoteItem> voteItems;
 
-    private List<AnnouncementComment> comment;
+    private List<AnnouncementCommentDto> comment;
 
 }
