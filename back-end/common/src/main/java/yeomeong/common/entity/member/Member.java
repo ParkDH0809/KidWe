@@ -43,6 +43,7 @@ public class Member {
     private Kindergarten kindergarten;
 
     @JsonIgnore
+    @Builder.Default
     @OneToMany(mappedBy = "member")
     private List<KidMember> kidMember = new ArrayList<>();
 
