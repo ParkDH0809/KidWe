@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import yeomeong.common.entity.member.Member;
-import yeomeong.common.entity.member.rtype;
+import yeomeong.common.dto.kindergarten.KindergartenSaveRequestDto;
+import yeomeong.common.dto.member.MemberSaveRequestDto;
 
 @Getter
 @Setter
@@ -13,20 +13,7 @@ import yeomeong.common.entity.member.rtype;
 @AllArgsConstructor
 public class JoinRequestDto {
 
-    private String name;
-    private String tel;
-    private String email;
-    private String password;
-    private String role;
-
-    public static Member toMemberEntity(JoinRequestDto joinRequestDto) {
-        return Member.builder()
-                .name(joinRequestDto.getName())
-                .tel(joinRequestDto.getTel())
-                .email(joinRequestDto.getEmail())
-                .password(joinRequestDto.getPassword())
-                .role(rtype.valueOf(joinRequestDto.getRole()))
-                .build();
-    }
+    private MemberSaveRequestDto memberSaveRequestDto;
+    private KindergartenSaveRequestDto kindergartenSaveRequestDto;
 
 }
