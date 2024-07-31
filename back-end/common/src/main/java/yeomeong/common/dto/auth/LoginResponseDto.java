@@ -1,4 +1,4 @@
-package yeomeong.common.dto.member;
+package yeomeong.common.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,8 @@ import lombok.Setter;
 @Setter
 @Builder
 @AllArgsConstructor
-public class RefreshResponseDto {
+public class LoginResponseDto {
 
-    String accessToken;
+    private String accessToken;
 
 }

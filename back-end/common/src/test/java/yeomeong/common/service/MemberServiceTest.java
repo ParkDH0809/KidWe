@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import yeomeong.common.dto.member.JoinRequestDto;
+import yeomeong.common.dto.auth.JoinRequestDto;
 import yeomeong.common.exception.CustomException;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
