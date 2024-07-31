@@ -1,6 +1,5 @@
 package yeomeong.common.repository;
 
-import java.util.Date;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,6 +10,8 @@ import yeomeong.common.repository.querydsl.DailyNoteRepositoryCustom;
 
 @Repository
 public interface DailyNoteRepository extends JpaRepository<DailyNote, Long>, DailyNoteRepositoryCustom {
+
     @Query("SELECT dn FROM DailyNote dn WHERE dn.kid.id = :kidId AND FUNCTION('DATE_FORMAT', dn.post.createdDateTime, '%Y-%m') = :yearAndMonth")
-    List<DailyNote> findByKidIdAndYearAndMonth(@Param("kidId") Long kidId, @Param("date") String yearAndMonth);
+    List<DailyNote> findByKidIdAndYearAndMonth(@Param("kidId") Long kidId, @Param("yearAndMonth") String yearAndMonth);
+
 }
