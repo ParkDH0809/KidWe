@@ -12,7 +12,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.StreamUtils;
-import yeomeong.common.dto.member.LoginRequestDto;
+import yeomeong.common.dto.auth.LoginRequestDto;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

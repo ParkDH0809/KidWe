@@ -4,7 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import yeomeong.common.dto.member.JoinRequestDto;
+import yeomeong.common.dto.auth.JoinRequestDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.exception.CustomException;
