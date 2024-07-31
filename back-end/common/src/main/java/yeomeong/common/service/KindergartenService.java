@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import yeomeong.common.dto.kindergarten.KindergartenInfoResponseDto;
 import yeomeong.common.dto.kindergarten.KindergartenSaveRequestDto;
-import yeomeong.common.entity.kindergarten.Kindergarten;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.repository.KindergartenRepository;
@@ -24,13 +23,8 @@ public class KindergartenService {
     }
 
     public KindergartenInfoResponseDto getKindergartenInfo(Long kindergartenId) {
-        Kindergarten kindergarten = kindergartenRepository.findById(kindergartenId)
-            .orElseThrow(() -> new CustomException(ErrorCode.INVALID_ID));
-        log.info("KindergartenId: {}", kindergarten.getId());
-
-        KindergartenInfoResponseDto kindergartenInfoResponseDto = KindergartenInfoResponseDto.toKindergartenDto(kindergarten);
-        log.info("Dto Info: {}", kindergartenInfoResponseDto.toString());
-        return kindergartenInfoResponseDto;
+        return KindergartenInfoResponseDto.toKindergartenDto(kindergartenRepository.findById(kindergartenId)
+            .orElseThrow(() -> new CustomException(ErrorCode.INVALID_ID)));
     }
 
 }
