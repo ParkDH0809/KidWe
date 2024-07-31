@@ -41,7 +41,7 @@ public class DailyNoteController {
         return dailyNoteService.getDailyNote(id);
     }
 
-    @PutMapping("/{dailynote_id")
+    @PutMapping("/{dailynote_id}")
     public DailyNote updateDailyNote(@PathVariable("dailynote_id") Long id,
         @RequestBody DailyNote dailyNote) {
         return dailyNoteService.updateDailyNote(id, dailyNote);
