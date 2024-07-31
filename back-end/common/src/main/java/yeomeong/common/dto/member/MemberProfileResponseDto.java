@@ -6,6 +6,7 @@ import lombok.Getter;
 import yeomeong.common.entity.kindergarten.Ban;
 import yeomeong.common.entity.kindergarten.Kindergarten;
 import yeomeong.common.entity.member.KidMember;
+import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.member.rtype;
 
 @Builder
@@ -20,5 +21,18 @@ public class MemberProfileResponseDto {
     private Ban ban;
     private Kindergarten kindergarten;
     private List<KidMember> kidMembers;
+
+    public static MemberProfileResponseDto toMemberProfileDto(Member member) {
+        return MemberProfileResponseDto
+            .builder()
+            .id(member.getId())
+            .name(member.getName())
+            .email(member.getEmail())
+            .tel(member.getTel())
+            .role(member.getRole())
+            .ban(member.getBan())
+            .kindergarten(member.getKindergarten())
+            .build();
+    }
 
 }

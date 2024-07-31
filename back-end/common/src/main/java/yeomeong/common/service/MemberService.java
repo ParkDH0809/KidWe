@@ -8,6 +8,7 @@ import yeomeong.common.dto.auth.SignupRequestDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
 import yeomeong.common.dto.member.MemberSaveRequestDto;
 import yeomeong.common.entity.member.Member;
+import yeomeong.common.entity.member.rtype;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.repository.MemberRepository;
@@ -25,13 +26,10 @@ public class MemberService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Transactional
     public void joinMember(SignupRequestDto signupRequestDto) {
-        Member member = MemberSaveRequestDto.toMemberEntity(signupRequestDto.getMemberSaveRequestDto());
-        if (memberRepository.existsByEmail(member.getEmail())) {
-            throw new CustomException(ErrorCode.DUPLICATED_USER_EMAIL);
-        }
-
         try {
+            Member member = MemberSaveRequestDto.toMemberEntity(signupRequestDto.getMember());
             member.setPassword(passwordEncoder.encode(member.getPassword()));
             memberRepository.save(member);
         } catch (RuntimeException e) {
@@ -49,17 +47,7 @@ public class MemberService {
     }
 
     public MemberProfileResponseDto getMemberProfile(String email) {
-        Member member = memberRepository.findByEmail(email);
-        return MemberProfileResponseDto
-            .builder()
-            .id(member.getId())
-            .name(member.getName())
-            .email(member.getEmail())
-            .tel(member.getTel())
-            .role(member.getRole())
-            .ban(member.getBan())
-            .kindergarten(member.getKindergarten())
-            .build();
+        return MemberProfileResponseDto.toMemberProfileDto(memberRepository.findByEmail(email));
     }
 
     public void deleteMember(String email) {
