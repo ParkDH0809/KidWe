@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import yeomeong.common.dto.post.announcement.AnnouncementCommentCreateDto;
 import yeomeong.common.dto.post.announcement.CommentChildDto;
-import yeomeong.common.entity.jpa.post.Announcement;
-import yeomeong.common.entity.jpa.post.comment.AnnouncementComment;
-import yeomeong.common.repository.jpa.AnnouncementCommentRepository;
+import yeomeong.common.entity.post.Announcement;
+import yeomeong.common.entity.post.comment.AnnouncementComment;
+import yeomeong.common.repository.AnnouncementCommentRepository;
 import yeomeong.common.repository.jpa.AnnouncementRepository;
 
 @Service

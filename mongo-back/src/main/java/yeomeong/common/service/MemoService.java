@@ -3,70 +3,116 @@ package yeomeong.common.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import yeomeong.common.document.Memo;
-import yeomeong.common.dto.MemoDto;
+import yeomeong.common.document.Tag;
+import yeomeong.common.dto.MemoRequestDto;
+import yeomeong.common.dto.MemoResponseDto;
+import yeomeong.common.dto.TagRequestDto;
+import yeomeong.common.dto.TagResponseDto;
 import yeomeong.common.repository.MemoRepository;
+import yeomeong.common.repository.TagRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class MemoService {
+
     private final MemoRepository memoRepository;
+    private final TagRepository tagRepository;
+
+    private List<Tag> updateTag(List<TagRequestDto> tagRequestDtos) {
+        // 메모의 tag 생성&수정(빈도수 1 증가)하기
+        if (tagRequestDtos == null) {
+            return null;
+        }
+
+        List<Tag> tags = new ArrayList<Tag>();
+        if (tagRequestDtos != null && !tagRequestDtos.isEmpty()) {
+            for (TagRequestDto tagRequestDto : tagRequestDtos) {
+                // 이미 존재한하는 Tag라면 수정(빈도수 1 증가)하기
+                if (tagRequestDto.getId() != null) {
+                    Tag oldTag = tagRepository.findById(tagRequestDto.getId()).orElse(null);
+                    if (oldTag == null) {
+                        return null;
+                    }
+                    oldTag.setCount(oldTag.getCount() + 1);
+                    tags.add(tagRepository.save(oldTag));
+                }
+                // 처음 사용하는 Tag라면 생성하기
+                else {
+                    tags.add(tagRepository.save(tagRepository.save(tagRequestDto.toDocument())));
+                }
+            }
+        }
+        return tags;
+    }
+
+    ;
 
     // 메모 생성하기
-    public Memo createMemo(MemoDto memoDto) {
-        Memo memo = new Memo();
-        memo.setId(memoDto.getId());
-        memo.setCreatedTime(memoDto.getCreatedTime()==null?LocalDateTime.now():memoDto.getCreatedTime());
-        memo.setUpdatedTime(memoDto.getUpdatedTime()==null?memo.getUpdatedTime():memoDto.getUpdatedTime());
-        memo.setIsDeleted(memoDto.getIsDeleted()==null?false:memoDto.getIsDeleted());
-        memo.setLesson(memoDto.getLesson());
-        memo.setKids(memoDto.getKids());
-        memo.setTags(memoDto.getTags());
-        memo.setContent(memoDto.getContent());
+    public MemoResponseDto createMemo(Long teacherId, MemoRequestDto memoRequestDto) {
+        List<Tag> tags = updateTag(memoRequestDto.getTagRequestDtos());
+        Memo updatedTagAndNotUpdatedMemo = memoRequestDto.toDocument(teacherId);
+        updatedTagAndNotUpdatedMemo.setTags(tags);
+        return new MemoResponseDto(memoRepository.save(updatedTagAndNotUpdatedMemo));
+    }
 
-        return memoRepository.save(memo);
+    public Memo getMemo(String id) {
+        return memoRepository.findMemoById(id);
     }
 
     // 날짜별 메모 조회하기
-    public List<Memo> getMemosByTeacherIdAndDate(Long teacherId, LocalDate date) {
-        return memoRepository.findByTeacherIdAndDate(teacherId, date);
+    public List<MemoResponseDto> getMemosByTeacherIdAndDate(Long teacherId, String date) {
+        List<Memo> memos = memoRepository.findByTeacherIdAndDate(teacherId, date);
+        if (memos == null) {
+            return null;
+        }
+
+        List<MemoResponseDto> memoResponseDtos = new ArrayList<>();
+        for (Memo memo : memos) {
+            memoResponseDtos.add(new MemoResponseDto(memo));
+        }
+        return memoResponseDtos;
     }
 
     // 날짜별 아이별 메모 조회하기
-    public List<Memo> getMemosByTeacherIdAndDateAndKidId(Long teacherId, LocalDate date, Long kidId) {
-        return memoRepository.findByTeacherIdAndDateAndKidId(teacherId, date, kidId);
+    public List<MemoResponseDto> getMemosByTeacherIdAndDateAndKidId(Long teacherId, String date,
+        Long kidId) {
+        List<Memo> memos = memoRepository.findByTeacherIdAndDateAndKidId(teacherId, date, kidId);
+        if (memos == null) {
+            return null;
+        }
+
+        List<MemoResponseDto> memoResponseDtos = new ArrayList<>();
+        for (Memo memo : memos) {
+            memoResponseDtos.add(new MemoResponseDto(memo));
+        }
+        return memoResponseDtos;
     }
 
     // 메모 수정하기
-    public Memo updateMemo(String id, Memo updatedMemo) {
-        Optional<Memo> optionalMemo = memoRepository.findById(id);
-        if (optionalMemo.isPresent()) {
-            Memo memo = optionalMemo.get();
-            memo.setUpdatedTime(updatedMemo.getUpdatedTime());
-            memo.setIsDeleted(updatedMemo.getIsDeleted());
-            memo.setKids(updatedMemo.getKids());
-            memo.setTags(updatedMemo.getTags());
-            memo.setContent(updatedMemo.getContent());
-            memo.setUpdatedTime(LocalDateTime.now());
-            return memoRepository.save(memo);
-        } else {
-            throw new RuntimeException("Memo not found with id " + id);
+    public MemoResponseDto updateMemo(Long teacherId, String id, MemoRequestDto updatedMemoDto) {
+        Memo memo = memoRepository.findMemoByTeacherIdAndId(id, teacherId);
+        if (memo != null) {
+            List<Tag> tags = updateTag(updatedMemoDto.getTagRequestDtos());
+
+            memo = updatedMemoDto.toDocument(teacherId);
+            memo.setId(id);
+            memo.setTags(tags);
+            // memo의 tag와 updatedMemo의 tag 비교해서 저장하기
+            return new MemoResponseDto(memoRepository.save(memo));
         }
+        return null;
     }
 
     // 메모 삭제하기
-    public void deleteMemo(String id) {
-        Optional<Memo> optionalMemo = memoRepository.findById(id);
-        if (optionalMemo.isPresent()) {
-            Memo memo = optionalMemo.get();
-            memo.setIsDeleted(true);
-            memoRepository.save(memo);
-        } else {
-            throw new RuntimeException("Memo not found with id " + id);
-        }
+    public boolean deleteMemo(Long teacherId, String id) {
+        Memo memo = memoRepository.findMemoByTeacherIdAndId(id, teacherId);
+        memo.setIsDeleted(true);
+        return memoRepository.save(memo).getIsDeleted();
     }
 }

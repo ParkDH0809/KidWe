@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import yeomeong.common.dto.post.announcement.VoteCreateDto;
 import yeomeong.common.dto.post.announcement.VoteResultDto;
-import yeomeong.common.entity.jpa.post.Announcement;
-import yeomeong.common.entity.jpa.post.Vote;
+import yeomeong.common.entity.post.Announcement;
+import yeomeong.common.entity.post.Vote;
+import yeomeong.common.repository.VoteRepository;
 import yeomeong.common.repository.jpa.AnnouncementRepository;
-import yeomeong.common.repository.jpa.VoteRepository;
 
 @Service
 @RequiredArgsConstructor

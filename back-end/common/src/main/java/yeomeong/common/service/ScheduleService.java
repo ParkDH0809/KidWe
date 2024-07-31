@@ -3,7 +3,7 @@ package yeomeong.common.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import yeomeong.common.repository.jpa.ScheduleRepository;
+import yeomeong.common.repository.ScheduleRepository;
 
 @Service
 @RequiredArgsConstructor

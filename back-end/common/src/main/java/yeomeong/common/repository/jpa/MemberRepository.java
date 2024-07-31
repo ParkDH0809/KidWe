@@ -1,11 +1,10 @@
 package yeomeong.common.repository.jpa;
 
 
-import jakarta.persistence.EntityManager;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import yeomeong.common.entity.jpa.member.Member;
+import yeomeong.common.entity.member.Member;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {

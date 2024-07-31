@@ -4,10 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import yeomeong.common.dto.post.announcement.*;
-import yeomeong.common.entity.jpa.member.Member;
-import yeomeong.common.entity.jpa.member.rtype;
-import yeomeong.common.entity.jpa.post.Announcement;
-import yeomeong.common.repository.jpa.AnnouncementRepository;
+
+import yeomeong.common.entity.member.Member;
+import yeomeong.common.entity.member.rtype;
+import yeomeong.common.entity.post.Announcement;
+import yeomeong.common.repository.AnnouncementRepository;
 import yeomeong.common.repository.jpa.MemberRepository;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class AnnouncementService {
 
          List<AnnouncementListDto> announcementDtoList = new ArrayList<>();
 
-         if(member.getRole() == rtype.DIRECTOR){ //원장님일 때 해당 유치원 공지사항 모두 가져오기
+         if(member.getRole() == rtype.ROLE_DIRECTOR){ //원장님일 때 해당 유치원 공지사항 모두 가져오기
              List<AnnouncementListDto> announcementByAll = announcementRepository.getAnnouncementByAll(member.getBan().getKindergarten().getId());
              List<AnnouncementListDto> announcementByAllBan = announcementRepository.getAnnouncementByAllBan(member.getBan().getKindergarten().getId());
 
