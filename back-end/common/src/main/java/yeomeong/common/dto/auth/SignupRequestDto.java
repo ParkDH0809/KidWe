@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import yeomeong.common.dto.ban.BanJoinRequestDto;
+import yeomeong.common.dto.kid.KidJoinRequestDto;
 import yeomeong.common.dto.kindergarten.KindergartenSaveRequestDto;
 import yeomeong.common.dto.member.MemberSaveRequestDto;
 
@@ -13,7 +15,9 @@ import yeomeong.common.dto.member.MemberSaveRequestDto;
 @AllArgsConstructor
 public class SignupRequestDto {
 
-    private MemberSaveRequestDto memberSaveRequestDto;
-    private KindergartenSaveRequestDto kindergartenSaveRequestDto;
+    private MemberSaveRequestDto member;
+    private KindergartenSaveRequestDto kindergarten;
+    private KidJoinRequestDto kid;
+    private BanJoinRequestDto ban;
 
 }

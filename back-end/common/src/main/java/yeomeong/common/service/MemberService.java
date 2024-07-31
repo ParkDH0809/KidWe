@@ -5,12 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import yeomeong.common.dto.auth.SignupRequestDto;
+import yeomeong.common.dto.ban.BanJoinRequestDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
 import yeomeong.common.dto.member.MemberSaveRequestDto;
 import yeomeong.common.entity.member.Member;
-import yeomeong.common.entity.member.rtype;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
+import yeomeong.common.repository.BanRepository;
+import yeomeong.common.repository.KindergartenRepository;
 import yeomeong.common.repository.MemberRepository;
 
 @Service
@@ -18,12 +20,17 @@ import yeomeong.common.repository.MemberRepository;
 @Slf4j
 public class MemberService {
 
-    private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MemberRepository memberRepository;
+    private final BanRepository banRepository;
+    private final KindergartenRepository kindergartenRepository;
 
-    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
+    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder,
+        BanRepository banRepository, KindergartenRepository kindergartenRepository) {
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
+        this.banRepository = banRepository;
+        this.kindergartenRepository = kindergartenRepository;
     }
 
     @Transactional
@@ -32,18 +39,39 @@ public class MemberService {
             Member member = MemberSaveRequestDto.toMemberEntity(signupRequestDto.getMember());
             member.setPassword(passwordEncoder.encode(member.getPassword()));
             memberRepository.save(member);
+            switch (member.getRole()) {
+                case ROLE_GUARDIAN -> joinGuardian();
+
+                case ROLE_DIRECTOR -> joinDirector();
+
+                case ROLE_TEACHER ->
+                    joinTeacher(memberRepository.findByEmail(member.getEmail()), signupRequestDto.getBan());
+            }
         } catch (RuntimeException e) {
             throw new CustomException(ErrorCode.INVALID_INPUT_VALUE);
         }
     }
 
-    public Member getMemberByEmail(String email) {
-        log.debug("[Member Service] email {}", email);
-        return memberRepository.findByEmail(email);
+    private void joinGuardian() {
+
     }
 
-    public Member getMemberById(Long id) {
-        return memberRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE));
+    private void joinDirector() {
+
+    }
+
+    private void joinTeacher(Member member, BanJoinRequestDto banJoinRequestDto) {
+        memberRepository.updateMember(
+            member.getId(),
+            banRepository.findById(banJoinRequestDto.getBanId())
+                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_ID)),
+            kindergartenRepository.findById(banJoinRequestDto.getKindergartenId())
+                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_ID))
+        );
+    }
+
+    public Member getMemberByEmail(String email) {
+        return memberRepository.findByEmail(email);
     }
 
     public MemberProfileResponseDto getMemberProfile(String email) {
