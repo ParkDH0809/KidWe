@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import yeomeong.common.dto.kid.KidCreateRequestDto;
+import yeomeong.common.dto.kid.KidJoinRequestDto;
 import yeomeong.common.service.KidService;
 
 @RestController
@@ -23,8 +23,8 @@ public class KidController {
 
     @Operation(summary = "아이 정보 생성 API", description = "아이 정보를 입력(생성)합니다.")
     @PostMapping
-    public ResponseEntity<Void> createKidInfo(@RequestBody KidCreateRequestDto kidCreateRequestDto) {
-        kidService.createKid(kidCreateRequestDto);
+    public ResponseEntity<Void> joinKid(@RequestBody KidJoinRequestDto kidJoinRequestDto) {
+        kidService.joinKid(kidJoinRequestDto);
         return ResponseEntity.ok().build();
     }
 

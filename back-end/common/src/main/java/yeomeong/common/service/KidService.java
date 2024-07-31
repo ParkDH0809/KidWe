@@ -2,7 +2,7 @@ package yeomeong.common.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import yeomeong.common.dto.kid.KidCreateRequestDto;
+import yeomeong.common.dto.kid.KidJoinRequestDto;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.repository.BanRepository;
@@ -24,14 +24,14 @@ public class KidService {
         this.banRepository = banRepository;
     }
 
-    public void createKid(KidCreateRequestDto kidCreateRequestDto) {
-        log.info(kidCreateRequestDto.toString());
+    public void joinKid(KidJoinRequestDto kidJoinRequestDto) {
+        log.info(kidJoinRequestDto.toString());
         kidReposiory.save(
-            KidCreateRequestDto.toKidEntity(
-                kidCreateRequestDto,
-                kindergartenRepository.findById(kidCreateRequestDto.getKindergartenId())
+            KidJoinRequestDto.toKidEntity(
+                kidJoinRequestDto,
+                kindergartenRepository.findById(kidJoinRequestDto.getKindergartenId())
                     .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)),
-                banRepository.findById(kidCreateRequestDto.getBanId())
+                banRepository.findById(kidJoinRequestDto.getBanId())
                     .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)))
         );
     }
