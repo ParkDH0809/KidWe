@@ -8,8 +8,9 @@ import yeomeong.common.dto.post.announcement.VoteCreateDto;
 import yeomeong.common.dto.post.announcement.VoteResultDto;
 import yeomeong.common.entity.post.Announcement;
 import yeomeong.common.entity.post.Vote;
+import yeomeong.common.repository.AnnouncementRepository;
 import yeomeong.common.repository.VoteRepository;
-import yeomeong.common.repository.jpa.AnnouncementRepository;
+
 
 @Service
 @RequiredArgsConstructor

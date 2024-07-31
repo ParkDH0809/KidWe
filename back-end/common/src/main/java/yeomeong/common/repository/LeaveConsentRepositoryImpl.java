@@ -1,4 +1,4 @@
-package yeomeong.common.repository.jpa;
+package yeomeong.common.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
@@ -7,15 +7,16 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import yeomeong.common.dto.leaveconsent.LeaveConsentByMonthAndBanListDto;
 import yeomeong.common.dto.leaveconsent.QLeaveConsentByMonthAndBanListDto;
-import yeomeong.common.entity.jpa.LeaveConsent;
-
+import yeomeong.common.entity.LeaveConsent;
+import yeomeong.common.repository.LeaveConsentRepository;
 
 
 import java.util.List;
 
-import static yeomeong.common.entity.jpa.kindergarten.QBan.ban;
-import static yeomeong.common.entity.jpa.QLeaveConsent.leaveConsent;
-import static yeomeong.common.entity.jpa.member.QKid.kid;
+import static yeomeong.common.entity.QLeaveConsent.leaveConsent;
+
+import static yeomeong.common.entity.kindergarten.QBan.ban;
+import static yeomeong.common.entity.member.QKid.kid;
 
 @Transactional
 @Repository

@@ -9,7 +9,7 @@ import yeomeong.common.dto.post.announcement.CommentChildDto;
 import yeomeong.common.entity.post.Announcement;
 import yeomeong.common.entity.post.comment.AnnouncementComment;
 import yeomeong.common.repository.AnnouncementCommentRepository;
-import yeomeong.common.repository.jpa.AnnouncementRepository;
+import yeomeong.common.repository.AnnouncementRepository;
 
 @Service
 @RequiredArgsConstructor

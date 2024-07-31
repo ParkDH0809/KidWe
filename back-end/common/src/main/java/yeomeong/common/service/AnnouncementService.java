@@ -9,7 +9,7 @@ import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.member.rtype;
 import yeomeong.common.entity.post.Announcement;
 import yeomeong.common.repository.AnnouncementRepository;
-import yeomeong.common.repository.jpa.MemberRepository;
+import yeomeong.common.repository.MemberRepository;
 
 import java.util.ArrayList;
 import java.util.List;

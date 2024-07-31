@@ -5,13 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import yeomeong.common.dto.leaveconsent.LeaveConsentByMonthAndBanListDto;
 import yeomeong.common.dto.leaveconsent.LeaveConsentCreateDto;
-import yeomeong.common.entity.jpa.LeaveConsent;
-import yeomeong.common.entity.jpa.member.Kid;
-import yeomeong.common.entity.jpa.member.Member;
-import yeomeong.common.entity.jpa.member.rtype;
-import yeomeong.common.repository.jpa.KidReposiory;
-import yeomeong.common.repository.jpa.LeaveConsentRepository;
-import yeomeong.common.repository.jpa.MemberRepository;
+import yeomeong.common.entity.LeaveConsent;
+import yeomeong.common.entity.member.Kid;
+import yeomeong.common.repository.KidReposiory;
+import yeomeong.common.repository.LeaveConsentRepository;
 
 import java.util.ArrayList;
 import java.util.List;

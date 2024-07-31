@@ -1,8 +1,8 @@
-package yeomeong.common.repository.jpa;
+package yeomeong.common.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import yeomeong.common.entity.jpa.member.Kid;
+import yeomeong.common.entity.member.Kid;
 
 
 @Repository

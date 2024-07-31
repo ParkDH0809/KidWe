@@ -1,8 +1,9 @@
-package yeomeong.common.repository.jpa;
+package yeomeong.common.repository;
 
 
 import yeomeong.common.dto.leaveconsent.LeaveConsentByMonthAndBanListDto;
-import yeomeong.common.entity.jpa.LeaveConsent;
+import yeomeong.common.entity.LeaveConsent;
+
 
 import java.util.List;
 

@@ -3,8 +3,8 @@ package yeomeong.common.entity.member;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import yeomeong.common.entity.kindergarten.Ban;
 import yeomeong.common.entity.kindergarten.Kindergarten;
 
@@ -15,6 +15,9 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Member {
 
     @Id @GeneratedValue
@@ -43,4 +46,7 @@ public class Member {
     @JsonIgnore
     @OneToMany(mappedBy = "member")
     private List<KidMember> kidMember = new ArrayList<>();
+
+    @ColumnDefault("false")
+    private Boolean isDeleted;
 }
