@@ -41,7 +41,6 @@ public class DailyNote {
     @JoinColumn
     private Long writerId;
 
-    private Date date;
     private LocalDateTime sendTime;
     private Boolean isDeleted;
 }
