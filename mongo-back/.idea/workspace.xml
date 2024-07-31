@@ -5,31 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2584e982-eb0a-46fe-a7af-60d014975ce6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/yeomeong/common/MongoBackApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/yeomeong/common/controller/MemoController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/yeomeong/common/controller/TagController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/yeomeong/common/document/Memo.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/yeomeong/common/document/Tag.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/yeomeong/common/document/mtype.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/yeomeong/common/dto/Kid.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/yeomeong/common/dto/MemoRequestDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/yeomeong/common/dto/MemoResponseDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/yeomeong/common/dto/TagRequestDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/yeomeong/common/dto/TagResponseDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/yeomeong/common/repository/MemoRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/yeomeong/common/repository/TagRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/yeomeong/common/service/MemoService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/yeomeong/common/service/TagService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/yeomeong/common/MongoBackApplicationTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/application.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,34 +79,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.Build mongo-back.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Load Gradle Dependencies.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.MemoRepositoryTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.MemoServiceTest.executor&quot;: &quot;Run&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;Spring Boot.MongoBackApplication (1).executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.MongoBackApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;be-feature/dailynote&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/SSAFY/Desktop/서지민/공통PJT/S11P12A808/mongo-back/build.gradle&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.Java&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Build mongo-back.executor": "Run",
+    "Gradle.Load Gradle Dependencies.executor": "Run",
+    "Gradle.MemoRepositoryTest.executor": "Run",
+    "Gradle.MemoServiceTest.executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Spring Boot.MongoBackApplication (1).executor": "Run",
+    "Spring Boot.MongoBackApplication.executor": "Run",
+    "git-widget-placeholder": "be-feature/dailynote",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/SSAFY/Desktop/서지민/공통PJT/S11P12A808/back-end/common/build.gradle",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.sourceCode.Java",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\SSAFY\Desktop\서지민\공통PJT\S11P12A808\mongo-back\src\test" />
@@ -180,7 +156,8 @@
       <workItem from="1722227515076" duration="8068000" />
       <workItem from="1722237006940" duration="3965000" />
       <workItem from="1722301350092" duration="23721000" />
-      <workItem from="1722382341439" duration="79000" />
+      <workItem from="1722382341439" duration="218000" />
+      <workItem from="1722382566217" duration="27000" />
     </task>
     <servers />
   </component>
