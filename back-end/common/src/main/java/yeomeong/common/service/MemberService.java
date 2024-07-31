@@ -4,7 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import yeomeong.common.dto.auth.JoinRequestDto;
+import yeomeong.common.dto.auth.SignupRequestDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
 import yeomeong.common.dto.member.MemberSaveRequestDto;
 import yeomeong.common.entity.member.Member;
@@ -25,8 +25,8 @@ public class MemberService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void joinMember(JoinRequestDto joinRequestDto) {
-        Member member = MemberSaveRequestDto.toMemberEntity(joinRequestDto.getMemberSaveRequestDto());
+    public void joinMember(SignupRequestDto signupRequestDto) {
+        Member member = MemberSaveRequestDto.toMemberEntity(signupRequestDto.getMemberSaveRequestDto());
         if (memberRepository.existsByEmail(member.getEmail())) {
             throw new CustomException(ErrorCode.DUPLICATED_USER_EMAIL);
         }

@@ -11,7 +11,7 @@ import yeomeong.common.dto.member.MemberSaveRequestDto;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class JoinRequestDto {
+public class SignupRequestDto {
 
     private MemberSaveRequestDto memberSaveRequestDto;
     private KindergartenSaveRequestDto kindergartenSaveRequestDto;
