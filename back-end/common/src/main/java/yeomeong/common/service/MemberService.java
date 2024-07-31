@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import yeomeong.common.dto.auth.JoinRequestDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
+import yeomeong.common.dto.member.MemberSaveRequestDto;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
@@ -25,7 +26,7 @@ public class MemberService {
     }
 
     public void joinMember(JoinRequestDto joinRequestDto) {
-        Member member = JoinRequestDto.toMemberEntity(joinRequestDto);
+        Member member = MemberSaveRequestDto.toMemberEntity(joinRequestDto.getMemberSaveRequestDto());
         if (memberRepository.existsByEmail(member.getEmail())) {
             throw new CustomException(ErrorCode.DUPLICATED_USER_EMAIL);
         }
