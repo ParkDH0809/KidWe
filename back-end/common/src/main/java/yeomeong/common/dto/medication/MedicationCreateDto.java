@@ -3,12 +3,13 @@ package yeomeong.common.dto.medication;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 public class MedicationCreateDto {
 
     private Long kidId;
-    private LocalDate medicationExecuteDate;
+    private LocalDateTime medicationExecuteDateTime;
     private String symptom;
     private String medicineUrl;
     private String medicineName;

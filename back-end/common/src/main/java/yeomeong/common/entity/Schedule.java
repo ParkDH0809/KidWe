@@ -3,14 +3,18 @@ package yeomeong.common.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import yeomeong.common.entity.kindergarten.Ban;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Schedule {
 
     @Id @GeneratedValue
@@ -19,12 +23,26 @@ public class Schedule {
     @ManyToOne(fetch = FetchType.LAZY)
     private Ban ban;
 
-    private String category;
+    @Enumerated(EnumType.STRING)
+    private ScheduleType scheduleType; //전체공지사항, 반 공지사항
+
+    private String keyword;
 
     private String content;
 
-    private LocalDate startDate;
+    private LocalDate eventDate;
+    private LocalTime eventTime;
 
-    private LocalDate endDate;
 
+    public Schedule(String keyword, String content, LocalDate eventDate, LocalTime eventTime) {
+        this.keyword = keyword;
+        this.content = content;
+        this.eventDate = eventDate;
+        this.eventTime = eventTime;
+    }
+
+    public enum ScheduleType{
+        ALLNOTICE, FORBAN
+    }
 }
+

@@ -33,8 +33,8 @@ public interface AnnouncementRepository extends JpaRepository<Announcement,Long>
             "a.member.ban.name," +
             "a.post.createdDateTime," +
             "size(a.commentList))" +
-            "FROM Announcement a WHERE a.member.ban.id = :banId and a.stored =false" )
-    List<AnnouncementListDto> getAnnouncementByBan( @Param("banId") Long banId);
+            "FROM Announcement a WHERE a.member.ban.id = :banId and a.stored =false")
+    List<AnnouncementListDto> getAnnouncementByBan(@Param("banId") Long banId);
 
     //유치원 반 전체 공지사항 가져오기
     @Query("SELECT new yeomeong.common.dto.post.announcement.AnnouncementListDto(" +
@@ -50,7 +50,7 @@ public interface AnnouncementRepository extends JpaRepository<Announcement,Long>
 
     //임시저장된 공지사항 목록 불러오기
 
-    List<Announcement> findAllByStoredTrueAndMember_Id( Long memberId);
-}
+    List<Announcement> findAllByStoredTrueAndMember_Id(Long memberId);
 
+}
 

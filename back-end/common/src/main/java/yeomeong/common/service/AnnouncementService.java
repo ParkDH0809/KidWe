@@ -80,9 +80,9 @@ public class AnnouncementService {
                  .orElseThrow(() -> new RuntimeException("해당 공지사항을 찾을 수 없습니다."));
 
          return  new AnnouncementDetailDto(
-                 announcement.getMember().getId(),
+                 announcement.getMember().getBan().getName(),
                  announcement.getPost(),
-                 announcement.getVote(),
+                 announcement.getVote().getItems(),
                  announcement.getCommentList());
 
     }
