@@ -7,7 +7,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class MedicationDetailDto {
 
-    private String name;
+    private String medicineName;
     private String symptom;
     private String type;
     private String capacity;

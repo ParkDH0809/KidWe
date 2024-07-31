@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import yeomeong.common.entity.post.Post;
 import yeomeong.common.entity.post.Vote;
+import yeomeong.common.entity.post.VoteItem;
 import yeomeong.common.entity.post.comment.AnnouncementComment;
 
 import java.util.List;
@@ -14,11 +15,11 @@ import java.util.List;
 @NoArgsConstructor
 public class AnnouncementDetailDto {
 
-    private Long writerId;
+    private String banName;
 
     private Post post;
 
-    private Vote vote;
+    private List<VoteItem> voteItems;
 
     private List<AnnouncementComment> comment;
 
