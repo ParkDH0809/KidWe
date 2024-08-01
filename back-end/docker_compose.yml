@@ -1,0 +1,64 @@
+version: '3.3'
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/html:/usr/share/nginx/html
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - back-jpa
+      - back-mongo
+
+  back-jpa:
+    image: back-jpa:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+      - redis
+
+  back-mongo:
+    image: back-mongo:latest
+    ports:
+      - "8081:8080"
+    depends_on:
+      - mongodb
+
+  mysql:
+    image: mysql:8.0.33
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=ssafy
+    volumes:
+      - db_data:/var/lib/mysql
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PASSWORD=ssafy
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    ports:
+      - "8888:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+
+volumes:
+  db_data:
+  mongo_data:
+  jenkins_home:

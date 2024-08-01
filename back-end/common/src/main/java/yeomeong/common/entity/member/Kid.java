@@ -3,18 +3,23 @@ package yeomeong.common.entity.member;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 import yeomeong.common.entity.kindergarten.Ban;
 import yeomeong.common.entity.kindergarten.Bus;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import yeomeong.common.entity.kindergarten.Kindergarten;
 
 @Entity
 @Getter
-@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Kid {
 
     @Id
@@ -41,6 +46,9 @@ public class Kid {
     private boolean isTake;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    private Kindergarten kindergarten;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private Ban ban;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -48,10 +56,7 @@ public class Kid {
 
     @JsonIgnore
     @OneToMany(mappedBy = "kid")
+    @Builder.Default
     private List<KidMember> kidMembers = new ArrayList<>();
-
-
-
-
 
 }

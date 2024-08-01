@@ -38,6 +38,8 @@ public class Kindergarten {
 
     private String addressDetail;
 
+    private String zipCode;
+
     private String tel;
 
     private boolean isVehicle;
