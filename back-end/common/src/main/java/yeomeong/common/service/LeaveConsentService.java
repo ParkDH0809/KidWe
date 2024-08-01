@@ -7,7 +7,7 @@ import yeomeong.common.dto.leaveconsent.LeaveConsentByMonthAndBanListDto;
 import yeomeong.common.dto.leaveconsent.LeaveConsentCreateDto;
 import yeomeong.common.entity.LeaveConsent;
 import yeomeong.common.entity.member.Kid;
-import yeomeong.common.repository.KidReposiory;
+import yeomeong.common.repository.KidRepository;
 import yeomeong.common.repository.LeaveConsentRepository;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.List;
 public class LeaveConsentService {
 
     private final LeaveConsentRepository leaveConsentRepository;
-    private final KidReposiory kidReposiory;
+    private final KidRepository kidRepository;
 
     //반 별로 리스트 (학부모, 선생님일 때 나누어 구현)
     public List<LeaveConsentByMonthAndBanListDto> getLeaveConsentByMonthAndBanList(Long banId, int year, int month) {
@@ -35,7 +35,7 @@ public class LeaveConsentService {
 
     public void createLeaveConsent(Long kidId, LeaveConsentCreateDto leaveConsentCreateDto) {
 
-        Kid kid = kidReposiory.findById(kidId)
+        Kid kid = kidRepository.findById(kidId)
                 .orElseThrow(() -> new RuntimeException("해당하는 아이가 없어요 ㅠ_ㅠ"));
 
         LeaveConsent leaveConsent = new LeaveConsent(

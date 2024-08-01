@@ -6,5 +6,5 @@ import yeomeong.common.entity.member.Kid;
 
 
 @Repository
-public interface KidReposiory extends JpaRepository<Kid,Long> {
+public interface KidRepository extends JpaRepository<Kid,Long> {
 }

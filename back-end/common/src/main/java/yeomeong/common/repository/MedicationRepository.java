@@ -8,7 +8,6 @@ import yeomeong.common.dto.medication.MedicationByKidAndMonthDto;
 import yeomeong.common.dto.medication.MedicationByKidDto;
 import yeomeong.common.dto.medication.MedicationCreateDto;
 import yeomeong.common.dto.medication.MedicationDetailDto;
-import yeomeong.common.entity.kindergarten.Ban;
 import yeomeong.common.entity.medication.Medication;
 import yeomeong.common.entity.member.Kid;
 
@@ -20,7 +19,7 @@ import java.util.List;
 public class MedicationRepository {
 
     private final EntityManager em;
-    private final KidReposiory kidReposiory;
+    private final KidRepository kidRepository;
 
     public void save(Medication medication){
         em.persist(medication);
@@ -61,8 +60,7 @@ public class MedicationRepository {
                 .setParameter("month", month)
                 .getResultList();
     }
-
-
+    
     //투약의뢰서 상세 보기
     public MedicationDetailDto getMedicationDetail(Long medicationId){
         Medication medication = em.find(Medication.class, medicationId);
@@ -83,7 +81,7 @@ public class MedicationRepository {
     public void createMedication(MedicationCreateDto medicationCreateDto, Long kidId){
         //아이 정보 기준으로 생성하기
 
-        Kid kid = kidReposiory.findById(kidId)
+        Kid kid = kidRepository.findById(kidId)
                 .orElseThrow(() -> new RuntimeException("해당 아이가 없습니다."));
 
         Medication medication =new Medication(

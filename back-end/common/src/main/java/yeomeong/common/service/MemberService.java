@@ -16,7 +16,7 @@ import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.repository.BanRepository;
 import yeomeong.common.repository.KidMemberRepository;
-import yeomeong.common.repository.KidReposiory;
+import yeomeong.common.repository.KidRepository;
 import yeomeong.common.repository.KindergartenRepository;
 import yeomeong.common.repository.MemberRepository;
 
@@ -27,19 +27,19 @@ public class MemberService {
 
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
-    private final KidReposiory kidReposiory;
+    private final KidRepository kidRepository;
     private final BanRepository banRepository;
     private final KidMemberRepository kidMemberRepository;
     private final KindergartenRepository kindergartenRepository;
 
     public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder,
-        BanRepository banRepository, KindergartenRepository kindergartenRepository, KidReposiory kidReposiory,
+        BanRepository banRepository, KindergartenRepository kindergartenRepository, KidRepository kidRepository,
         KidMemberRepository kidMemberRepository) {
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
         this.banRepository = banRepository;
         this.kindergartenRepository = kindergartenRepository;
-        this.kidReposiory = kidReposiory;
+        this.kidRepository = kidRepository;
         this.kidMemberRepository = kidMemberRepository;
     }
 
@@ -57,7 +57,7 @@ public class MemberService {
     }
 
     private void joinGuardian(long memberId, KidJoinRequestDto kidJoinRequestDto) {
-        long kidId = kidReposiory.save(
+        long kidId = kidRepository.save(
             KidJoinRequestDto.toKidEntity(
                 kidJoinRequestDto,
                 kindergartenRepository.findById(kidJoinRequestDto.getKindergartenId())
@@ -69,7 +69,7 @@ public class MemberService {
         kidMemberRepository.save(
             KidMember
                 .builder()
-                .kid(kidReposiory.findById(kidId).orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)))
+                .kid(kidRepository.findById(kidId).orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)))
                 .member(memberRepository.findById(memberId)
                     .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)))
                 .build()
