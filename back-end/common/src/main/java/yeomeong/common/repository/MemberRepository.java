@@ -1,6 +1,5 @@
 package yeomeong.common.repository;
 
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -24,7 +23,12 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Modifying
     @Transactional
-    @Query("UPDATE Member m SET m.ban = :ban, m.kindergarten = :kindergarten WHERE m.id = :id")
-    void updateMember(@Param("id") Long id, @Param("ban") Ban ban,@Param("kindergarten") Kindergarten kindergarten);
+    @Query("UPDATE Member m SET m.ban = :ban WHERE m.id = :id")
+    void updateMemberBan(@Param("id") Long id, @Param("ban") Ban ban);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Member m SET m.kindergarten = :kindergarten WHERE m.id = :id")
+    void updateMemberKindergarten(@Param("id") Long id, @Param("kindergarten") Kindergarten kindergarten);
 
 }

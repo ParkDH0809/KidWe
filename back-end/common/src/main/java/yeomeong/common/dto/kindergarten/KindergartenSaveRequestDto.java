@@ -11,6 +11,7 @@ public class KindergartenSaveRequestDto {
     private String name;
     private String address;
     private String addressDetail;
+    private String zipCode;
     private String tel;
 
     public static Kindergarten toKindergartenEntity(KindergartenSaveRequestDto kindergartenSaveRequestDto) {
@@ -18,6 +19,7 @@ public class KindergartenSaveRequestDto {
             .name(kindergartenSaveRequestDto.getName())
             .address(kindergartenSaveRequestDto.getAddress())
             .addressDetail(kindergartenSaveRequestDto.addressDetail)
+            .zipCode(kindergartenSaveRequestDto.zipCode)
             .tel(kindergartenSaveRequestDto.tel)
             .build();
     }
