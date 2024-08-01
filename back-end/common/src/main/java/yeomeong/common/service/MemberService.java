@@ -14,11 +14,7 @@ import yeomeong.common.entity.member.KidMember;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
-import yeomeong.common.repository.BanRepository;
-import yeomeong.common.repository.KidMemberRepository;
-import yeomeong.common.repository.KidReposiory;
-import yeomeong.common.repository.KindergartenRepository;
-import yeomeong.common.repository.MemberRepository;
+import yeomeong.common.repository.*;
 
 @Service
 @Transactional
@@ -27,13 +23,13 @@ public class MemberService {
 
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
-    private final KidReposiory kidReposiory;
+    private final KidRepository kidReposiory;
     private final BanRepository banRepository;
     private final KidMemberRepository kidMemberRepository;
     private final KindergartenRepository kindergartenRepository;
 
     public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder,
-        BanRepository banRepository, KindergartenRepository kindergartenRepository, KidReposiory kidReposiory,
+        BanRepository banRepository, KindergartenRepository kindergartenRepository, KidRepository kidReposiory,
         KidMemberRepository kidMemberRepository) {
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;

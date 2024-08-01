@@ -41,8 +41,10 @@ public class LeaveConsentRepositoryImpl implements LeaveConsentRepository {
                         ban.name,
                         leaveConsent.leaveDate, leaveConsent.leaveTime
                 )).from(leaveConsent)
-                .join(kid)
-                .join(ban)
+                .join(leaveConsent.kid, kid)
+                .on(leaveConsent.kid.id.eq(kid.id)) // 조인 조건 추가
+                .join(kid.ban, ban) // Ban과의 조인
+                .on(kid.ban.id.eq(ban.id)) // 추가적인 조인 조건
                 .where(leaveConsent.kid.ban.id.eq(banId)
                         .and(leaveConsent.leaveDate.year().intValue().eq(year)
                                 .and(leaveConsent.leaveDate.month().intValue().eq(month))))
@@ -57,8 +59,10 @@ public class LeaveConsentRepositoryImpl implements LeaveConsentRepository {
                 ban.name,
                 leaveConsent.leaveDate, leaveConsent.leaveTime))
                 .from(leaveConsent)
-                .join(kid)
-                .join(ban)
+                .join(leaveConsent.kid, kid)
+                .on(leaveConsent.kid.id.eq(kid.id))
+                .join(kid.ban, ban) // Ban과의 조인
+                .on(kid.ban.id.eq(ban.id)) // 추가적인 조인 조건
                 .where(leaveConsent.kid.id.eq(kidId)
                         .and(leaveConsent.leaveDate.year().intValue().eq(year)
                                 .and(leaveConsent.leaveDate.month().intValue().eq(month))))
@@ -68,8 +72,6 @@ public class LeaveConsentRepositoryImpl implements LeaveConsentRepository {
 
     @Override
     public void remove(LeaveConsent leaveConsent) {
-
-
 
     }
 

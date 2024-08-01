@@ -4,52 +4,95 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import yeomeong.common.entity.kindergarten.Ban;
+import yeomeong.common.entity.kindergarten.Kindergarten;
 import yeomeong.common.entity.member.Kid;
 import yeomeong.common.entity.member.gtype;
-import yeomeong.common.repository.KidReposiory;
+import yeomeong.common.repository.BanRepository;
+import yeomeong.common.repository.KidRepository;
+import yeomeong.common.repository.KindergartenRepository;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Component
 @Slf4j
 public class DataInitializer implements CommandLineRunner {
 
         @Autowired
-        private KidReposiory kidRepository; // Kid 엔티티를 위한 JPA 레포지토리
+        private BanRepository banRepository; // Ban에 대한 Repository
+        @Autowired
+        private KindergartenRepository kindergartenRepository; // Kindergarten에 대한 Repository
+        @Autowired
+        private KidRepository kidRepository; // Kid에 대한 Repository
 
         @Override
-        public void run(String... args) {
-            // 초기 데이터 생성
+        public void run(String... args) throws Exception {
+            // 유치원 생성
+            Kindergarten kindergarten = Kindergarten.builder()
+                    .name("Happy Kindergarten")
+                    .build();
 
-            kidRepository.save(
-                Kid.builder()
-                    .name("John Doe")
-                    .birthday(new Date(2005, 1, 15))
-                    .startAttendanceDate(new Date())
-                    .picture("url_to_johns_picture")
-                    .allergies("Peanuts")
-                    .gender(gtype.MALE)
-                    .tall(120.5)
-                    .weight(30.0)
-                    .isTake(true)
-                    .build()
-            );
+            kindergartenRepository.save(kindergarten);
 
-            kidRepository.save(
-                Kid.builder()
-                    .name("Jane Doe")
-                    .birthday(new Date(2006, 5, 20))
-                    .startAttendanceDate(new Date())
-                    .picture("url_to_jane_picture")
-                    .allergies("None")
-                    .gender(gtype.FEMALE)
-                    .tall(115.5)
-                    .weight(28.0)
-                    .isTake(false)
-                    .build()
-            );
+            // 반 생성
+            Ban ban1 = Ban.builder()
+                    .name("반 1")
+                    .kindergarten(kindergarten)
+                    .build();
 
-            log.info("[Data] 초기 데이터가 삽입되었습니다.");
+            Ban ban2 = Ban.builder()
+                    .name("반 2")
+                    .kindergarten(kindergarten)
+                    .build();
+
+            banRepository.save(ban1);
+            banRepository.save(ban2);
+
+            // 아동 생성
+            List<Kid> kids = new ArrayList<>();
+
+            for (int i = 1; i <= 5; i++) {
+                Kid kid = Kid.builder()
+                        .name("아이 " + i)
+                        .birthday(new Date()) // 실제 생일 데이터로 변경 가능
+                        .startAttendanceDate(new Date()) // 실제 출석 시작일 데이터로 변경 가능
+                        .picture("picture" + i + ".jpg") // 실제 사진 경로로 변경 가능
+                        .allergies("알레르기 " + i) // 실제 알레르기 정보로 변경 가능
+                        .gender(i % 2 == 0 ? gtype.FEMALE : gtype.MALE) // 성별 설정
+                        .tall(100 + i) // 키 데이터
+                        .weight(20 + i) // 몸무게 데이터
+                        .isTake(false) // 기본값 설정
+                        .kindergarten(kindergarten)
+                        .ban(ban1) // 첫 번째 반에 배치
+                        .build();
+
+                kids.add(kid);
+                kidRepository.save(kid);
+            }
+
+            // 두 번째 반에 3명의 아동 추가
+            for (int i = 6; i <= 8; i++) {
+                Kid kid = Kid.builder()
+                        .name("아이 " + i)
+                        .birthday(new Date())
+                        .startAttendanceDate(new Date())
+                        .picture("picture" + i + ".jpg")
+                        .allergies("알레르기 " + i)
+                        .gender(i % 2 == 0 ? gtype.FEMALE : gtype.MALE)
+                        .tall(100 + i)
+                        .weight(20 + i)
+                        .isTake(false)
+                        .kindergarten(kindergarten)
+                        .ban(ban2) // 두 번째 반에 배치
+                        .build();
+
+                kids.add(kid);
+                kidRepository.save(kid);
+            }
         }
 }
+
+
 

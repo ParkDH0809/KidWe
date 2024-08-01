@@ -6,18 +6,18 @@ import yeomeong.common.dto.kid.KidJoinRequestDto;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.repository.BanRepository;
-import yeomeong.common.repository.KidReposiory;
+import yeomeong.common.repository.KidRepository;
 import yeomeong.common.repository.KindergartenRepository;
 
 @Service
 @Slf4j
 public class KidService {
 
-    final KidReposiory kidReposiory;
+    final KidRepository kidReposiory;
     final KindergartenRepository kindergartenRepository;
     final BanRepository banRepository;
 
-    public KidService(KidReposiory kidReposiory, KindergartenRepository kindergartenRepository,
+    public KidService(KidRepository kidReposiory, KindergartenRepository kindergartenRepository,
         BanRepository banRepository) {
         this.kidReposiory = kidReposiory;
         this.kindergartenRepository = kindergartenRepository;

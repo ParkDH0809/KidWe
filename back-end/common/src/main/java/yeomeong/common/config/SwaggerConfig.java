@@ -13,7 +13,7 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi publicApi() {
         return GroupedOpenApi.builder()
-                .group("YELLOWHAT")
+                .group("KIDWE")
                 .pathsToMatch("/**")
                 .build();
     }
@@ -22,7 +22,7 @@ public class SwaggerConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("YELLOW HAT API")
+                        .title("Kidwe API")
                         .version("v1")
                         .description("API 명세서"));
     }

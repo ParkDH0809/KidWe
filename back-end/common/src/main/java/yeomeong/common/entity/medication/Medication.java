@@ -38,7 +38,8 @@ public class Medication {
     private String medicineUrl;
 
     private String capacity;
-
+    @Column(name = "medication_execute_due_date")
+    private LocalDate medicationExecuteDueDate;
     private String medicationExecuteTime;
 
     private String numberOfDoses;
@@ -47,21 +48,23 @@ public class Medication {
 
     private String others;
 
-    private LocalDateTime medicationExecuteDateTime;
+    private LocalDateTime medicationCreatedDateTime;
 
     private String signUrl;
 
-    public Medication(Kid kid, LocalDateTime medicationExecuteDateTime, String symptom, String medicineUrl, String type, String capacity, String numberOfDoses, String medicationExecuteTime, String storageMethod, String others, String signUrl){
+    public Medication(String name, Kid kid, String symptom, String type, String medicineUrl, String capacity, LocalDate medicationExecuteDueDate, String medicationExecuteTime, String numberOfDoses, String storageMethod, String others, LocalDateTime medicationCreatedDateTime, String signUrl) {
+        this.name = name;
         this.kid = kid;
-        this.medicationExecuteDateTime = medicationExecuteDateTime;
         this.symptom = symptom;
-        this.medicineUrl = medicineUrl;
         this.type = type;
+        this.medicineUrl = medicineUrl;
         this.capacity = capacity;
-        this.numberOfDoses = numberOfDoses;
+        this.medicationExecuteDueDate = medicationExecuteDueDate;
         this.medicationExecuteTime = medicationExecuteTime;
+        this.numberOfDoses = numberOfDoses;
         this.storageMethod = storageMethod;
         this.others = others;
+        this.medicationCreatedDateTime = medicationCreatedDateTime;
         this.signUrl = signUrl;
     }
 }
