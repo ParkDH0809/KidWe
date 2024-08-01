@@ -1,6 +1,7 @@
 package yeomeong.common.controller;
 
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Description;
@@ -26,8 +27,8 @@ public class MedicationController {
     private final MedicationService medicationService;
 
 
-    @Description("반 별 특정월 투약의뢰서 조회하기 (원장, 선생)")
     @GetMapping("ban/{ban_id}/{year}/{month}")
+    @Operation(summary = "반 별 특정 월의 투약의뢰서를 조회합니다(원장, 선생)", description = "반 id와 연월 정보를 통해 투약의뢰서 목록을 조회합니다.")
     public ResponseEntity<List<MedicationByKidAndMonthDto>> getMedicationByBanAndMonth(
             @PathVariable("ban_id") Long banId,
             @PathVariable("year") int year,
@@ -39,7 +40,7 @@ public class MedicationController {
     }
 
 
-    @Description("아이의 투약의뢰서 조회하기 (학부모용)")
+    @Operation(summary = "아이의 특정 월의 투약의뢰서를 조회합니다. (선생)", description = "아이 id, 연, 월을 정보를 통해 투약의뢰서 목록을 조회합니다.")
     @GetMapping("kid/{kid_id}/{year}/{month}")
     public ResponseEntity<List<MedicationByKidDto>> getMedicationByKid(
             @PathVariable("kid_id") Long kidId,
@@ -51,8 +52,8 @@ public class MedicationController {
         return ResponseEntity.ok(medications);
     }
 
-    @Description("투약의뢰서 상세 조회하기")
     @GetMapping("/{medication_id}")
+    @Operation(summary = "해당 투약의뢰서를 상세조회합니다.", description = "투약의뢰서 id를 통해 투약의뢰서를 상세조회합니다.")
     public ResponseEntity<MedicationDetailDto> getMedicationDetail(
             @PathVariable("medication_id") Long medicationId){
 
@@ -61,8 +62,8 @@ public class MedicationController {
     }
 
 
-    @Description("투약의뢰서 생성하기")
     @PostMapping("/{kid_id}")
+    @Operation(summary = "투약의뢰서를 작성합니다", description = "투약의뢰서 내용과 아이 id를 통해 투약의뢰서를 작성합니다.")
     public ResponseEntity<MedicationCreateDto> createMedication(
             @RequestBody MedicationCreateDto medicationCreateDto,
             @PathVariable("kid_id") Long kidId){
@@ -73,8 +74,8 @@ public class MedicationController {
                 .body(medicationCreateDto);
     }
 
-    @Description("투약의뢰서 삭제하기")
     @DeleteMapping("/{medication_id}")
+    @Operation(summary = "투약의뢰서 삭제합니다.", description = "해당 투약의뢰서의 id를 통해 투약의뢰서를 삭제합니다.")
     public ResponseEntity<Void> deleteMedicationRequest(
             @PathVariable("medication_id") Long medicationId){
 

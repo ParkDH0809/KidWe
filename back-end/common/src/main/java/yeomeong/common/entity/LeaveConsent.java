@@ -22,7 +22,7 @@ public class LeaveConsent {
     private Kid kid;
 
     private LocalDate leaveDate;
-    private LocalTime localTime;
+    private LocalTime leaveTime;
 
     private String leaveMethod;
 
@@ -38,10 +38,10 @@ public class LeaveConsent {
 
     }
 
-    public LeaveConsent(Kid kid, LocalDate leaveDate, LocalTime localTime, String leaveMethod, String guardianRelationship, String guardianContact, String emergencyRelationship, String emergencyContact, String signUrl) {
+    public LeaveConsent(Kid kid, LocalDate leaveDate, LocalTime leaveTime, String leaveMethod, String guardianRelationship, String guardianContact, String emergencyRelationship, String emergencyContact, String signUrl) {
         this.kid = kid;
         this.leaveDate = leaveDate;
-        this.localTime = localTime;
+        this.leaveTime = leaveTime;
         this.leaveMethod = leaveMethod;
         this.guardianRelationship = guardianRelationship;
         this.guardianContact = guardianContact;

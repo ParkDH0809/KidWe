@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import yeomeong.common.dto.leaveconsent.LeaveConsentByMonthAndBanListDto;
 import yeomeong.common.dto.leaveconsent.QLeaveConsentByMonthAndBanListDto;
 import yeomeong.common.entity.LeaveConsent;
-import yeomeong.common.repository.LeaveConsentRepository;
 
 
 import java.util.List;
@@ -40,7 +39,7 @@ public class LeaveConsentRepositoryImpl implements LeaveConsentRepository {
                         leaveConsent.id,
                         kid.name,
                         ban.name,
-                        leaveConsent.leaveDate
+                        leaveConsent.leaveDate, leaveConsent.leaveTime
                 )).from(leaveConsent)
                 .join(kid)
                 .join(ban)
@@ -56,7 +55,7 @@ public class LeaveConsentRepositoryImpl implements LeaveConsentRepository {
                 leaveConsent.id,
                 kid.name,
                 ban.name,
-                leaveConsent.leaveDate))
+                leaveConsent.leaveDate, leaveConsent.leaveTime))
                 .from(leaveConsent)
                 .join(kid)
                 .join(ban)
