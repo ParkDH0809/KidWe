@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import yeomeong.common.dto.ban.BanBasicInfoDto;
 import yeomeong.common.dto.kindergarten.KindergartenInfoResponseDto;
 import yeomeong.common.dto.kindergarten.KindergartenSaveRequestDto;
 import yeomeong.common.dto.kindergarten.KindergartenSearchDto;
@@ -46,6 +47,12 @@ public class KindergartenController {
     @GetMapping("/{kindergartenId}")
     public ResponseEntity<KindergartenInfoResponseDto> getKindergarten(@PathVariable Long kindergartenId) {
         return ResponseEntity.status(HttpStatus.OK).body(kindergartenService.getKindergartenInfo(kindergartenId));
+    }
+
+    @Operation(summary = "특정 유치원 반 리스트 조회", description = "유치원 별 반 리스트를 반환합니다.")
+    @GetMapping("/{kindergartenId}/bans")
+    public ResponseEntity<List<BanBasicInfoDto>> getBansByKindergarten(@PathVariable Long kindergartenId) {
+        return ResponseEntity.status(HttpStatus.OK).body(kindergartenService.getBansByKindergarten(kindergartenId));
     }
 
 }
