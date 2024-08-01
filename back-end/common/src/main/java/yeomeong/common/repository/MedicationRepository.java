@@ -10,6 +10,7 @@ import yeomeong.common.dto.medication.MedicationCreateDto;
 import yeomeong.common.dto.medication.MedicationDetailDto;
 import yeomeong.common.entity.kindergarten.Ban;
 import yeomeong.common.entity.medication.Medication;
+import yeomeong.common.entity.member.Kid;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ import java.util.List;
 public class MedicationRepository {
 
     private final EntityManager em;
-    private final BanRepository banRepository;
+    private final KidReposiory kidReposiory;
 
     public void save(Medication medication){
         em.persist(medication);
@@ -35,9 +36,9 @@ public class MedicationRepository {
         return em.createQuery("select m.id," +
                                 " m.kid.name, " +
                                 " m.kid.ban.name " +
-                "from Medication m where YEAR(m.medicationExecuteDate) = :year and " +
-                                "MONTH(m.medicationExecuteDate) = :month and"+
-                                " m.ban.id = :banId",
+                "from Medication m where YEAR(m.medicationExecuteDateTime) = :year and " +
+                                "MONTH(m.medicationExecuteDateTime) = :month and"+
+                                " m.ban.id = :banId" + " order by m.medicationExecuteDateTime DESC ",
                 MedicationByKidAndMonthDto.class)
                 .setParameter("year", year)
                 .setParameter("month", month)
@@ -52,8 +53,8 @@ public class MedicationRepository {
                                 "m.kid.name" +
                 " from Medication m " +
                 "where m.kid.id = :kidId and " +
-                "YEAR(m.medicationExecuteDate) = :year and " +
-                "MONTH(m.medicationExecuteDate) = :month",
+                "YEAR(m.medicationExecuteDateTime) = :year and " +
+                "MONTH(m.medicationExecuteDateTime) = :month" + " order by m.medicationExecuteDateTime DESC ",
                 MedicationByKidDto.class)
                 .setParameter("kidId",kidId)
                 .setParameter("year", year)
@@ -82,9 +83,12 @@ public class MedicationRepository {
     public void createMedication(MedicationCreateDto medicationCreateDto, Long kidId){
         //아이 정보 기준으로 생성하기
 
+        Kid kid = kidReposiory.findById(kidId)
+                .orElseThrow(() -> new RuntimeException("해당 아이가 없습니다."));
+
         Medication medication =new Medication(
-              kidId,
-                medicationCreateDto.getMedicationExecuteDate(),
+                kid,
+                medicationCreateDto.getMedicationExecuteDateTime(),
                 medicationCreateDto.getSymptom(),
                 medicationCreateDto.getMedicineUrl(),
                 medicationCreateDto.getType(),

@@ -5,9 +5,12 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Entity
@@ -28,23 +31,15 @@ public class Vote {
     @OneToOne(fetch = FetchType.LAZY)
     private Announcement announcement;
 
-    @ElementCollection
-    private Map<String, Integer> items = new HashMap<>();
+    @OneToMany
+    private List<VoteItem> items = new ArrayList<>();
 
 
-    public void addItem(String item){
-        items.put(item, 0);
-    }
-
-    public void doVote(String item){
-        items.put(item, items.getOrDefault(item,0)+1);
-    }
-
-    public Vote(String title, LocalDate startDate, LocalDate endDate, Map<String,Integer> items){
+    public Vote(String title, LocalDate startDate, LocalDate endDate,Announcement announcement ){
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.items = items;
+        this.announcement = announcement;
     }
 }
 

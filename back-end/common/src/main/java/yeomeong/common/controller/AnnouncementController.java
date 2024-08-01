@@ -86,9 +86,9 @@ public class AnnouncementController {
     @PostMapping("/{vote_id}")
     public ResponseEntity<VoteResultDto> addVote(
             @PathVariable("vote_id") Long voteId,
-             String voteItem){
+             int index){
 
-        VoteResultDto result = voteService.doVote(voteId, voteItem);
+        VoteResultDto result = voteService.doVote(voteId, index);
 
         return ResponseEntity.ok(result);
     }

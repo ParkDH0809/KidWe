@@ -11,7 +11,7 @@ import yeomeong.common.entity.member.rtype;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class JoinRequestDto {
+public class MemberSaveRequestDto {
 
     private String name;
     private String tel;
@@ -19,14 +19,14 @@ public class JoinRequestDto {
     private String password;
     private String role;
 
-    public static Member toMemberEntity(JoinRequestDto joinRequestDto) {
+    public static Member toMemberEntity(MemberSaveRequestDto memberSaveRequestDto) {
         return Member.builder()
-                .name(joinRequestDto.getName())
-                .tel(joinRequestDto.getTel())
-                .email(joinRequestDto.getEmail())
-                .password(joinRequestDto.getPassword())
-                .role(rtype.valueOf(joinRequestDto.getRole()))
-                .build();
+            .name(memberSaveRequestDto.getName())
+            .tel(memberSaveRequestDto.getTel())
+            .email(memberSaveRequestDto.getEmail())
+            .password(memberSaveRequestDto.getPassword())
+            .role(rtype.valueOf(memberSaveRequestDto.getRole()))
+            .build();
     }
 
 }

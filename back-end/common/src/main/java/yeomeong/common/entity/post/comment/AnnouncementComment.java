@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import yeomeong.common.entity.post.Announcement;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,8 @@ public class AnnouncementComment {
 
     @OneToMany(mappedBy = "parentComment",cascade = CascadeType.ALL)
     private List<AnnouncementComment> replies =new ArrayList<>();
+
+    private LocalDateTime localDateTime;
 
 
     public AnnouncementComment(Long memberId, String content, Announcement announcement) {

@@ -2,16 +2,21 @@ package yeomeong.common.entity.member;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 
 @Entity
 @Getter
-@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class KidMember {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -19,4 +24,5 @@ public class KidMember {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
+
 }

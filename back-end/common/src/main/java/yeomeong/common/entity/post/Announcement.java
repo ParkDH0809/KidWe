@@ -26,6 +26,7 @@ public class  Announcement {
     @Embedded
     private Post post;
 
+    @Column(name = "is_stored")
     private boolean stored;
 
     @OneToOne(mappedBy = "announcement",fetch = FetchType.LAZY)

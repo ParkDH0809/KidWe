@@ -1,4 +1,4 @@
-package yeomeong.common.dto.member;
+package yeomeong.common.dto.auth;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
