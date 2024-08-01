@@ -31,7 +31,7 @@ public class Vote {
     @OneToOne(fetch = FetchType.LAZY)
     private Announcement announcement;
 
-    @OneToMany
+    @OneToMany(mappedBy = "vote")
     private List<VoteItem> items = new ArrayList<>();
 
 
