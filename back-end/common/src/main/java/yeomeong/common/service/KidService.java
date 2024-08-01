@@ -13,20 +13,20 @@ import yeomeong.common.repository.KindergartenRepository;
 @Slf4j
 public class KidService {
 
-    final KidRepository kidReposiory;
+    final KidRepository kidRepository;
     final KindergartenRepository kindergartenRepository;
     final BanRepository banRepository;
 
-    public KidService(KidRepository kidReposiory, KindergartenRepository kindergartenRepository,
+    public KidService(KidRepository kidRepository, KindergartenRepository kindergartenRepository,
         BanRepository banRepository) {
-        this.kidReposiory = kidReposiory;
+        this.kidRepository = kidRepository;
         this.kindergartenRepository = kindergartenRepository;
         this.banRepository = banRepository;
     }
 
     public void joinKid(KidJoinRequestDto kidJoinRequestDto) {
         log.info(kidJoinRequestDto.toString());
-        kidReposiory.save(
+        kidRepository.save(
             KidJoinRequestDto.toKidEntity(
                 kidJoinRequestDto,
                 kindergartenRepository.findById(kidJoinRequestDto.getKindergartenId())

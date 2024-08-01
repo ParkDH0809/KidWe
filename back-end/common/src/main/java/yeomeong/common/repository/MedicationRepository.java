@@ -1,11 +1,14 @@
 package yeomeong.common.repository;
 
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import yeomeong.common.dto.medication.*;
+import yeomeong.common.dto.medication.MedicationByKidAndMonthDto;
+import yeomeong.common.dto.medication.MedicationByKidDto;
+import yeomeong.common.dto.medication.MedicationCreateDto;
+import yeomeong.common.dto.medication.MedicationDetailDto;
+import yeomeong.common.entity.kindergarten.Ban;
 import yeomeong.common.entity.medication.Medication;
 import yeomeong.common.entity.medication.QMedication;
 import yeomeong.common.entity.member.Kid;
@@ -15,11 +18,11 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
+
 public class MedicationRepository {
 
     private final EntityManager em;
     private final KidRepository kidRepository;
-    private final JPAQueryFactory jpaQueryFactory;
 
     public void save(Medication medication){
         em.persist(medication);
