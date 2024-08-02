@@ -11,7 +11,7 @@ import yeomeong.common.dto.kid.KidJoinRequestDto;
 import yeomeong.common.service.KidService;
 
 @RestController
-@RequestMapping("/kid")
+@RequestMapping("/kids")
 @Tag(name = "아이 API", description = "아이 관련 API")
 public class KidController {
 
