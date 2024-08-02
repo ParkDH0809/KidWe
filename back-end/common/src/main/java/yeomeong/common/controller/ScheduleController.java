@@ -30,7 +30,7 @@ public class ScheduleController {
             @PathVariable("kindergarten_id") Long kindergartenId,
             @PathVariable("date") LocalDate localDate){
 
-        return ResponseEntity.ok(scheduleService.getScheduleByallNoticeAndDayList(kindergartenId, localDate));
+        return ResponseEntity.ok(scheduleService.getScheduleByAllNoticeAndDayList(kindergartenId, localDate));
     }
 
     //반 별 공지사항 불러오기

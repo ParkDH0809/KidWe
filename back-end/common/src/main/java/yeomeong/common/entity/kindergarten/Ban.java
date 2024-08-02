@@ -25,6 +25,7 @@ public class Ban {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "kindergarten_id")
     private Kindergarten kindergarten;
 
     @JsonIgnore

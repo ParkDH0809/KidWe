@@ -45,7 +45,7 @@ public class AnnouncementController {
 
 
     //유치원 공지사항 상세보기
-    @GetMapping("/list/{announcement_id}")
+    @GetMapping("/detail/{announcement_id}")
     @Operation(summary = "유치원의 공지사항을 상세보기합니다" , description = "공지사항 id를 활용하여 공지사항을 상세 조회합니다.")
     public ResponseEntity<AnnouncementDetailDto> getAnnouncementDetail(
             @PathVariable("announcement_id") Long announcementId){
@@ -78,7 +78,7 @@ public class AnnouncementController {
     }
 
     //공지사항에 투표 생성하기
-    @PostMapping("/{announcement_id}/vote")
+    @PostMapping("/vote/{announcement_id}")
     @Operation(summary = "공지사항 투표를 생성합니다.", description = "공지사항 id와 투표형식을 받아옵니다. 공지사항이 먼저 작성된 후 투표를 작성할 수 있습니다.")
     public ResponseEntity<VoteCreateDto> createVote(
             @PathVariable ("announcement_id") Long announcement_id,
@@ -90,19 +90,19 @@ public class AnnouncementController {
     }
 
     //투표하기
-    @PostMapping("/{vote_id}")
+    @PostMapping("/vote/items/{vote_id}/{voteitem_id}")
     @Operation(summary = "원하는 목록에 투표합니다." , description = "원하는 투표의 index를 받아와서 해당 index에 투표합니다.")
     public ResponseEntity<VoteResultDto> addVote(
             @PathVariable("vote_id") Long voteId,
-             int index){
+            @PathVariable("voteitem_id")Long voteItemId){
 
-        VoteResultDto result = voteService.doVote(voteId, index);
+        VoteResultDto result = voteService.doVote(voteId, voteItemId);
 
         return ResponseEntity.ok(result);
     }
 
     //임시저장 목록 불러오기
-    @GetMapping("/storage/{member_id}")
+    @GetMapping("/storage/list/{member_id}")
     @Operation(summary = "해당 맴버가 임시저장한 공지사항 목록을 불러옵니다.", description = "해당 멤버의 id를 받아와 이를 활용하여 임시저장 했던 공지사항 목록들을 불러옵니다.")
     public ResponseEntity<List<AnnouncementStorageListDto>> getAnnouncementStorageList(
             @PathVariable("member_id") Long memberId){

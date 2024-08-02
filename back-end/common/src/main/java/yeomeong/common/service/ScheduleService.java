@@ -4,6 +4,7 @@ package yeomeong.common.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
 import yeomeong.common.dto.schedule.CreateScheduleRequestDto;
 import yeomeong.common.dto.schedule.CreateScheduleResponseDto;
 import yeomeong.common.dto.schedule.ScheduleByDayListDto;
@@ -21,6 +22,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
@@ -34,7 +36,7 @@ public class ScheduleService {
 
 
     //전체 공지용 스케줄 목록 가져오기
-    public List<ScheduleByDayListDto> getScheduleByallNoticeAndDayList(Long kindergartenId, LocalDate localDate){
+    public List<ScheduleByDayListDto> getScheduleByAllNoticeAndDayList(Long kindergartenId, LocalDate localDate){
 
         List<Schedule> allByKindergartenIdAndEventDate = scheduleRepository.findAllByBan_Kindergarten_IdAndEventDateAndScheduleTypeOrderByEventTimeDesc(kindergartenId, localDate, Schedule.ScheduleType.ALLNOTICE);
 
@@ -70,12 +72,15 @@ public class ScheduleService {
     }
 
     //스케줄 생성하기
+    @Transactional
     public void createSchedule(Long memberId, CreateScheduleRequestDto createScheduleDto) {
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("해당 멤버가 없습니다"));
 
-        Schedule schedule = new Schedule(createScheduleDto.getKeyword(),
+        Schedule schedule = new Schedule(
+                member.getBan(),
+                createScheduleDto.getKeyword(),
                 createScheduleDto.getContent(),
                 createScheduleDto.getLocalDate(),
                 LocalTime.now()
@@ -94,6 +99,7 @@ public class ScheduleService {
     }
 
     //스케줄 수정하기
+    @Transactional
     public CreateScheduleResponseDto updateSchedule (Long scheduleId, CreateScheduleRequestDto createScheduleRequestDto){
 
         Schedule schedule = scheduleRepository.findById(scheduleId)
@@ -108,6 +114,7 @@ public class ScheduleService {
     }
 
     //스케줄 삭제하기
+    @Transactional
     public void removeSchedule(Long scheduleId){
 
         Schedule schedule = scheduleRepository.findById(scheduleId)

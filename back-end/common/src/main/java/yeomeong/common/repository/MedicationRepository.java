@@ -8,9 +8,7 @@ import yeomeong.common.dto.medication.MedicationByKidAndMonthDto;
 import yeomeong.common.dto.medication.MedicationByKidDto;
 import yeomeong.common.dto.medication.MedicationCreateDto;
 import yeomeong.common.dto.medication.MedicationDetailDto;
-import yeomeong.common.entity.kindergarten.Ban;
 import yeomeong.common.entity.medication.Medication;
-import yeomeong.common.entity.medication.QMedication;
 import yeomeong.common.entity.member.Kid;
 
 import java.time.LocalDate;

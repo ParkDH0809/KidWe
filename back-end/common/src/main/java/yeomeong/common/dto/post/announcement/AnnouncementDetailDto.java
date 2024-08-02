@@ -1,5 +1,6 @@
 package yeomeong.common.dto.post.announcement;
 
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,8 +20,15 @@ public class AnnouncementDetailDto {
 
     private Post post;
 
-    private List<VoteItem> voteItems;
+    private Long voteId;
+
+    private List<VoteItemDto> voteItems;
 
     private List<AnnouncementCommentDto> comment;
 
+    public AnnouncementDetailDto(String banName, Post post, List<AnnouncementCommentDto> comment) {
+        this.banName = banName;
+        this.post = post;
+        this.comment = comment;
+    }
 }
