@@ -31,7 +31,7 @@ public class DailyNoteController {
     }
 
     @GetMapping("/{kid_id}/{year}/{month}")
-    public List<DailyNote> getDailyNotes(@PathVariable("kid_id") Long kidId,
+    public List<DailyNoteResponseDto> getDailyNotes(@PathVariable("kid_id") Long kidId,
         @PathVariable("year") String year,
         @PathVariable("year") String month) {
         String yearAndMonth = year + "-" + month;
@@ -39,7 +39,7 @@ public class DailyNoteController {
     }
 
     @GetMapping("/{dailynote_id}")
-    public DailyNote getDailyNote(@PathVariable("dailynote_id") Long id) {
+    public DailyNoteResponseDto getDailyNote(@PathVariable("dailynote_id") Long id) {
         return dailyNoteService.getDailyNote(id);
     }
 

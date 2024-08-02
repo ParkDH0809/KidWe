@@ -1,5 +1,6 @@
 package yeomeong.common.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -38,13 +39,26 @@ public class DailyNoteService {
     }
 
     //날짜별&아이별 알림장 조회하기
-    public List<DailyNote> getDailyNotes(Long kidId, String yearAndMonth) {
-        return dailyNoteRepository.findByKidIdAndYearAndMonth(kidId, yearAndMonth);
+    public List<DailyNoteResponseDto> getDailyNotes(Long kidId, String yearAndMonth) {
+        List<DailyNote> dailyNotes = dailyNoteRepository.findByKidIdAndYearAndMonth(kidId, yearAndMonth);
+        if(dailyNotes != null){
+            List<DailyNoteResponseDto> dailyNoteResponseDtos = new ArrayList<>();
+            for(DailyNote dailyNote : dailyNotes){
+                dailyNoteResponseDtos.add(new DailyNoteResponseDto(dailyNote));
+            }
+            return dailyNoteResponseDtos;
+        }
+        return null;
     }
 
     //알림장 조회하기
-    public DailyNote getDailyNote(Long id) {
-        return dailyNoteRepository.findById(id).orElse(null);
+    public DailyNoteResponseDto getDailyNote(Long id) {
+        DailyNote dailyNote = dailyNoteRepository.findById(id).orElse(null);
+        if(dailyNote != null){
+            DailyNoteResponseDto dailyNoteResponseDto = new DailyNoteResponseDto(dailyNote);
+            return dailyNoteResponseDto;
+        }
+        return null;
     }
 
     //알림장 수정하기
