@@ -2,6 +2,7 @@ package yeomeong.common.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import yeomeong.common.dto.kid.KidDetailInfoDto;
 import yeomeong.common.dto.kid.KidJoinRequestDto;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
@@ -34,5 +35,10 @@ public class KidService {
                 banRepository.findById(kidJoinRequestDto.getBanId())
                     .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)))
         );
+    }
+
+    public KidDetailInfoDto getKid(Long kidId) {
+        return KidDetailInfoDto.toKidDetailInfoDto(
+            kidRepository.findById(kidId).orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)));
     }
 }
