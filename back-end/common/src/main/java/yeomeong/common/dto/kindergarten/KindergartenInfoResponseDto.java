@@ -3,10 +3,12 @@ package yeomeong.common.dto.kindergarten;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import yeomeong.common.dto.ban.BanBasicInfoDto;
 import yeomeong.common.entity.kindergarten.Ban;
 import yeomeong.common.entity.kindergarten.Bus;
 import yeomeong.common.entity.kindergarten.Kindergarten;
@@ -25,7 +27,7 @@ public class KindergartenInfoResponseDto {
     private Bus bus;
     private Date openDate;
     @Builder.Default
-    private List<Ban> bans = new ArrayList<>();
+    private List<BanBasicInfoDto> bans = new ArrayList<>();
 
     public static KindergartenInfoResponseDto toKindergartenDto(Kindergarten kindergarten) {
         return KindergartenInfoResponseDto.builder()
@@ -36,7 +38,9 @@ public class KindergartenInfoResponseDto {
             .tel(kindergarten.getTel())
             .bus(kindergarten.getBus())
             .openDate(kindergarten.getOpenDate())
-            .bans(kindergarten.getBans())
+            .bans(kindergarten.getBans().stream()
+                .map(BanBasicInfoDto::toBanBasicInfoDto)
+                .collect(Collectors.toList()))
             .build();
     }
 
