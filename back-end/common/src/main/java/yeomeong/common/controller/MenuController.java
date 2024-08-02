@@ -15,7 +15,7 @@ import yeomeong.common.service.MenuService;
 import java.time.LocalDate;
 
 @RestController
-@RequestMapping("/menus'")
+@RequestMapping("/menus")
 @RequiredArgsConstructor
 @Tag(name = "식단 API", description = "식단 관련 API")
 public class MenuController {
