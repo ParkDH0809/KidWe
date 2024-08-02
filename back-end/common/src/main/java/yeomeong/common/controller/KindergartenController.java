@@ -36,7 +36,7 @@ public class KindergartenController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "검색 유치원 리스트 조회", description = "검색된 유치원 리스트를 반환합니다. 만약 query의 모든 값이 null이라면 모든 유치원 리스트를 반환합니다.")
+    @Operation(summary = "유치원 검색", description = "검색된 유치원 리스트를 반환합니다. 만약 query의 모든 값이 null이라면 모든 유치원 리스트를 반환합니다.")
     @GetMapping
     public ResponseEntity<List<KindergartenInfoResponseDto>> getSearchedKindergartens(
         @ParameterObject KindergartenSearchDto kindergartenSearchDto) {
