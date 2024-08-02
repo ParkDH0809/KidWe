@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
+import yeomeong.common.dto.auth.LoginRequestDto;
 import yeomeong.common.dto.auth.SignupRequestDto;
 import yeomeong.common.dto.auth.RefreshResponseDto;
 import yeomeong.common.security.jwt.JwtService;
@@ -30,6 +31,18 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<Void> signup(@RequestBody SignupRequestDto signupRequestDto) {
         memberService.joinMember(signupRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @Operation(summary = "회원 로그인", description = "인증을 요청합니다.")
+    @PostMapping("/login")
+    public ResponseEntity<Void> fakeLogin(@RequestBody LoginRequestDto loginRequestDto) {
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @Operation(summary = "회원 로그아웃", description = "로그아웃을 합니다.")
+    @PostMapping("/logout")
+    public ResponseEntity<Void> fakeLogout(@RequestHeader("Authorization") String accessToken) {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
