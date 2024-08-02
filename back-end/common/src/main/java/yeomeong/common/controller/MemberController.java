@@ -11,7 +11,7 @@ import yeomeong.common.dto.member.MemberProfileResponseDto;
 import yeomeong.common.service.MemberService;
 
 @Slf4j
-@RestController("/member")
+@RestController("/members")
 @Tag(name = "사용자 API", description = "사용자 관련 API")
 public class MemberController {
 
