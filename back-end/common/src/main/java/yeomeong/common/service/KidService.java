@@ -41,4 +41,5 @@ public class KidService {
         return KidDetailInfoDto.toKidDetailInfoDto(
             kidRepository.findById(kidId).orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)));
     }
+
 }

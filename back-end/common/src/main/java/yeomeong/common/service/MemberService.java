@@ -1,11 +1,14 @@
 package yeomeong.common.service;
 
 import jakarta.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import yeomeong.common.dto.auth.SignupRequestDto;
 import yeomeong.common.dto.ban.BanJoinRequestDto;
+import yeomeong.common.dto.kid.KidBasicInfoDto;
 import yeomeong.common.dto.kid.KidJoinRequestDto;
 import yeomeong.common.dto.kindergarten.KindergartenSaveRequestDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
@@ -107,6 +110,13 @@ public class MemberService {
 
     public void deleteMember(String email) {
         memberRepository.deleteMemberByEmail(email);
+    }
+
+    public List<KidBasicInfoDto> getChildrenByMember(String email) {
+        return kidMemberRepository.findKidMemberByMember_Id(memberRepository.findByEmail(email).getId())
+            .stream()
+            .map(KidBasicInfoDto::toKidBasicInfoDto)
+            .collect(Collectors.toList());
     }
 
 }
