@@ -1,8 +1,11 @@
 package yeomeong.common.dto.post.dailynote.response;
 
 import java.time.LocalDateTime;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import yeomeong.common.dto.kid.KidDetailInfoDto;
+import yeomeong.common.dto.member.MemberProfileResponseDto;
 import yeomeong.common.entity.member.Kid;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.post.DailyNote;
@@ -15,16 +18,16 @@ public class DailyNoteResponseDto {
 
     private Post post;
 
-    private Kid kid;
-    private Member writer;
+    private KidDetailInfoDto kid;
+    private MemberProfileResponseDto writer;
 
     private LocalDateTime sendTime;
 
     public DailyNoteResponseDto(DailyNote dailyNote) {
         this.id = dailyNote.getId();
         this.post = dailyNote.getPost();
-        this.kid = dailyNote.getKid();
-        this.writer = dailyNote.getWriter();
+        this.kid = KidDetailInfoDto.toKidDetailInfoDto(dailyNote.getKid());
+        this.writer = MemberProfileResponseDto.toMemberProfileDto(dailyNote.getWriter());
         this.sendTime = dailyNote.getSendTime();
     }
 }

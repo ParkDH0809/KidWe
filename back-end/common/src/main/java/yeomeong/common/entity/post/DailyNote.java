@@ -34,7 +34,6 @@ public class DailyNote {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Kid kid;
-    @JoinColumn
     @ManyToOne(fetch = FetchType.LAZY)
     private Member writer;
 
