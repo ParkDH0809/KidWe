@@ -16,6 +16,7 @@ public class DailyNoteResponseDto {
     private Post post;
 
     private Kid kid;
+
     private Member writer;
 
     private LocalDateTime sendTime;

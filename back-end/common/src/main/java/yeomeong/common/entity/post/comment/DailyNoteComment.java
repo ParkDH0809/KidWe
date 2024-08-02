@@ -14,8 +14,6 @@ public class DailyNoteComment {
     @Id @GeneratedValue
     private Long id;
 
-
-
     @ManyToOne(fetch = FetchType.LAZY)
     private DailyNote dailyNotes;
 
