@@ -31,5 +31,4 @@ public class Ban {
     @OneToMany(mappedBy = "ban")
     @Builder.Default
     private List<Kid> kids = new ArrayList<>();
-
 }

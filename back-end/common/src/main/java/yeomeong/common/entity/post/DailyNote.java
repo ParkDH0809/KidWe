@@ -17,29 +17,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class DailyNote {
+
     @Embedded
     private Post post;
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Member member;
 
+    @JoinColumn
     @ManyToOne(fetch = FetchType.LAZY)
-    private Ban ban;
+    private Member writer;
+    @JoinColumn
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member receiver;
     @ManyToOne(fetch = FetchType.LAZY)
     private Kid kid;
-
-    @JoinColumn
-    private Long receiverId;
-    @JoinColumn
-    private Long writerId;
 
     private LocalDateTime sendTime;
     private Boolean isDeleted;

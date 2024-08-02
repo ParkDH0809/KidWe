@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import yeomeong.common.dto.post.dailynote.DailyNoteRequestDto;
 import yeomeong.common.entity.post.DailyNote;
 import yeomeong.common.repository.DailyNoteRepository;
 
@@ -14,8 +15,8 @@ public class DailyNoteService {
     private final DailyNoteRepository dailyNoteRepository;
 
     //알림장 생성하기
-    public DailyNote createDailyNote(DailyNote dailyNote) {
-        return dailyNoteRepository.save(dailyNote);
+    public DailyNote createDailyNote(DailyNoteRequestDto dailyNoteRequestDto) {
+        return dailyNoteRepository.save(dailyNoteRequestDto.toEntity());
     }
 
     //날짜별&아이별 알림장 조회하기
