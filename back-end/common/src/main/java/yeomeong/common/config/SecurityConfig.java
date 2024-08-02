@@ -34,6 +34,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, MemberService memberService, JwtService jwtService) throws Exception {
+
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
@@ -61,7 +62,6 @@ public class SecurityConfig {
                         exceptionHandling.authenticationEntryPoint(jwtAuthenticationEntryPoint)
                                 .accessDeniedHandler(jwtAccessDeniedHandler)
                 );
-
         http
                 .logout((logout) -> logout
                         .permitAll()
@@ -79,7 +79,10 @@ public class SecurityConfig {
         JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordAuthenticationFilter
                 = new JsonUsernamePasswordAuthenticationFilter(objectMapper, loginSuccessHandler, loginFailureHandler, authenticationProvider);
         jsonUsernamePasswordAuthenticationFilter.setAuthenticationManager(authenticationManager());
+
         return jsonUsernamePasswordAuthenticationFilter;
+
+
     }
 
     @Bean

@@ -8,6 +8,10 @@ import yeomeong.common.dto.medication.MedicationByKidAndMonthDto;
 import yeomeong.common.dto.medication.MedicationByKidDto;
 import yeomeong.common.dto.medication.MedicationCreateDto;
 import yeomeong.common.dto.medication.MedicationDetailDto;
+import yeomeong.common.entity.kindergarten.Ban;
+import yeomeong.common.entity.member.Kid;
+import yeomeong.common.repository.BanRepository;
+import yeomeong.common.repository.KidRepository;
 import yeomeong.common.repository.MedicationRepository;
 
 import java.util.List;
@@ -18,17 +22,23 @@ import java.util.List;
 public class MedicationService {
 
     private final MedicationRepository medicationRepository;
+    private final KidRepository kidRepository;
+    private final BanRepository banRepository;
 
 
     //반 별 월 별 투약의뢰서 가져오기 (   )
     public List<MedicationByKidAndMonthDto> getMedicationsByBanAndMonth(Long banId, int year, int month) {
 
+        Ban ban = banRepository.findById(banId).orElseThrow(() -> new RuntimeException("해당 반을 찾을 수 없습니다"));
 
         return medicationRepository.medicationByKidAndMonthDtoList(banId,year,month);
     }
     // 아이별 투약 의뢰서 가져오기
     public List<MedicationByKidDto> getMedicationByKid(Long kidId, int year, int month){
-        return medicationRepository.medicationByKidDtoList(kidId,month,year);
+
+        Kid kid = kidRepository.findById(kidId).orElseThrow(() -> new RuntimeException("해당 아이를 찾을 수 없습니다."));
+
+        return medicationRepository.medicationByKidDtoList(kidId,year,month);
     }
 
     //투약의뢰서 상세보기
@@ -39,9 +49,9 @@ public class MedicationService {
 
     //투약의뢰서 생성하기
     @Transactional
-    public void createMedication(MedicationCreateDto medicationCreateDto, Long kidId){
+    public MedicationCreateDto createMedication(MedicationCreateDto medicationCreateDto, Long kidId){
 
-        medicationRepository.createMedication(medicationCreateDto, kidId);
+        return medicationRepository.createMedication(medicationCreateDto, kidId);
     }
 
     //투약의뢰서 제거하기

@@ -4,8 +4,7 @@ package yeomeong.common.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Description;
-import org.springframework.http.HttpStatus;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import yeomeong.common.dto.medication.MedicationByKidAndMonthDto;
@@ -20,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/medications")
 @RequiredArgsConstructor
+@Slf4j
 @Tag(name = "투약의뢰서", description = "투약의뢰서 조회, 생성, 삭제 API")
 public class MedicationController {
 
@@ -34,13 +34,14 @@ public class MedicationController {
             @PathVariable("year") int year,
             @PathVariable("month") int month) {
 
+
         List<MedicationByKidAndMonthDto> medications = medicationService.getMedicationsByBanAndMonth(banId, year, month);
 
         return ResponseEntity.ok(medications);
     }
 
 
-    @Operation(summary = "아이의 특정 월의 투약의뢰서를 조회합니다. (선생)", description = "아이 id, 연, 월을 정보를 통해 투약의뢰서 목록을 조회합니다.")
+    @Operation(summary = "아이의 특정 월의 투약의뢰서를 조회합니다. (부모)", description = "아이 id, 연, 월을 정보를 통해 투약의뢰서 목록을 조회합니다.")
     @GetMapping("kid/{kid_id}/{year}/{month}")
     public ResponseEntity<List<MedicationByKidDto>> getMedicationByKid(
             @PathVariable("kid_id") Long kidId,
@@ -68,10 +69,10 @@ public class MedicationController {
             @RequestBody MedicationCreateDto medicationCreateDto,
             @PathVariable("kid_id") Long kidId){
 
-        medicationService.createMedication(medicationCreateDto,kidId);
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(medicationCreateDto);
+        medicationCreateDto.setKidId(kidId);
+
+        return ResponseEntity.ok(medicationService.createMedication(medicationCreateDto,kidId));
     }
 
     @DeleteMapping("/{medication_id}")
