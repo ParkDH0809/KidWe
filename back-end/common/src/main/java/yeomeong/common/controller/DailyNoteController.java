@@ -11,22 +11,23 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import yeomeong.common.dto.post.dailynote.DailyNoteRequestDto;
+import yeomeong.common.dto.post.dailynote.request.DailyNoteCreateRequestDto;
+import yeomeong.common.dto.post.dailynote.response.DailyNoteResponseDto;
 import yeomeong.common.entity.post.DailyNote;
 import yeomeong.common.service.DailyNoteService;
 
 @RequiredArgsConstructor
 
 @RestController
-@RequestMapping("/dailynote")
+@RequestMapping("/dailynotes")
 @Tag(name = "알림장 API", description = "알림장 관련 API")
 public class DailyNoteController {
 
     private final DailyNoteService dailyNoteService;
 
     @PostMapping("/")
-    public DailyNote createDailyNote(@RequestBody DailyNoteRequestDto dailyNoteRequestDto) {
-        return dailyNoteService.createDailyNote(dailyNoteRequestDto);
+    public DailyNoteResponseDto createDailyNote(@RequestBody DailyNoteCreateRequestDto dailyNoteCreateRequestDto) {
+        return dailyNoteService.createDailyNote(dailyNoteCreateRequestDto);
     }
 
     @GetMapping("/{kid_id}/{year}/{month}")

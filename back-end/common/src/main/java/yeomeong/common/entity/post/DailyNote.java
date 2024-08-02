@@ -25,21 +25,18 @@ import java.util.List;
 @AllArgsConstructor
 public class DailyNote {
 
-    @Embedded
-    private Post post;
-
     @Id
     @GeneratedValue
     private Long id;
 
+    @Embedded
+    private Post post;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Kid kid;
     @JoinColumn
     @ManyToOne(fetch = FetchType.LAZY)
     private Member writer;
-    @JoinColumn
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Member receiver;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Kid kid;
 
     private LocalDateTime sendTime;
     private Boolean isDeleted;
