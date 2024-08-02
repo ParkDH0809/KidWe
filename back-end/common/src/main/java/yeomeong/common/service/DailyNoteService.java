@@ -36,11 +36,9 @@ public class DailyNoteService {
         Member writer = memberRepository.findById(writerId).orElseThrow(
             () -> new CustomException(ErrorCode.INVALID_WRITER)
         );
-
         Kid kid = kidRepository.findById(dailyNoteCreateRequestDto.getKidId()).orElseThrow(
             () -> new CustomException(ErrorCode.INVALID_KID)
         );
-
         DailyNote createdDailyNote = dailyNoteRepository.save(dailyNoteCreateRequestDto.toEntity(kid, writer));
         return new DailyNoteResponseDto(createdDailyNote);
     }

@@ -28,14 +28,16 @@ public class DailyNoteController {
 
     @PostMapping("/")
     public ResponseEntity<DailyNoteResponseDto> createDailyNote(@RequestBody DailyNoteCreateRequestDto dailyNoteCreateRequestDto) {
-        return ResponseEntity.ok(dailyNoteService.createDailyNote(dailyNoteCreateRequestDto));
+        DailyNoteResponseDto createdDailyNote = dailyNoteService.createDailyNote(dailyNoteCreateRequestDto);
+        System.out.println(createdDailyNote.getId());
+        return ResponseEntity.ok(createdDailyNote);
     }
 
     @GetMapping("/{member_id}/{kid_id}/{year}/{month}")
     public ResponseEntity<List<DailyNoteResponseDto>> getDailyNotes(@PathVariable("member_id") Long memberId,
         @PathVariable("kid_id") Long kidId,
         @PathVariable("year") String year,
-        @PathVariable("year") String month) {
+        @PathVariable("month") String month) {
         String yearAndMonth = year + "-" + month;
         return ResponseEntity.ok(dailyNoteService.getDailyNotes(memberId, kidId, yearAndMonth));
     }
