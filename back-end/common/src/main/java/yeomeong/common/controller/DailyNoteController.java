@@ -11,40 +11,42 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import yeomeong.common.entity.post.DailyNote;
+import yeomeong.common.dto.post.dailynote.request.DailyNoteCreateRequestDto;
+import yeomeong.common.dto.post.dailynote.request.DailyNoteUpdateRequestDto;
+import yeomeong.common.dto.post.dailynote.response.DailyNoteResponseDto;
 import yeomeong.common.service.DailyNoteService;
 
 @RequiredArgsConstructor
 
 @RestController
-@RequestMapping("/dailynote")
-@Tag(name = "알림장", description = "알림장 관련 API")
+@RequestMapping("/dailynotes")
+@Tag(name = "알림장 API", description = "알림장 관련 API")
 public class DailyNoteController {
 
     private final DailyNoteService dailyNoteService;
 
     @PostMapping("/")
-    public DailyNote createDailyNote(@RequestBody DailyNote dailyNote) {
-        return dailyNoteService.createDailyNote(dailyNote);
+    public DailyNoteResponseDto createDailyNote(@RequestBody DailyNoteCreateRequestDto dailyNoteCreateRequestDto) {
+        return dailyNoteService.createDailyNote(dailyNoteCreateRequestDto);
     }
 
-    @GetMapping("/{kid_id}/{year}/{month}")
-    public List<DailyNote> getDailyNotes(@PathVariable("kid_id") Long kidId,
+    @GetMapping("/{member_id}/{kid_id}/{year}/{month}")
+    public List<DailyNoteResponseDto> getDailyNotes(@PathVariable("member_id") Long memberId,
+        @PathVariable("kid_id") Long kidId,
         @PathVariable("year") String year,
         @PathVariable("year") String month) {
         String yearAndMonth = year + "-" + month;
-        return dailyNoteService.getDailyNotes(kidId, yearAndMonth);
+        return dailyNoteService.getDailyNotes(memberId, kidId, yearAndMonth);
     }
 
     @GetMapping("/{dailynote_id}")
-    public DailyNote getDailyNote(@PathVariable("dailynote_id") Long id) {
+    public DailyNoteResponseDto getDailyNote(@PathVariable("dailynote_id") Long id) {
         return dailyNoteService.getDailyNote(id);
     }
 
-    @PutMapping("/{dailynote_id}")
-    public DailyNote updateDailyNote(@PathVariable("dailynote_id") Long id,
-        @RequestBody DailyNote dailyNote) {
-        return dailyNoteService.updateDailyNote(id, dailyNote);
+    @PutMapping("/")
+    public DailyNoteResponseDto updateDailyNote(@RequestBody DailyNoteUpdateRequestDto dailyNoteRequestDto) {
+        return dailyNoteService.updateDailyNote(dailyNoteRequestDto);
     }
 
     @DeleteMapping("/{dailynote_id}")
