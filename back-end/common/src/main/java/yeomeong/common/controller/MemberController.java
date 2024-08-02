@@ -29,7 +29,7 @@ public class MemberController {
 
     @Operation(summary = "사용자 삭제", description = "특정 사용자를 삭제합니다.")
     @DeleteMapping("/profile")
-    public ResponseEntity<Void> updateMemberProfile(Authentication authentication) {
+    public ResponseEntity<Void> deleteMemberProfile(Authentication authentication) {
         memberService.deleteMember(authentication.getName());
         return ResponseEntity.status(HttpStatus.OK).build();
     }
