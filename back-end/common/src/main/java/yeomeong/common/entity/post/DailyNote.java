@@ -33,9 +33,11 @@ public class DailyNote {
     private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "kid_id")
     private Kid kid;
-    @JoinColumn
+
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private Member writer;
 
     private LocalDateTime sendTime;
