@@ -25,11 +25,11 @@ public class Ban {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "kindergarten_id")
     private Kindergarten kindergarten;
 
     @JsonIgnore
     @OneToMany(mappedBy = "ban")
     @Builder.Default
     private List<Kid> kids = new ArrayList<>();
-
 }

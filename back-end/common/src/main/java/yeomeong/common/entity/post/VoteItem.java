@@ -1,5 +1,6 @@
 package yeomeong.common.entity.post;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,11 +19,11 @@ public class VoteItem {
 
     private int value;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Vote vote;
 
-    public VoteItem(String itemName, int value) {
+    public VoteItem(String itemName) {
         this.itemName = itemName;
-        this.value = value;
     }
 }

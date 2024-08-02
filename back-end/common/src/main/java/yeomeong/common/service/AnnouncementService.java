@@ -8,6 +8,8 @@ import yeomeong.common.dto.post.announcement.*;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.member.rtype;
 import yeomeong.common.entity.post.Announcement;
+import yeomeong.common.entity.post.Vote;
+import yeomeong.common.entity.post.VoteItem;
 import yeomeong.common.entity.post.comment.AnnouncementComment;
 import yeomeong.common.repository.AnnouncementRepository;
 import yeomeong.common.repository.MemberRepository;
@@ -82,18 +84,38 @@ public class AnnouncementService {
 
         List<AnnouncementCommentDto> announcementCommentDto = new ArrayList<>();
 
+
+
         for(AnnouncementComment announcementComment : announcement.getCommentList()) {
+
+            AnnouncementComment parentComment = announcementComment.getParentComment();
+
             announcementCommentDto.add(new AnnouncementCommentDto(announcementComment.getId(),
+                    parentComment != null ? parentComment.getId() : null,
                     announcement.getMember().getName(),
                     announcementComment.getContent(),
                     announcementComment.getLocalDateTime()));
-            }
+        }
 
-         return  new AnnouncementDetailDto(
-                 announcement.getMember().getBan().getName(),
-                 announcement.getPost(),
-                 announcement.getVote().getItems(),
-                 announcementCommentDto);
+        List<VoteItemDto> voteItemDtoList = new ArrayList<>();
+        Vote vote =  announcement.getVote();
+
+
+        if (vote != null) {
+            for (VoteItem voteItem : vote.getItems()) {
+                voteItemDtoList.add(new VoteItemDto(voteItem.getId(),
+                        voteItem.getItemName(), voteItem.getValue()));
+            }
+        }
+
+        // AnnouncementDetailDto를 생성하여 반환
+        return new AnnouncementDetailDto(
+                announcement.getMember().getBan().getName(),
+                announcement.getPost(),
+                vote != null ? vote.getId() : null, // Vote가 없으면 null
+                voteItemDtoList, // VoteItemDto 리스트는 비어있을 수 있음
+                announcementCommentDto // CommentDto 리스트는 비어있을 수 있음
+        );
 
     }
 

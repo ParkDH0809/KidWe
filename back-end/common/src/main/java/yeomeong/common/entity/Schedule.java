@@ -21,6 +21,7 @@ public class Schedule {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ban_id")
     private Ban ban;
 
     @Enumerated(EnumType.STRING)
@@ -34,7 +35,8 @@ public class Schedule {
     private LocalTime eventTime;
 
 
-    public Schedule(String keyword, String content, LocalDate eventDate, LocalTime eventTime) {
+    public Schedule(Ban ban, String keyword, String content, LocalDate eventDate, LocalTime eventTime) {
+        this.ban =ban;
         this.keyword = keyword;
         this.content = content;
         this.eventDate = eventDate;

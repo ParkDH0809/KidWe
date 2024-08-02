@@ -14,6 +14,6 @@ public class VoteCreateDto {
     private String title;
     private LocalDate voteStartDate;
     private LocalDate voteEndDate;
-    private List<VoteItemDto> items;
+    private List<VoteItemRequestDto> items;
 
 }

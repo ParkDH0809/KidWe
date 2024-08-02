@@ -11,5 +11,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class VoteResultDto {
 
-    List<VoteItem> Items;
+    private Long voteItemId;
+    private String itemName;
+    private int value;
 }

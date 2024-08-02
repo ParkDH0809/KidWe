@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import yeomeong.common.dto.post.announcement.VoteCreateDto;
 import yeomeong.common.dto.post.announcement.VoteItemDto;
+import yeomeong.common.dto.post.announcement.VoteItemRequestDto;
 import yeomeong.common.dto.post.announcement.VoteResultDto;
 import yeomeong.common.entity.post.Announcement;
 import yeomeong.common.entity.post.Vote;
@@ -14,10 +15,12 @@ import yeomeong.common.repository.AnnouncementRepository;
 import yeomeong.common.repository.VoteItemRepository;
 import yeomeong.common.repository.VoteRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class VoteService {
 
     private final VoteRepository voteRepository;
@@ -36,10 +39,9 @@ public class VoteService {
                 announcement);
 
 
-        for(  VoteItemDto voteItemDto :  voteCreateDto.getItems()) {
+        for(  VoteItemRequestDto voteItemDto :  voteCreateDto.getItems()) {
 
-            VoteItem voteItem = new VoteItem(voteItemDto.getItemName()
-                    , voteItemDto.getValue());
+            VoteItem voteItem = new VoteItem(voteItemDto.getItemName());
 
             vote.getItems().add(voteItem);
             voteItem.setVote(vote);
@@ -53,16 +55,17 @@ public class VoteService {
         voteRepository.save(vote);
     }
 
-
-    public VoteResultDto doVote(Long voteId, int index) {
+    @Transactional
+    public VoteResultDto doVote(Long voteId, Long voteItemId) {
         Vote vote = voteRepository.findById(voteId)
                 .orElseThrow(() -> new RuntimeException("해당하는 투표 id가 없습니다"));
 
-        int value =  vote.getItems().get(index).getValue();
+        VoteItem voteItem = voteItemRepository.findById(voteItemId)
+                        .orElseThrow(() -> new RuntimeException("해당 투표 아이템을 찾을 수 없습니다."));
 
-        vote.getItems().get(index).setValue(value + 1);
+        voteItem.setValue(voteItem.getValue()+1);
 
-        return new VoteResultDto(vote.getItems());
+        return new VoteResultDto(voteItem.getId(), voteItem.getItemName(), voteItem.getValue());
 
     }
 }

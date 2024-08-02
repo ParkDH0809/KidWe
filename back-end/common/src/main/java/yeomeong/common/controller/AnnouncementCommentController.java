@@ -44,7 +44,7 @@ public class AnnouncementCommentController {
     }
 
     //공지사항 - 대댓글 작성하기
-    @PostMapping("/{announcement_comment_id}/{member_id}")
+    @PostMapping("/reply/{announcement_comment_id}/{member_id}")
     @Operation(summary = "공지사항의 대댓글을 작성합니다", description = "공지사항 댓글의 id와 member의 id를 통해 대댓글을 작성합니다.")
     public ResponseEntity<Void> createCommentChild(
             @PathVariable("announcement_comment_id") Long commentParentId,

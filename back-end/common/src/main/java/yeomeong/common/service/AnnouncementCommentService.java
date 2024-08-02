@@ -16,8 +16,8 @@ import yeomeong.common.repository.AnnouncementRepository;
 @Transactional
 public class AnnouncementCommentService {
 
-    AnnouncementRepository announcementRepository;
-    AnnouncementCommentRepository announcementCommentRepository;
+    private final AnnouncementRepository announcementRepository;
+    private final AnnouncementCommentRepository announcementCommentRepository;
 
     /**
      * 공지사항 (대)댓글 생성하기

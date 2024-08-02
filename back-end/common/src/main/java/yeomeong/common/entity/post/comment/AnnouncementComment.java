@@ -40,6 +40,7 @@ public class AnnouncementComment {
         this.memberId = memberId;
         this.content = content;
         this.announcement = announcement;
+        this.localDateTime = LocalDateTime.now();
     }
 
 }
