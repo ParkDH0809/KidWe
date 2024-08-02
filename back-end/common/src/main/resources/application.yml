@@ -5,9 +5,10 @@ spring:
     name: kidwe
 
   datasource:
-    url: jdbc:mysql://i11a808.p.ssafy.io:3306/kidwe
+#    url: jdbc:mysql://i11a808.p.ssafy.io:3306/kidwe
+    url: jdbc:mysql://localhost:3306/SSAFY_DB
     username: root
-    password: root
+    password: SSAFY
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:

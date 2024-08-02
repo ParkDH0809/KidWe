@@ -23,7 +23,7 @@ import yeomeong.common.entity.kindergarten.Kindergarten;
 public class Kid {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;

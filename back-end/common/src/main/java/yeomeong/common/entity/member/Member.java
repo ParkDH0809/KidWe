@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Member {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String email;
@@ -32,7 +32,7 @@ public class Member {
     private String tel;
 
     @Enumerated(EnumType.STRING)
-    private rtype role; //[DIRECTOR, TEACHER, GUARDIAN ]
+    private rtype role; //[ROLE_DIRECTOR, ROLE_TEACHER, ROLE_GUARDIAN ]
 
     @Enumerated(EnumType.STRING)
     private atype memberStatus; //ACCEPT, DECLINE, PENDING

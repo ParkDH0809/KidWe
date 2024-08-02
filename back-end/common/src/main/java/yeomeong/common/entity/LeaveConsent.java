@@ -2,6 +2,7 @@ package yeomeong.common.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import yeomeong.common.entity.member.Kid;
@@ -13,9 +14,10 @@ import java.time.*;
 @Getter
 @Setter
 @AllArgsConstructor
+@Builder
 public class LeaveConsent {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

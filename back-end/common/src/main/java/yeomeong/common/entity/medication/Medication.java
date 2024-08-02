@@ -2,9 +2,7 @@ package yeomeong.common.entity.medication;
 
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import yeomeong.common.entity.kindergarten.Ban;
 import yeomeong.common.entity.member.Kid;
 
@@ -16,6 +14,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class Medication {
 
     @Id @GeneratedValue

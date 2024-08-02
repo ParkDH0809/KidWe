@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 public class Approve {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)

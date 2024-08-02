@@ -26,7 +26,7 @@ import java.util.List;
 public class DailyNote {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Embedded

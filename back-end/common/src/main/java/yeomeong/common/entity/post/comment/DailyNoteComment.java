@@ -11,7 +11,7 @@ import yeomeong.common.entity.post.DailyNote;
 @Setter
 public class DailyNoteComment {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
