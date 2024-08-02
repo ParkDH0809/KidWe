@@ -7,11 +7,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import yeomeong.common.entity.member.rtype;
 import yeomeong.common.entity.post.DailyNote;
-import yeomeong.common.repository.querydsl.DailyNoteRepositoryCustom;
 
 @Repository
-public interface DailyNoteRepository extends JpaRepository<DailyNote, Long>,
-    DailyNoteRepositoryCustom {
+public interface DailyNoteRepository extends JpaRepository<DailyNote, Long>{
 
     @Query("SELECT dn "
         + "FROM DailyNote dn "
