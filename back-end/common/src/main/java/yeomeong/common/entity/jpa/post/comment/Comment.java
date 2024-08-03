@@ -45,7 +45,5 @@ public class Comment {
 
         this.depth = true;
         this.group += 1;
-
-
     }
 }
