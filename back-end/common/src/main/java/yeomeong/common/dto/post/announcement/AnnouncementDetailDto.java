@@ -1,11 +1,13 @@
 package yeomeong.common.dto.post.announcement;
 
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import yeomeong.common.entity.jpa.post.Post;
-import yeomeong.common.entity.jpa.post.Vote;
-import yeomeong.common.entity.jpa.post.comment.AnnouncementComment;
+import yeomeong.common.entity.post.Post;
+import yeomeong.common.entity.post.Vote;
+import yeomeong.common.entity.post.VoteItem;
+import yeomeong.common.entity.post.comment.AnnouncementComment;
 
 import java.util.List;
 
@@ -14,12 +16,19 @@ import java.util.List;
 @NoArgsConstructor
 public class AnnouncementDetailDto {
 
-    private Long writerId;
+    private String banName;
 
     private Post post;
 
-    private Vote vote;
+    private Long voteId;
 
-    private List<AnnouncementComment> comment;
+    private List<VoteItemDto> voteItems;
 
+    private List<AnnouncementCommentDto> comment;
+
+    public AnnouncementDetailDto(String banName, Post post, List<AnnouncementCommentDto> comment) {
+        this.banName = banName;
+        this.post = post;
+        this.comment = comment;
+    }
 }
