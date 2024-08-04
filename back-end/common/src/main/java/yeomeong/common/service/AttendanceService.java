@@ -1,9 +1,11 @@
 package yeomeong.common.service;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import yeomeong.common.dto.attendance.AttendanceInfoChangeRequestDto;
 import yeomeong.common.dto.attendance.AttendanceReasonChangeRequestDto;
 import yeomeong.common.dto.attendance.AttendanceResponseDto;
@@ -29,26 +31,40 @@ public class AttendanceService {
         return attendanceResponseDtos;
     }
 
+    @Transactional
     public void updateAttendances(AttendanceInfoChangeRequestDto changeRequestDto) {
         if(changeRequestDto.containsNull()) {
             throw new CustomException(ErrorCode.INVALID_INPUT_VALUE);
         }
-        LocalDate localDate = LocalDate.of(changeRequestDto.getYear(), changeRequestDto.getMonth(), changeRequestDto.getDay());
-        for (Long kidId : changeRequestDto.getKidIds()) {
-            attendanceRepository.updateKidsAttendanceState(kidId, localDate, changeRequestDto.getAttendedToday());
+
+        try {
+            LocalDate localDate = LocalDate.of(changeRequestDto.getYear(), changeRequestDto.getMonth(), changeRequestDto.getDay());
+            for (Long kidId : changeRequestDto.getKidIds()) {
+                if(attendanceRepository.updateKidsAttendanceState(kidId, localDate, changeRequestDto.getAttendedToday()) != 1) {
+                    throw new CustomException(ErrorCode.UPDATE_FAILED);
+                }
+            }
+        } catch (DateTimeException e) {
+            throw new CustomException(ErrorCode.INVALID_DATE_VALUE);
         }
+
     }
 
     public void updateAttendanceReason(AttendanceReasonChangeRequestDto changeRequestDto) {
         if(changeRequestDto.containsNull()) {
             throw new CustomException(ErrorCode.INVALID_INPUT_VALUE);
         }
-
-        attendanceRepository.updateKidsAttendanceReason(
-            changeRequestDto.getKidId(),
-            LocalDate.of(changeRequestDto.getYear(), changeRequestDto.getMonth(), changeRequestDto.getDay()),
-            changeRequestDto.getReason()
-        );
+        try {
+            if(attendanceRepository.updateKidsAttendanceReason(
+                changeRequestDto.getKidId(),
+                LocalDate.of(changeRequestDto.getYear(), changeRequestDto.getMonth(), changeRequestDto.getDay()),
+                changeRequestDto.getReason()
+            ) != 1) {
+                throw new CustomException(ErrorCode.NO_CHANGES_DETECTED);
+            }
+        } catch (DateTimeException e) {
+            throw new CustomException(ErrorCode.INVALID_DATE_VALUE);
+        }
     }
 
 }
