@@ -10,6 +10,7 @@ import yeomeong.common.dto.auth.SignupRequestDto;
 import yeomeong.common.dto.ban.BanJoinRequestDto;
 import yeomeong.common.dto.kid.KidBasicInfoDto;
 import yeomeong.common.dto.kid.KidJoinRequestDto;
+import yeomeong.common.dto.kindergarten.KindergartenApprovalStatusDto;
 import yeomeong.common.dto.kindergarten.KindergartenSaveRequestDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
 import yeomeong.common.dto.member.MemberSaveRequestDto;
@@ -119,4 +120,9 @@ public class MemberService {
             .collect(Collectors.toList());
     }
 
+    public void updateMemberState(KindergartenApprovalStatusDto approvalStatusDto) {
+        if (kidMemberRepository.updateMemberStatusById(approvalStatusDto.getId(), approvalStatusDto.getStatus()) == 1) {
+            throw new CustomException(ErrorCode.INVALID_ID);
+        }
+    }
 }
