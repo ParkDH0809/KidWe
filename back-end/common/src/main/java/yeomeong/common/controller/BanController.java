@@ -34,13 +34,13 @@ public class BanController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @Operation(summary = "반 정보 조회(반 이름, 반 구성 아이)", description = "특정 반 정보(반 ID, 반 이름, 아이)를 조회합니다.")
+    @Operation(summary = "특정 반 정보 조회(반 이름, 반 구성 아이)", description = "특정 반 정보(반 ID, 반 이름, 아이, 선생님)를 조회합니다.")
     @GetMapping("{banId}")
     public ResponseEntity<BanDetailInfoDto> getBanInfo(@PathVariable Long banId) {
         return ResponseEntity.status(HttpStatus.OK).body(banService.getBanInfo(banId));
     }
 
-    @Operation(summary = "반 이름 변경", description = "특정 반 이름을 변경합니다.")
+    @Operation(summary = "특정 반 이름 변경", description = "특정 반 이름을 변경합니다.")
     @PutMapping
     public ResponseEntity<Void> changeBanName(@RequestBody BanNameChangeRequestDto banNameChangeRequestDto) {
         banService.changeBanName(banNameChangeRequestDto);
