@@ -1,5 +1,6 @@
 package yeomeong.common.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.LocalDate;
 import java.util.List;
@@ -23,6 +24,7 @@ public class AttendanceController {
         this.attendanceService = attendanceService;
     }
 
+    @Operation(summary = "반, 날짜 별 출석 정보 조회", description = "특정 반의 특정 날짜에 대한 출석 정보를 조회합니다.")
     @PostMapping("/{banId}/{year}/{month}/{day}")
     public ResponseEntity<List<AttendanceResponseDto>> getAttendancesByBanId(
         @PathVariable Long banId, @PathVariable Integer year, @PathVariable Integer month, @PathVariable Integer day) {

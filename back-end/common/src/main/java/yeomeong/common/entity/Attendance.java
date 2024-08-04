@@ -27,9 +27,11 @@ public class Attendance {
 
     private String reason;
 
-    private Time inTime;
-    private Time outTime;
+//    private Time inTime;
+//    private Time outTime;
 
     private LocalDate date;
+
+    private Boolean attendedToday;
 
 }
