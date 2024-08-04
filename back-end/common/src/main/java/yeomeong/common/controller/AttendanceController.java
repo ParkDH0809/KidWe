@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.LocalDate;
 import java.util.List;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,21 +32,21 @@ public class AttendanceController {
     @GetMapping("/{banId}/{year}/{month}/{day}")
     public ResponseEntity<List<AttendanceResponseDto>> getAttendancesByBanId(
         @PathVariable Long banId, @PathVariable Integer year, @PathVariable Integer month, @PathVariable Integer day) {
-        return ResponseEntity.ok().body(attendanceService.getAttendancesByBanId(banId, LocalDate.of(year, month, day)));
+        return ResponseEntity.status(HttpStatus.OK).body(attendanceService.getAttendancesByBanId(banId, LocalDate.of(year, month, day)));
     }
 
     @Operation(summary = "출석 정보 변경", description = "특정 아이들의 특정 날짜에 대한 출석 정보를 변경합니다.")
     @PutMapping
     public ResponseEntity<List<AttendanceResponseDto>> updateAttendances(@RequestBody AttendanceInfoChangeRequestDto changeRequestDto) {
         attendanceService.updateAttendances(changeRequestDto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @Operation(summary = "출결 내용 작성", description = "특정 아이의 특정 날짜에 대한 출결 내용 작성 내용을 저장합니다.")
     @PutMapping("/reason")
     public ResponseEntity<List<AttendanceResponseDto>> updateAttendanceReason(@RequestBody AttendanceReasonChangeRequestDto changeRequestDto) {
         attendanceService.updateAttendanceReason(changeRequestDto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }

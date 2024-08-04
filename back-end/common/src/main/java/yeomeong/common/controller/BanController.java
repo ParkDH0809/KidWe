@@ -33,10 +33,9 @@ public class BanController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @Operation(summary = "반 조회", description = "특정 반 정보(반 ID, 반 이름, 아이)를 조회합니다.")
+    @Operation(summary = "반 정보 조회(반 이름, 반 구성 아이)", description = "특정 반 정보(반 ID, 반 이름, 아이)를 조회합니다.")
     @GetMapping("{banId}")
-    public ResponseEntity<BanDetailInfoDto> getBanInfo(
-        @PathVariable Long banId) {
+    public ResponseEntity<BanDetailInfoDto> getBanInfo(@PathVariable Long banId) {
         return ResponseEntity.status(HttpStatus.OK).body(banService.getBanInfo(banId));
     }
 

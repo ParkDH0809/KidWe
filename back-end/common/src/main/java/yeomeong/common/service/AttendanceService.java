@@ -12,14 +12,13 @@ import yeomeong.common.dto.attendance.AttendanceResponseDto;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.repository.AttendanceRepository;
-import yeomeong.common.repository.BanRepository;
 
 @Service
 public class AttendanceService {
 
     private final AttendanceRepository attendanceRepository;
 
-    public AttendanceService(AttendanceRepository attendanceRepository, BanRepository banRepository) {
+    public AttendanceService(AttendanceRepository attendanceRepository) {
         this.attendanceRepository = attendanceRepository;
     }
 
@@ -36,7 +35,6 @@ public class AttendanceService {
         if(changeRequestDto.containsNull()) {
             throw new CustomException(ErrorCode.INVALID_INPUT_VALUE);
         }
-
         try {
             LocalDate localDate = LocalDate.of(changeRequestDto.getYear(), changeRequestDto.getMonth(), changeRequestDto.getDay());
             for (Long kidId : changeRequestDto.getKidIds()) {
@@ -47,7 +45,6 @@ public class AttendanceService {
         } catch (DateTimeException e) {
             throw new CustomException(ErrorCode.INVALID_DATE_VALUE);
         }
-
     }
 
     public void updateAttendanceReason(AttendanceReasonChangeRequestDto changeRequestDto) {
@@ -56,10 +53,8 @@ public class AttendanceService {
         }
         try {
             if(attendanceRepository.updateKidsAttendanceReason(
-                changeRequestDto.getKidId(),
-                LocalDate.of(changeRequestDto.getYear(), changeRequestDto.getMonth(), changeRequestDto.getDay()),
-                changeRequestDto.getReason()
-            ) != 1) {
+                changeRequestDto.getKidId(),LocalDate.of(changeRequestDto.getYear(), changeRequestDto.getMonth(), changeRequestDto.getDay()),
+                changeRequestDto.getReason()) != 1) {
                 throw new CustomException(ErrorCode.NO_CHANGES_DETECTED);
             }
         } catch (DateTimeException e) {
