@@ -19,8 +19,7 @@ public class AttendanceResponseDto {
 
     String reason;
     boolean attendedToday;
-//    Time inTime;
-//    Time outTime;;
+
     LocalDate date;
 
     public static AttendanceResponseDto toAttendanceResponseDto(Attendance attendance) {
@@ -32,8 +31,6 @@ public class AttendanceResponseDto {
             .kidName(attendance.getKid().getName())
             .reason(attendance.getReason())
             .attendedToday(attendance.getAttendedToday())
-//            .inTime(attendance.getInTime())
-//            .outTime(attendance.getOutTime())
             .date(attendance.getDate())
             .build();
     }

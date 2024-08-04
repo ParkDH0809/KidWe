@@ -1,6 +1,5 @@
 package yeomeong.common.data;
 
-import java.sql.Time;
 import java.time.LocalDate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,6 @@ import yeomeong.common.repository.KindergartenRepository;
 import yeomeong.common.repository.MemberRepository;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Component
@@ -129,13 +127,11 @@ public class DataInitializer implements CommandLineRunner {
         // 출석 샘플 데이터 생성
         for (Kid kid : kids) {
             Attendance attendance = Attendance.builder()
-                    .kid(kid)
-                    .reason("Regular")
-//                    .inTime(new Time(System.currentTimeMillis()))
-//                    .outTime(new Time(System.currentTimeMillis() + 3600000)) // 1시간 후
-                    .date(LocalDate.now())
-                    .attendedToday(false)
-                    .build();
+                .kid(kid)
+                .reason("Regular")
+                .date(LocalDate.now())
+                .attendedToday(false)
+                .build();
 
             attendanceRepository.save(attendance);
         }
