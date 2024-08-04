@@ -18,4 +18,9 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
     @Modifying
     @Query("UPDATE Attendance a SET a.attendedToday = :attendedToday WHERE a.kid.id = :kidId AND a.date = :date")
     void updateKidsAttendanceState(@Param("kidId") Long kidId, @Param("date") LocalDate date, @Param("attendedToday") Boolean attendedToday);
+
+    @Modifying
+    @Query("UPDATE Attendance a SET a.reason = :reason WHERE a.kid.id = :kidId AND a.date = :date")
+    void updateKidsAttendanceReason(@Param("kidId") Long kidId, @Param("date") LocalDate date, @Param("reason") String reason);
+
 }

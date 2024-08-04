@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import yeomeong.common.dto.attendance.AttendanceInfoChangeRequestDto;
+import yeomeong.common.dto.attendance.AttendanceReasonChangeRequestDto;
 import yeomeong.common.dto.attendance.AttendanceResponseDto;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
@@ -36,6 +37,18 @@ public class AttendanceService {
         for (Long kidId : changeRequestDto.getKidIds()) {
             attendanceRepository.updateKidsAttendanceState(kidId, localDate, changeRequestDto.getAttendedToday());
         }
+    }
+
+    public void updateAttendanceReason(AttendanceReasonChangeRequestDto changeRequestDto) {
+        if(changeRequestDto.containsNull()) {
+            throw new CustomException(ErrorCode.INVALID_INPUT_VALUE);
+        }
+
+        attendanceRepository.updateKidsAttendanceReason(
+            changeRequestDto.getKidId(),
+            LocalDate.of(changeRequestDto.getYear(), changeRequestDto.getMonth(), changeRequestDto.getDay()),
+            changeRequestDto.getReason()
+        );
     }
 
 }
