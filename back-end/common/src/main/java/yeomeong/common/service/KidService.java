@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import yeomeong.common.dto.kid.KidDetailInfoDto;
 import yeomeong.common.dto.kid.KidJoinRequestDto;
+import yeomeong.common.dto.kid.KidUpdateInfoDto;
+import yeomeong.common.entity.member.Kid;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.repository.BanRepository;
@@ -18,8 +20,7 @@ public class KidService {
     final KindergartenRepository kindergartenRepository;
     final BanRepository banRepository;
 
-    public KidService(KidRepository kidRepository, KindergartenRepository kindergartenRepository,
-        BanRepository banRepository) {
+    public KidService(KidRepository kidRepository, KindergartenRepository kindergartenRepository, BanRepository banRepository) {
         this.kidRepository = kidRepository;
         this.kindergartenRepository = kindergartenRepository;
         this.banRepository = banRepository;
@@ -27,19 +28,22 @@ public class KidService {
 
     public void joinKid(KidJoinRequestDto kidJoinRequestDto) {
         log.info(kidJoinRequestDto.toString());
-        kidRepository.save(
-            KidJoinRequestDto.toKidEntity(
-                kidJoinRequestDto,
-                kindergartenRepository.findById(kidJoinRequestDto.getKindergartenId())
-                    .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)),
-                banRepository.findById(kidJoinRequestDto.getBanId())
-                    .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)))
+        kidRepository.save(KidJoinRequestDto.toKidEntity(kidJoinRequestDto,
+            kindergartenRepository.findById(kidJoinRequestDto.getKindergartenId())
+                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)),
+            banRepository.findById(kidJoinRequestDto.getBanId())
+                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)))
         );
     }
 
-    public KidDetailInfoDto getKid(Long kidId) {
+    public KidDetailInfoDto getKidInfo(Long kidId) {
         return KidDetailInfoDto.toKidDetailInfoDto(
-            kidRepository.findById(kidId).orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)));
+            kidRepository.findByIdAndIsDeletedFalse(kidId).orElseThrow(() -> new CustomException(ErrorCode.INVALID_KID)));
+    }
+
+    public void updateKidInfo(KidUpdateInfoDto kidUpdateInfoDto) {
+        Kid kid = kidRepository.findById(kidUpdateInfoDto.getId()).orElseThrow(() -> new CustomException(ErrorCode.INVALID_KID));
+        kidRepository.save(kid.updateFromDto(kidUpdateInfoDto));
     }
 
 }

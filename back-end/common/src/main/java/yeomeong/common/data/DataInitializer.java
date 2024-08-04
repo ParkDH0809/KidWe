@@ -72,16 +72,15 @@ public class DataInitializer implements CommandLineRunner {
         for (int i = 1; i <= 5; i++) {
             Kid kid = Kid.builder()
                 .name("아이 " + i)
-                .birthday(new Date()) // 실제 생일 데이터로 변경 가능
-                .startAttendanceDate(new Date()) // 실제 출석 시작일 데이터로 변경 가능
+                .birthday(LocalDate.now()) // 실제 생일 데이터로 변경 가능
+                .startAttendanceDate(LocalDate.now()) // 실제 출석 시작일 데이터로 변경 가능
                 .picture("picture" + i + ".jpg") // 실제 사진 경로로 변경 가능
                 .allergies("알레르기 " + i) // 실제 알레르기 정보로 변경 가능
                 .gender(i % 2 == 0 ? gtype.FEMALE : gtype.MALE) // 성별 설정
-                .tall(100 + i) // 키 데이터
-                .weight(20 + i) // 몸무게 데이터
                 .isTake(false) // 기본값 설정
                 .kindergarten(kindergarten)
                 .ban(ban1) // 첫 번째 반에 배치
+                .isDeleted(false)
                 .build();
 
             kids.add(kid);
@@ -92,16 +91,15 @@ public class DataInitializer implements CommandLineRunner {
         for (int i = 6; i <= 8; i++) {
             Kid kid = Kid.builder()
                 .name("아이 " + i)
-                .birthday(new Date())
-                .startAttendanceDate(new Date())
+                .birthday(LocalDate.now())
+                .startAttendanceDate(LocalDate.now())
                 .picture("picture" + i + ".jpg")
                 .allergies("알레르기 " + i)
                 .gender(i % 2 == 0 ? gtype.FEMALE : gtype.MALE)
-                .tall(100 + i)
-                .weight(20 + i)
                 .isTake(false)
                 .kindergarten(kindergarten)
                 .ban(ban2) // 두 번째 반에 배치
+                .isDeleted(false)
                 .build();
 
             kids.add(kid);
@@ -126,20 +124,20 @@ public class DataInitializer implements CommandLineRunner {
 
             members.add(member);
             memberRepository.save(member);
+        }
 
-            // 출석 샘플 데이터 생성
-            for (Kid kid : kids) {
-                Attendance attendance = Attendance.builder()
+        // 출석 샘플 데이터 생성
+        for (Kid kid : kids) {
+            Attendance attendance = Attendance.builder()
                     .kid(kid)
                     .reason("Regular")
-                    .inTime(new Time(System.currentTimeMillis()))
-                    .outTime(new Time(System.currentTimeMillis() + 3600000)) // 1시간 후
+//                    .inTime(new Time(System.currentTimeMillis()))
+//                    .outTime(new Time(System.currentTimeMillis() + 3600000)) // 1시간 후
                     .date(LocalDate.now())
+                    .attendedToday(false)
                     .build();
 
-                attendanceRepository.save(attendance);
-            }
-
+            attendanceRepository.save(attendance);
         }
 
     }
