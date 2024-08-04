@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
 import yeomeong.common.dto.kid.KidBasicInfoDto;
+import yeomeong.common.dto.member.TeacherBasicInfoDto;
 import yeomeong.common.entity.kindergarten.Ban;
 
 @Getter
@@ -16,6 +17,7 @@ public class BanDetailInfoDto {
     private String name;
     @Builder.Default
     private List<KidBasicInfoDto> kids = new ArrayList<>();
+    private List<TeacherBasicInfoDto> teachers;
 
     public static BanDetailInfoDto toBanDetailInfoDto(Ban ban) {
         return BanDetailInfoDto.builder()
@@ -25,6 +27,10 @@ public class BanDetailInfoDto {
                 .map(KidBasicInfoDto::toKidBasicInfoDto)
                 .collect(Collectors.toList()))
             .build();
+    }
+
+    public void initTeachersInfo(List<TeacherBasicInfoDto> teacherInfos) {
+        this.teachers = teacherInfos;
     }
 
 }
