@@ -12,6 +12,7 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
     @Query("SELECT a FROM Attendance a " +
         "JOIN a.kid k " +
         "WHERE k.ban.id = :banId " +
+        "AND k.isDeleted = false " +
         "AND a.date = :date")
     List<Attendance> findAttendancesByBanIdAndDate(@Param("banId") Long banId,
         @Param("date") LocalDate date);
