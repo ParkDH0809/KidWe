@@ -1,5 +1,6 @@
 package yeomeong.common.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import yeomeong.common.dto.kid.KidDetailInfoDto;
@@ -44,6 +45,14 @@ public class KidService {
     public void updateKidInfo(KidUpdateInfoDto kidUpdateInfoDto) {
         Kid kid = kidRepository.findById(kidUpdateInfoDto.getId()).orElseThrow(() -> new CustomException(ErrorCode.INVALID_KID));
         kidRepository.save(kid.updateFromDto(kidUpdateInfoDto));
+    }
+
+    public void deleteKidInfo(Long kidId) {
+        try {
+            kidRepository.deleteKidById(kidId);
+        } catch(EntityNotFoundException e) {
+            throw new CustomException(ErrorCode.INVALID_ID);
+        }
     }
 
 }

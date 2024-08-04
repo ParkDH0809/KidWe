@@ -40,4 +40,11 @@ public class KidController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "아이 정보 삭제 API", description = "특정 아이 정보를 삭제합니다.")
+    @DeleteMapping("/{kidId}")
+    public ResponseEntity<Void> deleteKid(@PathVariable Long kidId) {
+        kidService.deleteKidInfo(kidId);
+        return ResponseEntity.ok().build();
+    }
+
 }
