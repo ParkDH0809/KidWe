@@ -22,8 +22,7 @@ public class BanService {
     final KindergartenRepository kindergartenRepository;
     private final MemberRepository memberRepository;
 
-    public BanService(BanRepository banRepository, KindergartenRepository kindergartenRepository, KidRepository kidRepository,
-        MemberRepository memberRepository) {
+    public BanService(BanRepository banRepository, KindergartenRepository kindergartenRepository, MemberRepository memberRepository) {
         this.banRepository = banRepository;
         this.kindergartenRepository = kindergartenRepository;
         this.memberRepository = memberRepository;
