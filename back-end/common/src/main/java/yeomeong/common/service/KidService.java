@@ -43,7 +43,7 @@ public class KidService {
     }
 
     public void updateKidInfo(KidUpdateInfoDto kidUpdateInfoDto) {
-        Kid kid = kidRepository.findById(kidUpdateInfoDto.getId()).orElseThrow(() -> new CustomException(ErrorCode.INVALID_KID));
+        Kid kid = kidRepository.findByIdAndIsDeletedFalse(kidUpdateInfoDto.getId()).orElseThrow(() -> new CustomException(ErrorCode.INVALID_KID));
         kidRepository.save(kid.updateFromDto(kidUpdateInfoDto));
     }
 
