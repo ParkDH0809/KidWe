@@ -27,7 +27,7 @@ public class Memo {
     private Long teacherId;
     @Field("created_time")
     private LocalDateTime createdTime;
-    ;
+
     @Field("updated_time")
     @Indexed(direction = IndexDirection.DESCENDING)
     private LocalDateTime updatedTime;
