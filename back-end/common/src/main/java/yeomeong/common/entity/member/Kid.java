@@ -1,6 +1,5 @@
 package yeomeong.common.entity.member;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

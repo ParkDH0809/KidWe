@@ -33,10 +33,10 @@ public class KidController {
         return ResponseEntity.ok().body(kidService.getKidInfo(kidId));
     }
 
-    @Operation(summary = "아이 정보 수정(변경) API", description = "마이페이지에서 특정 아이 정보를 수정할 때의 API입니다.")
-    @PutMapping
-    public ResponseEntity<Void> updateKid(@RequestBody KidUpdateInfoDto kidUpdateInfoDto) {
-        kidService.updateKidInfo(kidUpdateInfoDto);
+    @Operation(summary = "아이 정보 변경 API", description = "특정 아이 정보를 변경합니다.")
+    @PatchMapping("/{kidId}")
+    public ResponseEntity<Void> updateKid(@PathVariable Long kidId, @RequestBody KidUpdateInfoDto kidUpdateInfoDto) {
+        kidService.updateKidInfo(kidId, kidUpdateInfoDto);
         return ResponseEntity.ok().build();
     }
 

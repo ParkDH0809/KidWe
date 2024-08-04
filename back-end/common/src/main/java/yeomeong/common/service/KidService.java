@@ -42,8 +42,8 @@ public class KidService {
             kidRepository.findByIdAndIsDeletedFalse(kidId).orElseThrow(() -> new CustomException(ErrorCode.INVALID_KID)));
     }
 
-    public void updateKidInfo(KidUpdateInfoDto kidUpdateInfoDto) {
-        Kid kid = kidRepository.findByIdAndIsDeletedFalse(kidUpdateInfoDto.getId()).orElseThrow(() -> new CustomException(ErrorCode.INVALID_KID));
+    public void updateKidInfo(Long KidId, KidUpdateInfoDto kidUpdateInfoDto) {
+        Kid kid = kidRepository.findByIdAndIsDeletedFalse(KidId).orElseThrow(() -> new CustomException(ErrorCode.INVALID_KID));
         kidRepository.save(kid.updateFromDto(kidUpdateInfoDto));
     }
 
