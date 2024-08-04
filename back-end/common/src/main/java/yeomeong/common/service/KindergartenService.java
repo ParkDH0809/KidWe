@@ -12,7 +12,6 @@ import yeomeong.common.entity.kindergarten.Kindergarten;
 import yeomeong.common.entity.kindergarten.QKindergarten;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
-import yeomeong.common.repository.BanRepository;
 import yeomeong.common.repository.KindergartenRepository;
 
 @Service
@@ -21,7 +20,7 @@ public class KindergartenService {
 
     private final KindergartenRepository kindergartenRepository;
 
-    public KindergartenService(KindergartenRepository kindergartenRepository, BanRepository banRepository) {
+    public KindergartenService(KindergartenRepository kindergartenRepository) {
         this.kindergartenRepository = kindergartenRepository;
     }
 

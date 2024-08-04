@@ -3,7 +3,6 @@ package yeomeong.common.service;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
-import yeomeong.common.dto.ban.BanBasicInfoDto;
 import yeomeong.common.dto.ban.BanCreateRequestDto;
 import yeomeong.common.dto.ban.BanDetailInfoDto;
 import yeomeong.common.dto.ban.BanNameChangeRequestDto;
@@ -61,13 +60,6 @@ public class BanService {
         if (banRepository.changeBanName(banNameChangeRequestDto.getId(), banNameChangeRequestDto.getName()) != 1) {
             throw new CustomException(ErrorCode.INVALID_INPUT_VALUE);
         }
-    }
-
-    public List<BanBasicInfoDto> getBansBasicInfoByKindergarten(Long kindergartenId) {
-        List<BanBasicInfoDto> banBasicInfoDtos = new ArrayList<>();
-        banRepository.findByKindergarten_Id(kindergartenId).forEach(banEntity ->
-            banBasicInfoDtos.add(BanBasicInfoDto.toBanBasicInfoDto(banEntity)));
-        return banBasicInfoDtos;
     }
 
 }
