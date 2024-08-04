@@ -42,4 +42,5 @@ aws:
   cloudfront:
     distribution-url: https://d175w2yu39lrw9.cloudfront.net
   credentials:
-    access-key-id: 
+    access-key-id: AKIA4MTWI3VOFP4MKQUH
+    secret-access-key: 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
