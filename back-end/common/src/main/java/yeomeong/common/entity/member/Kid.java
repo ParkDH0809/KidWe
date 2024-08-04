@@ -81,6 +81,10 @@ public class Kid {
         this.ban = ban;
     }
 
+    public void setNewKindergarten(Kindergarten kindergarten) {
+        this.kindergarten = kindergarten;
+    }
+
     private static String listToString(List<String> list) {
         return String.join(",", list);
     }

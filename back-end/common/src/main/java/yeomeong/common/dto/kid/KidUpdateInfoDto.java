@@ -15,9 +15,14 @@ public class KidUpdateInfoDto {
     List<String> allergies;
     String picture;
     Long banId;
+    Long kindergartenId;
 
     public boolean hasBanId() {
         return this.banId != null;
+    }
+
+    public boolean hasKindergartenId() {
+        return this.kindergartenId != null;
     }
 
 }
