@@ -42,9 +42,14 @@ public class KidService {
             kidRepository.findByIdAndIsDeletedFalse(kidId).orElseThrow(() -> new CustomException(ErrorCode.INVALID_KID)));
     }
 
-    public void updateKidInfo(Long KidId, KidUpdateInfoDto kidUpdateInfoDto) {
-        Kid kid = kidRepository.findByIdAndIsDeletedFalse(KidId).orElseThrow(() -> new CustomException(ErrorCode.INVALID_KID));
-        kidRepository.save(kid.updateFromDto(kidUpdateInfoDto));
+    public void updateKidInfo(KidUpdateInfoDto kidUpdateInfoDto) {
+        Kid kid = kidRepository.findByIdAndIsDeletedFalse(kidUpdateInfoDto.getId()).orElseThrow(() -> new CustomException(ErrorCode.INVALID_KID));
+        kid.updateFromDto(kidUpdateInfoDto);
+        if (kidUpdateInfoDto.hasBanId()) {
+            kid.setNewBan(banRepository.findById(kidUpdateInfoDto.getBanId())
+                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_BAN_ID)));
+        }
+        kidRepository.save(kid);
     }
 
     public void deleteKidInfo(Long kidId) {

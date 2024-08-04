@@ -34,9 +34,9 @@ public class KidController {
     }
 
     @Operation(summary = "아이 정보 변경 API", description = "특정 아이 정보를 변경합니다.")
-    @PatchMapping("/{kidId}")
-    public ResponseEntity<Void> updateKid(@PathVariable Long kidId, @RequestBody KidUpdateInfoDto kidUpdateInfoDto) {
-        kidService.updateKidInfo(kidId, kidUpdateInfoDto);
+    @PatchMapping
+    public ResponseEntity<Void> updateKid(@RequestBody KidUpdateInfoDto kidUpdateInfoDto) {
+        kidService.updateKidInfo(kidUpdateInfoDto);
         return ResponseEntity.ok().build();
     }
 

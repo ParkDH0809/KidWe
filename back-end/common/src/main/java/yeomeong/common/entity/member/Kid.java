@@ -59,8 +59,8 @@ public class Kid {
     @ColumnDefault("false")
     private Boolean isDeleted;
 
-    public Kid updateFromDto(KidUpdateInfoDto dto) {
-        return Kid.builder()
+    public void updateFromDto(KidUpdateInfoDto dto) {
+        Kid.builder()
             .id(this.id)
             .name(dto.getName() != null ? dto.getName() : this.name)
             .birthday(dto.getBirthday() != null ? dto.getBirthday() : this.birthday)
@@ -75,6 +75,10 @@ public class Kid {
             .kidMembers(this.kidMembers)
             .isDeleted(this.isDeleted)
             .build();
+    }
+
+    public void setNewBan(Ban ban) {
+        this.ban = ban;
     }
 
     private static String listToString(List<String> list) {

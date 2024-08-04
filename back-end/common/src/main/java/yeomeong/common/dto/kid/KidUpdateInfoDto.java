@@ -14,5 +14,10 @@ public class KidUpdateInfoDto {
     gtype gender;
     List<String> allergies;
     String picture;
+    Long banId;
+
+    public boolean hasBanId() {
+        return this.banId != null;
+    }
 
 }
