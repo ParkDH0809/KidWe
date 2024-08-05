@@ -33,8 +33,8 @@ public class DailyNoteCommentController {
     }
 
     @DeleteMapping("/")
-    ResponseEntity<Void> deleteDailyNoteComment(@RequestBody DailyNoteComment dailyNoteComment) {
+    ResponseEntity<String> deleteDailyNoteComment(@RequestBody DailyNoteComment dailyNoteComment) {
         dailyNoteCommentService.deleteDailyNoteComment(dailyNoteComment);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("Success!!!");
     }
 }

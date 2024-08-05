@@ -41,10 +41,10 @@ public class DailyNote {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member writer;
+    @OneToMany(mappedBy = "dailyNote", cascade = CascadeType.ALL)
+    private List<DailyNoteComment> comments;
 
     private LocalDateTime sendTime;
     private Boolean isDeleted;
 
-    @OneToMany(mappedBy = "dailynote", cascade = CascadeType.ALL)
-    private List<DailyNoteComment> commentList = new ArrayList<>();
 }

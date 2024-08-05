@@ -20,7 +20,7 @@ public class AnnouncementComment {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private  Long memberId;
+    private Long memberId;
 
     private String content;
 
