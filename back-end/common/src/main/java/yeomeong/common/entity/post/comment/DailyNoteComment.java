@@ -27,6 +27,7 @@ public class DailyNoteComment {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "daily_note_id")
     private DailyNote dailyNote;
 
     @ManyToOne(fetch = FetchType.LAZY)

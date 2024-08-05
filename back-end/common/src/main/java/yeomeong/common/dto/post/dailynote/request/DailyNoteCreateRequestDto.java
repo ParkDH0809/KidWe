@@ -24,7 +24,6 @@ public class DailyNoteCreateRequestDto {
             .post(this.post)
             .kid(kid)
             .writer(writer)
-            .comments(new ArrayList<DailyNoteComment>())
             .sendTime(this.sendTime)
             .isDeleted(false)
             .build();

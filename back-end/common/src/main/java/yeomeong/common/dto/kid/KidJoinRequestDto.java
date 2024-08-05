@@ -33,6 +33,7 @@ public class KidJoinRequestDto {
             .ban(ban)
             .kindergarten(kindergarten)
             .kidStatus(atype.PENDING)
+            .isDeleted(false)
             .build();
     }
 
