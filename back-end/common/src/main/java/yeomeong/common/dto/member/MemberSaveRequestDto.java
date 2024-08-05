@@ -27,7 +27,7 @@ public class MemberSaveRequestDto {
             .email(memberSaveRequestDto.getEmail())
             .password(memberSaveRequestDto.getPassword())
             .role(rtype.valueOf(memberSaveRequestDto.getRole()))
-            .memberStatus(rtype.valueOf(memberSaveRequestDto.getRole()) == rtype.ROLE_TEACHER ? atype.DECLINE : atype.ACCEPT)
+            .memberStatus(rtype.valueOf(memberSaveRequestDto.getRole()) == rtype.ROLE_TEACHER ? atype.PENDING : atype.ACCEPT)
             .build();
     }
 

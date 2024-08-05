@@ -18,6 +18,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     List<Member> findMemberByBanId(Long banId);
 
+    List<Member> findMemberByKindergartenId(Long kindergartenId);
+
     @Modifying
     @Query("UPDATE Member m SET m.isDeleted = true WHERE m.email = :email")
     void deleteMemberByEmail(@Param("email") String email);

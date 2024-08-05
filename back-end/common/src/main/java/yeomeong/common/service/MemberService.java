@@ -1,6 +1,7 @@
 package yeomeong.common.service;
 
 import jakarta.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
@@ -14,8 +15,10 @@ import yeomeong.common.dto.kindergarten.KindergartenApprovalStatusDto;
 import yeomeong.common.dto.kindergarten.KindergartenSaveRequestDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
 import yeomeong.common.dto.member.MemberSaveRequestDto;
+import yeomeong.common.dto.member.TeacherDetailInfoDto;
 import yeomeong.common.entity.member.KidMember;
 import yeomeong.common.entity.member.Member;
+import yeomeong.common.entity.member.atype;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.repository.BanRepository;
@@ -121,8 +124,19 @@ public class MemberService {
     }
 
     public void updateMemberState(KindergartenApprovalStatusDto approvalStatusDto) {
-        if (kidMemberRepository.updateMemberStatusById(approvalStatusDto.getId(), approvalStatusDto.getStatus()) == 1) {
+        if (kidMemberRepository.updateMemberStatusById(approvalStatusDto.getTeacherId(), approvalStatusDto.getStatus()) != 1) {
             throw new CustomException(ErrorCode.INVALID_ID);
         }
     }
+
+    public List<TeacherDetailInfoDto> getTeachersByStatus(Long id, atype status) {
+        List<TeacherDetailInfoDto> teacherDetailInfos = new ArrayList<>();
+        memberRepository.findMemberByKindergartenId(id)
+            .stream()
+            .filter(member -> member.getMemberStatus() == status)
+            .toList()
+            .forEach(m -> teacherDetailInfos.add(TeacherDetailInfoDto.toTeacherDetailInfoDto(m)));
+        return teacherDetailInfos;
+    }
+
 }

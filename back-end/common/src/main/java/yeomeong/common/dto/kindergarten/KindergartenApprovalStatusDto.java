@@ -6,7 +6,7 @@ import yeomeong.common.entity.member.atype;
 @Getter
 public class KindergartenApprovalStatusDto {
 
-    Long id;
+    Long teacherId;
     atype status;
 
 }
