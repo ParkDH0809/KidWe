@@ -91,19 +91,23 @@ public class MedicationRepository {
         Kid kid = kidRepository.findById(kidId)
                 .orElseThrow(() -> new RuntimeException("해당 아이가 없습니다."));
 
+        String medicineUrl = "";
+        String sighUrl = "";
+
+
         Medication medication =new Medication(
                 medicationCreateDto.getMedicineName(),
                 kid,
                 medicationCreateDto.getSymptom(),
                 medicationCreateDto.getType(),
-                medicationCreateDto.getMedicineUrl(),
+                medicineUrl,
                 medicationCreateDto.getCapacity(),
                 medicationCreateDto.getMedicationExecuteDueDate(),
                 medicationCreateDto.getMedicationExecuteTime(),
                 medicationCreateDto.getNumberOfDoses(),
                 medicationCreateDto.getStorageMethod(),
                 medicationCreateDto.getOthers(),
-                medicationCreateDto.getSignUrl()
+                sighUrl
                 );
 
         em.persist(medication);

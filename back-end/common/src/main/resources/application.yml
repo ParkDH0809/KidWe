@@ -51,4 +51,5 @@ aws:
   credentials:
     access-key-id: AKIA4MTWI3VOFP4MKQUH
     secret-access-key: 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
-
+  stack:
+    auto: false

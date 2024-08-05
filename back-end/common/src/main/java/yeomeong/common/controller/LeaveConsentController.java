@@ -13,7 +13,8 @@ import yeomeong.common.service.LeaveConsentService;
 
 import java.util.List;
 
-@RestController("/leaveconsents")
+@RestController
+@RequestMapping("/leaveconsents")
 @RequiredArgsConstructor
 @Tag(name = "귀가동의서 API", description = "귀가동의서 관련 API")
 public class LeaveConsentController {

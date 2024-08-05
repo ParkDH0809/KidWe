@@ -38,6 +38,8 @@ public class LeaveConsentService {
         Kid kid = kidRepository.findById(kidId)
                 .orElseThrow(() -> new RuntimeException("해당하는 아이가 없어요 ㅠ_ㅠ"));
 
+        String signUrl = new String(" ");
+
         LeaveConsent leaveConsent = new LeaveConsent(
                 kid,
                 leaveConsentCreateDto.getLeaveDate(),
@@ -47,8 +49,8 @@ public class LeaveConsentService {
                 leaveConsentCreateDto.getGuardianContact(),
                 leaveConsentCreateDto.getEmergencyRelationship(),
                 leaveConsentCreateDto.getEmergencyContact(),
-                leaveConsentCreateDto.getSignUrl()
-        );
+                signUrl);
+
 
         leaveConsentRepository.save(leaveConsent);
     }

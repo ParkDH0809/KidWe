@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import yeomeong.common.service.S3Service;
 
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/file")
