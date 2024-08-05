@@ -15,6 +15,7 @@ import yeomeong.common.dto.kindergarten.KindergartenApprovalStatusDto;
 import yeomeong.common.dto.kindergarten.KindergartenSaveRequestDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
 import yeomeong.common.dto.member.MemberSaveRequestDto;
+import yeomeong.common.dto.member.MemberUpdateRequestDto;
 import yeomeong.common.dto.member.TeacherChangeBanRequestDto;
 import yeomeong.common.dto.member.TeacherDetailInfoDto;
 import yeomeong.common.entity.member.KidMember;
@@ -111,6 +112,15 @@ public class MemberService {
 
     public MemberProfileResponseDto getMemberProfile(String email) {
         return MemberProfileResponseDto.toMemberProfileDto(memberRepository.findByEmail(email));
+    }
+
+    public void updateMemberProfile(MemberUpdateRequestDto memberUpdateRequestDto) {
+        Member member = memberRepository.findById(memberUpdateRequestDto.getId())
+            .orElseThrow(() -> new CustomException(ErrorCode.INVALID_ID));
+        member.updateFromDto(memberUpdateRequestDto);
+        Member neww = memberRepository.save(member);
+        System.out.println(neww.getId());
+        System.out.println(neww.getName());
     }
 
     public void deleteMember(String email) {

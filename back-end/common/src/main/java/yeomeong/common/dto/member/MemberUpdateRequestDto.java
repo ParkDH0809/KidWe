@@ -1,0 +1,16 @@
+package yeomeong.common.dto.member;
+
+import lombok.Getter;
+
+@Getter
+public class MemberUpdateRequestDto {
+
+    Long id;
+    String name;
+    String tel;
+    String email;
+    String password;
+    String picture;
+    String role;
+
+}

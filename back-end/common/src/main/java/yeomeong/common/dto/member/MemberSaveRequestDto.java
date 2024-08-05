@@ -18,6 +18,7 @@ public class MemberSaveRequestDto {
     private String tel;
     private String email;
     private String password;
+    private String picture;
     private String role;
 
     public static Member toMemberEntity(MemberSaveRequestDto memberSaveRequestDto) {
@@ -27,6 +28,7 @@ public class MemberSaveRequestDto {
             .email(memberSaveRequestDto.getEmail())
             .password(memberSaveRequestDto.getPassword())
             .role(rtype.valueOf(memberSaveRequestDto.getRole()))
+            .picture(memberSaveRequestDto.getPicture())
             .memberStatus(rtype.valueOf(memberSaveRequestDto.getRole()) == rtype.ROLE_TEACHER ? atype.PENDING : atype.ACCEPT)
             .build();
     }
