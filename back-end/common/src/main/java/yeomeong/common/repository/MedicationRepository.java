@@ -37,7 +37,7 @@ public class MedicationRepository {
 
 
         return em.createQuery(
-                        "SELECT new yeomeong.common.dto.medication.MedicationByKidAndMonthDto (m.id, k.name, b.name, m.medicationExecuteDueDate) " +
+                        "SELECT new yeomeong.common.dto.medication.MedicationByKidAndMonthDto (m.id, k.name, b.name, m.medicationCreatedDateTime ) " +
                                 "FROM Medication m " +
                                 "JOIN m.kid k " +
                                 "JOIN k.ban b " +
@@ -56,7 +56,7 @@ public class MedicationRepository {
         LocalDate endDate = startDate.plusMonths(1).minusDays(1);
 
         //아이별 투약 의뢰서 ( 학부모용 )
-        return em.createQuery("select new yeomeong.common.dto.medication.MedicationByKidDto (m.id, k.name ) " +
+        return em.createQuery("select new yeomeong.common.dto.medication.MedicationByKidDto (m.id, k.name, m.medicationCreatedDateTime ) " +
                 " from Medication m " + "Join m.kid k " +
                 "where k.id = :kidId and " +
                 "m.medicationExecuteDueDate BETWEEN :startDate AND :endDate order by m.medicationCreatedDateTime DESC ",

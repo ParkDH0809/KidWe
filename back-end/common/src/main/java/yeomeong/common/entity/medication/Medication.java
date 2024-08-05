@@ -40,6 +40,7 @@ public class Medication {
     private String capacity;
     @Column(name = "medication_execute_due_date")
     private LocalDate medicationExecuteDueDate;
+
     private String medicationExecuteTime;
 
     private String numberOfDoses;
