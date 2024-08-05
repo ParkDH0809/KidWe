@@ -70,8 +70,6 @@ public class MedicationController {
             @PathVariable("kid_id") Long kidId){
 
 
-        medicationCreateDto.setKidId(kidId);
-
         return ResponseEntity.ok(medicationService.createMedication(medicationCreateDto,kidId));
     }
 

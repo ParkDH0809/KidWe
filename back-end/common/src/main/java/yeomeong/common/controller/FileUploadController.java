@@ -26,9 +26,6 @@ public class FileUploadController {
             @RequestParam("file") MultipartFile file,
             @RequestParam("domain") String domain){
 
-        
-
-
         try {
             String fileUrl = s3Service.uploadFile(file, domain);
             return ResponseEntity.ok("파일 업로드 성공" + fileUrl);
