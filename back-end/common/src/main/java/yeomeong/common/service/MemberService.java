@@ -13,6 +13,7 @@ import yeomeong.common.dto.kid.KidBasicInfoDto;
 import yeomeong.common.dto.kid.KidJoinRequestDto;
 import yeomeong.common.dto.kindergarten.KindergartenApprovalStatusDto;
 import yeomeong.common.dto.kindergarten.KindergartenSaveRequestDto;
+import yeomeong.common.dto.member.ApprovalRequestDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
 import yeomeong.common.dto.member.MemberSaveRequestDto;
 import yeomeong.common.dto.member.MemberUpdateRequestDto;
@@ -23,6 +24,7 @@ import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.member.atype;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
+import yeomeong.common.repository.ApprovalRepository;
 import yeomeong.common.repository.BanRepository;
 import yeomeong.common.repository.KidMemberRepository;
 import yeomeong.common.repository.KidRepository;
@@ -40,16 +42,18 @@ public class MemberService {
     private final BanRepository banRepository;
     private final KidMemberRepository kidMemberRepository;
     private final KindergartenRepository kindergartenRepository;
+    private final ApprovalRepository approvalRepository;
 
     public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder,
         BanRepository banRepository, KindergartenRepository kindergartenRepository, KidRepository kidRepository,
-        KidMemberRepository kidMemberRepository) {
+        KidMemberRepository kidMemberRepository, ApprovalRepository approvalRepository) {
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
         this.banRepository = banRepository;
         this.kindergartenRepository = kindergartenRepository;
         this.kidRepository = kidRepository;
         this.kidMemberRepository = kidMemberRepository;
+        this.approvalRepository = approvalRepository;
     }
 
     @Transactional
@@ -95,15 +99,26 @@ public class MemberService {
     }
 
     private void joinTeacher(long memberId, BanJoinRequestDto banJoinRequestDto) {
-        memberRepository.updateMemberBan(
-            memberId,
+        ApprovalRequestDto approvalRequestDto = new ApprovalRequestDto(
+            memberRepository.findById(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)),
             banRepository.findById(banJoinRequestDto.getBanId())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)));
-
-        memberRepository.updateMemberKindergarten(
-            memberId,
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)),
             kindergartenRepository.findById(banJoinRequestDto.getKindergartenId())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID))
+        );
+
+        approvalRepository.save(ApprovalRequestDto.toApprovalEntity(approvalRequestDto));
+
+//        memberRepository.updateMemberBan(
+//            memberId,
+//            banRepository.findById(banJoinRequestDto.getBanId())
+//                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)));
+//
+//        memberRepository.updateMemberKindergarten(
+//            memberId,
+//            kindergartenRepository.findById(banJoinRequestDto.getKindergartenId())
+//                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)));
     }
 
     public Member getMemberByEmail(String email) {
