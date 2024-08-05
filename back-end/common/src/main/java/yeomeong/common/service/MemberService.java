@@ -116,7 +116,7 @@ public class MemberService {
 
     public void updateMemberProfile(MemberUpdateRequestDto memberUpdateRequestDto) {
         Member member = memberRepository.findById(memberUpdateRequestDto.getId())
-            .orElseThrow(() -> new CustomException(ErrorCode.INVALID_ID));
+            .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE));
         member.updateFromDto(memberUpdateRequestDto);
         Member neww = memberRepository.save(member);
         System.out.println(neww.getId());
@@ -136,7 +136,7 @@ public class MemberService {
 
     public void updateMemberState(KindergartenApprovalStatusDto approvalStatusDto) {
         if (kidMemberRepository.updateMemberStatusById(approvalStatusDto.getTeacherId(), approvalStatusDto.getStatus()) != 1) {
-            throw new CustomException(ErrorCode.INVALID_ID);
+            throw new CustomException(ErrorCode.NOT_FOUND_ID);
         }
     }
 
@@ -154,7 +154,7 @@ public class MemberService {
         memberRepository.updateMemberBan(
             teacherChangeBanRequestDto.getTeacherId(),
             banRepository.findById(teacherChangeBanRequestDto.getBanId())
-                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_ID)));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)));
     }
 
 }
