@@ -7,11 +7,11 @@ import yeomeong.common.dto.ban.BanCreateRequestDto;
 import yeomeong.common.dto.ban.BanDetailInfoDto;
 import yeomeong.common.dto.ban.BanNameChangeRequestDto;
 import yeomeong.common.dto.member.TeacherBasicInfoDto;
+import yeomeong.common.entity.kindergarten.Ban;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.repository.BanRepository;
-import yeomeong.common.repository.KidRepository;
 import yeomeong.common.repository.KindergartenRepository;
 import yeomeong.common.repository.MemberRepository;
 
@@ -22,8 +22,7 @@ public class BanService {
     final KindergartenRepository kindergartenRepository;
     private final MemberRepository memberRepository;
 
-    public BanService(BanRepository banRepository, KindergartenRepository kindergartenRepository, KidRepository kidRepository,
-        MemberRepository memberRepository) {
+    public BanService(BanRepository banRepository, KindergartenRepository kindergartenRepository, MemberRepository memberRepository) {
         this.banRepository = banRepository;
         this.kindergartenRepository = kindergartenRepository;
         this.memberRepository = memberRepository;
@@ -36,6 +35,15 @@ public class BanService {
             banCreateRequestDto));
     }
 
+    public List<BanDetailInfoDto> getBansIdByKindergartenId(Long kindergartenId) {
+        List<Ban> bans = banRepository.findByKindergarten_Id(kindergartenId);
+        List<BanDetailInfoDto> banDetailInfos = new ArrayList<>();
+        for (Ban ban : bans) {
+            banDetailInfos.add(getBanInfo(ban.getId()));
+        }
+        return banDetailInfos;
+    }
+
     public BanDetailInfoDto getBanInfo(Long banId) {
         List<Member> teachers = memberRepository.findMemberByBanId(banId);
         BanDetailInfoDto banDetailInfoDto = BanDetailInfoDto.toBanDetailInfoDto(
@@ -44,7 +52,7 @@ public class BanService {
         for(Member teacher : teachers) {
             teacherBasicInfos.add(TeacherBasicInfoDto.toTeacherInfoDto(teacher));
         }
-        banDetailInfoDto.initTeachersInfo(teacherBasicInfos);
+        banDetailInfoDto.initializeDefaults(teacherBasicInfos);
         return banDetailInfoDto;
     }
 

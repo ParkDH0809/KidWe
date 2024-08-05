@@ -1,6 +1,7 @@
 package yeomeong.common.service;
 
 import jakarta.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
@@ -10,11 +11,15 @@ import yeomeong.common.dto.auth.SignupRequestDto;
 import yeomeong.common.dto.ban.BanJoinRequestDto;
 import yeomeong.common.dto.kid.KidBasicInfoDto;
 import yeomeong.common.dto.kid.KidJoinRequestDto;
+import yeomeong.common.dto.kindergarten.KindergartenApprovalStatusDto;
 import yeomeong.common.dto.kindergarten.KindergartenSaveRequestDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
 import yeomeong.common.dto.member.MemberSaveRequestDto;
+import yeomeong.common.dto.member.TeacherChangeBanRequestDto;
+import yeomeong.common.dto.member.TeacherDetailInfoDto;
 import yeomeong.common.entity.member.KidMember;
 import yeomeong.common.entity.member.Member;
+import yeomeong.common.entity.member.atype;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.repository.BanRepository;
@@ -117,6 +122,29 @@ public class MemberService {
             .stream()
             .map(KidBasicInfoDto::toKidBasicInfoDto)
             .collect(Collectors.toList());
+    }
+
+    public void updateMemberState(KindergartenApprovalStatusDto approvalStatusDto) {
+        if (kidMemberRepository.updateMemberStatusById(approvalStatusDto.getTeacherId(), approvalStatusDto.getStatus()) != 1) {
+            throw new CustomException(ErrorCode.INVALID_ID);
+        }
+    }
+
+    public List<TeacherDetailInfoDto> getTeachersByStatus(Long id, atype status) {
+        List<TeacherDetailInfoDto> teacherDetailInfos = new ArrayList<>();
+        memberRepository.findMemberByKindergartenId(id)
+            .stream()
+            .filter(member -> member.getMemberStatus() == status)
+            .toList()
+            .forEach(m -> teacherDetailInfos.add(TeacherDetailInfoDto.toTeacherDetailInfoDto(m)));
+        return teacherDetailInfos;
+    }
+
+    public void changeTeachersBan(TeacherChangeBanRequestDto teacherChangeBanRequestDto) {
+        memberRepository.updateMemberBan(
+            teacherChangeBanRequestDto.getTeacherId(),
+            banRepository.findById(teacherChangeBanRequestDto.getBanId())
+                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_ID)));
     }
 
 }

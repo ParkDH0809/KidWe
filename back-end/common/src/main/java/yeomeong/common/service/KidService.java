@@ -49,6 +49,10 @@ public class KidService {
             kid.setNewBan(banRepository.findById(kidUpdateInfoDto.getBanId())
                 .orElseThrow(() -> new CustomException(ErrorCode.INVALID_BAN_ID)));
         }
+        if(kidUpdateInfoDto.hasKindergartenId()) {
+            kid.setNewKindergarten(kindergartenRepository.findById(kidUpdateInfoDto.getKindergartenId())
+                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_BAN_ID)));
+        }
         kidRepository.save(kid);
     }
 

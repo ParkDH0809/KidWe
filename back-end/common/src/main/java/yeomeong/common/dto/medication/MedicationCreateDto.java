@@ -22,11 +22,8 @@ public class MedicationCreateDto {
     private String others;
 
     private LocalDate medicationExecuteDueDate;
+
     private LocalDateTime medicationCreatedDateTime;
-
-
-
-
 
 
     private String signUrl;

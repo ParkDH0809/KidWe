@@ -17,7 +17,9 @@ public class BanDetailInfoDto {
     private String name;
     @Builder.Default
     private List<KidBasicInfoDto> kids = new ArrayList<>();
+    private int kidCount;
     private List<TeacherBasicInfoDto> teachers;
+    private int teacherCount;
 
     public static BanDetailInfoDto toBanDetailInfoDto(Ban ban) {
         return BanDetailInfoDto.builder()
@@ -29,8 +31,10 @@ public class BanDetailInfoDto {
             .build();
     }
 
-    public void initTeachersInfo(List<TeacherBasicInfoDto> teacherInfos) {
+    public void initializeDefaults(List<TeacherBasicInfoDto> teacherInfos) {
         this.teachers = teacherInfos;
+        this.teacherCount = teacherInfos.size();
+        this.kidCount = kids.size();
     }
 
 }
