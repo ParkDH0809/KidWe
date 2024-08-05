@@ -33,4 +33,6 @@ public class DailyNoteComment {
 
     private LocalDateTime localDateTime;
 
+    private Boolean isDeleted;
+
 }

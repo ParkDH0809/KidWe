@@ -6,5 +6,5 @@ import yeomeong.common.entity.post.comment.DailyNoteComment;
 
 @Repository
 public interface DailyNoteCommentRepository extends JpaRepository<DailyNoteComment, Long> {
-    
+
 }
