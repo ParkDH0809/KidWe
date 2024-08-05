@@ -42,7 +42,6 @@ public class KidDetailInfoDto {
             .build();
     }
 
-
     private static List<String> stringToList(String str) {
         return Arrays.stream(str.split(",")).toList();
     }

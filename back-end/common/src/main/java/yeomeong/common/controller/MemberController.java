@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import yeomeong.common.dto.kid.KidBasicInfoDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
+import yeomeong.common.dto.member.MemberUpdateRequestDto;
 import yeomeong.common.service.MemberService;
 
 @Slf4j
@@ -33,6 +34,13 @@ public class MemberController {
     @DeleteMapping("/profile")
     public ResponseEntity<Void> deleteMemberProfile(Authentication authentication) {
         memberService.deleteMember(authentication.getName());
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @Operation(summary = "사용자 정보 수정", description = "특정 사용자 정보를 수정합니다.")
+    @PatchMapping("/profile")
+    public ResponseEntity<Void> updateMemberProfile(@RequestBody MemberUpdateRequestDto memberUpdateRequestDto) {
+        memberService.updateMemberProfile(memberUpdateRequestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
