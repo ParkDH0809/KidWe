@@ -1,6 +1,5 @@
 package yeomeong.common.dto.attendance;
 
-import java.sql.Time;
 import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,9 +18,8 @@ public class AttendanceResponseDto {
     String kidName;
 
     String reason;
-    boolean isAttended;
-    Time inTime;
-    Time outTime;;
+    boolean attendedToday;
+
     LocalDate date;
 
     public static AttendanceResponseDto toAttendanceResponseDto(Attendance attendance) {
@@ -32,8 +30,7 @@ public class AttendanceResponseDto {
             .kidId(attendance.getKid().getId())
             .kidName(attendance.getKid().getName())
             .reason(attendance.getReason())
-            .inTime(attendance.getInTime())
-            .outTime(attendance.getOutTime())
+            .attendedToday(attendance.getAttendedToday())
             .date(attendance.getDate())
             .build();
     }

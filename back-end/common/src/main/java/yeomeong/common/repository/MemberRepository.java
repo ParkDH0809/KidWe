@@ -1,5 +1,6 @@
 package yeomeong.common.repository;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -14,6 +15,8 @@ import yeomeong.common.entity.member.Member;
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Member findByEmail(String email);
+
+    List<Member> findMemberByBanId(Long banId);
 
     @Modifying
     @Query("UPDATE Member m SET m.isDeleted = true WHERE m.email = :email")

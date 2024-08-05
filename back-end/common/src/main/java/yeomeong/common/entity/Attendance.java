@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import yeomeong.common.entity.member.Kid;
 
-import java.sql.Time;
-
 @Entity
 @Getter
 @Setter
@@ -27,9 +25,8 @@ public class Attendance {
 
     private String reason;
 
-    private Time inTime;
-    private Time outTime;
-
     private LocalDate date;
+
+    private Boolean attendedToday;
 
 }

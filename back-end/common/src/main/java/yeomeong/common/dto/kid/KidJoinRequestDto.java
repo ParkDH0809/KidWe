@@ -1,6 +1,6 @@
 package yeomeong.common.dto.kid;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.Getter;
 import lombok.ToString;
@@ -14,7 +14,7 @@ import yeomeong.common.entity.member.gtype;
 public class KidJoinRequestDto {
 
     String name;
-    Date birthday;
+    LocalDate birthday;
     gtype gender;
     List<String> allergies;
     String picture;

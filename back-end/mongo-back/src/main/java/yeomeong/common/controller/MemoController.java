@@ -17,6 +17,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 
+@CrossOrigin
 @RestController
 @RequestMapping("/memo")
 @Tag(name = "메모", description = "메모 관련 API")

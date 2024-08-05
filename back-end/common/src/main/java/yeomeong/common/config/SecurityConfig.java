@@ -79,10 +79,7 @@ public class SecurityConfig {
         JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordAuthenticationFilter
                 = new JsonUsernamePasswordAuthenticationFilter(objectMapper, loginSuccessHandler, loginFailureHandler, authenticationProvider);
         jsonUsernamePasswordAuthenticationFilter.setAuthenticationManager(authenticationManager());
-
         return jsonUsernamePasswordAuthenticationFilter;
-
-
     }
 
     @Bean

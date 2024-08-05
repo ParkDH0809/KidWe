@@ -1,7 +1,7 @@
 package yeomeong.common.dto.kid;
 
+import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,18 +14,17 @@ public class KidDetailInfoDto {
 
     private long id;
     private String name;
-    private Date birthday;
-    private Date startAttendanceDate;
+    private LocalDate birthday;
+    private LocalDate startAttendanceDate;
     private gtype gender;
-    private double tall;
-    private double weight;
     private List<String> allergies;
     private String picture;
     private boolean isTake;
-    private long banId;
+    private Long banId;
     private String banName;
-    private long stopId;
-    private long busId;
+    private Long stopId;
+    private Long busId;
+    private boolean isDeleted;
 
     public static KidDetailInfoDto toKidDetailInfoDto(Kid kid) {
         return KidDetailInfoDto.builder()
@@ -39,8 +38,10 @@ public class KidDetailInfoDto {
             .isTake(kid.isTake())
             .banId(kid.getBan().getId())
             .banName(kid.getBan().getName())
+            .isDeleted(kid.getIsDeleted())
             .build();
     }
+
 
     private static List<String> stringToList(String str) {
         return Arrays.stream(str.split(",")).toList();
