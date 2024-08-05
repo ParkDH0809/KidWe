@@ -32,9 +32,10 @@ public class DailyNoteCommentController {
     }
 
     @Operation(summary = "알림장 (대)댓글 수정 API", description = "알림장 (대)댓글을 수정합니다.")
-    @PutMapping("/")
-    ResponseEntity<DailyNoteCommentResponseDto> updateDailyNoteComment(@RequestBody DailyNoteCommentUpdateRequestDto dailyNoteCommentUpdateRequestDto) {
-        DailyNoteCommentResponseDto updatedDailyNoteComment = dailyNoteCommentService.updateDailyNoteComment(dailyNoteCommentUpdateRequestDto);
+    @PutMapping("/{daily_note_comment_id}")
+    ResponseEntity<DailyNoteCommentResponseDto> updateDailyNoteComment(@PathVariable("daily_note_comment_id") Long dailyNoteCommentId,
+        @RequestBody DailyNoteCommentUpdateRequestDto dailyNoteCommentUpdateRequestDto) {
+        DailyNoteCommentResponseDto updatedDailyNoteComment = dailyNoteCommentService.updateDailyNoteComment(dailyNoteCommentId, dailyNoteCommentUpdateRequestDto);
         return ResponseEntity.ok(updatedDailyNoteComment);
     }
 

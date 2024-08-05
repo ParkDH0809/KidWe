@@ -49,12 +49,13 @@ public class DailyNoteCommentService {
 
     // 알림장에 (대)댓글 수정하기
     public DailyNoteCommentResponseDto updateDailyNoteComment(
+        Long dailyNoteCommentId,
         DailyNoteCommentUpdateRequestDto dailyNoteCommentUpdateRequestDto){
-        DailyNoteComment oldDailyNoteComment = dailyNoteCommentRepository.findById(dailyNoteCommentUpdateRequestDto.getId()).orElseThrow(
+        DailyNoteComment oldDailyNoteComment = dailyNoteCommentRepository.findById(dailyNoteCommentId).orElseThrow(
             () -> new CustomException(ErrorCode.NOT_FOUND_DAILYNOTE_COMMENT_ID)
         );
-        oldDailyNoteComment.setContent(dailyNoteCommentUpdateRequestDto.getContent());
-        oldDailyNoteComment.setUpdatedAt(LocalDateTime.now());
+        oldDailyNoteComment.setNewContet(dailyNoteCommentUpdateRequestDto.getContent());
+        oldDailyNoteComment.update();
         return new DailyNoteCommentResponseDto(dailyNoteCommentRepository.save(oldDailyNoteComment));
     }
     
@@ -63,6 +64,6 @@ public class DailyNoteCommentService {
         DailyNoteComment oldDailyNoteComment = dailyNoteCommentRepository.findById(dailyNoteCommentId).orElseThrow(
              () -> new CustomException(ErrorCode.NOT_FOUND_DAILYNOTE_COMMENT_ID)
         );
-        oldDailyNoteComment.setIsDeleted(true);
+        oldDailyNoteComment.delete();
     }
 }

@@ -16,7 +16,7 @@ import yeomeong.common.entity.post.Announcement;
 import yeomeong.common.entity.post.DailyNote;
 
 @Entity
-@Setter
+
 @Getter
 @Builder
 @NoArgsConstructor
@@ -44,4 +44,17 @@ public class DailyNoteComment {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Boolean isDeleted;
+
+    public void setNewContet(String content) {
+        this.content = content;
+    }
+
+    public void delete(){
+        this.isDeleted = true;
+    }
+
+    public void update(){
+        this.updatedAt = LocalDateTime.now();
+    }
+
 }

@@ -86,8 +86,8 @@ public class DailyNoteService {
         DailyNote oldDailyNote = dailyNoteRepository.findById(updatedDailyNoteRequsetDto.getId()).orElseThrow(
             () -> new CustomException(ErrorCode.NOT_FOUND_DAILYNOTE_ID)
         );
-        oldDailyNote.setPost(updatedDailyNoteRequsetDto.getPost());
-        oldDailyNote.setSendTime(updatedDailyNoteRequsetDto.getSendTime());
+        oldDailyNote.setNewPost(updatedDailyNoteRequsetDto.getPost());
+        oldDailyNote.setNewSendTime(updatedDailyNoteRequsetDto.getSendTime());
         return new DailyNoteResponseDto(dailyNoteRepository.save(oldDailyNote));
     }
 
@@ -97,7 +97,7 @@ public class DailyNoteService {
         DailyNote oldDailyNote = dailyNoteRepository.findById(id).orElseThrow(
             () -> new CustomException(ErrorCode.NOT_FOUND_DAILYNOTE_ID)
         );
-        oldDailyNote.setIsDeleted(true);
+        oldDailyNote.delete();
         dailyNoteRepository.save(oldDailyNote);
     }
 }

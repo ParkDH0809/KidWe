@@ -31,7 +31,6 @@ public class DailyNoteController {
     @PostMapping("/")
     public ResponseEntity<DailyNoteResponseDto> createDailyNote(@RequestBody DailyNoteCreateRequestDto dailyNoteCreateRequestDto) {
         DailyNoteResponseDto createdDailyNote = dailyNoteService.createDailyNote(dailyNoteCreateRequestDto);
-        System.out.println(createdDailyNote.getId());
         return ResponseEntity.ok(createdDailyNote);
     }
 
