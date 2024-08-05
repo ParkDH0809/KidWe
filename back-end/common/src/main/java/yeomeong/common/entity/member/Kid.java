@@ -40,6 +40,9 @@ public class Kid {
     @Enumerated(EnumType.STRING)
     private gtype gender; //MALE , FEMALE
 
+    @Enumerated(EnumType.STRING)
+    private atype kidStatus; //ACCEPT, DECLINE, PENDING
+
     private boolean isTake;
 
     @ManyToOne(fetch = FetchType.LAZY)

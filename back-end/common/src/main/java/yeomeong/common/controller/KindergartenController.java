@@ -46,13 +46,13 @@ public class KindergartenController {
         return ResponseEntity.status(HttpStatus.OK).body(kindergartenService.getSearchedKindergartenInfo(kindergartenSearchDto));
     }
 
-    @Operation(summary = "특정 유치원 조회", description = "특정 유치원 정보를 조회합니다.")
+    @Operation(summary = "특정 유치원 기본 정보 조회", description = "특정 유치원 기본 정보를 조회합니다.")
     @GetMapping("/{kindergartenId}")
     public ResponseEntity<KindergartenInfoResponseDto> getKindergarten(@PathVariable Long kindergartenId) {
         return ResponseEntity.status(HttpStatus.OK).body(kindergartenService.getKindergartenInfo(kindergartenId));
     }
 
-    @Operation(summary = "특정 유치원 정보 상세 조회", description = "유치원 별 반 상세 정보(이름, 아이, 선생님)를 조회합니다.")
+    @Operation(summary = "특정 유치원 상세 정보 조회", description = "유치원 별 반 상세 정보(이름, 아이, 선생님)를 조회합니다.")
     @GetMapping("/{kindergartenId}/detail")
     public ResponseEntity<List<BanDetailInfoDto>> getBansDetailByKindergarten(@PathVariable Long kindergartenId) {
         return ResponseEntity.status(HttpStatus.OK).body(banService.getBansIdByKindergartenId(kindergartenId));

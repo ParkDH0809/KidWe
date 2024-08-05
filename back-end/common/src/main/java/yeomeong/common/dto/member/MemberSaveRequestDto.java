@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import yeomeong.common.entity.member.Member;
+import yeomeong.common.entity.member.atype;
 import yeomeong.common.entity.member.rtype;
 
 @Getter
@@ -26,6 +27,7 @@ public class MemberSaveRequestDto {
             .email(memberSaveRequestDto.getEmail())
             .password(memberSaveRequestDto.getPassword())
             .role(rtype.valueOf(memberSaveRequestDto.getRole()))
+            .memberStatus(rtype.valueOf(memberSaveRequestDto.getRole()) == rtype.ROLE_TEACHER ? atype.DECLINE : atype.ACCEPT)
             .build();
     }
 

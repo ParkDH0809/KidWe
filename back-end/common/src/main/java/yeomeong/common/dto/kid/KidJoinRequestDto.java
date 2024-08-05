@@ -7,6 +7,7 @@ import lombok.ToString;
 import yeomeong.common.entity.kindergarten.Ban;
 import yeomeong.common.entity.kindergarten.Kindergarten;
 import yeomeong.common.entity.member.Kid;
+import yeomeong.common.entity.member.atype;
 import yeomeong.common.entity.member.gtype;
 
 @Getter
@@ -31,6 +32,7 @@ public class KidJoinRequestDto {
             .gender(kidJoinRequestDto.getGender())
             .ban(ban)
             .kindergarten(kindergarten)
+            .kidStatus(atype.DECLINE)
             .build();
     }
 
