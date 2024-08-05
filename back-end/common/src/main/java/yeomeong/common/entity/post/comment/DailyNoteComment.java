@@ -32,7 +32,5 @@ public class DailyNoteComment {
     private List<DailyNoteComment> replies =new ArrayList<>();
 
     private LocalDateTime localDateTime;
-
     private Boolean isDeleted;
-
 }
