@@ -40,6 +40,9 @@ public class Kid {
     @Enumerated(EnumType.STRING)
     private gtype gender; //MALE , FEMALE
 
+    @Enumerated(EnumType.STRING)
+    private atype kidStatus; //ACCEPT, DECLINE, PENDING
+
     private boolean isTake;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -79,6 +82,10 @@ public class Kid {
 
     public void setNewBan(Ban ban) {
         this.ban = ban;
+    }
+
+    public void setNewKindergarten(Kindergarten kindergarten) {
+        this.kindergarten = kindergarten;
     }
 
     private static String listToString(List<String> list) {
