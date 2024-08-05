@@ -39,7 +39,7 @@ public class DailyNoteComment {
     private DailyNoteComment parentComment;
 
     @OneToMany(mappedBy = "parentComment",cascade = CascadeType.ALL)
-    private List<DailyNoteComment> replies =new ArrayList<>();
+    private List<DailyNoteComment> replies;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

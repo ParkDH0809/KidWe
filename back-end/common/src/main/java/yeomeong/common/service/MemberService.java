@@ -92,12 +92,12 @@ public class MemberService {
         memberRepository.updateMemberBan(
             memberId,
             banRepository.findById(banJoinRequestDto.getBanId())
-                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_ID)));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)));
 
         memberRepository.updateMemberKindergarten(
             memberId,
             kindergartenRepository.findById(banJoinRequestDto.getKindergartenId())
-                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_ID)));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)));
     }
 
     public Member getMemberByEmail(String email) {
