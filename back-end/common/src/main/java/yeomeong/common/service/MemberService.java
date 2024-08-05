@@ -62,31 +62,11 @@ public class MemberService {
         member.setPassword(passwordEncoder.encode(member.getPassword()));
         long memberId = memberRepository.save(member).getId();
         switch (member.getRole()) {
-            case ROLE_GUARDIAN -> joinGuardian(memberId, signupRequestDto.getKid());
             case ROLE_DIRECTOR -> joinDirector(memberId, signupRequestDto.getKindergarten());
+            case ROLE_GUARDIAN -> joinGuardian(memberId, signupRequestDto.getKid());
             case ROLE_TEACHER -> joinTeacher(memberId, signupRequestDto.getBan());
             default -> throw new CustomException(ErrorCode.INVALID_INPUT_VALUE);
         }
-    }
-
-    private void joinGuardian(long memberId, KidJoinRequestDto kidJoinRequestDto) {
-        long kidId = kidRepository.save(
-            KidJoinRequestDto.toKidEntity(
-                kidJoinRequestDto,
-                kindergartenRepository.findById(kidJoinRequestDto.getKindergartenId())
-                    .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)),
-                banRepository.findById(kidJoinRequestDto.getBanId())
-                    .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)))
-        ).getId();
-
-        kidMemberRepository.save(
-            KidMember
-                .builder()
-                .kid(kidRepository.findById(kidId).orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)))
-                .member(memberRepository.findById(memberId)
-                    .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)))
-                .build()
-        );
     }
 
     private void joinDirector(long memberId, KindergartenSaveRequestDto kindergartenSaveRequestDto) {
@@ -96,6 +76,28 @@ public class MemberService {
         memberRepository.updateMemberKindergarten(memberId,
             kindergartenRepository.findById(kindergartenId)
                 .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)));
+    }
+
+    private void joinGuardian(long memberId, KidJoinRequestDto kidJoinRequestDto) {
+        long kidId = kidRepository.save(KidJoinRequestDto.toKidEntity(kidJoinRequestDto)).getId();
+        ApprovalRequestDto approvalRequestDto = new ApprovalRequestDto(
+            kidRepository.findById(kidId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)),
+            banRepository.findById(kidJoinRequestDto.getBanId())
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)),
+            kindergartenRepository.findById(kidJoinRequestDto.getKindergartenId())
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID))
+        );
+
+        approvalRepository.save(ApprovalRequestDto.toApprovalEntity(approvalRequestDto));
+        kidMemberRepository.save(
+            KidMember
+                .builder()
+                .kid(kidRepository.findById(kidId).orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)))
+                .member(memberRepository.findById(memberId)
+                    .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)))
+                .build()
+        );
     }
 
     private void joinTeacher(long memberId, BanJoinRequestDto banJoinRequestDto) {
