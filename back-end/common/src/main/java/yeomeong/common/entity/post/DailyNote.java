@@ -15,6 +15,8 @@ import yeomeong.common.entity.member.Member;
 
 import java.util.ArrayList;
 import java.util.List;
+import yeomeong.common.entity.post.comment.AnnouncementComment;
+import yeomeong.common.entity.post.comment.DailyNoteComment;
 
 @Entity
 
@@ -42,4 +44,7 @@ public class DailyNote {
 
     private LocalDateTime sendTime;
     private Boolean isDeleted;
+
+    @OneToMany(mappedBy = "dailynote", cascade = CascadeType.ALL)
+    private List<DailyNoteComment> commentList = new ArrayList<>();
 }
