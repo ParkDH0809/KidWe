@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import yeomeong.common.dto.post.dailynote.request.DailyNoteCreateRequestDto;
 import yeomeong.common.dto.post.dailynote.request.DailyNoteUpdateRequestDto;
 import yeomeong.common.dto.post.dailynote.response.DailyNoteResponseDto;
+import yeomeong.common.entity.kindergarten.Ban;
 import yeomeong.common.entity.member.Kid;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.member.rtype;
@@ -29,7 +30,7 @@ public class DailyNoteService {
     private final MemberRepository memberRepository;
     private final KidRepository kidRepository;
 
-    //알림장 생성하기
+    // 알림장 생성하기
     @Transactional
     public DailyNoteResponseDto createDailyNote(DailyNoteCreateRequestDto dailyNoteCreateRequestDto) {
         Long writerId = dailyNoteCreateRequestDto.getWriterId();
@@ -43,36 +44,45 @@ public class DailyNoteService {
         return new DailyNoteResponseDto(createdDailyNote);
     }
 
-    //날짜별&아이별 알림장 조회하기
+    //월별 알림장 조회하기
+    @Transactional
     public List<DailyNoteResponseDto> getDailyNotes(Long memberId, Long kidId, String yearAndMonth) {
+        // 수신인이 존재하는지 확인하기
         Member receiver = memberRepository.findById(memberId).orElseThrow(
             () -> new CustomException(ErrorCode.NOT_FOUND_ID)
         );
 
-        List<DailyNoteResponseDto> dailyNoteResponseDtos = new ArrayList<>();
-        // 내가 쓴 글
-        List<DailyNote> writeDailyNotes = dailyNoteRepository.findByKidIdAndYearAndMonthAndWriterId(memberId, kidId, yearAndMonth);
+        // 작성자로 된 알림장들
+        List<DailyNote> writeDailyNotes = dailyNoteRepository.findByYearAndMonthAndKidIdAndWriterId(yearAndMonth, kidId, memberId);
         List<DailyNote> receiveDailyNotes = new ArrayList<>();
+
+        // 수신자로 된 알림장들
         if(receiver.getRole() == rtype.ROLE_TEACHER){
-            // 상대방이 써준 글
-            receiveDailyNotes = dailyNoteRepository.findByKidIdAndYearAndMonthAndReceiverType(rtype.ROLE_GUARDIAN, kidId, yearAndMonth);
+            // 수신자가 선생님일 경우 담당 반 아이들의 학부모가 작성한 알림장 모두 조회
+            Ban ban = receiver.getBan();
+            receiveDailyNotes = dailyNoteRepository.findByYearAndMonthAndBanAndReceiverType(yearAndMonth,
+                ban.getKindergarten().getId(),
+                ban.getId(),
+                rtype.ROLE_GUARDIAN);
         }
         else if(receiver.getRole() == rtype.ROLE_GUARDIAN){
-            // 상대방이 써준 글
-            receiveDailyNotes = dailyNoteRepository.findByKidIdAndYearAndMonthAndReceiverType(rtype.ROLE_TEACHER, kidId, yearAndMonth);
+            // 수신자가 학부모일 경우 해당 아이의 선생님이 작성한 알림장 모두 조회
+            receiveDailyNotes = dailyNoteRepository.findBYearAndMonthAndKidIdAndReceiverType(yearAndMonth,
+                kidId,
+                rtype.ROLE_TEACHER);
         }
 
-        for(DailyNote dailyNote : writeDailyNotes) {
-            dailyNoteResponseDtos.add(new DailyNoteResponseDto(dailyNote));
-        }
-        for(DailyNote dailyNote : receiveDailyNotes){
-            dailyNoteResponseDtos.add(new DailyNoteResponseDto(dailyNote));
-        }
+        // 작성자인, 수신자인 알림장을 합쳐서 반환
+        List<DailyNoteResponseDto> dailyNoteResponseDtos = new ArrayList<>();
+
+        for(DailyNote dailyNote : writeDailyNotes) dailyNoteResponseDtos.add(new DailyNoteResponseDto(dailyNote));
+        for(DailyNote dailyNote : receiveDailyNotes) dailyNoteResponseDtos.add(new DailyNoteResponseDto(dailyNote));
 
         return dailyNoteResponseDtos;
     }
 
-    //알림장 조회하기
+    // 알림장 상세정보 조회하기
+    @Transactional
     public DailyNoteResponseDto getDailyNote(Long id) {
         DailyNote dailyNote = dailyNoteRepository.findById(id).orElseThrow(
             () -> new CustomException(ErrorCode.NOT_FOUND_DAILYNOTE_ID)
@@ -80,7 +90,7 @@ public class DailyNoteService {
         return new DailyNoteResponseDto(dailyNote);
     }
 
-    //알림장 수정하기
+    // 알림장 수정하기
     @Transactional
     public DailyNoteResponseDto updateDailyNote(DailyNoteUpdateRequestDto updatedDailyNoteRequsetDto) {
         DailyNote oldDailyNote = dailyNoteRepository.findById(updatedDailyNoteRequsetDto.getId()).orElseThrow(

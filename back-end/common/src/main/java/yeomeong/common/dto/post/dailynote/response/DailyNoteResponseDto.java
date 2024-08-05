@@ -6,13 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import yeomeong.common.dto.kid.KidDetailInfoDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
 import yeomeong.common.entity.post.DailyNote;
 import yeomeong.common.entity.post.Post;
 import yeomeong.common.entity.post.comment.DailyNoteComment;
 
-@Getter
+@Setter
 @NoArgsConstructor
 public class DailyNoteResponseDto {
     private Long id;

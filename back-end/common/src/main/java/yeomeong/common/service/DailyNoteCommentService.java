@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import yeomeong.common.dto.post.dailynote.request.DailyNoteCommentCreateRequestDto;
 import yeomeong.common.dto.post.dailynote.request.DailyNoteCommentUpdateRequestDto;
 import yeomeong.common.dto.post.dailynote.response.DailyNoteCommentResponseDto;
@@ -20,10 +21,12 @@ import yeomeong.common.repository.MemberRepository;
 @Service
 @RequiredArgsConstructor
 public class DailyNoteCommentService {
-    private final DailyNoteRepository dailyNoteRepository;
     private final MemberRepository memberRepository;
+    private final DailyNoteRepository dailyNoteRepository;
     private final DailyNoteCommentRepository dailyNoteCommentRepository;
+
     // 알림장에 (대)댓글 생성하기
+    @Transactional
     public DailyNoteCommentResponseDto createDailyNoteComment(
         DailyNoteCommentCreateRequestDto dailyNoteCommentCreateRequestDto){
         DailyNote dailyNote = dailyNoteRepository.findById(dailyNoteCommentCreateRequestDto.getDailynoteId()).orElseThrow(
@@ -48,6 +51,7 @@ public class DailyNoteCommentService {
     }
 
     // 알림장에 (대)댓글 수정하기
+    @Transactional
     public DailyNoteCommentResponseDto updateDailyNoteComment(
         Long dailyNoteCommentId,
         DailyNoteCommentUpdateRequestDto dailyNoteCommentUpdateRequestDto){

@@ -44,6 +44,10 @@ public class DailyNote {
     private LocalDateTime sendTime;
     private Boolean isDeleted;
 
+    public DailyNote() {
+
+    }
+
     public void setNewPost(Post post){
         this.post = post;
     }

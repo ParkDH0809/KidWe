@@ -5,29 +5,44 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import yeomeong.common.entity.kindergarten.Ban;
 import yeomeong.common.entity.member.rtype;
 import yeomeong.common.entity.post.DailyNote;
 
 @Repository
 public interface DailyNoteRepository extends JpaRepository<DailyNote, Long>{
 
+    // 전송 기준 : 작성자가 쓴 아이별 - 날짜별 알림장 (전송되지 않은 알림장까지 모두 보여줘야 한다)
     @Query("SELECT dn "
         + "FROM DailyNote dn "
-        + "WHERE dn.writer.id = :writerId AND dn.kid.id = :kidId AND FUNCTION('DATE_FORMAT', dn.post.createdDateTime, '%Y-%m') = :date")
-    List<DailyNote> findByKidIdAndYearAndMonthAndWriterId(@Param("writerId") Long writerId,
-        @Param("kidId") Long kidId,
-        @Param("date") String date);
+        + "WHERE FUNCTION('DATE_FORMAT', dn.post.createdDateTime, '%Y-%m') = :date "
+        + "AND dn.kid.id = :kidId "
+        + "AND dn.writer.id = :writerId")
+    List<DailyNote> findByYearAndMonthAndKidIdAndWriterId(@Param("date") String date,
+        @Param("writerId") Long writerId,
+        @Param("kidId") Long kidId);
 
+    // 학부모 수신 : 학부모의 아이에게 선생님이 작성한 알림장을 조회
     @Query("SELECT dn "
         + "FROM DailyNote dn "
-        + "WHERE dn.writer.role = :writerType AND dn.kid.id = :kidId AND FUNCTION('DATE_FORMAT', dn.post.createdDateTime, '%Y-%m') = :date AND dn.sendTime <= CURRENT_TIMESTAMP")
-    List<DailyNote> findByKidIdAndYearAndMonthAndReceiverType(@Param("writerType") rtype role,
+        + "WHERE FUNCTION('DATE_FORMAT', dn.post.createdDateTime, '%Y-%m') = :date "
+        + "AND dn.kid.id = :kidId "
+        + "AND dn.writer.role = :writerRole "
+        + "AND dn.sendTime <= CURRENT_TIMESTAMP")
+    List<DailyNote> findBYearAndMonthAndKidIdAndReceiverType(@Param("date") String date,
         @Param("kidId") Long kidId,
-        @Param("date") String date);
+        @Param("writerRole") rtype writerRole);
 
+    // 선생님 수신 : 담당반 아이들에게 학부모가 작성한 알림장을 조회
     @Query("SELECT dn "
         + "FROM DailyNote dn "
-        + "WHERE dn.kid.id = :kidId AND FUNCTION('DATE_FORMAT', dn.post.createdDateTime, '%Y-%m') = :date")
-    List<DailyNote> findByKidIdAndYearAndMonth(@Param("kidId") Long kidId,
-        @Param("date") String date);
+        + "WHERE FUNCTION('DATE_FORMAT', dn.post.createdDateTime, '%Y-%m') = :date "
+        + "AND dn.kid.ban.kindergarten.id = :kindergartenId "
+        + "AND dn.kid.ban.id = :banId "
+        + "AND dn.writer.role = :writerRole "
+        + "AND dn.sendTime <= CURRENT_TIMESTAMP")
+    List<DailyNote> findByYearAndMonthAndBanAndReceiverType(@Param("date") String date,
+        @Param("kindergartenId") Long kindergartenId,
+        @Param("banId") Long banId,
+        @Param("writerRole") rtype writerRole);
 }
