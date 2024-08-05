@@ -34,8 +34,6 @@ public class KidDetailInfoDto {
             .birthday(kid.getBirthday())
             .startAttendanceDate(kid.getStartAttendanceDate())
             .gender(kid.getGender())
-            .tall(kid.getTall())
-            .weight(kid.getWeight())
             .allergies(stringToList(kid.getAllergies()))
             .picture(kid.getPicture())
             .isTake(kid.isTake())

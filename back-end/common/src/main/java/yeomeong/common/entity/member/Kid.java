@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import yeomeong.common.entity.kindergarten.Ban;
 import yeomeong.common.entity.kindergarten.Bus;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,9 +29,9 @@ public class Kid {
 
     private String name;
 
-    private Date birthday;
+    private LocalDate birthday;
 
-    private Date startAttendanceDate;
+    private LocalDate startAttendanceDate;
 
     private String picture;
 
@@ -39,9 +40,6 @@ public class Kid {
     @Enumerated(EnumType.STRING)
     private gtype gender; //MALE , FEMALE
 
-    private double tall;
-
-    private double weight;
 
     private boolean isTake;
 
