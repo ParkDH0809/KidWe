@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import yeomeong.common.dto.post.dailynote.request.DailyNoteCreateRequestDto;
 import yeomeong.common.dto.post.dailynote.request.DailyNoteUpdateRequestDto;
+import yeomeong.common.dto.post.dailynote.response.DailyNoteListResponseDto;
 import yeomeong.common.dto.post.dailynote.response.DailyNoteResponseDto;
 import yeomeong.common.service.DailyNoteService;
 
@@ -36,7 +37,7 @@ public class DailyNoteController {
 
     @Operation(summary = "월별 알림장 조회 API", description = "월별로 알림장을 조회해 List로 반환합니다.")
     @GetMapping("/{member_id}/{kid_id}/{year}/{month}")
-    public ResponseEntity<List<DailyNoteResponseDto>> getDailyNotes(@PathVariable("member_id") Long memberId,
+    public ResponseEntity<DailyNoteListResponseDto> getDailyNotes(@PathVariable("member_id") Long memberId,
         @PathVariable("kid_id") Long kidId,
         @PathVariable("year") String year,
         @PathVariable("month") String month) {
