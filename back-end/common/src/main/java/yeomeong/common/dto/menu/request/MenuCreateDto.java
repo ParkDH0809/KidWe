@@ -2,17 +2,39 @@ package yeomeong.common.dto.menu.request;
 
 
 import lombok.Data;
+import yeomeong.common.entity.kindergarten.Kindergarten;
+import yeomeong.common.entity.kindergarten.Menu;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class MenuCreateDto {
 
     private String lunch;
-    private String lunchAllergies;
+    private List<String> lunchAllergies;
     private String snack;
-    private String snackAllergies;
+    private List<String> snackAllergies;
     private String dinner;
-    private String dinnerAllergies;
+    private List<String> dinnerAllergies;
     private LocalDate menuDate;
+
+
+
+    public static Menu toEntityMenu(Kindergarten kindergarten, MenuCreateDto menuCreateDto){
+        return Menu.builder()
+                .kindergarten(kindergarten)
+                .menuDate(menuCreateDto.getMenuDate())
+                .lunch(menuCreateDto.getLunch())
+                .lunchAllergies(listToString(menuCreateDto.lunchAllergies))
+                .dinner(menuCreateDto.getDinner())
+                .dinnerAllergies(listToString(menuCreateDto.dinnerAllergies))
+                .snack(menuCreateDto.getSnack())
+                .snackAllergies(listToString(menuCreateDto.snackAllergies)).build();
+    }
+
+    private static String listToString(List<String> list) {
+        return String.join(",", list);
+    }
+
 }

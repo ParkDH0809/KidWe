@@ -2,16 +2,16 @@ package yeomeong.common.entity.kindergarten;
 
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Menu {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,18 +29,6 @@ public class Menu {
     private String dinner;
     private String dinnerAllergies;
     private LocalDate menuDate;
-
-
-    public Menu(Kindergarten kindergarten, String lunch, String lunchAllergies, String snack, String snackAllergies, String dinner, String dinnerAllergies, LocalDate menuDate) {
-        this.kindergarten = kindergarten;
-        this.lunch = lunch;
-        this.lunchAllergies = lunchAllergies;
-        this.snack = snack;
-        this.snackAllergies = snackAllergies;
-        this.dinner = dinner;
-        this.dinnerAllergies = dinnerAllergies;
-        this.menuDate = menuDate;
-    }
 
 
 }

@@ -5,15 +5,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 public class MenuByDayResponseDto {
 
     private String lunch;
-    private String lunchAllergies;
+    private List<String> lunchAllergies;
     private String snack;
-    private String snackAllergies;
+    private List<String> snackAllergies;
     private String dinner;
-    private String dinnerAllergies;
+    private List<String> dinnerAllergies;
+
 }

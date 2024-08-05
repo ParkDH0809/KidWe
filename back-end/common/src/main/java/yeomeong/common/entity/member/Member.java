@@ -31,6 +31,7 @@ public class Member {
 
     private String tel;
 
+    @Column(name = "profile_url")
     private String profileUrl;
 
     @Enumerated(EnumType.STRING)

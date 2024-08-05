@@ -46,6 +46,7 @@ public class MenuController {
             @RequestBody MenuCreateDto menuCreateDto){
 
         menuService.createMenuByDay(kindergartenId, menuCreateDto);
+
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
