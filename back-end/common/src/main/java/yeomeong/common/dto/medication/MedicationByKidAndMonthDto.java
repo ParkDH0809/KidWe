@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Setter
@@ -16,13 +18,13 @@ public class MedicationByKidAndMonthDto {
     private Long medicationId;
     private String kidName;
     private String banName;
-    private LocalDate localDate;
+    private LocalDateTime medicationCreatedDateTime;
 
     @QueryProjection
-    public MedicationByKidAndMonthDto(Long medicationId, String kidName, String banName, LocalDate localDate) {
+    public MedicationByKidAndMonthDto(Long medicationId, String kidName, String banName, LocalDateTime localDateTime ) {
         this.medicationId = medicationId;
         this.kidName = kidName;
         this.banName = banName;
-        this.localDate = localDate;
+        this.medicationCreatedDateTime = localDateTime;
     }
 }

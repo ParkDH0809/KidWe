@@ -20,7 +20,7 @@ import java.util.List;
 @RequestMapping("/medications")
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "투약의뢰서", description = "투약의뢰서 조회, 생성, 삭제 API")
+@Tag(name = "투약의뢰서 API", description = "투약의뢰서 조회, 생성, 삭제 API")
 public class MedicationController {
 
 
@@ -85,5 +85,12 @@ public class MedicationController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/{kid_id}/uploadMedicineImage")
+    @Operation(summary = "투약의뢰서에 사진을 등록합니다.", description = "아이의 id를 통해 해당 아이의 투약의뢰서에 사진을 등록합니다.")
+    public ResponseEntity<String> uploadMedicineImage(
+            @PathVariable("kid_id") Long kidId){
+
+        return ResponseEntity.ok().build();
+    }
 
 }
