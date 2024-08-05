@@ -6,7 +6,6 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import yeomeong.common.dto.kindergarten.KindergartenInfoResponseDto;
-import yeomeong.common.dto.kindergarten.KindergartenSaveRequestDto;
 import yeomeong.common.dto.kindergarten.KindergartenSearchDto;
 import yeomeong.common.entity.kindergarten.Kindergarten;
 import yeomeong.common.entity.kindergarten.QKindergarten;
@@ -24,9 +23,9 @@ public class KindergartenService {
         this.kindergartenRepository = kindergartenRepository;
     }
 
-    public void createKindergarten(KindergartenSaveRequestDto kindergartenSaveRequestDto) {
-        kindergartenRepository.save(KindergartenSaveRequestDto.toKindergartenEntity(kindergartenSaveRequestDto));
-    }
+//    public void createKindergarten(KindergartenSaveRequestDto kindergartenSaveRequestDto) {
+//        kindergartenRepository.save(KindergartenSaveRequestDto.toKindergartenEntity(kindergartenSaveRequestDto));
+//    }
 
     public KindergartenInfoResponseDto getKindergartenInfo(Long kindergartenId) {
         return KindergartenInfoResponseDto.toKindergartenDto(kindergartenRepository.findById(kindergartenId)

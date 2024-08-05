@@ -15,6 +15,7 @@ import yeomeong.common.dto.kindergarten.KindergartenApprovalStatusDto;
 import yeomeong.common.dto.kindergarten.KindergartenSaveRequestDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
 import yeomeong.common.dto.member.MemberSaveRequestDto;
+import yeomeong.common.dto.member.TeacherChangeBanRequestDto;
 import yeomeong.common.dto.member.TeacherDetailInfoDto;
 import yeomeong.common.entity.member.KidMember;
 import yeomeong.common.entity.member.Member;
@@ -137,6 +138,13 @@ public class MemberService {
             .toList()
             .forEach(m -> teacherDetailInfos.add(TeacherDetailInfoDto.toTeacherDetailInfoDto(m)));
         return teacherDetailInfos;
+    }
+
+    public void changeTeachersBan(TeacherChangeBanRequestDto teacherChangeBanRequestDto) {
+        memberRepository.updateMemberBan(
+            teacherChangeBanRequestDto.getTeacherId(),
+            banRepository.findById(teacherChangeBanRequestDto.getBanId())
+                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_ID)));
     }
 
 }
