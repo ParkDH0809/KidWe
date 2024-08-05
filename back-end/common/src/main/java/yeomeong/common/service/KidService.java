@@ -39,11 +39,11 @@ public class KidService {
 
     public KidDetailInfoDto getKidInfo(Long kidId) {
         return KidDetailInfoDto.toKidDetailInfoDto(
-            kidRepository.findByIdAndIsDeletedFalse(kidId).orElseThrow(() -> new CustomException(ErrorCode.INVALID_KID)));
+            kidRepository.findByIdAndIsDeletedFalse(kidId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_KID)));
     }
 
     public void updateKidInfo(KidUpdateInfoDto kidUpdateInfoDto) {
-        Kid kid = kidRepository.findByIdAndIsDeletedFalse(kidUpdateInfoDto.getId()).orElseThrow(() -> new CustomException(ErrorCode.INVALID_KID));
+        Kid kid = kidRepository.findByIdAndIsDeletedFalse(kidUpdateInfoDto.getId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_KID));
         kid.updateFromDto(kidUpdateInfoDto);
         if (kidUpdateInfoDto.hasBanId()) {
             kid.setNewBan(banRepository.findById(kidUpdateInfoDto.getBanId())
@@ -60,7 +60,7 @@ public class KidService {
         try {
             kidRepository.deleteKidById(kidId);
         } catch(EntityNotFoundException e) {
-            throw new CustomException(ErrorCode.INVALID_ID);
+            throw new CustomException(ErrorCode.NOT_FOUND_ID);
         }
     }
 

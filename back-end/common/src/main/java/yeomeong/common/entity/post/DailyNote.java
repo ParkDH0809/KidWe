@@ -15,6 +15,8 @@ import yeomeong.common.entity.member.Member;
 
 import java.util.ArrayList;
 import java.util.List;
+import yeomeong.common.entity.post.comment.AnnouncementComment;
+import yeomeong.common.entity.post.comment.DailyNoteComment;
 
 @Entity
 
@@ -39,7 +41,10 @@ public class DailyNote {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member writer;
+    @OneToMany(mappedBy = "dailyNote", cascade = CascadeType.ALL)
+    private List<DailyNoteComment> comments;
 
     private LocalDateTime sendTime;
     private Boolean isDeleted;
+
 }

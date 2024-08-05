@@ -34,10 +34,10 @@ public class DailyNoteService {
     public DailyNoteResponseDto createDailyNote(DailyNoteCreateRequestDto dailyNoteCreateRequestDto) {
         Long writerId = dailyNoteCreateRequestDto.getWriterId();
         Member writer = memberRepository.findById(writerId).orElseThrow(
-            () -> new CustomException(ErrorCode.INVALID_WRITER)
+            () -> new CustomException(ErrorCode.NOT_FOUND_WRITER)
         );
         Kid kid = kidRepository.findById(dailyNoteCreateRequestDto.getKidId()).orElseThrow(
-            () -> new CustomException(ErrorCode.INVALID_KID)
+            () -> new CustomException(ErrorCode.NOT_FOUND_KID)
         );
         DailyNote createdDailyNote = dailyNoteRepository.save(dailyNoteCreateRequestDto.toEntity(kid, writer));
         return new DailyNoteResponseDto(createdDailyNote);
@@ -46,7 +46,7 @@ public class DailyNoteService {
     //날짜별&아이별 알림장 조회하기
     public List<DailyNoteResponseDto> getDailyNotes(Long memberId, Long kidId, String yearAndMonth) {
         Member receiver = memberRepository.findById(memberId).orElseThrow(
-            () -> new CustomException(ErrorCode.INVALID_ID)
+            () -> new CustomException(ErrorCode.NOT_FOUND_ID)
         );
 
         List<DailyNoteResponseDto> dailyNoteResponseDtos = new ArrayList<>();
@@ -75,7 +75,7 @@ public class DailyNoteService {
     //알림장 조회하기
     public DailyNoteResponseDto getDailyNote(Long id) {
         DailyNote dailyNote = dailyNoteRepository.findById(id).orElseThrow(
-            () -> new CustomException(ErrorCode.DAILYNOTE_NOT_FOUND)
+            () -> new CustomException(ErrorCode.NOT_FOUND_DAILYNOTE_ID)
         );
         return new DailyNoteResponseDto(dailyNote);
     }
@@ -84,7 +84,7 @@ public class DailyNoteService {
     @Transactional
     public DailyNoteResponseDto updateDailyNote(DailyNoteUpdateRequestDto updatedDailyNoteRequsetDto) {
         DailyNote oldDailyNote = dailyNoteRepository.findById(updatedDailyNoteRequsetDto.getId()).orElseThrow(
-            () -> new CustomException(ErrorCode.DAILYNOTE_NOT_FOUND)
+            () -> new CustomException(ErrorCode.NOT_FOUND_DAILYNOTE_ID)
         );
         oldDailyNote.setPost(updatedDailyNoteRequsetDto.getPost());
         oldDailyNote.setSendTime(updatedDailyNoteRequsetDto.getSendTime());
@@ -95,7 +95,7 @@ public class DailyNoteService {
     @Transactional
     public void deleteDailyNote(Long id) {
         DailyNote oldDailyNote = dailyNoteRepository.findById(id).orElseThrow(
-            () -> new CustomException(ErrorCode.DAILYNOTE_NOT_FOUND)
+            () -> new CustomException(ErrorCode.NOT_FOUND_DAILYNOTE_ID)
         );
         oldDailyNote.setIsDeleted(true);
         dailyNoteRepository.save(oldDailyNote);
