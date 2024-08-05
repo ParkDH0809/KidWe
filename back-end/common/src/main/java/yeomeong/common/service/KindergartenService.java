@@ -29,7 +29,7 @@ public class KindergartenService {
 
     public KindergartenInfoResponseDto getKindergartenInfo(Long kindergartenId) {
         return KindergartenInfoResponseDto.toKindergartenDto(kindergartenRepository.findById(kindergartenId)
-            .orElseThrow(() -> new CustomException(ErrorCode.INVALID_ID)));
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)));
     }
 
     public List<KindergartenInfoResponseDto> getSearchedKindergartenInfo(KindergartenSearchDto kindergartenSearchDto) {

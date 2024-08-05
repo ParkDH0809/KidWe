@@ -31,7 +31,7 @@ public class BanService {
     public void createBan(BanCreateRequestDto banCreateRequestDto) {
         banRepository.save(BanCreateRequestDto.toBanEntity(
             kindergartenRepository.findById(banCreateRequestDto.getKindergartenId())
-                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_ID)),
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)),
             banCreateRequestDto));
     }
 
@@ -47,7 +47,7 @@ public class BanService {
     public BanDetailInfoDto getBanInfo(Long banId) {
         List<Member> teachers = memberRepository.findMemberByBanId(banId);
         BanDetailInfoDto banDetailInfoDto = BanDetailInfoDto.toBanDetailInfoDto(
-            banRepository.findById(banId).orElseThrow(() -> new CustomException(ErrorCode.INVALID_ID)));
+            banRepository.findById(banId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)));
         List<TeacherBasicInfoDto> teacherBasicInfos = new ArrayList<>();
         for(Member teacher : teachers) {
             teacherBasicInfos.add(TeacherBasicInfoDto.toTeacherInfoDto(teacher));
