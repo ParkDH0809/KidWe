@@ -81,7 +81,7 @@ public class MedicationRepository {
                 medication.getMedicationExecuteTime(),
                 medication.getStorageMethod(),
                 medication.getOthers(),
-                medication.getMedicineUrl() );
+                medication.getMedicineImageUrl() );
     }
 
     //투약의뢰서 생성하기
@@ -103,7 +103,6 @@ public class MedicationRepository {
                 medicationCreateDto.getNumberOfDoses(),
                 medicationCreateDto.getStorageMethod(),
                 medicationCreateDto.getOthers(),
-                medicationCreateDto.getMedicationCreatedDateTime(),
                 medicationCreateDto.getSignUrl()
                 );
 

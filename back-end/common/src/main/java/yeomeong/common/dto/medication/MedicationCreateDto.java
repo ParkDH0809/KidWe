@@ -1,6 +1,7 @@
 package yeomeong.common.dto.medication;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,9 +23,6 @@ public class MedicationCreateDto {
     private String others;
 
     private LocalDate medicationExecuteDueDate;
-
-    private LocalDateTime medicationCreatedDateTime;
-
 
     private String signUrl;
 

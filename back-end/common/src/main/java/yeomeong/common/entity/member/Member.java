@@ -31,6 +31,8 @@ public class Member {
 
     private String tel;
 
+    private String profileUrl;
+
     @Enumerated(EnumType.STRING)
     private rtype role; //[ROLE_DIRECTOR, ROLE_TEACHER, ROLE_GUARDIAN ]
 

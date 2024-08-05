@@ -1,12 +1,8 @@
 package yeomeong.common.dto.medication;
 
-import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-
 @Data
 public class MedicationByKidDto {
 
