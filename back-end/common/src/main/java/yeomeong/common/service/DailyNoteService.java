@@ -15,9 +15,11 @@ import yeomeong.common.entity.member.Kid;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.member.rtype;
 import yeomeong.common.entity.post.DailyNote;
+import yeomeong.common.entity.post.comment.DailyNoteComment;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.exception.ErrorResponse;
+import yeomeong.common.repository.DailyNoteCommentRepository;
 import yeomeong.common.repository.DailyNoteRepository;
 import yeomeong.common.repository.KidRepository;
 import yeomeong.common.repository.MemberRepository;
@@ -27,9 +29,10 @@ import yeomeong.common.repository.MemberRepository;
 @Transactional(readOnly = true)
 public class DailyNoteService {
 
-    private final DailyNoteRepository dailyNoteRepository;
     private final MemberRepository memberRepository;
     private final KidRepository kidRepository;
+    private final DailyNoteRepository dailyNoteRepository;
+    private final DailyNoteCommentRepository dailyNoteCommentRepository;
 
     // 알림장 생성하기
     @Transactional
