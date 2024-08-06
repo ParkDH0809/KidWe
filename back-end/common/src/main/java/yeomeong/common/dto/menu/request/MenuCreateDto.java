@@ -1,6 +1,7 @@
 package yeomeong.common.dto.menu.request;
 
 
+import jakarta.persistence.Column;
 import lombok.Data;
 import yeomeong.common.entity.kindergarten.Kindergarten;
 import yeomeong.common.entity.kindergarten.Menu;
@@ -17,6 +18,8 @@ public class MenuCreateDto {
     private List<String> snackAllergies;
     private String dinner;
     private List<String> dinnerAllergies;
+
+    @Column(unique = true)
     private LocalDate menuDate;
 
 

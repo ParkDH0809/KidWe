@@ -36,16 +36,22 @@ public class S3Service {
             throw new IOException("업로드할 파일이 비어 있습니다.");
         }
 
-        String fileName = String.valueOf(UUID.randomUUID());
-        File pictureFile = convertMultiPartFileToFile(file);
+        String fileExtension = "";
+        String originalFileName = file.getOriginalFilename();
 
-//        ObjectMetadata metadata = new ObjectMetadata();
-//        metadata.setContentLength(file.getSize());
-//        metadata.setContentType(file.getContentType());
+        if(originalFileName != null && originalFileName.contains(".")){
+            fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+        }
+
+        String fileName = String.valueOf(UUID.randomUUID()) + fileExtension;
+
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentLength(file.getSize());
+        metadata.setContentType(file.getContentType());
 
 
         try {
-            s3Client.putObject(new PutObjectRequest(bucketName, fileName, pictureFile));
+            s3Client.putObject(new PutObjectRequest(bucketName, fileName, file.getInputStream(), metadata));
         } catch (Exception e) {
             throw new IOException("S3에 파일 업로드 중 오류 발생: " + e.getMessage(), e);
         }

@@ -19,12 +19,14 @@ public class MedicationByKidAndMonthDto {
     private String kidName;
     private String banName;
     private LocalDateTime medicationCreatedDateTime;
+    private boolean isDeleted;
 
     @QueryProjection
-    public MedicationByKidAndMonthDto(Long medicationId, String kidName, String banName, LocalDateTime localDateTime ) {
+    public MedicationByKidAndMonthDto(Long medicationId, String kidName, String banName, LocalDateTime localDateTime, boolean isDeleted ) {
         this.medicationId = medicationId;
         this.kidName = kidName;
         this.banName = banName;
         this.medicationCreatedDateTime = localDateTime;
+        this.isDeleted = isDeleted;
     }
 }

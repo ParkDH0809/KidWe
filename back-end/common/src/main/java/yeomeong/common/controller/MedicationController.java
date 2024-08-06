@@ -56,9 +56,11 @@ public class MedicationController {
     @GetMapping("/{medication_id}")
     @Operation(summary = "해당 투약의뢰서를 상세조회합니다.", description = "투약의뢰서 id를 통해 투약의뢰서를 상세조회합니다.")
     public ResponseEntity<MedicationDetailDto> getMedicationDetail(
-            @PathVariable("medication_id") Long medicationId){
+            @PathVariable("medication_id") Long medicationId,
+            Long memberId
+            ){
 
-        MedicationDetailDto medicationDetailDto = medicationService.getMedicationDetail(medicationId);
+        MedicationDetailDto medicationDetailDto = medicationService.getMedicationDetail(medicationId, memberId);
         return ResponseEntity.ok(medicationDetailDto);
     }
 

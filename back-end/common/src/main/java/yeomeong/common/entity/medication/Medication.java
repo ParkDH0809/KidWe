@@ -38,8 +38,12 @@ public class Medication {
     private String medicineImageUrl;
 
     private String capacity;
+
     @Column(name = "medication_execute_due_date")
     private LocalDate medicationExecuteDueDate;
+
+    @Column(name = "medcation_sign_date")
+    private LocalDate medicationSignDate;
 
     private String medicationExecuteTime;
 
@@ -52,6 +56,8 @@ public class Medication {
     private LocalDateTime medicationCreatedDateTime;
 
     private String signUrl;
+
+    private boolean isDeleted = false;
 
     public Medication(String name, Kid kid, String symptom, String type, String medicineImageUrl, String capacity, LocalDate medicationExecuteDueDate, String medicationExecuteTime, String numberOfDoses, String storageMethod, String others, String signUrl) {
         this.name = name;

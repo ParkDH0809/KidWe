@@ -9,6 +9,7 @@ public class MedicationByKidDto {
     private Long medicationId;
     private String kidName;
     private LocalDateTime medicationCreatedDateTime;
+    private boolean isDeleted;
 
     public MedicationByKidDto(Long medicationId, String kidName, LocalDateTime localDateTime){
         this.medicationId = medicationId;

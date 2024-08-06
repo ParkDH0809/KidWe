@@ -42,9 +42,9 @@ public class MedicationService {
     }
 
     //투약의뢰서 상세보기
-    public MedicationDetailDto getMedicationDetail(Long medicationId){
+    public MedicationDetailDto getMedicationDetail(Long medicationId, Long memberId){
 
-        return medicationRepository.getMedicationDetail(medicationId);
+        return medicationRepository.getMedicationDetail(medicationId, memberId);
     }
 
     //투약의뢰서 생성하기

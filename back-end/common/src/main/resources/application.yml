@@ -46,12 +46,13 @@ aws:
   s3:
     bucket-name: common-kidwe-image
     region: ap-northeast-2
+    credentials:
+      access-key-id: AKIA4MTWI3VODQI6FXFK
+      secret-access-key: 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
+    stack:
+      auto: false
 #  cloudfront:
 #    distribution-url: https://d175w2yu39lrw9.cloudfront.net
-  credentials:
-    access-key-id: AKIA4MTWI3VOFP4MKQUH
-    secret-access-key: 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
-  stack:
-    auto: false
+
 
 

@@ -14,23 +14,24 @@ import org.springframework.context.annotation.Configuration;
 public class S3Config {
 
 
-    @Value("{ap-northeast-2}")
+    @Value("${aws.s3.region}")
     private String region;
 
-    @Value("{aws.credentials.access-key-id}")
+    @Value("${aws.s3.credentials.access-key-id}")
     private String awsAccessKey;
 
-    @Value("{aws.credentials.secret-access-key}")
+    @Value("${aws.s3.credentials.secret-access-key}")
     private String awsSecretKey;
 
     @Bean
     public AmazonS3 s3Client(){
 
         BasicAWSCredentials awsCredentials = new BasicAWSCredentials(awsAccessKey,awsSecretKey);
-
+        System.out.println(awsAccessKey);
+        System.out.println(awsSecretKey);
         return AmazonS3ClientBuilder
                 .standard()
-                .withRegion(String.valueOf(Region.AP_Seoul))
+                .withRegion(region)
                 .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
                 .build();
 

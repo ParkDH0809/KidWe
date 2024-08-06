@@ -1,26 +1,25 @@
 package yeomeong.common.dto.leaveconsent;
 
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Data
-@AllArgsConstructor
-public class LeaveConsentCreateDto {
+public class LeaveConsentDetailDto {
 
     private LocalDate leaveDate;
-    private LocalTime leaveTime;
-
-    private String leaveMethod;
+    private LocalDateTime leaveTime;
 
     private String guardianRelationship;
     private String guardianContact;
 
     private String emergencyRelationship;
     private String emergencyContact;
+
+    private LocalDate signDate;
+    private String signUrl;
 
 
 

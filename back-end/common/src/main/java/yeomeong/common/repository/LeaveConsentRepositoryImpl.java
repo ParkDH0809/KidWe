@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import yeomeong.common.dto.leaveconsent.LeaveConsentByMonthAndBanListDto;
+import yeomeong.common.dto.leaveconsent.LeaveConsentDetailDto;
 import yeomeong.common.dto.leaveconsent.QLeaveConsentByMonthAndBanListDto;
 import yeomeong.common.entity.LeaveConsent;
 
@@ -78,5 +79,10 @@ public class LeaveConsentRepositoryImpl implements LeaveConsentRepository {
     @Override
     public LeaveConsent findById(Long leaveConsentId) {
         return em.find(LeaveConsent.class, leaveConsentId);
+    }
+
+    @Override
+    public LeaveConsentDetailDto getLeaveConsentDetail(Long leaveConsentId) {
+        return null;
     }
 }

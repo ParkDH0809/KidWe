@@ -20,7 +20,6 @@ public class FileUploadController {
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadFile(
             @RequestParam(value = "file") MultipartFile file){
-
         try {
             String fileUrl = s3Service.uploadFile(file);
             return ResponseEntity.ok("파일 업로드 성공" + fileUrl);

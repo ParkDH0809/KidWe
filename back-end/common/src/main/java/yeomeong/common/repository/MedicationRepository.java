@@ -10,6 +10,7 @@ import yeomeong.common.dto.medication.MedicationCreateDto;
 import yeomeong.common.dto.medication.MedicationDetailDto;
 import yeomeong.common.entity.medication.Medication;
 import yeomeong.common.entity.member.Kid;
+import yeomeong.common.entity.member.Member;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -37,11 +38,11 @@ public class MedicationRepository {
 
 
         return em.createQuery(
-                        "SELECT new yeomeong.common.dto.medication.MedicationByKidAndMonthDto (m.id, k.name, b.name, m.medicationCreatedDateTime ) " +
+                        "SELECT new yeomeong.common.dto.medication.MedicationByKidAndMonthDto (m.id, k.name, b.name, m.medicationCreatedDateTime, m.isDeleted) " +
                                 "FROM Medication m " +
                                 "JOIN m.kid k " +
                                 "JOIN k.ban b " +
-                                "WHERE m.medicationExecuteDueDate BETWEEN :startDate AND :endDate " +
+                                "WHERE m.isDeleted = true and m.medicationExecuteDueDate BETWEEN :startDate AND :endDate " +
                                 "AND b.id = :banId "
                         ,MedicationByKidAndMonthDto.class)
                 .setParameter("startDate", startDate)
@@ -56,9 +57,9 @@ public class MedicationRepository {
         LocalDate endDate = startDate.plusMonths(1).minusDays(1);
 
         //아이별 투약 의뢰서 ( 학부모용 )
-        return em.createQuery("select new yeomeong.common.dto.medication.MedicationByKidDto (m.id, k.name, m.medicationCreatedDateTime ) " +
+        return em.createQuery("select new yeomeong.common.dto.medication.MedicationByKidDto (m.id, k.name, m.medicationCreatedDateTime, m.isDeleted ) " +
                 " from Medication m " + "Join m.kid k " +
-                "where k.id = :kidId and " +
+                "where k.id = :kidId and m.isDeleted = true and " +
                 "m.medicationExecuteDueDate BETWEEN :startDate AND :endDate order by m.medicationCreatedDateTime DESC ",
                 MedicationByKidDto.class)
                 .setParameter("kidId",kidId)
@@ -69,8 +70,10 @@ public class MedicationRepository {
 
 
     //투약의뢰서 상세 보기
-    public MedicationDetailDto getMedicationDetail(Long medicationId){
+    public MedicationDetailDto getMedicationDetail(Long medicationId, Long memberId){
         Medication medication = em.find(Medication.class, medicationId);
+
+        Member member = em.find(Member.class, memberId);
 
         return new MedicationDetailDto(
                 medication.getName(),
@@ -81,7 +84,9 @@ public class MedicationRepository {
                 medication.getMedicationExecuteTime(),
                 medication.getStorageMethod(),
                 medication.getOthers(),
-                medication.getMedicineImageUrl() );
+                medication.getMedicineImageUrl(),
+                member.getName(),
+                LocalDate.now());
     }
 
     //투약의뢰서 생성하기
@@ -120,6 +125,7 @@ public class MedicationRepository {
 
         Medication medication = em.find(Medication.class, medicationId);
 
-        em.remove(medication);
+        medication.setDeleted(true);
+
     }
 }
