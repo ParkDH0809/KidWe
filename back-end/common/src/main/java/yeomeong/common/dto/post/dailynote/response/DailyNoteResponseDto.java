@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import yeomeong.common.dto.kid.KidDetailInfoDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
 import yeomeong.common.entity.post.DailyNote;
@@ -21,7 +22,7 @@ public class DailyNoteResponseDto {
 
     private KidDetailInfoDto kid;
     private MemberProfileResponseDto writer;
-    private List<DailyNoteCommentResponseDto> comments;
+    private List<DailyNoteParentCommentResponseDto> comments;
 
     private LocalDateTime sendTime;
 
@@ -34,7 +35,9 @@ public class DailyNoteResponseDto {
         this.writer = MemberProfileResponseDto.toMemberProfileDto(dailyNote.getWriter());
         this.comments = new ArrayList<>();
         for(DailyNoteComment comment : dailyNote.getComments()){
-            comments.add(new DailyNoteCommentResponseDto(comment));
+            if(comment.getParentComment()==null){
+                comments.add(new DailyNoteParentCommentResponseDto(comment));
+            }
         }
 
         this.sendTime = dailyNote.getSendTime();
