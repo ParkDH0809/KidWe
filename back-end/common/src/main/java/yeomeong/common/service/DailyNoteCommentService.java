@@ -58,7 +58,7 @@ public class DailyNoteCommentService {
         DailyNoteComment oldDailyNoteComment = dailyNoteCommentRepository.findById(dailyNoteCommentId).orElseThrow(
             () -> new CustomException(ErrorCode.NOT_FOUND_DAILYNOTE_COMMENT_ID)
         );
-        oldDailyNoteComment.setNewContet(dailyNoteCommentUpdateRequestDto.getContent());
+        oldDailyNoteComment.setNewContent(dailyNoteCommentUpdateRequestDto.getContent());
         oldDailyNoteComment.update();
         return new DailyNoteCommentResponseDto(dailyNoteCommentRepository.save(oldDailyNoteComment));
     }
