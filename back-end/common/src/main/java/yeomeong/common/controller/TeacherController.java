@@ -36,9 +36,15 @@ public class TeacherController {
     }
 
     @Operation(summary = "승인 대기 원생 리스트 조회", description = "승인 대기 원생 리스트를 조회합니다.")
-    @GetMapping("/pending-kids")
+    @GetMapping("/kids/pending")
     public ResponseEntity<List<PendingKidResponseDto>> getPendingKids(@RequestParam Long kindergartenId) {
         return ResponseEntity.status(HttpStatus.OK).body(approvalService.getPendingKids(kindergartenId));
+    }
+
+    @Operation(summary = "승인된 원생 리스트 조회", description = "승인된 원생 리스트를 조회합니다.")
+    @GetMapping("/kids/accept")
+    public ResponseEntity<List<PendingKidResponseDto>> getAcceptKids(@RequestParam Long kindergartenId) {
+        return ResponseEntity.status(HttpStatus.OK).body(approvalService.getAcceptKids(kindergartenId));
     }
 
     @Operation(summary = "원생 승인 여부", description = "대기 중인 원생 승인 API입니다.")

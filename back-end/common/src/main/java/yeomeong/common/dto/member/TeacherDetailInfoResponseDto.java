@@ -2,24 +2,36 @@ package yeomeong.common.dto.member;
 
 import lombok.Builder;
 import lombok.Getter;
-import yeomeong.common.dto.ban.BanBasicInfoResponseDto;
+import yeomeong.common.entity.member.Approval;
 import yeomeong.common.entity.member.Member;
 
 @Getter
 @Builder
 public class TeacherDetailInfoResponseDto {
 
-    long id;
+    long memberId;
     String name;
     String tel;
-    BanBasicInfoResponseDto ban;
+    long banId;
+    String banName;
 
-    public static TeacherDetailInfoResponseDto toTeacherDetailInfoDto(Member member) {
+    public static TeacherDetailInfoResponseDto toTeacherDetailResponseDto(Approval approval) {
         return TeacherDetailInfoResponseDto.builder()
-            .id(member.getId())
+            .memberId(approval.getMember().getId())
+            .name(approval.getMember().getName())
+            .tel(approval.getMember().getTel())
+            .banId(approval.getBan().getId())
+            .banName(approval.getBan().getName())
+            .build();
+    }
+
+    public static TeacherDetailInfoResponseDto toTeacherDetailResponseDto(Member member) {
+        return TeacherDetailInfoResponseDto.builder()
+            .memberId(member.getId())
             .name(member.getName())
             .tel(member.getTel())
-            .ban(BanBasicInfoResponseDto.toBanBasicInfoDto(member.getBan()))
+            .banId(member.getBan().getId())
+            .banName(member.getBan().getName())
             .build();
     }
 

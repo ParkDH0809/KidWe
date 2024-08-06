@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import yeomeong.common.dto.approval.AcceptRequestDto;
 import yeomeong.common.dto.approval.ApprovalRequestDto;
 import yeomeong.common.dto.approval.PendingKidResponseDto;
-import yeomeong.common.dto.approval.PendingTeacherResponseDto;
+import yeomeong.common.dto.member.TeacherDetailInfoResponseDto;
 import yeomeong.common.dto.approval.KidJoinKindergartenRequestDto;
 import yeomeong.common.dto.approval.TeacherJoinKindergartenRequestDto;
 import yeomeong.common.entity.member.Approval;
@@ -80,16 +80,30 @@ public class ApprovalService {
         }
     }
 
-    public List<PendingTeacherResponseDto> getPendingTeachers(Long kindergartenId) {
-        List<PendingTeacherResponseDto> pendingTeacherResponseDtos = new ArrayList<>();
+    public List<TeacherDetailInfoResponseDto> getPendingTeachers(Long kindergartenId) {
+        List<TeacherDetailInfoResponseDto> teacherDetailInfoResponseDtos = new ArrayList<>();
         approvalRepository.findByKindergartenIdAndMemberIdIsNotNull(kindergartenId)
-            .forEach(m ->pendingTeacherResponseDtos.add(PendingTeacherResponseDto.toPendingTeacherResponseDto(m)));
-        return pendingTeacherResponseDtos;
+            .forEach(m -> teacherDetailInfoResponseDtos.add(TeacherDetailInfoResponseDto.toTeacherDetailResponseDto(m)));
+        return teacherDetailInfoResponseDtos;
+    }
+
+    public List<TeacherDetailInfoResponseDto> getAcceptTeachers(Long kindergartenId) {
+        List<TeacherDetailInfoResponseDto> teacherDetailInfoResponseDtos = new ArrayList<>();
+        memberRepository.findMemberByKindergartenId(kindergartenId)
+            .forEach(m -> teacherDetailInfoResponseDtos.add(TeacherDetailInfoResponseDto.toTeacherDetailResponseDto(m)));
+        return teacherDetailInfoResponseDtos;
     }
 
     public List<PendingKidResponseDto> getPendingKids(Long kindergartenId) {
         List<PendingKidResponseDto> pendingKidResponseDtos = new ArrayList<>();
         approvalRepository.findByKindergartenIdAndKidIdIsNotNull(kindergartenId)
+            .forEach(m ->pendingKidResponseDtos.add(PendingKidResponseDto.toPendingKidResponseDto(m)));
+        return pendingKidResponseDtos;
+    }
+
+    public List<PendingKidResponseDto> getAcceptKids(Long kindergartenId) {
+        List<PendingKidResponseDto> pendingKidResponseDtos = new ArrayList<>();
+        kidRepository.findByKindergartenId(kindergartenId)
             .forEach(m ->pendingKidResponseDtos.add(PendingKidResponseDto.toPendingKidResponseDto(m)));
         return pendingKidResponseDtos;
     }

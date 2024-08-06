@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import yeomeong.common.dto.approval.AcceptRequestDto;
-import yeomeong.common.dto.approval.PendingTeacherResponseDto;
+import yeomeong.common.dto.member.TeacherDetailInfoResponseDto;
 import yeomeong.common.dto.ban.BanCreateRequestDto;
 import yeomeong.common.dto.ban.BanNameChangeRequestDto;
 import yeomeong.common.dto.kindergarten.KindergartenSaveRequestDto;
@@ -60,22 +60,28 @@ public class DirectorController {
     }
 
     @Operation(summary = "승인 대기 선생님 리스트 조회", description = "승인 대기 선생님 리스트를 조회합니다.")
-    @GetMapping("/pending-teachers")
-    public ResponseEntity<List<PendingTeacherResponseDto>> getPendingTeachers(@RequestParam Long kindergartenId) {
+    @GetMapping("/teachers/pending")
+    public ResponseEntity<List<TeacherDetailInfoResponseDto>> getPendingTeachers(@RequestParam Long kindergartenId) {
             return ResponseEntity.status(HttpStatus.OK).body(approvalService.getPendingTeachers(kindergartenId));
+    }
+
+    @Operation(summary = "승인된 선생님 리스트 조회", description = "승인된 선생님 리스트를 조회합니다.")
+    @GetMapping("/teachers/accept")
+    public ResponseEntity<List<TeacherDetailInfoResponseDto>> getAcceptTeachers(@RequestParam Long kindergartenId) {
+        return ResponseEntity.status(HttpStatus.OK).body(approvalService.getAcceptTeachers(kindergartenId));
+    }
+
+    @Operation(summary = "선생님 승인 여부", description = "대기 중인 선생님 승인 API입니다.")
+    @PutMapping("/teachers/pending")
+    public ResponseEntity<Void> updateTeacherApproval(@RequestBody AcceptRequestDto acceptRequestDto) {
+        approvalService.acceptTeacherRequestDto(acceptRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @Operation(summary = "선생님 반 변경", description = "선생님의 담당 반을 변경합니다.")
     @PutMapping("/ban/teachers")
     public ResponseEntity<Void> updateTeachersBan(@RequestBody TeacherChangeBanRequestDto teacherChangeBanRequestDto) {
         banService.updateTeachersBan(teacherChangeBanRequestDto);
-        return ResponseEntity.status(HttpStatus.OK).build();
-    }
-
-    @Operation(summary = "선생님 승인 여부", description = "대기 중인 선생님 승인 API입니다.")
-    @PutMapping("/pending-teachers")
-    public ResponseEntity<Void> updateTeacherApproval(@RequestBody AcceptRequestDto acceptRequestDto) {
-        approvalService.acceptTeacherRequestDto(acceptRequestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
