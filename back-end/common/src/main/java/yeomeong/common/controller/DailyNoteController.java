@@ -29,7 +29,7 @@ public class DailyNoteController {
     private final DailyNoteService dailyNoteService;
 
     @Operation(summary = "알림장 생성 API", description = "알림장을 생성합니다.")
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<DailyNoteResponseDto> createDailyNote(@RequestBody DailyNoteCreateRequestDto dailyNoteCreateRequestDto) {
         DailyNoteResponseDto createdDailyNote = dailyNoteService.createDailyNote(dailyNoteCreateRequestDto);
         return ResponseEntity.ok(createdDailyNote);
@@ -52,7 +52,7 @@ public class DailyNoteController {
     }
 
     @Operation(summary = "알림장 수정 API", description = "전송시간이 지나지 않은 알림장에 한정해 알림장을 수정합니다.")
-    @PutMapping("/")
+    @PutMapping
     public ResponseEntity<DailyNoteResponseDto> updateDailyNote(@RequestBody DailyNoteUpdateRequestDto dailyNoteRequestDto) {
         return ResponseEntity.ok(dailyNoteService.updateDailyNote(dailyNoteRequestDto));
     }

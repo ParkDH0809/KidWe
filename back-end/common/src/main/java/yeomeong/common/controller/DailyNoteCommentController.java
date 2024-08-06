@@ -25,7 +25,7 @@ public class DailyNoteCommentController {
     private final DailyNoteCommentService dailyNoteCommentService;
 
     @Operation(summary = "알림장 (대)댓글 생성 API", description = "알림장 (대)댓글을 생성합니다. (댓글인 경우 parent_comment를 null로, 대댓글인 경우 댓글의 id를 담아 보내주세요)")
-    @PostMapping("/")
+    @PostMapping
     ResponseEntity<DailyNoteCommentResponseDto> createDailyNoteComment(@RequestBody DailyNoteCommentCreateRequestDto dailyNoteCommentCreateRequestDto) {
         DailyNoteCommentResponseDto createdDailyNoteComment = dailyNoteCommentService.createDailyNoteComment(dailyNoteCommentCreateRequestDto);
         return ResponseEntity.ok(createdDailyNoteComment);

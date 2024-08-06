@@ -83,9 +83,8 @@ public class DailyNoteService {
     // 알림장 상세정보 조회하기
     @Transactional
     public DailyNoteResponseDto getDailyNote(Long id) {
-        DailyNote dailyNote = dailyNoteRepository.findById(id).orElseThrow(
-            () -> new CustomException(ErrorCode.NOT_FOUND_DAILYNOTE_ID)
-        );
+        DailyNote dailyNote = dailyNoteRepository.findByDailyNoteId(id);
+        if(dailyNote == null) throw new CustomException(ErrorCode.NOT_FOUND_DAILYNOTE_ID);
         return new DailyNoteResponseDto(dailyNote);
     }
 

@@ -12,12 +12,19 @@ import yeomeong.common.entity.post.DailyNote;
 @Repository
 public interface DailyNoteRepository extends JpaRepository<DailyNote, Long>{
 
+    @Query("SELECT dn "
+        + "FROM DailyNote dn "
+        + "WHERE dn.id = :id "
+        + "AND dn.isDeleted = false")
+    DailyNote findByDailyNoteId(@Param("id") Long id);
+
     // 전송 기준 : 작성자가 쓴 아이별 - 날짜별 알림장 (전송되지 않은 알림장까지 모두 보여줘야 한다)
     @Query("SELECT dn "
         + "FROM DailyNote dn "
         + "WHERE FUNCTION('DATE_FORMAT', dn.post.createdDateTime, '%Y-%m') = :date "
         + "AND dn.kid.id = :kidId "
-        + "AND dn.writer.id = :writerId")
+        + "AND dn.writer.id = :writerId "
+        + "AND dn.isDeleted = false")
     List<DailyNote> findByYearAndMonthAndKidIdAndWriterId(@Param("date") String date,
         @Param("writerId") Long writerId,
         @Param("kidId") Long kidId);
@@ -28,7 +35,8 @@ public interface DailyNoteRepository extends JpaRepository<DailyNote, Long>{
         + "WHERE FUNCTION('DATE_FORMAT', dn.post.createdDateTime, '%Y-%m') = :date "
         + "AND dn.kid.id = :kidId "
         + "AND dn.writer.role = :writerRole "
-        + "AND dn.sendTime <= CURRENT_TIMESTAMP")
+        + "AND dn.sendTime <= CURRENT_TIMESTAMP "
+        + "AND dn.isDeleted = false")
     List<DailyNote> findBYearAndMonthAndKidIdAndReceiverType(@Param("date") String date,
         @Param("kidId") Long kidId,
         @Param("writerRole") rtype writerRole);
@@ -40,7 +48,8 @@ public interface DailyNoteRepository extends JpaRepository<DailyNote, Long>{
         + "AND dn.kid.ban.kindergarten.id = :kindergartenId "
         + "AND dn.kid.ban.id = :banId "
         + "AND dn.writer.role = :writerRole "
-        + "AND dn.sendTime <= CURRENT_TIMESTAMP")
+        + "AND dn.sendTime <= CURRENT_TIMESTAMP "
+        + "AND dn.isDeleted = false")
     List<DailyNote> findByYearAndMonthAndBanAndReceiverType(@Param("date") String date,
         @Param("kindergartenId") Long kindergartenId,
         @Param("banId") Long banId,
