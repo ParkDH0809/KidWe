@@ -48,3 +48,4 @@ aws:
 springdoc:
   swagger-ui:
     tags-sorter: alpha
+    operations-sorter: alpha
