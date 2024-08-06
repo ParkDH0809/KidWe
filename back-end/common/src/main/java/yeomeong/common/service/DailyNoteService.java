@@ -1,5 +1,6 @@
 package yeomeong.common.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -46,27 +47,26 @@ public class DailyNoteService {
 
     //월별 알림장 조회하기
     @Transactional
-    public DailyNoteListResponseDto getDailyNotes(Long writerId, Long kidId, String yearAndMonth) {
-        // 수신인이 존재하는지 확인하기
-        Member receiver = memberRepository.findById(writerId).orElseThrow(
+    public DailyNoteListResponseDto getDailyNotes(Long memberId, Long kidId, String yearAndMonth) {
+        // 사용자가 존재하는지 확인하기
+        Member member = memberRepository.findById(memberId).orElseThrow(
             () -> new CustomException(ErrorCode.NOT_FOUND_ID)
         );
 
-        // 작성자로 된 알림장들
-        List<DailyNote> writeDailyNotes = dailyNoteRepository.findByYearAndMonthAndKidIdAndWriterId(yearAndMonth, kidId, writerId);
-        System.out.println(writeDailyNotes);
+        // 발신자로 된 알림장들
+        List<DailyNote> writeDailyNotes = dailyNoteRepository.findByYearAndMonthAndKidIdAndWriterId(yearAndMonth, kidId, memberId);
         List<DailyNote> receivedDailyNotes = new ArrayList<>();
 
         // 수신자로 된 알림장들
-        if(receiver.getRole() == rtype.ROLE_TEACHER){
+        if(member.getRole() == rtype.ROLE_TEACHER){
             // 수신자가 선생님일 경우 담당 반 아이들의 학부모가 작성한 알림장 모두 조회
-            Ban ban = receiver.getBan();
+            Ban ban = member.getBan();
             receivedDailyNotes = dailyNoteRepository.findByYearAndMonthAndBanAndReceiverType(yearAndMonth,
                 ban.getKindergarten().getId(),
                 ban.getId(),
                 rtype.ROLE_GUARDIAN);
         }
-        else if(receiver.getRole() == rtype.ROLE_GUARDIAN){
+        else if(member.getRole() == rtype.ROLE_GUARDIAN){
             // 수신자가 학부모일 경우 해당 아이의 선생님이 작성한 알림장 모두 조회
             receivedDailyNotes = dailyNoteRepository.findBYearAndMonthAndKidIdAndReceiverType(yearAndMonth,
                 kidId,
@@ -79,10 +79,31 @@ public class DailyNoteService {
 
     // 알림장 상세정보 조회하기
     @Transactional
-    public DailyNoteResponseDto getDailyNote(Long id) {
+    public DailyNoteResponseDto getDailyNote(Long memberId, Long id) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+            () -> new CustomException(ErrorCode.NOT_FOUND_ID)
+        );
+
         DailyNote dailyNote = dailyNoteRepository.findByDailyNoteId(id);
         if(dailyNote == null) throw new CustomException(ErrorCode.NOT_FOUND_DAILYNOTE_ID);
-        return new DailyNoteResponseDto(dailyNote);
+        // 발신자거나
+        if(dailyNote.getWriter().getId().equals(member.getId())) {
+            return new DailyNoteResponseDto(dailyNote);
+        }
+        // 전송시간이 지난 수신자거나
+        else{
+            if(member.getRole() == rtype.ROLE_TEACHER){
+                if(dailyNote.getWriter().getRole() != rtype.ROLE_GUARDIAN || dailyNote.getSendTime().isBefore(LocalDateTime.now())){
+                    throw new CustomException(ErrorCode.UNAUTHORIZED_WRITER);
+                }
+            }
+            else if(member.getRole() == rtype.ROLE_GUARDIAN){
+                if(dailyNote.getWriter().getRole() != rtype.ROLE_TEACHER || dailyNote.getSendTime().isBefore(LocalDateTime.now())){
+                    throw new CustomException(ErrorCode.UNAUTHORIZED_WRITER);
+                }
+            }
+        }
+        throw new CustomException(ErrorCode.UNAUTHORIZED_WRITER);
     }
 
     // 알림장 수정하기

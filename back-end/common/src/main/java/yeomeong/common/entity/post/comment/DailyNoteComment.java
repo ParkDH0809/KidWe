@@ -1,19 +1,13 @@
 package yeomeong.common.entity.post.comment;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import yeomeong.common.entity.member.Member;
-import yeomeong.common.entity.post.Announcement;
 import yeomeong.common.entity.post.DailyNote;
 
 @Entity
@@ -29,6 +23,7 @@ public class DailyNoteComment {
     private DailyNote dailyNote;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private Member member;
 
     private String content;
@@ -59,12 +54,11 @@ public class DailyNoteComment {
         this.content = content;
     }
 
-    public void delete(){
-        this.isDeleted = true;
-    }
-
     public void update(){
         this.updatedAt = LocalDateTime.now();
     }
 
+    public void delete(){
+        this.isDeleted = true;
+    }
 }

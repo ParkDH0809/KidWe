@@ -10,17 +10,17 @@ import yeomeong.common.entity.post.comment.DailyNoteComment;
 
 @Getter
 @NoArgsConstructor
-public class DailyNoteCommentResponseDto {
+public class DailyNoteParentCommentResponseDto {
     private Long id;
 
     private MemberProfileResponseDto member;
 
     private final static String deletedMessage = "삭제된 댓글입니다";
     private String content;
-
+    private List<DailyNoteChildCommentResponseDto> childs;
     private LocalDateTime updatedAt;
 
-    public DailyNoteCommentResponseDto(DailyNoteComment dailyNoteComment) {
+    public DailyNoteParentCommentResponseDto(DailyNoteComment dailyNoteComment) {
         this.id = dailyNoteComment.getId();
         this.member = MemberProfileResponseDto.toMemberProfileDto(dailyNoteComment.getMember());
         if(dailyNoteComment.getIsDeleted()) {
@@ -28,6 +28,10 @@ public class DailyNoteCommentResponseDto {
         }
         else{
             this.content = dailyNoteComment.getContent();
+        }
+        childs = new ArrayList<>();
+        for(DailyNoteComment dailyNoteChildComment : dailyNoteComment.getReplies()){
+            childs.add(new DailyNoteChildCommentResponseDto(dailyNoteChildComment));
         }
         this.updatedAt = dailyNoteComment.getUpdatedAt();
     }

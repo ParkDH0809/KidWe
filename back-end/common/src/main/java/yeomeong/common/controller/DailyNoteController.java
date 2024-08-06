@@ -47,9 +47,10 @@ public class DailyNoteController {
     }
 
     @Operation(summary = "특정 알림장 상세정보 조회 API", description = "특정 알림장의 상세정보를 반환합니다.")
-    @GetMapping("/{dailynote_id}")
-    public ResponseEntity<DailyNoteResponseDto> getDailyNote(@PathVariable("dailynote_id") Long id) {
-        return ResponseEntity.ok(dailyNoteService.getDailyNote(id));
+    @GetMapping("/{member_id}/{dailynote_id}")
+    public ResponseEntity<DailyNoteResponseDto> getDailyNote(@PathVariable("member_id") Long writerId,
+        @PathVariable("dailynote_id") Long id) {
+        return ResponseEntity.ok(dailyNoteService.getDailyNote(writerId, id));
     }
 
     @Operation(summary = "알림장 수정 API", description = "전송시간이 지나지 않은 알림장에 한정해 알림장을 수정합니다.")

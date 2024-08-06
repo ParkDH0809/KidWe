@@ -25,7 +25,9 @@ public enum ErrorCode {
     NOT_FOUND_WRITER(404, "NOT_FOUND_WRITER", "존재하지 않는 작성자ID입니다"),
     NOT_FOUND_POST(404, "NOT_FOUND_POST", "존재하지 않는 게시물입니다."),
 
-    DUPLICATED_USER_EMAIL(409, "DUPLICATED_USER_EMAIL", "이미 회원가입된 이메일입니다.");
+    DUPLICATED_USER_EMAIL(409, "DUPLICATED_USER_EMAIL", "이미 회원가입된 이메일입니다."),
+
+    REPOSITOY_ERROR(500, "REPOSITOY_ERROR", "레포지토리에서 문제가 생겼습니다");
 
     private final int status;
     private final String code;
