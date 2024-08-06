@@ -9,7 +9,6 @@ import yeomeong.common.entity.post.DailyNote;
 import yeomeong.common.entity.post.Post;
 
 @Getter
-@NoArgsConstructor
 public class DailyNoteUpdateRequestDto {
     private Long id;
 
@@ -19,16 +18,4 @@ public class DailyNoteUpdateRequestDto {
     private Long writerId;
 
     private LocalDateTime sendTime;
-
-    public DailyNote toEntity(Kid kid,
-        Member writer){
-        return DailyNote.builder()
-            .id(id)
-            .post(this.post)
-            .kid(kid)
-            .writer(writer)
-            .sendTime(this.sendTime)
-            .isDeleted(false)
-            .build();
-    }
 }

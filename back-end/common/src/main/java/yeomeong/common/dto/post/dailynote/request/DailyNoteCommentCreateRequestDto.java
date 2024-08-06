@@ -24,8 +24,6 @@ public class DailyNoteCommentCreateRequestDto {
             .member(member)
             .content(this.content)
             .parentComment(parentComment)
-            .createdAt(LocalDateTime.now())
-            .isDeleted(false)
             .build();
     }
 }

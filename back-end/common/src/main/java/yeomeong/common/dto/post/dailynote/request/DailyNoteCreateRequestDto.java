@@ -3,13 +3,14 @@ package yeomeong.common.dto.post.dailynote.request;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import lombok.Data;
+import lombok.Getter;
 import yeomeong.common.entity.member.Kid;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.post.DailyNote;
 import yeomeong.common.entity.post.Post;
 import yeomeong.common.entity.post.comment.DailyNoteComment;
 
-@Data
+@Getter
 public class DailyNoteCreateRequestDto {
     private Post post;
 
@@ -25,7 +26,6 @@ public class DailyNoteCreateRequestDto {
             .kid(kid)
             .writer(writer)
             .sendTime(this.sendTime)
-            .isDeleted(false)
             .build();
     }
 }

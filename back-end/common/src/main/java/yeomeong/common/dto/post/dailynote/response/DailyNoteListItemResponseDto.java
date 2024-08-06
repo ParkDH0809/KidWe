@@ -1,13 +1,14 @@
 package yeomeong.common.dto.post.dailynote.response;
 
 import java.time.LocalDateTime;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import yeomeong.common.entity.member.Kid;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.post.DailyNote;
 
-@Setter
+@Getter
 @NoArgsConstructor
 public class DailyNoteListItemResponseDto {
     private Long id;

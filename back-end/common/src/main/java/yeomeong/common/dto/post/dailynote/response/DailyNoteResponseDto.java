@@ -13,7 +13,7 @@ import yeomeong.common.entity.post.DailyNote;
 import yeomeong.common.entity.post.Post;
 import yeomeong.common.entity.post.comment.DailyNoteComment;
 
-@Setter
+@Getter
 @NoArgsConstructor
 public class DailyNoteResponseDto {
     private Long id;

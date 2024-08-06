@@ -18,9 +18,7 @@ import yeomeong.common.entity.post.DailyNote;
 @Entity
 
 @Getter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class DailyNoteComment {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,7 +44,19 @@ public class DailyNoteComment {
     private LocalDateTime updatedAt;
     private Boolean isDeleted;
 
-    public void setNewContet(String content) {
+    @Builder
+    public DailyNoteComment(DailyNote dailyNote, Member member, String content, DailyNoteComment parentComment){
+        this.dailyNote = dailyNote;
+        this.member = member;
+        this.content = content;
+        this.parentComment = parentComment;
+        this.replies = new ArrayList<>();
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = this.createdAt;
+        this.isDeleted = false;
+    }
+
+    public void setNewContent(String content) {
         this.content = content;
     }
 

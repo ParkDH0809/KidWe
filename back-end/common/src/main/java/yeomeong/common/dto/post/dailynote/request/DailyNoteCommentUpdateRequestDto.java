@@ -14,17 +14,4 @@ public class DailyNoteCommentUpdateRequestDto {
     private Long id;
 
     private String content;
-
-    public DailyNoteComment toEntity(DailyNote dailyNote,
-        Member member,
-        DailyNoteComment parentComment,
-        List<DailyNoteComment> replies){
-        return DailyNoteComment.builder()
-            .id(this.id)
-            .dailyNote(dailyNote)
-            .member(member)
-            .content(this.content)
-            .parentComment(parentComment)
-            .replies(replies).build();
-    }
 }

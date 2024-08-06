@@ -21,9 +21,7 @@ import yeomeong.common.entity.post.comment.DailyNoteComment;
 @Entity
 
 @Getter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class DailyNote {
 
     @Id
@@ -45,6 +43,16 @@ public class DailyNote {
 
     private LocalDateTime sendTime;
     private Boolean isDeleted;
+
+    @Builder
+    public DailyNote(Post post, Kid kid, Member writer, LocalDateTime sendTime){
+        this.post = post;
+        this.kid = kid;
+        this.writer = writer;
+        this.comments = new ArrayList<>();
+        this.sendTime = sendTime;
+        this.isDeleted = false;
+    }
 
     public void setNewPost(Post post){
         this.post = post;

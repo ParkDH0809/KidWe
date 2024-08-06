@@ -2,11 +2,12 @@ package yeomeong.common.dto.post.dailynote.response;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import yeomeong.common.entity.post.DailyNote;
 
-@Setter
+@Getter
 @NoArgsConstructor
 public class DailyNoteListResponseDto {
     private String yearAndMonth;
