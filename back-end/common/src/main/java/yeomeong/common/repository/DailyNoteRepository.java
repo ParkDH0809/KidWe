@@ -21,7 +21,7 @@ public interface DailyNoteRepository extends JpaRepository<DailyNote, Long>{
     // 전송 기준 : 작성자가 쓴 아이별 - 날짜별 알림장 (전송되지 않은 알림장까지 모두 보여줘야 한다)
     @Query("SELECT dn "
         + "FROM DailyNote dn "
-        + "WHERE FUNCTION('DATE_FORMAT', dn.post.createdDateTime, '%Y-%m') = :date "
+        + "WHERE FUNCTION('DATE_FORMAT', dn.sendTime, '%Y-%m') = :date "
         + "AND dn.kid.id = :kidId "
         + "AND dn.writer.id = :writerId "
         + "AND dn.isDeleted = false")
@@ -32,7 +32,7 @@ public interface DailyNoteRepository extends JpaRepository<DailyNote, Long>{
     // 학부모 수신 : 학부모의 아이에게 선생님이 작성한 알림장을 조회
     @Query("SELECT dn "
         + "FROM DailyNote dn "
-        + "WHERE FUNCTION('DATE_FORMAT', dn.post.createdDateTime, '%Y-%m') = :date "
+        + "WHERE FUNCTION('DATE_FORMAT', dn.sendTime, '%Y-%m') = :date "
         + "AND dn.kid.id = :kidId "
         + "AND dn.writer.role = :writerRole "
         + "AND dn.sendTime <= CURRENT_TIMESTAMP "

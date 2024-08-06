@@ -1,6 +1,7 @@
 package yeomeong.common.entity.post.comment;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,11 +26,9 @@ public class DailyNoteComment {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "daily_note_id")
     private DailyNote dailyNote;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
     private Member member;
 
     private String content;

@@ -6,8 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
-import yeomeong.common.dto.post.dailynote.request.DailyNoteCreateRequestDto;
-import yeomeong.common.dto.post.dailynote.request.DailyNoteUpdateRequestDto;
+import yeomeong.common.dto.post.dailynote.request.DailyNoteRequestDto;
 import yeomeong.common.dto.post.dailynote.response.DailyNoteListResponseDto;
 import yeomeong.common.dto.post.dailynote.response.DailyNoteResponseDto;
 import yeomeong.common.entity.kindergarten.Ban;
@@ -15,10 +14,8 @@ import yeomeong.common.entity.member.Kid;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.member.rtype;
 import yeomeong.common.entity.post.DailyNote;
-import yeomeong.common.entity.post.comment.DailyNoteComment;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
-import yeomeong.common.exception.ErrorResponse;
 import yeomeong.common.repository.DailyNoteCommentRepository;
 import yeomeong.common.repository.DailyNoteRepository;
 import yeomeong.common.repository.KidRepository;
@@ -36,8 +33,7 @@ public class DailyNoteService {
 
     // 알림장 생성하기
     @Transactional
-    public DailyNoteResponseDto createDailyNote(DailyNoteCreateRequestDto dailyNoteCreateRequestDto) {
-        Long writerId = dailyNoteCreateRequestDto.getWriterId();
+    public DailyNoteResponseDto createDailyNote(Long writerId, DailyNoteRequestDto dailyNoteCreateRequestDto) {
         Member writer = memberRepository.findById(writerId).orElseThrow(
             () -> new CustomException(ErrorCode.NOT_FOUND_WRITER)
         );
@@ -50,14 +46,15 @@ public class DailyNoteService {
 
     //월별 알림장 조회하기
     @Transactional
-    public DailyNoteListResponseDto getDailyNotes(Long memberId, Long kidId, String yearAndMonth) {
+    public DailyNoteListResponseDto getDailyNotes(Long writerId, Long kidId, String yearAndMonth) {
         // 수신인이 존재하는지 확인하기
-        Member receiver = memberRepository.findById(memberId).orElseThrow(
+        Member receiver = memberRepository.findById(writerId).orElseThrow(
             () -> new CustomException(ErrorCode.NOT_FOUND_ID)
         );
 
         // 작성자로 된 알림장들
-        List<DailyNote> writeDailyNotes = dailyNoteRepository.findByYearAndMonthAndKidIdAndWriterId(yearAndMonth, kidId, memberId);
+        List<DailyNote> writeDailyNotes = dailyNoteRepository.findByYearAndMonthAndKidIdAndWriterId(yearAndMonth, kidId, writerId);
+        System.out.println(writeDailyNotes);
         List<DailyNote> receivedDailyNotes = new ArrayList<>();
 
         // 수신자로 된 알림장들
@@ -90,10 +87,13 @@ public class DailyNoteService {
 
     // 알림장 수정하기
     @Transactional
-    public DailyNoteResponseDto updateDailyNote(DailyNoteUpdateRequestDto updatedDailyNoteRequsetDto) {
-        DailyNote oldDailyNote = dailyNoteRepository.findById(updatedDailyNoteRequsetDto.getId()).orElseThrow(
+    public DailyNoteResponseDto updateDailyNote(Long writerId, Long id, DailyNoteRequestDto updatedDailyNoteRequsetDto) {
+        DailyNote oldDailyNote = dailyNoteRepository.findById(id).orElseThrow(
             () -> new CustomException(ErrorCode.NOT_FOUND_DAILYNOTE_ID)
         );
+        if(oldDailyNote.getWriter().getId() != writerId){
+            throw new CustomException(ErrorCode.UNAUTHORIZED_WRITER);
+        }
         oldDailyNote.setNewPost(updatedDailyNoteRequsetDto.getPost());
         oldDailyNote.setNewSendTime(updatedDailyNoteRequsetDto.getSendTime());
         return new DailyNoteResponseDto(dailyNoteRepository.save(oldDailyNote));
@@ -101,10 +101,16 @@ public class DailyNoteService {
 
     //알림장 삭제하기
     @Transactional
-    public void deleteDailyNote(Long id) {
+    public void deleteDailyNote(Long writerId, Long id) {
+        Member writer = memberRepository.findById(writerId).orElseThrow(
+            () -> new CustomException(ErrorCode.NOT_FOUND_WRITER)
+        );
         DailyNote oldDailyNote = dailyNoteRepository.findById(id).orElseThrow(
             () -> new CustomException(ErrorCode.NOT_FOUND_DAILYNOTE_ID)
         );
+        if(oldDailyNote.getWriter().getId() != writerId){
+            throw new CustomException(ErrorCode.UNAUTHORIZED_WRITER);
+        }
         oldDailyNote.delete();
         dailyNoteRepository.save(oldDailyNote);
     }

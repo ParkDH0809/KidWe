@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import yeomeong.common.entity.post.DailyNote;
 
 @Getter
@@ -17,10 +16,10 @@ public class DailyNoteListResponseDto {
         this.yearAndMonth = yearAndMonth;
         this.dailyNoteListItemResponseDtos = new ArrayList<DailyNoteListItemResponseDto>();
         for(DailyNote dailyNote : writedailyNotes) {
-            dailyNoteListItemResponseDtos.add(new DailyNoteListItemResponseDto(dailyNote));
+            this.dailyNoteListItemResponseDtos.add(new DailyNoteListItemResponseDto(dailyNote));
         }
         for(DailyNote dailyNote : recevieddailyNotes) {
-            dailyNoteListItemResponseDtos.add(new DailyNoteListItemResponseDto(dailyNote));
+            this.dailyNoteListItemResponseDtos.add(new DailyNoteListItemResponseDto(dailyNote));
         }
     }
 }
