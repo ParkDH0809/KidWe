@@ -73,7 +73,7 @@ public class DirectorController {
     }
 
     @Operation(summary = "선생님 승인 여부", description = "대기 중인 선생님 승인 API입니다.")
-    @PutMapping("/pending_teachers")
+    @PutMapping("/pending-teachers")
     public ResponseEntity<Void> updateTeacherApproval(@RequestBody AcceptRequestDto acceptRequestDto) {
         approvalService.acceptTeacherRequestDto(acceptRequestDto);
         return ResponseEntity.status(HttpStatus.OK).build();

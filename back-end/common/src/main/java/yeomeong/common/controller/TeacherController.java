@@ -42,7 +42,7 @@ public class TeacherController {
     }
 
     @Operation(summary = "원생 승인 여부", description = "대기 중인 원생 승인 API입니다.")
-    @PutMapping("/pending_kids")
+    @PutMapping("/pending-kids")
     public ResponseEntity<Void> updateKidApproval(@RequestBody AcceptRequestDto acceptRequestDto) {
         approvalService.acceptKidRequestDto(acceptRequestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
