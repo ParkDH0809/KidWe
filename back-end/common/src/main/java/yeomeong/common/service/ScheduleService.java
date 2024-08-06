@@ -38,7 +38,7 @@ public class ScheduleService {
     //전체 공지용 스케줄 목록 가져오기
     public List<ScheduleByDayListDto> getScheduleByAllNoticeAndDayList(Long kindergartenId, LocalDate localDate){
 
-        List<Schedule> allByKindergartenIdAndEventDate = scheduleRepository.findAllByBan_Kindergarten_IdAndEventDateAndScheduleTypeOrderByEventTimeDesc(kindergartenId, localDate, Schedule.ScheduleType.ALLNOTICE);
+        List<Schedule> allByKindergartenIdAndEventDate = scheduleRepository.findAllByBan_Kindergarten_IdAndEventDateAndScheduleTypeOrderByCreatedTimeDesc(kindergartenId, localDate, Schedule.ScheduleType.ALLNOTICE);
 
         return getScheduleByDayListDtos(allByKindergartenIdAndEventDate);
     }
@@ -47,7 +47,7 @@ public class ScheduleService {
     //반 별 스케줄 가져오기
     public List<ScheduleByDayListDto> getScheduleByBanAndDayList(Long banId, LocalDate localdate) {
 
-        List<Schedule> allByBanIdAndEventDateAndScheduleType = scheduleRepository.findAllByBan_IdAndEventDateAndScheduleTypeOrderByEventTimeDesc(banId, localdate, Schedule.ScheduleType.FORBAN);
+        List<Schedule> allByBanIdAndEventDateAndScheduleType = scheduleRepository.findAllByBan_IdAndEventDateAndScheduleTypeOrScheduleTypeOrderByCreatedTimeDesc(banId, localdate, Schedule.ScheduleType.CLASS, Schedule.ScheduleType.EVENT);
 
         return getScheduleByDayListDtos(allByBanIdAndEventDateAndScheduleType);
 
@@ -83,7 +83,8 @@ public class ScheduleService {
                 createScheduleDto.getKeyword(),
                 createScheduleDto.getContent(),
                 createScheduleDto.getLocalDate(),
-                LocalTime.now()
+                LocalTime.now(),
+                createScheduleDto.getScheduleType()
         );
 
         if (member.getRole() == rtype.ROLE_DIRECTOR) { //원장이면
@@ -92,7 +93,7 @@ public class ScheduleService {
 
         } else if(member.getRole() == rtype.ROLE_TEACHER){
 
-            schedule.setScheduleType(Schedule.ScheduleType.FORBAN);
+            schedule.setScheduleType(createScheduleDto.getScheduleType());
         }
 
         scheduleRepository.save(schedule);
@@ -108,9 +109,9 @@ public class ScheduleService {
         schedule.setKeyword(createScheduleRequestDto.getKeyword());
         schedule.setContent(createScheduleRequestDto.getContent());
         schedule.setEventDate(createScheduleRequestDto.getLocalDate());
-        schedule.setEventTime(LocalTime.now());
+        schedule.setCreatedTime(LocalTime.now());
 
-        return new CreateScheduleResponseDto(schedule.getKeyword(),schedule.getContent(),schedule.getEventDate(),schedule.getEventTime());
+        return new CreateScheduleResponseDto(schedule.getKeyword(),schedule.getContent(),schedule.getEventDate(),schedule.getCreatedTime());
     }
 
     //스케줄 삭제하기

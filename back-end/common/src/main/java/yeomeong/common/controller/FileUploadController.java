@@ -5,16 +5,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import yeomeong.common.service.S3Service;
 
 
 @RestController
-@RequestMapping("/file")
+@RequestMapping("/files")
 @RequiredArgsConstructor
 public class FileUploadController {
 
@@ -22,11 +19,10 @@ public class FileUploadController {
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadFile(
-            @RequestParam("file") MultipartFile file,
-            @RequestParam("domain") String domain){
+            @RequestParam(value = "file") MultipartFile file){
 
         try {
-            String fileUrl = s3Service.uploadFile(file, domain);
+            String fileUrl = s3Service.uploadFile(file);
             return ResponseEntity.ok("파일 업로드 성공" + fileUrl);
         }
         catch (Exception e){

@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 public class S3Config {
 
 
-    @Value("{aws.s3.region}")
+    @Value("{ap-northeast-2}")
     private String region;
 
     @Value("{aws.credentials.access-key-id}")
@@ -30,7 +30,7 @@ public class S3Config {
 
         return AmazonS3ClientBuilder
                 .standard()
-                .withRegion(String.valueOf(region))
+                .withRegion(String.valueOf(Region.AP_Seoul))
                 .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
                 .build();
 
