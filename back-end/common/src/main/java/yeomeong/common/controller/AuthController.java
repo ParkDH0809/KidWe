@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import yeomeong.common.dto.auth.LoginRequestDto;
-import yeomeong.common.dto.auth.SignupRequestDto;
 import yeomeong.common.dto.auth.RefreshResponseDto;
+import yeomeong.common.dto.member.MemberSaveRequestDto;
 import yeomeong.common.security.jwt.JwtService;
 import yeomeong.common.security.jwt.JwtUtil;
 import yeomeong.common.service.MemberService;
@@ -29,8 +29,8 @@ public class AuthController {
 
     @Operation(summary = "회원가입", description = "회원가입을 합니다.")
     @PostMapping("/signup")
-    public ResponseEntity<Void> signup(@RequestBody SignupRequestDto signupRequestDto) {
-        memberService.joinMember(signupRequestDto);
+    public ResponseEntity<Void> signup(@RequestBody MemberSaveRequestDto memberSaveRequestDto) {
+        memberService.joinMember(memberSaveRequestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

@@ -6,46 +6,76 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import yeomeong.common.dto.kindergarten.KindergartenApprovalStatusDto;
+import yeomeong.common.dto.approval.AcceptRequestDto;
+import yeomeong.common.dto.approval.PendingTeacherResponseDto;
+import yeomeong.common.dto.ban.BanCreateRequestDto;
+import yeomeong.common.dto.ban.BanNameChangeRequestDto;
+import yeomeong.common.dto.kindergarten.KindergartenSaveRequestDto;
 import yeomeong.common.dto.member.TeacherChangeBanRequestDto;
-import yeomeong.common.dto.member.TeacherDetailInfoDto;
-import yeomeong.common.entity.member.atype;
-import yeomeong.common.service.MemberService;
+import yeomeong.common.service.ApprovalService;
+import yeomeong.common.service.BanService;
+import yeomeong.common.service.KindergartenService;
 
 @RestController
 @RequestMapping("/directors")
-@Tag(name = "원장 API", description = "원장 권한 API")
+@Tag(name = "원장 권한 API", description = "원장 역할 관련 API (ROLE_DIRECTOR 권한만 접근 가능)")
 public class DirectorController {
 
-    private final MemberService memberService;
+    private final BanService banService;
+    private final KindergartenService kindergartenService;
+    private final ApprovalService approvalService;
 
-    public DirectorController(MemberService memberService) {
-        this.memberService = memberService;
+    public DirectorController(BanService banService, KindergartenService kindergartenService,
+        ApprovalService approvalService) {
+        this.banService = banService;
+        this.kindergartenService = kindergartenService;
+        this.approvalService = approvalService;
     }
 
-    @Operation(summary = "선생님 조회",
-        description = "유치원에 연관된 선생님 리스트를 조회합니다. (ACCEPT: 승인된 선생님, PENDING: 승인 대기 선생님)")
-    @GetMapping("{kindergartenId}/teachers/{status}")
-    public ResponseEntity<List<TeacherDetailInfoDto>> getTeachersByStatus(@PathVariable Long kindergartenId, @PathVariable atype status) {
-        return ResponseEntity.status(HttpStatus.OK).body(memberService.getTeachersByStatus(kindergartenId, status));
-    }
-
-    @Operation(summary = "선생님 가입 승인 결정", description = "가입 신청한 선생님 승인 여부에 대한 API입니다. (ACCEPT: 승인, DECLINE: 거절)")
-    @PutMapping
-    public ResponseEntity<Void> updateMemberStatus(@RequestBody KindergartenApprovalStatusDto kindergartenApprovalStatusDto) {
-        memberService.updateMemberState(kindergartenApprovalStatusDto);
+    @Operation(summary = "유치원 생성", description = "유치원을 생성합니다.")
+    @PostMapping("/kindergarten")
+    public ResponseEntity<Void> createKindergarten(@RequestBody KindergartenSaveRequestDto kindergartenSaveRequestDto) {
+        kindergartenService.createKindergarten(kindergartenSaveRequestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @Operation(summary = "선생님 반 변경", description = "유치원 별 선생님의 반을 변경합니다.")
+    @Operation(summary = "반 생성", description = "반을 생성합니다.")
+    @PostMapping("/ban")
+    public ResponseEntity<Void> createBan(@RequestBody BanCreateRequestDto banCreateRequestDto) {
+        banService.createBan(banCreateRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @Operation(summary = "특정 반 이름 변경", description = "특정 반 이름을 변경합니다.")
     @PutMapping("/ban")
-    public ResponseEntity<Void> changeTeachersBan(@RequestBody TeacherChangeBanRequestDto teacherChangeBanRequestDto) {
-        memberService.changeTeachersBan(teacherChangeBanRequestDto);
+    public ResponseEntity<Void> changeBanName(@RequestBody BanNameChangeRequestDto banNameChangeRequestDto) {
+        banService.changeBanName(banNameChangeRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @Operation(summary = "승인 대기 선생님 리스트 조회", description = "승인 대기 선생님 리스트를 조회합니다.")
+    @GetMapping("/pending-teachers")
+    public ResponseEntity<List<PendingTeacherResponseDto>> getPendingTeachers(@RequestParam Long kindergartenId) {
+            return ResponseEntity.status(HttpStatus.OK).body(approvalService.getPendingTeachers(kindergartenId));
+    }
+
+    @Operation(summary = "선생님 반 변경", description = "선생님의 담당 반을 변경합니다.")
+    @PutMapping("/ban/teachers")
+    public ResponseEntity<Void> updateTeachersBan(@RequestBody TeacherChangeBanRequestDto teacherChangeBanRequestDto) {
+        banService.updateTeachersBan(teacherChangeBanRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @Operation(summary = "선생님 승인 여부", description = "대기 중인 선생님 승인 API입니다.")
+    @PutMapping("/pending_teachers")
+    public ResponseEntity<Void> updateTeacherApproval(@RequestBody AcceptRequestDto acceptRequestDto) {
+        approvalService.acceptTeacherRequestDto(acceptRequestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

@@ -29,7 +29,7 @@ public class MemberSaveRequestDto {
             .password(memberSaveRequestDto.getPassword())
             .role(rtype.valueOf(memberSaveRequestDto.getRole()))
             .picture(memberSaveRequestDto.getPicture())
-            .memberStatus(rtype.valueOf(memberSaveRequestDto.getRole()) == rtype.ROLE_TEACHER ? atype.PENDING : atype.ACCEPT)
+            .memberStatus(atype.NOTHING)
             .build();
     }
 

@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import yeomeong.common.entity.kindergarten.Ban;
 import yeomeong.common.entity.kindergarten.Kindergarten;
 import yeomeong.common.entity.member.Member;
+import yeomeong.common.entity.member.atype;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
@@ -34,4 +35,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("UPDATE Member m SET m.kindergarten = :kindergarten WHERE m.id = :id")
     void updateMemberKindergarten(@Param("id") Long id, @Param("kindergarten") Kindergarten kindergarten);
 
+    @Modifying
+    @Transactional
+    @Query("UPDATE Member m SET m.memberStatus = :atype WHERE m.id = :id")
+    void updateMemberStatus(Long id, atype atype);
 }

@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import yeomeong.common.dto.ban.BanCreateRequestDto;
-import yeomeong.common.dto.ban.BanDetailInfoDto;
+import yeomeong.common.dto.ban.BanDetailInfoResponseDto;
 import yeomeong.common.dto.ban.BanNameChangeRequestDto;
-import yeomeong.common.dto.member.TeacherBasicInfoDto;
+import yeomeong.common.dto.member.TeacherBasicInfoResponseDto;
+import yeomeong.common.dto.member.TeacherChangeBanRequestDto;
 import yeomeong.common.entity.kindergarten.Ban;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.exception.CustomException;
@@ -35,22 +36,22 @@ public class BanService {
             banCreateRequestDto));
     }
 
-    public List<BanDetailInfoDto> getBansIdByKindergartenId(Long kindergartenId) {
+    public List<BanDetailInfoResponseDto> getBansIdByKindergartenId(Long kindergartenId) {
         List<Ban> bans = banRepository.findByKindergarten_Id(kindergartenId);
-        List<BanDetailInfoDto> banDetailInfos = new ArrayList<>();
+        List<BanDetailInfoResponseDto> banDetailInfos = new ArrayList<>();
         for (Ban ban : bans) {
             banDetailInfos.add(getBanInfo(ban.getId()));
         }
         return banDetailInfos;
     }
 
-    public BanDetailInfoDto getBanInfo(Long banId) {
+    public BanDetailInfoResponseDto getBanInfo(Long banId) {
         List<Member> teachers = memberRepository.findMemberByBanId(banId);
-        BanDetailInfoDto banDetailInfoDto = BanDetailInfoDto.toBanDetailInfoDto(
+        BanDetailInfoResponseDto banDetailInfoDto = BanDetailInfoResponseDto.toBanDetailInfoDto(
             banRepository.findById(banId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)));
-        List<TeacherBasicInfoDto> teacherBasicInfos = new ArrayList<>();
+        List<TeacherBasicInfoResponseDto> teacherBasicInfos = new ArrayList<>();
         for(Member teacher : teachers) {
-            teacherBasicInfos.add(TeacherBasicInfoDto.toTeacherInfoDto(teacher));
+            teacherBasicInfos.add(TeacherBasicInfoResponseDto.toTeacherInfoDto(teacher));
         }
         banDetailInfoDto.initializeDefaults(teacherBasicInfos);
         return banDetailInfoDto;
@@ -60,6 +61,13 @@ public class BanService {
         if (banRepository.changeBanName(banNameChangeRequestDto.getId(), banNameChangeRequestDto.getName()) != 1) {
             throw new CustomException(ErrorCode.INVALID_INPUT_VALUE);
         }
+    }
+
+    public void updateTeachersBan(TeacherChangeBanRequestDto teacherChangeBanRequestDto) {
+        memberRepository.updateMemberBan(
+            teacherChangeBanRequestDto.getMemberId(),
+            banRepository.findById(teacherChangeBanRequestDto.getBanId())
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)));
     }
 
 }

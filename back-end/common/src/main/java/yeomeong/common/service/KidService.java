@@ -3,9 +3,8 @@ package yeomeong.common.service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import yeomeong.common.dto.kid.KidDetailInfoDto;
-import yeomeong.common.dto.kid.KidJoinRequestDto;
-import yeomeong.common.dto.kid.KidUpdateInfoDto;
+import yeomeong.common.dto.kid.KidDetailInfoResponseDto;
+import yeomeong.common.dto.kid.KidUpdateInfoRequestDto;
 import yeomeong.common.entity.member.Kid;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
@@ -27,30 +26,20 @@ public class KidService {
         this.banRepository = banRepository;
     }
 
-    public void joinKid(KidJoinRequestDto kidJoinRequestDto) {
-        log.info(kidJoinRequestDto.toString());
-        kidRepository.save(KidJoinRequestDto.toKidEntity(kidJoinRequestDto,
-            kindergartenRepository.findById(kidJoinRequestDto.getKindergartenId())
-                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)),
-            banRepository.findById(kidJoinRequestDto.getBanId())
-                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)))
-        );
-    }
-
-    public KidDetailInfoDto getKidInfo(Long kidId) {
-        return KidDetailInfoDto.toKidDetailInfoDto(
+    public KidDetailInfoResponseDto getKidInfo(Long kidId) {
+        return KidDetailInfoResponseDto.toKidDetailInfoDto(
             kidRepository.findByIdAndIsDeletedFalse(kidId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_KID)));
     }
 
-    public void updateKidInfo(KidUpdateInfoDto kidUpdateInfoDto) {
-        Kid kid = kidRepository.findByIdAndIsDeletedFalse(kidUpdateInfoDto.getId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_KID));
-        kid.updateFromDto(kidUpdateInfoDto);
-        if (kidUpdateInfoDto.hasBanId()) {
-            kid.setNewBan(banRepository.findById(kidUpdateInfoDto.getBanId())
+    public void updateKidInfo(KidUpdateInfoRequestDto kidUpdateInfoRequestDto) {
+        Kid kid = kidRepository.findByIdAndIsDeletedFalse(kidUpdateInfoRequestDto.getId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_KID));
+        kid.updateFromDto(kidUpdateInfoRequestDto);
+        if (kidUpdateInfoRequestDto.hasBanId()) {
+            kid.setNewBan(banRepository.findById(kidUpdateInfoRequestDto.getBanId())
                 .orElseThrow(() -> new CustomException(ErrorCode.INVALID_BAN_ID)));
         }
-        if(kidUpdateInfoDto.hasKindergartenId()) {
-            kid.setNewKindergarten(kindergartenRepository.findById(kidUpdateInfoDto.getKindergartenId())
+        if(kidUpdateInfoRequestDto.hasKindergartenId()) {
+            kid.setNewKindergarten(kindergartenRepository.findById(kidUpdateInfoRequestDto.getKindergartenId())
                 .orElseThrow(() -> new CustomException(ErrorCode.INVALID_BAN_ID)));
         }
         kidRepository.save(kid);

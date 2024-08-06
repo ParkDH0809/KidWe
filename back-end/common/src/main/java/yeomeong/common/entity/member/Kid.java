@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
-import yeomeong.common.dto.kid.KidUpdateInfoDto;
+import yeomeong.common.dto.kid.KidUpdateInfoRequestDto;
 import yeomeong.common.entity.kindergarten.Ban;
 import yeomeong.common.entity.kindergarten.Bus;
 
@@ -62,7 +62,7 @@ public class Kid {
     @ColumnDefault("false")
     private Boolean isDeleted;
 
-    public void updateFromDto(KidUpdateInfoDto dto) {
+    public void updateFromDto(KidUpdateInfoRequestDto dto) {
         this.name = dto.getName() != null ? dto.getName() : this.name;
         this.birthday = dto.getBirthday() != null ? dto.getBirthday() : this.birthday;
         this.gender = dto.getGender() != null ? dto.getGender() : this.gender;

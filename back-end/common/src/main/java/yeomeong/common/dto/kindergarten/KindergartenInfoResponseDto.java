@@ -8,8 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import yeomeong.common.dto.ban.BanBasicInfoDto;
-import yeomeong.common.entity.kindergarten.Ban;
+import yeomeong.common.dto.ban.BanBasicInfoResponseDto;
 import yeomeong.common.entity.kindergarten.Bus;
 import yeomeong.common.entity.kindergarten.Kindergarten;
 
@@ -27,7 +26,7 @@ public class KindergartenInfoResponseDto {
     private Bus bus;
     private Date openDate;
     @Builder.Default
-    private List<BanBasicInfoDto> bans = new ArrayList<>();
+    private List<BanBasicInfoResponseDto> bans = new ArrayList<>();
 
     public static KindergartenInfoResponseDto toKindergartenDto(Kindergarten kindergarten) {
         return KindergartenInfoResponseDto.builder()
@@ -39,7 +38,7 @@ public class KindergartenInfoResponseDto {
             .bus(kindergarten.getBus())
             .openDate(kindergarten.getOpenDate())
             .bans(kindergarten.getBans().stream()
-                .map(BanBasicInfoDto::toBanBasicInfoDto)
+                .map(BanBasicInfoResponseDto::toBanBasicInfoDto)
                 .collect(Collectors.toList()))
             .build();
     }

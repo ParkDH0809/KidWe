@@ -4,9 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import yeomeong.common.dto.kid.KidDetailInfoDto;
-import yeomeong.common.dto.kid.KidJoinRequestDto;
-import yeomeong.common.dto.kid.KidUpdateInfoDto;
+import yeomeong.common.dto.kid.KidDetailInfoResponseDto;
+import yeomeong.common.dto.kid.KidUpdateInfoRequestDto;
 import yeomeong.common.service.KidService;
 
 @RestController
@@ -20,23 +19,16 @@ public class KidController {
         this.kidService = kidService;
     }
 
-    @Operation(summary = "아이 정보 생성 API", description = "아이 정보를 입력(생성)합니다.")
-    @PostMapping
-    public ResponseEntity<Void> joinKid(@RequestBody KidJoinRequestDto kidJoinRequestDto) {
-        kidService.joinKid(kidJoinRequestDto);
-        return ResponseEntity.ok().build();
-    }
-
     @Operation(summary = "아이 정보 조회 API", description = "특정 아이 정보를 조회합니다.")
     @GetMapping("/{kidId}")
-    public ResponseEntity<KidDetailInfoDto> getKid(@PathVariable Long kidId) {
+    public ResponseEntity<KidDetailInfoResponseDto> getKid(@PathVariable Long kidId) {
         return ResponseEntity.ok().body(kidService.getKidInfo(kidId));
     }
 
     @Operation(summary = "아이 정보 변경 API", description = "특정 아이 정보를 변경합니다.")
     @PatchMapping
-    public ResponseEntity<Void> updateKid(@RequestBody KidUpdateInfoDto kidUpdateInfoDto) {
-        kidService.updateKidInfo(kidUpdateInfoDto);
+    public ResponseEntity<Void> updateKid(@RequestBody KidUpdateInfoRequestDto kidUpdateInfoRequestDto) {
+        kidService.updateKidInfo(kidUpdateInfoRequestDto);
         return ResponseEntity.ok().build();
     }
 

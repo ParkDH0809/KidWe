@@ -1,4 +1,4 @@
-package yeomeong.common.dto.member;
+package yeomeong.common.dto.approval;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

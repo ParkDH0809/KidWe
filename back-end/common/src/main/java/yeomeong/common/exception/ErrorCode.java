@@ -16,6 +16,7 @@ public enum ErrorCode {
     INVALID_BAN_ID(400, "INVALID_BAN_ID", "변경할 반 정보가 올바르지 않습니다. 입력 정보를 다시 확인해주세요."),
 
     INVALID_LOGIN_VALUE(401, "INVALID_LOGIN_VALUE", "로그인 정보가 올바르지 않습니다."),
+    UNAUTHORIZED_WRITER(401, "UNAUTHORIZED_WRITER", "작성자가 아닙니다"),
 
     NOT_FOUND_ID(404, "NOT_FOUND_ID", "존재하지 않는 ID입니다."),
     NOT_FOUND_KID(404, "NOT_FOUND_KID", "존재하지 않는 원생입니다"),
@@ -24,7 +25,9 @@ public enum ErrorCode {
     NOT_FOUND_WRITER(404, "NOT_FOUND_WRITER", "존재하지 않는 작성자ID입니다"),
     NOT_FOUND_POST(404, "NOT_FOUND_POST", "존재하지 않는 게시물입니다."),
 
-    DUPLICATED_USER_EMAIL(409, "DUPLICATED_USER_EMAIL", "이미 회원가입된 이메일입니다.");
+    DUPLICATED_USER_EMAIL(409, "DUPLICATED_USER_EMAIL", "이미 회원가입된 이메일입니다."),
+
+    REPOSITOY_ERROR(500, "REPOSITOY_ERROR", "레포지토리에서 문제가 생겼습니다");
 
     private final int status;
     private final String code;

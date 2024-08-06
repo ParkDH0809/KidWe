@@ -1,5 +1,6 @@
 package yeomeong.common.entity.post;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,10 +22,7 @@ import yeomeong.common.entity.post.comment.DailyNoteComment;
 @Entity
 
 @Getter
-@Setter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class DailyNote {
 
     @Id
@@ -47,4 +45,25 @@ public class DailyNote {
     private LocalDateTime sendTime;
     private Boolean isDeleted;
 
+    @Builder
+    public DailyNote(Post post, Kid kid, Member writer, LocalDateTime sendTime){
+        this.post = post;
+        this.kid = kid;
+        this.writer = writer;
+        this.comments = new ArrayList<>();
+        this.sendTime = sendTime;
+        this.isDeleted = false;
+    }
+
+    public void setNewPost(Post post){
+        this.post = post;
+    }
+
+    public void setNewSendTime(LocalDateTime sendTime){
+        this.sendTime = sendTime;
+    }
+
+    public void delete(){
+        this.isDeleted = true;
+    }
 }

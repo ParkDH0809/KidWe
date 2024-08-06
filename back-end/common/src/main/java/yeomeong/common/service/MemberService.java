@@ -1,34 +1,19 @@
 package yeomeong.common.service;
 
 import jakarta.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import yeomeong.common.dto.auth.SignupRequestDto;
-import yeomeong.common.dto.ban.BanJoinRequestDto;
-import yeomeong.common.dto.kid.KidBasicInfoDto;
-import yeomeong.common.dto.kid.KidJoinRequestDto;
-import yeomeong.common.dto.kindergarten.KindergartenApprovalStatusDto;
-import yeomeong.common.dto.kindergarten.KindergartenSaveRequestDto;
-import yeomeong.common.dto.member.ApprovalRequestDto;
+import yeomeong.common.dto.kid.KidBasicInfoResponseDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
 import yeomeong.common.dto.member.MemberSaveRequestDto;
 import yeomeong.common.dto.member.MemberUpdateRequestDto;
-import yeomeong.common.dto.member.TeacherChangeBanRequestDto;
-import yeomeong.common.dto.member.TeacherDetailInfoDto;
-import yeomeong.common.entity.member.KidMember;
 import yeomeong.common.entity.member.Member;
-import yeomeong.common.entity.member.atype;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
-import yeomeong.common.repository.ApprovalRepository;
-import yeomeong.common.repository.BanRepository;
 import yeomeong.common.repository.KidMemberRepository;
-import yeomeong.common.repository.KidRepository;
-import yeomeong.common.repository.KindergartenRepository;
 import yeomeong.common.repository.MemberRepository;
 
 @Service
@@ -38,89 +23,19 @@ public class MemberService {
 
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
-    private final KidRepository kidRepository;
-    private final BanRepository banRepository;
     private final KidMemberRepository kidMemberRepository;
-    private final KindergartenRepository kindergartenRepository;
-    private final ApprovalRepository approvalRepository;
 
-    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder,
-        BanRepository banRepository, KindergartenRepository kindergartenRepository, KidRepository kidRepository,
-        KidMemberRepository kidMemberRepository, ApprovalRepository approvalRepository) {
+    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder, KidMemberRepository kidMemberRepository) {
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
-        this.banRepository = banRepository;
-        this.kindergartenRepository = kindergartenRepository;
-        this.kidRepository = kidRepository;
         this.kidMemberRepository = kidMemberRepository;
-        this.approvalRepository = approvalRepository;
     }
 
     @Transactional
-    public void joinMember(SignupRequestDto signupRequestDto) {
-        Member member = MemberSaveRequestDto.toMemberEntity(signupRequestDto.getMember());
+    public void joinMember(MemberSaveRequestDto memberSaveRequestDto) {
+        Member member = MemberSaveRequestDto.toMemberEntity(memberSaveRequestDto);
         member.setPassword(passwordEncoder.encode(member.getPassword()));
-        long memberId = memberRepository.save(member).getId();
-        switch (member.getRole()) {
-            case ROLE_DIRECTOR -> joinDirector(memberId, signupRequestDto.getKindergarten());
-            case ROLE_GUARDIAN -> joinGuardian(memberId, signupRequestDto.getKid());
-            case ROLE_TEACHER -> joinTeacher(memberId, signupRequestDto.getBan());
-            default -> throw new CustomException(ErrorCode.INVALID_INPUT_VALUE);
-        }
-    }
-
-    private void joinDirector(long memberId, KindergartenSaveRequestDto kindergartenSaveRequestDto) {
-        long kindergartenId = kindergartenRepository.save(
-            KindergartenSaveRequestDto.toKindergartenEntity(kindergartenSaveRequestDto)).getId();
-
-        memberRepository.updateMemberKindergarten(memberId,
-            kindergartenRepository.findById(kindergartenId)
-                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)));
-    }
-
-    private void joinGuardian(long memberId, KidJoinRequestDto kidJoinRequestDto) {
-        long kidId = kidRepository.save(KidJoinRequestDto.toKidEntity(kidJoinRequestDto)).getId();
-        ApprovalRequestDto approvalRequestDto = new ApprovalRequestDto(
-            kidRepository.findById(kidId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)),
-            banRepository.findById(kidJoinRequestDto.getBanId())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)),
-            kindergartenRepository.findById(kidJoinRequestDto.getKindergartenId())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID))
-        );
-
-        approvalRepository.save(ApprovalRequestDto.toApprovalEntity(approvalRequestDto));
-        kidMemberRepository.save(
-            KidMember
-                .builder()
-                .kid(kidRepository.findById(kidId).orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)))
-                .member(memberRepository.findById(memberId)
-                    .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)))
-                .build()
-        );
-    }
-
-    private void joinTeacher(long memberId, BanJoinRequestDto banJoinRequestDto) {
-        ApprovalRequestDto approvalRequestDto = new ApprovalRequestDto(
-            memberRepository.findById(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)),
-            banRepository.findById(banJoinRequestDto.getBanId())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)),
-            kindergartenRepository.findById(banJoinRequestDto.getKindergartenId())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID))
-        );
-
-        approvalRepository.save(ApprovalRequestDto.toApprovalEntity(approvalRequestDto));
-
-//        memberRepository.updateMemberBan(
-//            memberId,
-//            banRepository.findById(banJoinRequestDto.getBanId())
-//                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)));
-//
-//        memberRepository.updateMemberKindergarten(
-//            memberId,
-//            kindergartenRepository.findById(banJoinRequestDto.getKindergartenId())
-//                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)));
+         memberRepository.save(member);
     }
 
     public Member getMemberByEmail(String email) {
@@ -135,43 +50,17 @@ public class MemberService {
         Member member = memberRepository.findById(memberUpdateRequestDto.getId())
             .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE));
         member.updateFromDto(memberUpdateRequestDto);
-        Member neww = memberRepository.save(member);
-        System.out.println(neww.getId());
-        System.out.println(neww.getName());
     }
 
     public void deleteMember(String email) {
         memberRepository.deleteMemberByEmail(email);
     }
 
-    public List<KidBasicInfoDto> getChildrenByMember(String email) {
+    public List<KidBasicInfoResponseDto> getChildrenByMember(String email) {
         return kidMemberRepository.findKidMemberByMember_Id(memberRepository.findByEmail(email).getId())
             .stream()
-            .map(KidBasicInfoDto::toKidBasicInfoDto)
+            .map(KidBasicInfoResponseDto::toKidBasicInfoDto)
             .collect(Collectors.toList());
-    }
-
-    public void updateMemberState(KindergartenApprovalStatusDto approvalStatusDto) {
-        if (kidMemberRepository.updateMemberStatusById(approvalStatusDto.getTeacherId(), approvalStatusDto.getStatus()) != 1) {
-            throw new CustomException(ErrorCode.NOT_FOUND_ID);
-        }
-    }
-
-    public List<TeacherDetailInfoDto> getTeachersByStatus(Long id, atype status) {
-        List<TeacherDetailInfoDto> teacherDetailInfos = new ArrayList<>();
-        memberRepository.findMemberByKindergartenId(id)
-            .stream()
-            .filter(member -> member.getMemberStatus() == status)
-            .toList()
-            .forEach(m -> teacherDetailInfos.add(TeacherDetailInfoDto.toTeacherDetailInfoDto(m)));
-        return teacherDetailInfos;
-    }
-
-    public void changeTeachersBan(TeacherChangeBanRequestDto teacherChangeBanRequestDto) {
-        memberRepository.updateMemberBan(
-            teacherChangeBanRequestDto.getTeacherId(),
-            banRepository.findById(teacherChangeBanRequestDto.getBanId())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)));
     }
 
 }

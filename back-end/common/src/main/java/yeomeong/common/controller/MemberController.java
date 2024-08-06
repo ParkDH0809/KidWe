@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import yeomeong.common.dto.kid.KidBasicInfoDto;
+import yeomeong.common.dto.kid.KidBasicInfoResponseDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
 import yeomeong.common.dto.member.MemberUpdateRequestDto;
 import yeomeong.common.service.MemberService;
@@ -46,7 +46,7 @@ public class MemberController {
 
     @Operation(summary = "사용자 자녀 조회", description = "부모의 자녀 정보를 조회합니다.")
     @GetMapping("/children")
-    public ResponseEntity<List<KidBasicInfoDto>> getChildrenByMember(Authentication authentication) {
+    public ResponseEntity<List<KidBasicInfoResponseDto>> getChildrenByMember(Authentication authentication) {
         return ResponseEntity.status(HttpStatus.OK).body(memberService.getChildrenByMember(authentication.getName()));
     }
 

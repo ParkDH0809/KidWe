@@ -24,10 +24,10 @@ public class Approval {
     @OneToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Kindergarten kindergarten;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Ban ban;
 
 }
