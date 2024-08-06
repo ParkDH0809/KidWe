@@ -5,14 +5,14 @@ spring:
     name: kidwe
 
   datasource:
-    url: jdbc:mysql://i11a808.p.ssafy.io:3306/kidwe
+    url: jdbc:mysql://i11a808.p.ssafy.io:3307/kidwe
     username: root
-    password: root
+    password: ssafy
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
         hibernate:
           format_sql: true
