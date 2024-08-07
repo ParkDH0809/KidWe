@@ -155,4 +155,10 @@ public class ApprovalService {
         kidRepository.deleteKidById(id);
     }
 
+    public void dropTeacher(Long teacherId) {
+        memberRepository.updateMemberBan(teacherId, null);
+        memberRepository.updateMemberKindergarten(teacherId, null);
+        memberRepository.updateMemberStatus(teacherId, atype.DECLINE);
+    }
+
 }

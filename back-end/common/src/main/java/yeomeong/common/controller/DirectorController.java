@@ -17,7 +17,7 @@ import yeomeong.common.dto.member.TeacherDetailInfoResponseDto;
 import yeomeong.common.dto.ban.BanCreateRequestDto;
 import yeomeong.common.dto.ban.BanNameChangeRequestDto;
 import yeomeong.common.dto.kindergarten.KindergartenSaveRequestDto;
-import yeomeong.common.dto.member.TeacherChangeBanRequestDto;
+import yeomeong.common.dto.ban.BanChangeRequestDto;
 import yeomeong.common.service.ApprovalService;
 import yeomeong.common.service.BanService;
 import yeomeong.common.service.KindergartenService;
@@ -59,6 +59,13 @@ public class DirectorController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    @Operation(summary = "선생님 반 변경", description = "선생님의 담당 반을 변경합니다.")
+    @PutMapping("/teachers/ban")
+    public ResponseEntity<Void> updateTeachersBan(@RequestBody BanChangeRequestDto banChangeRequestDto) {
+        banService.updateTeachersBan(banChangeRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
     @Operation(summary = "승인 대기 선생님 리스트 조회", description = "승인 대기 선생님 리스트를 조회합니다.")
     @GetMapping("/teachers/pending")
     public ResponseEntity<List<TeacherDetailInfoResponseDto>> getPendingTeachers(@RequestParam Long kindergartenId) {
@@ -78,10 +85,10 @@ public class DirectorController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @Operation(summary = "선생님 반 변경", description = "선생님의 담당 반을 변경합니다.")
-    @PutMapping("/ban/teachers")
-    public ResponseEntity<Void> updateTeachersBan(@RequestBody TeacherChangeBanRequestDto teacherChangeBanRequestDto) {
-        banService.updateTeachersBan(teacherChangeBanRequestDto);
+    @Operation(summary = "선생님 퇴사 처리", description = "선생님 퇴사 처리 API입니다.")
+    @PutMapping("/teachers/drop")
+    public ResponseEntity<Void> dropTeacher(@RequestParam Long teacherId) {
+        approvalService.dropTeacher(teacherId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
