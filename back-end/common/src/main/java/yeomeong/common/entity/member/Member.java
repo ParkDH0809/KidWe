@@ -53,6 +53,9 @@ public class Member {
     @ColumnDefault("false")
     private Boolean isDeleted;
 
+    @OneToMany(mappedBy = "member")
+    private List<Notification> notification;
+
     public void updateFromDto(MemberUpdateRequestDto dto) {
         this.email = dto.getName() != null ? dto.getName() : this.name;
         this.tel = dto.getTel() != null ? dto.getTel() : this.tel;

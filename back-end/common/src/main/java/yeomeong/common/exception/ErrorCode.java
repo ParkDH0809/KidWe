@@ -17,6 +17,7 @@ public enum ErrorCode {
 
     INVALID_LOGIN_VALUE(401, "INVALID_LOGIN_VALUE", "로그인 정보가 올바르지 않습니다."),
     UNAUTHORIZED_WRITER(401, "UNAUTHORIZED_WRITER", "작성자가 아닙니다"),
+    INVALID_TOKEN(401, "INVALID_TOKEN", "토큰이 올바르지 않습니다."),
 
     NOT_FOUND_ID(404, "NOT_FOUND_ID", "존재하지 않는 ID입니다."),
     NOT_FOUND_KID(404, "NOT_FOUND_KID", "존재하지 않는 원생입니다"),
