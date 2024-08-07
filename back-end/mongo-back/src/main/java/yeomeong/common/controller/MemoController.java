@@ -17,7 +17,6 @@ import java.util.List;
 
 @RequiredArgsConstructor
 
-@CrossOrigin
 @RestController
 @RequestMapping("/memo")
 @Tag(name = "메모", description = "메모 관련 API")
@@ -69,6 +68,19 @@ public class MemoController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<>(memoResponseDtos, HttpStatus.OK);
+        }
+    }
+
+    @Operation(summary = "특정 메모 조회", description = "선생님ID, 년, 월, 일, 아이ID를  입력받아 해당 조건에 만족하는 메모들을 조회해 List로 반환합니다")
+    @GetMapping("/{teacher_id}/{memo_id}")
+    public ResponseEntity<MemoResponseDto> getMemo(
+        @PathVariable("teacher_id") Long teacherId,
+        @PathVariable("memo_id") String memoId ) {
+        MemoResponseDto memoResponseDto = memoService.getMemo(memoId);
+        if (memoResponseDto == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(memoResponseDto, HttpStatus.OK);
         }
     }
 
