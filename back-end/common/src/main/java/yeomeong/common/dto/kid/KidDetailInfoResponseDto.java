@@ -10,7 +10,7 @@ import yeomeong.common.entity.member.gtype;
 
 @Builder
 @Getter
-public class KidDetailInfoDto {
+public class KidDetailInfoResponseDto {
 
     private long id;
     private String name;
@@ -26,8 +26,8 @@ public class KidDetailInfoDto {
     private Long busId;
     private boolean isDeleted;
 
-    public static KidDetailInfoDto toKidDetailInfoDto(Kid kid) {
-        return KidDetailInfoDto.builder()
+    public static KidDetailInfoResponseDto toKidDetailInfoDto(Kid kid) {
+        return KidDetailInfoResponseDto.builder()
             .id(kid.getId())
             .name(kid.getName())
             .birthday(kid.getBirthday())
@@ -41,7 +41,6 @@ public class KidDetailInfoDto {
             .isDeleted(kid.getIsDeleted())
             .build();
     }
-
 
     private static List<String> stringToList(String str) {
         return Arrays.stream(str.split(",")).toList();

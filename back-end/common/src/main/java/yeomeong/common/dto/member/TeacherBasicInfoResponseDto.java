@@ -6,14 +6,14 @@ import yeomeong.common.entity.member.Member;
 
 @Getter
 @Builder
-public class TeacherBasicInfoDto {
+public class TeacherBasicInfoResponseDto {
 
     long id;
     String name;
     String tel;
 
-    public static TeacherBasicInfoDto toTeacherInfoDto(Member member) {
-        return TeacherBasicInfoDto.builder()
+    public static TeacherBasicInfoResponseDto toTeacherInfoDto(Member member) {
+        return TeacherBasicInfoResponseDto.builder()
             .id(member.getId())
             .name(member.getName())
             .tel(member.getTel())

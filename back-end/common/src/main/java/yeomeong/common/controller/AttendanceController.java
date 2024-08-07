@@ -35,7 +35,8 @@ public class AttendanceController {
         return ResponseEntity.status(HttpStatus.OK).body(attendanceService.getAttendancesByBanId(banId, LocalDate.of(year, month, day)));
     }
 
-    @Operation(summary = "출석 정보 변경", description = "특정 아이들의 특정 날짜에 대한 출석 정보를 변경합니다.")
+    @Operation(summary = "출석 정보 변경",
+        description = "특정 아이들의 특정 날짜에 대한 출석 정보를 변경합니다. (attendedToday - 미처리: NOTHING, 출석: ATTENDANCE, 결석: ABSENCE)")
     @PutMapping
     public ResponseEntity<List<AttendanceResponseDto>> updateAttendances(@RequestBody AttendanceInfoChangeRequestDto changeRequestDto) {
         attendanceService.updateAttendances(changeRequestDto);

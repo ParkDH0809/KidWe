@@ -5,10 +5,10 @@ import lombok.Getter;
 @Getter
 public class AttendanceReasonChangeRequestDto {
 
+    Long kidId;
     Integer year;
     Integer month;
     Integer day;
-    Long kidId;
     String reason;
 
     public boolean containsNull() {

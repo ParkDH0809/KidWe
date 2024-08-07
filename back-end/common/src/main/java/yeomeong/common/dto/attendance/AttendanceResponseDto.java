@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
 import yeomeong.common.entity.Attendance;
+import yeomeong.common.entity.AttendanceType;
 
 @Getter
 @Builder
@@ -18,7 +19,7 @@ public class AttendanceResponseDto {
     String kidName;
 
     String reason;
-    boolean attendedToday;
+    AttendanceType attendedToday;
 
     LocalDate date;
 

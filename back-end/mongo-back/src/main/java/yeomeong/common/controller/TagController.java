@@ -14,7 +14,6 @@ import java.util.List;
 
 @RequiredArgsConstructor
 
-@CrossOrigin
 @RestController
 @RequestMapping("/tag")
 @Tag(name = "태그", description = "태그 관련 API")

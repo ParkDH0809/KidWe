@@ -1,9 +1,12 @@
 package yeomeong.common.dto;
 
-import lombok.*;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import yeomeong.common.document.Tag;
 
-@Data
+@Getter
+@NoArgsConstructor
 public class TagResponseDto {
 
     private String id;

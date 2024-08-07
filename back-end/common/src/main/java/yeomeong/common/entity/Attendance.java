@@ -27,6 +27,7 @@ public class Attendance {
 
     private LocalDate date;
 
-    private Boolean attendedToday;
+    @Enumerated(EnumType.STRING)
+    private AttendanceType attendedToday;
 
 }

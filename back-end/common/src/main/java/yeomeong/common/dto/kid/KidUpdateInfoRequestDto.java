@@ -6,7 +6,7 @@ import lombok.Getter;
 import yeomeong.common.entity.member.gtype;
 
 @Getter
-public class KidUpdateInfoDto {
+public class KidUpdateInfoRequestDto {
 
     long id;
     String name;

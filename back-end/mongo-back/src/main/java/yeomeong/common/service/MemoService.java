@@ -1,5 +1,6 @@
 package yeomeong.common.service;
 
+import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import yeomeong.common.document.Memo;
@@ -23,6 +24,7 @@ public class MemoService {
 
     private final MemoRepository memoRepository;
     private final TagRepository tagRepository;
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private List<Tag> updateTag(List<TagRequestDto> tagRequestDtos) {
         // 메모의 tag 생성&수정(빈도수 1 증가)하기
@@ -55,14 +57,14 @@ public class MemoService {
 
     // 메모 생성하기
     public MemoResponseDto createMemo(Long teacherId, MemoRequestDto memoRequestDto) {
-        List<Tag> tags = updateTag(memoRequestDto.getTagRequestDtos());
+        List<Tag> tags = updateTag(memoRequestDto.getTags());
         Memo updatedTagAndNotUpdatedMemo = memoRequestDto.toDocument(teacherId);
-        updatedTagAndNotUpdatedMemo.setTags(tags);
+        updatedTagAndNotUpdatedMemo.setNewTags(tags);
         return new MemoResponseDto(memoRepository.save(updatedTagAndNotUpdatedMemo));
     }
 
-    public Memo getMemo(String id) {
-        return memoRepository.findMemoById(id);
+    public MemoResponseDto getMemo(String id) {
+        return new MemoResponseDto(memoRepository.findMemoById(id));
     }
 
     // 날짜별 메모 조회하기
@@ -98,11 +100,13 @@ public class MemoService {
     public MemoResponseDto updateMemo(Long teacherId, String id, MemoRequestDto updatedMemoDto) {
         Memo memo = memoRepository.findMemoByTeacherIdAndId(id, teacherId);
         if (memo != null) {
-            List<Tag> tags = updateTag(updatedMemoDto.getTagRequestDtos());
+            List<Tag> tags = updateTag(updatedMemoDto.getTags());
 
-            memo = updatedMemoDto.toDocument(teacherId);
-            memo.setId(id);
-            memo.setTags(tags);
+            memo.setNewUpdatedTime(LocalDateTime.parse(updatedMemoDto.getUpdatedTime(), formatter));
+            memo.setNewLesson(updatedMemoDto.getLesson());
+            memo.setNewKids(updatedMemoDto.getKids());
+            memo.setNewTags(tags);
+            memo.setNewContent(updatedMemoDto.getContent());
             // memo의 tag와 updatedMemo의 tag 비교해서 저장하기
             return new MemoResponseDto(memoRepository.save(memo));
         }
@@ -112,7 +116,7 @@ public class MemoService {
     // 메모 삭제하기
     public boolean deleteMemo(Long teacherId, String id) {
         Memo memo = memoRepository.findMemoByTeacherIdAndId(id, teacherId);
-        memo.setIsDeleted(true);
+        memo.delete();
         return memoRepository.save(memo).getIsDeleted();
     }
 }
