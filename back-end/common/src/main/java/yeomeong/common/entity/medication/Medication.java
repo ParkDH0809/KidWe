@@ -54,6 +54,7 @@ public class Medication {
 
     private String signUrl;
 
+    @Builder.Default
     private boolean isDeleted = false;
 
     public Medication(String name, Kid kid, String symptom, String type, String medicineImageUrl, String capacity, LocalDate medicationExecuteDueDate, String medicationExecuteTime, String numberOfDoses, String storageMethod, String others, String signUrl) {
