@@ -1,6 +1,7 @@
 package yeomeong.common.dto;
 
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -21,6 +22,7 @@ public class MemoRequestDto {
     private List<TagRequestDto> tagRequestDtos;
     private String content;
 
+
     public Memo toDocument(Long teacherId) {
         List<Tag> tags = new ArrayList<>();
         if (tagRequestDtos != null && !tagRequestDtos.isEmpty()) {
@@ -29,15 +31,9 @@ public class MemoRequestDto {
             }
         }
 
-        LocalDateTime savedTime = null;
-        if(this.updatedTime != null){
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            savedTime = LocalDateTime.parse(updatedTime, formatter);
-        }
-
         return Memo.builder()
             .teacherId(teacherId)
-            .updatedTime(savedTime)
+            .updatedTime(this.updatedTime)
             .lesson(this.lesson == null ? "" : this.lesson)
             .kids(this.kids == null ? new ArrayList<>() : this.kids)
             .content(this.content == null ? "" : this.content)

@@ -24,7 +24,7 @@ public class MemoResponseDto {
     private List<TagResponseDto> tags;
     private String content;
 
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public MemoResponseDto(Memo memo) {
         this.id = memo.getId();
