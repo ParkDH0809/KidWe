@@ -22,6 +22,7 @@ public class LeaveConsentCreateDto {
     private String emergencyRelationship;
     private String emergencyContact;
 
-    private String signUrl;
+
+
 
 }

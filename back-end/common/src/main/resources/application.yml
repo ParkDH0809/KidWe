@@ -3,6 +3,13 @@ spring:
     date-format: HH:mm:ss
   application:
     name: kidwe
+  servlet:
+    multipart:
+      enabled: true # 멀티 파트 지원여부
+      file-size-threshold: 0B
+      location: /users/charming/temp
+      max-file-size: 100MB
+      max-request-size: 100MB
 
   datasource:
     url: jdbc:mysql://i11a808.p.ssafy.io:3307/kidwe
@@ -37,15 +44,15 @@ jwt:
 
 aws:
   s3:
-    bucket-name: common-kidwe
-    region:  ap-northeast-2
-  cloudfront:
-    distribution-url: https://d175w2yu39lrw9.cloudfront.net
-  credentials:
-    access-key-id: AKIA4MTWI3VOFP4MKQUH
-    secret-access-key: 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
+    bucket-name: common-kidwe-image
+    region: ap-northeast-2
+    credentials:
+      access-key-id: AKIA4MTWI3VODQI6FXFK
+      secret-access-key: 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
+    stack:
+      auto: false
+#  cloudfront:
+#    distribution-url: https://d175w2yu39lrw9.cloudfront.net
 
-springdoc:
-  swagger-ui:
-    tags-sorter: alpha
-    operations-sorter: alpha
+
+

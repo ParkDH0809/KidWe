@@ -4,7 +4,6 @@ import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Data
 public class LeaveConsentByMonthAndBanListDto {
@@ -14,16 +13,14 @@ public class LeaveConsentByMonthAndBanListDto {
     private String kidName;
     private String banName;
     private LocalDate leaveDate;
-    private LocalTime leaveTime;
 
 
     @QueryProjection
-    public LeaveConsentByMonthAndBanListDto(Long leaveConsentId, String kidName, String banName, LocalDate leaveDate, LocalTime leaveTime) {
+    public LeaveConsentByMonthAndBanListDto(Long leaveConsentId, String kidName, String banName, LocalDate leaveDate) {
         this.leaveConsentId = leaveConsentId;
         this.kidName = kidName;
         this.banName = banName;
         this.leaveDate = leaveDate;
-        this.leaveTime = leaveTime;
     }
 
 }

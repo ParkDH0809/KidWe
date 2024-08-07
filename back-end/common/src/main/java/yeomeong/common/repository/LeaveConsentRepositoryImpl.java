@@ -6,8 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import yeomeong.common.dto.leaveconsent.LeaveConsentByMonthAndBanListDto;
+import yeomeong.common.dto.leaveconsent.LeaveConsentDetailDto;
 import yeomeong.common.dto.leaveconsent.QLeaveConsentByMonthAndBanListDto;
 import yeomeong.common.entity.LeaveConsent;
+import yeomeong.common.entity.member.Member;
 
 
 import java.util.List;
@@ -25,6 +27,7 @@ public class LeaveConsentRepositoryImpl implements LeaveConsentRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
     private final EntityManager em;
+    private final MemberRepository memberRepository;
 
     public void save(LeaveConsent leaveConsent){
         em.persist(leaveConsent);
@@ -39,7 +42,7 @@ public class LeaveConsentRepositoryImpl implements LeaveConsentRepository {
                         leaveConsent.id,
                         kid.name,
                         ban.name,
-                        leaveConsent.leaveDate, leaveConsent.leaveTime
+                        leaveConsent.leaveDate
                 )).from(leaveConsent)
                 .join(leaveConsent.kid, kid)
                 .on(leaveConsent.kid.id.eq(kid.id)) // 조인 조건 추가
@@ -57,7 +60,7 @@ public class LeaveConsentRepositoryImpl implements LeaveConsentRepository {
                 leaveConsent.id,
                 kid.name,
                 ban.name,
-                leaveConsent.leaveDate, leaveConsent.leaveTime))
+                leaveConsent.leaveDate))
                 .from(leaveConsent)
                 .join(leaveConsent.kid, kid)
                 .on(leaveConsent.kid.id.eq(kid.id))
@@ -78,5 +81,27 @@ public class LeaveConsentRepositoryImpl implements LeaveConsentRepository {
     @Override
     public LeaveConsent findById(Long leaveConsentId) {
         return em.find(LeaveConsent.class, leaveConsentId);
+    }
+
+
+    @Override
+    public LeaveConsentDetailDto getLeaveConsentDetail(Long memberId,Long leaveConsentId) {
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("해당 멤버가 없어요"));
+
+        LeaveConsent leaveConsent = em.find(LeaveConsent.class, leaveConsentId);
+
+        return new LeaveConsentDetailDto(
+                leaveConsent.getLeaveDate(),
+                leaveConsent.getLeaveTime(),
+                leaveConsent.getGuardianRelationship(),
+                leaveConsent.getGuardianContact(),
+                leaveConsent.getEmergencyRelationship(),
+                leaveConsent.getEmergencyContact(),
+                leaveConsent.getCreatedDate(), // 수정 고려
+                member.getName(),
+                leaveConsent.getSignUrl()
+        );
     }
 }

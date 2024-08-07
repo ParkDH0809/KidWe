@@ -18,11 +18,10 @@ public interface AnnouncementRepository extends JpaRepository<Announcement,Long>
     @Query("SELECT new yeomeong.common.dto.post.announcement.AnnouncementListDto(" +
             "a.post.title, " +
             "a.member.name, " +
-            "a.member.ban.name," +
             "a.post.createdDateTime," +
             "size(a.commentList)) " +
             " FROM Announcement a " +
-            "WHERE a.member.kindergarten.id = :kindergartenId AND a.member.ban.name = null " +
+            "WHERE a.member.kindergarten.id = :kindergartenId AND a.member.ban is null " +
             "AND a.stored = false ")
     List<AnnouncementListDto> getAnnouncementByAll(@Param("kindergartenId") Long kindergartenId);
 
@@ -33,7 +32,7 @@ public interface AnnouncementRepository extends JpaRepository<Announcement,Long>
             "a.member.ban.name," +
             "a.post.createdDateTime," +
             "size(a.commentList))" +
-            "FROM Announcement a WHERE a.member.ban.id = :banId and a.stored =false")
+            "FROM Announcement a WHERE a.member.ban.id = :banId and a.stored = false")
     List<AnnouncementListDto> getAnnouncementByBan(@Param("banId") Long banId);
 
     //유치원 반 전체 공지사항 가져오기
@@ -44,7 +43,7 @@ public interface AnnouncementRepository extends JpaRepository<Announcement,Long>
             "a.post.createdDateTime," +
             "size(a.commentList)) " +
             " FROM Announcement a " +
-            "WHERE a.member.kindergarten.id = :kindergartenId AND a.member.ban.name != null" +
+            "WHERE a.member.kindergarten.id = :kindergartenId AND a.member.ban != null" +
             " and a.stored = false")
     List<AnnouncementListDto> getAnnouncementByAllBan(@Param("kindergartenId") Long kindergartenId);
 
