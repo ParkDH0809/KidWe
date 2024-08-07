@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import yeomeong.common.dto.leaveconsent.LeaveConsentByMonthAndBanListDto;
 import yeomeong.common.dto.leaveconsent.LeaveConsentCreateDto;
+import yeomeong.common.dto.leaveconsent.LeaveConsentDetailDto;
 import yeomeong.common.service.LeaveConsentService;
 
 import java.util.List;
@@ -72,6 +73,16 @@ public class LeaveConsentController {
         leaveConsentService.removeLeaveConsent(leaveConsentId);
 
         return ResponseEntity.ok().build();
+    }
+
+    //귀가동의서 상세보기
+    @GetMapping("/{leaveconsent_id}")
+    @Operation(summary = "귀가동의서 상세보기", description = "해당 귀가동의서를 상세 조회합니다.")
+    public ResponseEntity<LeaveConsentDetailDto> getLeaveConsentDetail(
+            @PathVariable("leaveconsent_id") Long leaveConsentId
+    ){
+
+        return ResponseEntity.ok(leaveConsentService.getLeaveConsentDetail(leaveConsentId));
     }
 
 

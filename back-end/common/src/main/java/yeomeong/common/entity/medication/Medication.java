@@ -42,9 +42,6 @@ public class Medication {
     @Column(name = "medication_execute_due_date")
     private LocalDate medicationExecuteDueDate;
 
-    @Column(name = "medcation_sign_date")
-    private LocalDate medicationSignDate;
-
     private String medicationExecuteTime;
 
     private String numberOfDoses;

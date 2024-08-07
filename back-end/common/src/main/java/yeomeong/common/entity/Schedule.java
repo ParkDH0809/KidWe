@@ -33,7 +33,6 @@ public class Schedule {
 
     private LocalDate eventDate;
 
-
     private LocalTime createdTime;
 
 

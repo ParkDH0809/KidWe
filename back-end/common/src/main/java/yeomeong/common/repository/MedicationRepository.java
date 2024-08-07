@@ -57,7 +57,7 @@ public class MedicationRepository {
         LocalDate endDate = startDate.plusMonths(1).minusDays(1);
 
         //아이별 투약 의뢰서 ( 학부모용 )
-        return em.createQuery("select new yeomeong.common.dto.medication.MedicationByKidDto (m.id, k.name, m.medicationCreatedDateTime, m.isDeleted ) " +
+        return em.createQuery("select new yeomeong.common.dto.medication.MedicationByKidDto (m.id, k.name, k.ban.name,m.medicationCreatedDateTime, m.isDeleted ) " +
                 " from Medication m " + "Join m.kid k " +
                 "where k.id = :kidId and m.isDeleted = true and " +
                 "m.medicationExecuteDueDate BETWEEN :startDate AND :endDate order by m.medicationCreatedDateTime DESC ",
@@ -86,7 +86,7 @@ public class MedicationRepository {
                 medication.getOthers(),
                 medication.getMedicineImageUrl(),
                 member.getName(),
-                LocalDate.now());
+                medication.getMedicationExecuteDueDate());
     }
 
     //투약의뢰서 생성하기

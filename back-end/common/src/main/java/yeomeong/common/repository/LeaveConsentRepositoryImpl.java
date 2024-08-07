@@ -40,7 +40,7 @@ public class LeaveConsentRepositoryImpl implements LeaveConsentRepository {
                         leaveConsent.id,
                         kid.name,
                         ban.name,
-                        leaveConsent.leaveDate, leaveConsent.leaveTime
+                        leaveConsent.leaveDate
                 )).from(leaveConsent)
                 .join(leaveConsent.kid, kid)
                 .on(leaveConsent.kid.id.eq(kid.id)) // 조인 조건 추가
@@ -58,7 +58,7 @@ public class LeaveConsentRepositoryImpl implements LeaveConsentRepository {
                 leaveConsent.id,
                 kid.name,
                 ban.name,
-                leaveConsent.leaveDate, leaveConsent.leaveTime))
+                leaveConsent.leaveDate))
                 .from(leaveConsent)
                 .join(leaveConsent.kid, kid)
                 .on(leaveConsent.kid.id.eq(kid.id))
@@ -83,6 +83,19 @@ public class LeaveConsentRepositoryImpl implements LeaveConsentRepository {
 
     @Override
     public LeaveConsentDetailDto getLeaveConsentDetail(Long leaveConsentId) {
-        return null;
+
+
+        LeaveConsent leaveConsent = em.find(LeaveConsent.class, leaveConsentId);
+
+        return new LeaveConsentDetailDto(
+                leaveConsent.getLeaveDate(),
+                leaveConsent.getLeaveTime(),
+                leaveConsent.getGuardianRelationship(),
+                leaveConsent.getGuardianContact(),
+                leaveConsent.getEmergencyRelationship(),
+                leaveConsent.getEmergencyContact(),
+                leaveConsent.getLeaveDate(),
+                leaveConsent.getSignUrl()
+        );
     }
 }

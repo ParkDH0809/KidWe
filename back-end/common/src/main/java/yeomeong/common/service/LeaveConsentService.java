@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import yeomeong.common.dto.leaveconsent.LeaveConsentByMonthAndBanListDto;
 import yeomeong.common.dto.leaveconsent.LeaveConsentCreateDto;
+import yeomeong.common.dto.leaveconsent.LeaveConsentDetailDto;
 import yeomeong.common.entity.LeaveConsent;
 import yeomeong.common.entity.member.Kid;
 import yeomeong.common.repository.KidRepository;
@@ -60,5 +61,10 @@ public class LeaveConsentService {
         LeaveConsent leaveConsent = leaveConsentRepository.findById(leaveConsentId);
 
         leaveConsentRepository.remove(leaveConsent);
+    }
+
+    public LeaveConsentDetailDto getLeaveConsentDetail(Long leaveConsentId){
+
+        return leaveConsentRepository.getLeaveConsentDetail(leaveConsentId);
     }
 }
