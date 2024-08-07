@@ -7,12 +7,13 @@ import yeomeong.common.dto.ban.BanCreateRequestDto;
 import yeomeong.common.dto.ban.BanDetailInfoResponseDto;
 import yeomeong.common.dto.ban.BanNameChangeRequestDto;
 import yeomeong.common.dto.member.TeacherBasicInfoResponseDto;
-import yeomeong.common.dto.member.TeacherChangeBanRequestDto;
+import yeomeong.common.dto.ban.BanChangeRequestDto;
 import yeomeong.common.entity.kindergarten.Ban;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.repository.BanRepository;
+import yeomeong.common.repository.KidRepository;
 import yeomeong.common.repository.KindergartenRepository;
 import yeomeong.common.repository.MemberRepository;
 
@@ -22,11 +23,14 @@ public class BanService {
     final BanRepository banRepository;
     final KindergartenRepository kindergartenRepository;
     private final MemberRepository memberRepository;
+    private final KidRepository kidRepository;
 
-    public BanService(BanRepository banRepository, KindergartenRepository kindergartenRepository, MemberRepository memberRepository) {
+    public BanService(BanRepository banRepository, KindergartenRepository kindergartenRepository, MemberRepository memberRepository,
+        KidRepository kidRepository) {
         this.banRepository = banRepository;
         this.kindergartenRepository = kindergartenRepository;
         this.memberRepository = memberRepository;
+        this.kidRepository = kidRepository;
     }
 
     public void createBan(BanCreateRequestDto banCreateRequestDto) {
@@ -63,11 +67,14 @@ public class BanService {
         }
     }
 
-    public void updateTeachersBan(TeacherChangeBanRequestDto teacherChangeBanRequestDto) {
-        memberRepository.updateMemberBan(
-            teacherChangeBanRequestDto.getMemberId(),
-            banRepository.findById(teacherChangeBanRequestDto.getBanId())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)));
+    public void updateTeachersBan(BanChangeRequestDto banChangeRequestDto) {
+        memberRepository.updateMemberBan(banChangeRequestDto.getId(),
+            banRepository.findById(banChangeRequestDto.getBanId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)));
+    }
+
+    public void updateKidsBan(BanChangeRequestDto banChangeRequestDto) {
+        kidRepository.updateKidBan(banChangeRequestDto.getId(),
+            banRepository.findById(banChangeRequestDto.getBanId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)));
     }
 
 }

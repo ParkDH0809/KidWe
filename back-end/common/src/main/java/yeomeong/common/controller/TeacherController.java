@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import yeomeong.common.dto.approval.AcceptRequestDto;
 import yeomeong.common.dto.approval.PendingKidResponseDto;
 import yeomeong.common.dto.approval.TeacherJoinKindergartenRequestDto;
+import yeomeong.common.dto.ban.BanChangeRequestDto;
 import yeomeong.common.service.ApprovalService;
+import yeomeong.common.service.BanService;
 
 @RestController
 @RequestMapping("/teachers")
@@ -23,9 +25,11 @@ import yeomeong.common.service.ApprovalService;
 public class TeacherController {
 
     private final ApprovalService approvalService;
+    private final BanService banService;
 
-    public TeacherController(ApprovalService approvalService) {
+    public TeacherController(ApprovalService approvalService, BanService banService) {
         this.approvalService = approvalService;
+        this.banService = banService;
     }
 
     @Operation(summary = "선생님 유치원 가입 신청", description = "선생님이 유치원 가입을 신청합니다.")
@@ -53,5 +57,13 @@ public class TeacherController {
         approvalService.acceptKidRequestDto(acceptRequestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
+    @Operation(summary = "원생 반 변경", description = "원생의 반을 변경합니다.")
+    @PutMapping("/kids/ban")
+    public ResponseEntity<Void> updateKidsBan(@RequestBody BanChangeRequestDto banChangeRequestDto) {
+        banService.updateKidsBan(banChangeRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
 
 }
