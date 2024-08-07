@@ -65,5 +65,11 @@ public class TeacherController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    @Operation(summary = "원생 퇴소 처리", description = "원생 퇴소 처리 API입니다.")
+    @PutMapping("/kids/drop")
+    public ResponseEntity<Void> dropKid(@RequestParam Long kidId) {
+        approvalService.dropKid(kidId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 
 }

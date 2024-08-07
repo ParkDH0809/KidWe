@@ -39,5 +39,6 @@ public interface KidRepository extends JpaRepository<Kid,Long> {
     @Query("UPDATE Kid k SET k.kidStatus = :atype WHERE k.id = :id")
     void updateKidStatus(Long id, atype atype);
 
-    List<Kid> findByKindergartenId(Long kindergartenId);
+
+    List<Kid> findByKindergartenIdAndIsDeletedFalse(Long kindergartenId);
 }

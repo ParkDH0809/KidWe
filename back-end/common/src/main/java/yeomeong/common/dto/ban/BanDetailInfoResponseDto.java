@@ -26,6 +26,7 @@ public class BanDetailInfoResponseDto {
             .id(ban.getId())
             .name(ban.getName())
             .kids(ban.getKids().stream()
+                .filter(kid -> !kid.getIsDeleted())
                 .map(KidBasicInfoResponseDto::toKidBasicInfoDto)
                 .collect(Collectors.toList()))
             .build();

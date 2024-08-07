@@ -103,7 +103,7 @@ public class ApprovalService {
 
     public List<PendingKidResponseDto> getAcceptKids(Long kindergartenId) {
         List<PendingKidResponseDto> pendingKidResponseDtos = new ArrayList<>();
-        kidRepository.findByKindergartenId(kindergartenId)
+        kidRepository.findByKindergartenIdAndIsDeletedFalse(kindergartenId)
             .forEach(m ->pendingKidResponseDtos.add(PendingKidResponseDto.toPendingKidResponseDto(m)));
         return pendingKidResponseDtos;
     }
@@ -159,6 +159,16 @@ public class ApprovalService {
         memberRepository.updateMemberBan(teacherId, null);
         memberRepository.updateMemberKindergarten(teacherId, null);
         memberRepository.updateMemberStatus(teacherId, atype.DECLINE);
+    }
+
+    public void dropKid(Long kidId) {
+        KidMember kidMember = kidMemberRepository.findByKidId(kidId);
+        Long parentId = kidMember.getMember().getId();
+        kidMemberRepository.delete(kidMember);
+        kidRepository.deleteKidById(kidId);
+        if (kidMemberRepository.countByMember_Id(parentId) == 0) {
+            memberRepository.updateMemberStatus(parentId, atype.DECLINE);
+        }
     }
 
 }
