@@ -1,5 +1,7 @@
 package yeomeong.common.document;
 
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.IndexDirection;
@@ -11,11 +13,8 @@ import yeomeong.common.dto.Kid;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Setter
 @Getter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 
 @Document(collection = "memo")
 public class Memo {
@@ -39,4 +38,47 @@ public class Memo {
     private List<Kid> kids;
     private List<Tag> tags;
     private String content;
+
+    @Builder
+    public Memo(Long teacherId,
+        LocalDateTime updatedTime,
+        String lesson,
+        List<Kid> kids,
+        List<Tag> tags,
+        String content) {
+        this.teacherId = teacherId;
+        this.createdTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        this.updatedTime = updatedTime == null? this.updatedTime: this.createdTime;
+        this.date = this.updatedTime.toString().split("T")[0];
+        this.isDeleted = false;
+        this.lesson = lesson;
+        this.kids = kids;
+        this.tags = tags;
+        this.content = content;
+    }
+
+    public void setNewUpdatedTime(LocalDateTime newUpdatedTime) {
+        this.updatedTime = updatedTime == null? this.updatedTime: this.createdTime;
+        this.date = this.updatedTime.toString().split("T")[0];
+    }
+
+    public void setNewLesson(String newLesson) {
+        this.lesson = newLesson;
+    }
+
+    public void setNewKids(List<Kid> kids){
+        this.kids = kids;
+    }
+
+    public void setNewTags(List<Tag> tags){
+        this.tags = tags;
+    }
+
+    public void setNewContent(String content){
+        this.content = content;
+    }
+
+    public void delete(){
+        this.isDeleted = true;
+    }
 }
