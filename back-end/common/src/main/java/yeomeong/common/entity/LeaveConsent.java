@@ -37,6 +37,9 @@ public class LeaveConsent {
     private String signUrl;
     private LocalDate createdDate;
 
+    @Builder.Default
+    private boolean isDeleted = false;
+
     public LeaveConsent() {
 
     }

@@ -21,7 +21,6 @@ public interface LeaveConsentRepository {
     List<LeaveConsentByMonthAndBanListDto> findAllByKid_IdAndYearAndMonth(Long kidId, int year, int month);
 
 
-    void remove(LeaveConsent leaveConsent);
 
     LeaveConsent findById(Long leaveConsentId);
 

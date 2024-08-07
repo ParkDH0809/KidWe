@@ -86,7 +86,7 @@ public class LeaveConsentService {
 
         LeaveConsent leaveConsent = leaveConsentRepository.findById(leaveConsentId);
 
-        leaveConsentRepository.remove(leaveConsent);
+        leaveConsent.setDeleted(true);
     }
 
     public LeaveConsentDetailDto getLeaveConsentDetail(Long memberId,Long leaveConsentId){
