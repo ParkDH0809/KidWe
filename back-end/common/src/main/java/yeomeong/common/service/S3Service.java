@@ -43,7 +43,7 @@ public class S3Service {
             fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
         }
 
-        String fileName = String.valueOf(UUID.randomUUID()) + fileExtension;
+        String fileName = (UUID.randomUUID()) + fileExtension;
 
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(file.getSize());

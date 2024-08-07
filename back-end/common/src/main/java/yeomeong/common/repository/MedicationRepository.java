@@ -1,9 +1,15 @@
 package yeomeong.common.repository;
 
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import yeomeong.common.dto.medication.MedicationByKidAndMonthDto;
 import yeomeong.common.dto.medication.MedicationByKidDto;
 import yeomeong.common.dto.medication.MedicationCreateDto;
@@ -11,6 +17,7 @@ import yeomeong.common.dto.medication.MedicationDetailDto;
 import yeomeong.common.entity.medication.Medication;
 import yeomeong.common.entity.member.Kid;
 import yeomeong.common.entity.member.Member;
+import yeomeong.common.util.FileUtil;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,6 +29,10 @@ public class MedicationRepository {
 
     private final EntityManager em;
     private final KidRepository kidRepository;
+    private final AmazonS3 s3Client;
+
+    @Value("${aws.s3.bucket-name}")
+    private String bucketName;
 
     public void save(Medication medication){
         em.persist(medication);
@@ -81,24 +92,43 @@ public class MedicationRepository {
                 medication.getType(),
                 medication.getCapacity(),
                 medication.getNumberOfDoses(),
+                medication.getMedicationExecuteDueDate(),
                 medication.getMedicationExecuteTime(),
                 medication.getStorageMethod(),
                 medication.getOthers(),
                 medication.getMedicineImageUrl(),
                 member.getName(),
-                medication.getMedicationExecuteDueDate());
+                medication.getMedicationCreatedDateTime().toLocalDate());
     }
 
     //투약의뢰서 생성하기
-    public MedicationCreateDto createMedication(MedicationCreateDto medicationCreateDto, Long kidId){
+    @Transactional
+    public MedicationCreateDto createMedication(MultipartFile medicineImage, MultipartFile signImage, MedicationCreateDto medicationCreateDto, Long kidId) throws Exception {
         //아이 정보 기준으로 생성하기
 
         Kid kid = kidRepository.findById(kidId)
                 .orElseThrow(() -> new RuntimeException("해당 아이가 없습니다."));
 
-        String medicineUrl = "";
-        String sighUrl = "";
 
+        String medicineName = FileUtil.convertFileName(medicineImage);
+
+        ObjectMetadata objectMetadataOfMedicine = new ObjectMetadata();
+        objectMetadataOfMedicine.setContentLength(medicineImage.getSize());
+        objectMetadataOfMedicine.setContentType(medicineImage.getContentType());
+
+        s3Client.putObject(new PutObjectRequest(bucketName, medicineName, medicineImage.getInputStream(), objectMetadataOfMedicine));
+
+        String sighName = FileUtil.convertFileName(signImage);
+
+        ObjectMetadata objectMetadataOfSign = new ObjectMetadata();
+        objectMetadataOfSign.setContentType(signImage.getContentType());
+        objectMetadataOfSign.setContentLength(signImage.getSize());
+
+        s3Client.putObject(new PutObjectRequest(bucketName, sighName, signImage.getInputStream(), objectMetadataOfSign));
+
+
+        String medicineUrl = s3Client.getUrl(bucketName, medicineName).toString();
+        String signUrl = s3Client.getUrl(bucketName, sighName).toString();
 
         Medication medication =new Medication(
                 medicationCreateDto.getMedicineName(),
@@ -112,7 +142,7 @@ public class MedicationRepository {
                 medicationCreateDto.getNumberOfDoses(),
                 medicationCreateDto.getStorageMethod(),
                 medicationCreateDto.getOthers(),
-                sighUrl
+                signUrl
                 );
 
         em.persist(medication);

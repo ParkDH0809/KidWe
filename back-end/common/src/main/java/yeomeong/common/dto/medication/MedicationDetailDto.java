@@ -14,6 +14,7 @@ public class MedicationDetailDto {
     private String type;
     private String capacity;
     private String numberOfDoses;
+    private LocalDate medicationExecuteDate;
     private String medicationExecuteTime;
     private String storageMethod;
     private String others;

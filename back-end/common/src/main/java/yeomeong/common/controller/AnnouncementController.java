@@ -23,10 +23,10 @@ public class AnnouncementController {
     private final VoteService voteService;
 
     //유치원 공지사항 생성하기
-    @PostMapping("/{member_id}")
+    @PostMapping("/{memberId}")
     @Operation(summary = "유치원 공지사항을 생성합니다." ,description = "memberId를 활용하여 공지사항을 작성합니다.")
     public ResponseEntity<Void> createAnnouncement(
-            @PathVariable("member_id") Long memberId,
+            @PathVariable("memberId") Long memberId,
             @RequestBody AnnouncementCreateDto announcementCreateDto){
         announcementService.createAnnouncementByKindergarten(memberId,announcementCreateDto);
 
@@ -34,10 +34,10 @@ public class AnnouncementController {
     }
 
     //유치원 공지사항 조회하기 ( {선생님,학부모} , 원장님 따로 )
-    @GetMapping("/list/{member_id}")
+    @GetMapping("/list/{memberId}")
     @Operation(summary = "유치원 공지사항을 조회합니다" , description = "memberId를 통한 회원의 유형에 따른 공지사항을 조회합니다.")
     public ResponseEntity<List<AnnouncementListDto>> getAnnouncementList(
-            @PathVariable("member_id") Long memberId){
+            @PathVariable("memberId") Long memberId){
 
         List<AnnouncementListDto> announcementListDtos = announcementService.getAnnouncementList(memberId);
         return ResponseEntity.ok(announcementListDtos);
@@ -45,10 +45,10 @@ public class AnnouncementController {
 
 
     //유치원 공지사항 상세보기
-    @GetMapping("/detail/{announcement_id}")
+    @GetMapping("/detail/{announcementId}")
     @Operation(summary = "유치원의 공지사항을 상세보기합니다" , description = "공지사항 id를 활용하여 공지사항을 상세 조회합니다.")
     public ResponseEntity<AnnouncementDetailDto> getAnnouncementDetail(
-            @PathVariable("announcement_id") Long announcementId){
+            @PathVariable("announcementId") Long announcementId){
 
         AnnouncementDetailDto announcementDetailDto = announcementService.getAnnouncementDetail(announcementId);
 
@@ -56,10 +56,10 @@ public class AnnouncementController {
     }
 
     //유치원 공지사항 수정하기
-    @PutMapping("/{announcement_id}")
+    @PutMapping("/{announcementId}")
     @Operation(summary = "유치원 공지사항을 수정합니다", description = "유치원 id와 수정내용을 요청받아 수정합니다.")
     public ResponseEntity<AnnouncementCreateDto> updateAnnouncement(
-            @PathVariable("announcement_id") Long announcementId,
+            @PathVariable("announcementId") Long announcementId,
             @RequestBody AnnouncementCreateDto announcementCreateDto){
 
         announcementService.updateAnnouncement(announcementId, announcementCreateDto);
@@ -68,20 +68,20 @@ public class AnnouncementController {
     }
 
     //유치원 공지사항 삭제하기
-    @DeleteMapping("/{announcement_id}")
+    @DeleteMapping("/{announcementId}")
     @Operation(summary = "공지사항을 삭제합니다", description = "해당 공지사항 id를 받아온 뒤 이를 삭제합니다.")
     public ResponseEntity<Void> deleteAnnouncement(
-            @PathVariable("announcement_id") Long announcementId){
+            @PathVariable("announcementId") Long announcementId){
         announcementService.deleteAnnouncement(announcementId);
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     //공지사항에 투표 생성하기
-    @PostMapping("/vote/{announcement_id}")
+    @PostMapping("/vote/{announcementId}")
     @Operation(summary = "공지사항 투표를 생성합니다.", description = "공지사항 id와 투표형식을 받아옵니다. 공지사항이 먼저 작성된 후 투표를 작성할 수 있습니다.")
     public ResponseEntity<VoteCreateDto> createVote(
-            @PathVariable ("announcement_id") Long announcement_id,
+            @PathVariable ("announcementId") Long announcement_id,
             @RequestBody VoteCreateDto voteCreateDto){
 
         voteService.createVote(announcement_id, voteCreateDto);
@@ -90,11 +90,11 @@ public class AnnouncementController {
     }
 
     //투표하기
-    @PostMapping("/vote/items/{vote_id}/{voteitem_id}")
+    @PostMapping("/vote/items/{voteId}/{voteItemId}")
     @Operation(summary = "원하는 목록에 투표합니다." , description = "원하는 투표의 index를 받아와서 해당 index에 투표합니다.")
     public ResponseEntity<VoteResultDto> addVote(
-            @PathVariable("vote_id") Long voteId,
-            @PathVariable("voteitem_id")Long voteItemId){
+            @PathVariable("voteId") Long voteId,
+            @PathVariable("voteItemId")Long voteItemId){
 
         VoteResultDto result = voteService.doVote(voteId, voteItemId);
 
@@ -102,29 +102,29 @@ public class AnnouncementController {
     }
 
     //임시저장 목록 불러오기
-    @GetMapping("/storage/list/{member_id}")
+    @GetMapping("/storage/list/{memberId}")
     @Operation(summary = "해당 맴버가 임시저장한 공지사항 목록을 불러옵니다.", description = "해당 멤버의 id를 받아와 이를 활용하여 임시저장 했던 공지사항 목록들을 불러옵니다.")
     public ResponseEntity<List<AnnouncementStorageListDto>> getAnnouncementStorageList(
-            @PathVariable("member_id") Long memberId){
+            @PathVariable("memberId") Long memberId){
 
        return ResponseEntity.ok(announcementService.getAnnouncementStorage(memberId));
 
     }
 
     //임시저장 게시글 불러오기
-    @GetMapping("/storage/{announcement_id}")
+    @GetMapping("/storage/{announcementId}")
     @Operation(summary = "임시저장 게시글을 상세 불러오기합니다.", description = "임시저장했던 글을 불러옵니다.")
     public ResponseEntity<AnnouncementCreateDto> getAnnouncementisStored(
-            @PathVariable("announcement_id") Long announcementId){
+            @PathVariable("announcementId") Long announcementId){
 
         return ResponseEntity.ok(announcementService.getAnnouncementStoredDetail(announcementId));
     }
 
     //임시저장 생성하기
-    @PostMapping("/storage/{member_id}")
+    @PostMapping("/storage/{memberId}")
     @Operation(summary = "임시저장을 생성합니다.", description = "해당 맴버 id를 받아온 뒤 작성한 내용을 임시저장합니다.")
     public ResponseEntity<Void> createAnnouncementStored(
-            @PathVariable("member_id") Long memberId,
+            @PathVariable("memberId") Long memberId,
             @RequestBody AnnouncementCreateDto announcementCreateDto){
 
         announcementService.createAnnouncementStorage(memberId,announcementCreateDto);

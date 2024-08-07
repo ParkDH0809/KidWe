@@ -1,9 +1,11 @@
 package yeomeong.common.service;
 
 
+import com.amazonaws.services.s3.AmazonS3;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import yeomeong.common.dto.medication.MedicationByKidAndMonthDto;
 import yeomeong.common.dto.medication.MedicationByKidDto;
 import yeomeong.common.dto.medication.MedicationCreateDto;
@@ -25,18 +27,14 @@ public class MedicationService {
     private final KidRepository kidRepository;
     private final BanRepository banRepository;
 
-
     //반 별 월 별 투약의뢰서 가져오기 (   )
     public List<MedicationByKidAndMonthDto> getMedicationsByBanAndMonth(Long banId, int year, int month) {
 
-        Ban ban = banRepository.findById(banId).orElseThrow(() -> new RuntimeException("해당 반을 찾을 수 없습니다"));
 
         return medicationRepository.medicationByKidAndMonthDtoList(banId,year,month);
     }
     // 아이별 투약 의뢰서 가져오기
     public List<MedicationByKidDto> getMedicationByKid(Long kidId, int year, int month){
-
-        Kid kid = kidRepository.findById(kidId).orElseThrow(() -> new RuntimeException("해당 아이를 찾을 수 없습니다."));
 
         return medicationRepository.medicationByKidDtoList(kidId,year,month);
     }
@@ -49,10 +47,10 @@ public class MedicationService {
 
     //투약의뢰서 생성하기
     @Transactional
-    public MedicationCreateDto createMedication(MedicationCreateDto medicationCreateDto, Long kidId){
+    public MedicationCreateDto createMedication(MultipartFile medicineImage, MultipartFile signImage, MedicationCreateDto medicationCreateDto, Long kidId) throws Exception {
 
 
-        return medicationRepository.createMedication(medicationCreateDto, kidId);
+        return medicationRepository.createMedication(medicineImage,signImage,medicationCreateDto, kidId);
     }
 
     //투약의뢰서 제거하기

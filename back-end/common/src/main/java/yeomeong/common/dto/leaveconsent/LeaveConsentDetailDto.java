@@ -1,16 +1,19 @@
 package yeomeong.common.dto.leaveconsent;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Data
+@AllArgsConstructor
 public class LeaveConsentDetailDto {
 
     private LocalDate leaveDate;
     private LocalTime leaveTime;
+
 
     private String guardianRelationship;
     private String guardianContact;
@@ -19,6 +22,7 @@ public class LeaveConsentDetailDto {
     private String emergencyContact;
 
     private LocalDate signDate;
+    private String parentName;
     private String signUrl;
 
     public LeaveConsentDetailDto(LocalDate leaveDate, LocalTime leaveTime, String guardianRelationship, String guardianContact, String emergencyRelationship, String emergencyContact, LocalDate signDate, String signUrl) {

@@ -9,6 +9,7 @@ import yeomeong.common.dto.leaveconsent.LeaveConsentByMonthAndBanListDto;
 import yeomeong.common.dto.leaveconsent.LeaveConsentDetailDto;
 import yeomeong.common.dto.leaveconsent.QLeaveConsentByMonthAndBanListDto;
 import yeomeong.common.entity.LeaveConsent;
+import yeomeong.common.entity.member.Member;
 
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class LeaveConsentRepositoryImpl implements LeaveConsentRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
     private final EntityManager em;
+    private final MemberRepository memberRepository;
 
     public void save(LeaveConsent leaveConsent){
         em.persist(leaveConsent);
@@ -81,9 +83,12 @@ public class LeaveConsentRepositoryImpl implements LeaveConsentRepository {
         return em.find(LeaveConsent.class, leaveConsentId);
     }
 
-    @Override
-    public LeaveConsentDetailDto getLeaveConsentDetail(Long leaveConsentId) {
 
+    @Override
+    public LeaveConsentDetailDto getLeaveConsentDetail(Long memberId,Long leaveConsentId) {
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("해당 멤버가 없어요"));
 
         LeaveConsent leaveConsent = em.find(LeaveConsent.class, leaveConsentId);
 
@@ -94,7 +99,8 @@ public class LeaveConsentRepositoryImpl implements LeaveConsentRepository {
                 leaveConsent.getGuardianContact(),
                 leaveConsent.getEmergencyRelationship(),
                 leaveConsent.getEmergencyContact(),
-                leaveConsent.getLeaveDate(),
+                leaveConsent.getCreatedDate(), // 수정 고려
+                member.getName(),
                 leaveConsent.getSignUrl()
         );
     }

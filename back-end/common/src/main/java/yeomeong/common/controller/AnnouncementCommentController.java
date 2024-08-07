@@ -20,11 +20,11 @@ public class AnnouncementCommentController {
 
 
     //공지사항-댓글 작성하기
-    @PostMapping("/{announcement_id}/{member_id}")
+    @PostMapping("/{announcementId}/{memberId}")
     @Operation(summary = "공지사항의 댓글을 작성합니다", description = "공지사항의 id와 회원의 id를 받아와서 공지사항 댓글을 작성합니다.")
     public ResponseEntity<Void> createAnnouncementComment(
-            @PathVariable("announcement_id") Long announcementId,
-            @PathVariable("member_id") Long memberId,
+            @PathVariable("announcementId") Long announcementId,
+            @PathVariable("memberId") Long memberId,
             @RequestBody AnnouncementCommentCreateDto announcementCommentCreateDto){
 
         announcementCommentService.createComment(announcementId, memberId ,announcementCommentCreateDto);
@@ -33,10 +33,10 @@ public class AnnouncementCommentController {
     }
 
     //공지사항- 댓글 삭제하기
-    @DeleteMapping("/{announcement_comment_id}")
+    @DeleteMapping("/{announcementCommentId}")
     @Operation(summary = "공지사항의 (대)댓글을 삭제합니다", description = "공지사항 댓글의 id를 통해 해당 댓글을 삭제합니다.")
     public ResponseEntity<Void> deleteAnnouncementComment(
-            @PathVariable("announcement_comment_id") Long commentId) {
+            @PathVariable("announcementCommentId") Long commentId) {
 
         announcementCommentService.deleteComment(commentId);
 
@@ -44,11 +44,11 @@ public class AnnouncementCommentController {
     }
 
     //공지사항 - 대댓글 작성하기
-    @PostMapping("/reply/{announcement_comment_id}/{member_id}")
+    @PostMapping("/reply/{announcementCommentId}/{memberId}")
     @Operation(summary = "공지사항의 대댓글을 작성합니다", description = "공지사항 댓글의 id와 member의 id를 통해 대댓글을 작성합니다.")
     public ResponseEntity<Void> createCommentChild(
-            @PathVariable("announcement_comment_id") Long commentParentId,
-            @PathVariable("member_id") Long memberId,
+            @PathVariable("announcementCommentId") Long commentParentId,
+            @PathVariable("memberId") Long memberId,
             @RequestBody CommentChildDto commentChildDto){
 
         announcementCommentService.createCommentChildren(commentParentId, memberId ,commentChildDto);
