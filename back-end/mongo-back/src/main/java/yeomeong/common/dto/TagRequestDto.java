@@ -1,10 +1,10 @@
 package yeomeong.common.dto;
 
-import lombok.Data;
+import lombok.Getter;
 import yeomeong.common.document.Tag;
 import yeomeong.common.document.mtype;
 
-@Data
+@Getter
 public class TagRequestDto {
 
     private String id;
