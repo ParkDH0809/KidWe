@@ -91,7 +91,7 @@ public class AnnouncementController {
 
     //투표하기
     @PostMapping("/vote/items/{voteId}/{voteItemId}")
-    @Operation(summary = "원하는 목록에 투표합니다." , description = "원하는 투표의 index를 받아와서 해당 index에 투표합니다.")
+    @Operation(summary = "원하는 목록에 투표합니다." , description = "원하는 곳에 투표합니다.")
     public ResponseEntity<VoteResultDto> addVote(
             @PathVariable("voteId") Long voteId,
             @PathVariable("voteItemId")Long voteItemId){

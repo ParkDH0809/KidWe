@@ -14,6 +14,7 @@ import yeomeong.common.entity.post.comment.AnnouncementComment;
 import yeomeong.common.repository.AnnouncementRepository;
 import yeomeong.common.repository.MemberRepository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +33,8 @@ public class AnnouncementService {
     @Transactional
     public void createAnnouncementByKindergarten(Long memberId, AnnouncementCreateDto announcementCreateDto){
         Announcement announcement =new Announcement(announcementCreateDto.getPost(),
-                memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("해당 멤버를 찾을 수 없습니다.")));
+                memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("해당 멤버를 찾을 수 없습니다.")),
+                LocalDateTime.now());
 
         announcement.setStored(false);
 
@@ -50,15 +52,18 @@ public class AnnouncementService {
          List<AnnouncementListDto> announcementDtoList = new ArrayList<>();
 
          if(member.getRole() == rtype.ROLE_DIRECTOR){ //원장님일 때 해당 유치원 공지사항 모두 가져오기
-             List<AnnouncementListDto> announcementByAll = announcementRepository.getAnnouncementByAll(member.getBan().getKindergarten().getId());
-             List<AnnouncementListDto> announcementByAllBan = announcementRepository.getAnnouncementByAllBan(member.getBan().getKindergarten().getId());
+             List<AnnouncementListDto> announcementByAll = announcementRepository.getAnnouncementByAll(member.getKindergarten().getId());
+             List<AnnouncementListDto> announcementByAllBan = announcementRepository.getAnnouncementByAllBan(member.getKindergarten().getId());
+
+             System.out.println(announcementByAll);
+             System.out.println(announcementByAllBan);
 
              announcementDtoList.addAll(announcementByAll);
              announcementDtoList.addAll(announcementByAllBan);
 
          }
          else {
-             List<AnnouncementListDto> announcementByAll = announcementRepository.getAnnouncementByAll(member.getBan().getKindergarten().getId());
+             List<AnnouncementListDto> announcementByAll = announcementRepository.getAnnouncementByAll(member.getKindergarten().getId());
              List<AnnouncementListDto> announcementByBan = announcementRepository.getAnnouncementByAllBan(member.getBan().getId());
 
              announcementDtoList.addAll(announcementByAll);
@@ -71,7 +76,8 @@ public class AnnouncementService {
                  announcementOne.setMemberBan("전체 공지");
              }
          }
-         announcementDtoList.sort((o1, o2) -> o2.getCreatedDate().compareTo(o1.getCreatedDate())); //시간 별 정렬
+         if(announcementDtoList.size() > 1)
+            announcementDtoList.sort((o1, o2) -> o2.getCreatedDate().compareTo(o1.getCreatedDate())); //시간 별 정렬
 
          return announcementDtoList;
      }
@@ -147,7 +153,7 @@ public class AnnouncementService {
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("해당 멤버를 찾을 수 없습니다."));
-        Announcement announcement = new Announcement(announcementCreateDto.getPost(), member);
+        Announcement announcement = new Announcement(announcementCreateDto.getPost(), member,LocalDateTime.now());
         announcement.setStored(true);
         announcementRepository.save(announcement);
     }

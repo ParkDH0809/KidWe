@@ -53,7 +53,7 @@ public class LeaveConsentController {
 
 
     //귀가동의서 작성하기
-    @PostMapping(value = "/{kidId}")
+    @PostMapping(value = "/{kidId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "귀가동의서를 생성합니다", description = "kidId, 귀가동의서에 작성한 내용을 통해 귀가동의서를 생성합니다.")
     public ResponseEntity<Void> createLeaveConsent(
             @PathVariable("kidId") Long kidId,

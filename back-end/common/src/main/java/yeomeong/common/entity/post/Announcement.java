@@ -8,6 +8,7 @@ import lombok.Setter;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.post.comment.AnnouncementComment;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,9 +36,12 @@ public class  Announcement {
     @OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL)
     private List<AnnouncementComment> commentList = new ArrayList<>(); // ??
 
-    public Announcement(Post post, Member member) {
+    private LocalDateTime createdTime;
+
+    public Announcement(Post post, Member member, LocalDateTime localDateTime) {
         this.post = post;
         this.member = member;
+        this.createdTime = localDateTime;
     }
 
 }

@@ -25,6 +25,14 @@ public class AnnouncementListDto {
         this.createdDate = createdDateTime;
         this.commentCnt = commentCnt;
     }
+
+    public AnnouncementListDto(String title, String memberName, LocalDateTime createdDateTime, int commentCnt) {
+        this.title = title;
+        this.memberName = memberName;
+        this.createdDate = createdDateTime;
+        this.commentCnt = commentCnt;
+    }
+
 }
 
 
