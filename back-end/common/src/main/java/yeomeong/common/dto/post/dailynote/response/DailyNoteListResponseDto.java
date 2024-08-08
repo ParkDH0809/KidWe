@@ -33,7 +33,7 @@ public class DailyNoteListResponseDto {
 
         for(Integer day : this.dailyNoteListItemResponseDtos.keySet()) {
             Collections.sort(dailyNoteListItemResponseDtos.get(day), (a, b) -> {
-                return b.getSendTime().isAfter(a.getSendTime())? -1 : a.getSendTime().isBefore(b.getSendTime()) ? 1 : 0;
+                return b.getSendTime().compareTo(a.getSendTime());
             });
         }
     }

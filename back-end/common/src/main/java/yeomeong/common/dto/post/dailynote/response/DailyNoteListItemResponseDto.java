@@ -13,12 +13,12 @@ public class DailyNoteListItemResponseDto {
     private Long id;
     private KidBasicInfoResponseDto kid;
     private MemberProfileResponseDto writer;
-    private LocalDateTime sendTime;
+    private String sendTime;
 
     public DailyNoteListItemResponseDto(DailyNote dailyNote) {
         this.id = dailyNote.getId();
         this.kid = KidBasicInfoResponseDto.toKidBasicInfoDto(dailyNote.getKid());
         this.writer = MemberProfileResponseDto.toMemberProfileDto(dailyNote.getWriter());
-        this.sendTime = dailyNote.getSendTime();
+        this.sendTime = dailyNote.getSendTime().toString;
     }
 }
