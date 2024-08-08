@@ -59,7 +59,7 @@ public class DailyNoteService {
         List<DailyNote> receivedDailyNotes = dailyNoteRepository.findBYearAndMonthAndKidIdAndReceiverIsGuaridain(yearAndMonth, kidId);
 
         // 작성자인, 수신자인 알림장을 합쳐서 반환
-        return new DailyNoteListResponseDto(yearAndMonth, writeDailyNotes, receivedDailyNotes);
+        return new DailyNoteListResponseDto(writeDailyNotes, receivedDailyNotes);
     }
 
     //월별 알림장 조회하기 - 선생님, 원장님 용
@@ -79,7 +79,7 @@ public class DailyNoteService {
                 ban.getId());
 
         // 작성자인, 수신자인 알림장을 합쳐서 반환
-        return new DailyNoteListResponseDto(yearAndMonth, writeDailyNotes, receivedDailyNotes);
+        return new DailyNoteListResponseDto(writeDailyNotes, receivedDailyNotes);
     }
 
     // 알림장 상세정보 조회하기
