@@ -33,6 +33,9 @@ public class MemberService {
 
     @Transactional
     public void joinMember(MemberSaveRequestDto memberSaveRequestDto) {
+        if(memberRepository.findByEmail(memberSaveRequestDto.getEmail()) != null) {
+            throw new CustomException(ErrorCode.DUPLICATED_USER_EMAIL);
+        }
         Member member = MemberSaveRequestDto.toMemberEntity(memberSaveRequestDto);
         member.setPassword(passwordEncoder.encode(member.getPassword()));
          memberRepository.save(member);
