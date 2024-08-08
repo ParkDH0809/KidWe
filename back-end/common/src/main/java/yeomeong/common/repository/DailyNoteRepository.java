@@ -52,12 +52,10 @@ public interface DailyNoteRepository extends JpaRepository<DailyNote, Long>{
     @Query("SELECT dn "
         + "FROM DailyNote dn "
         + "WHERE FUNCTION('DATE_FORMAT', dn.post.createdDateTime, '%Y-%m') = :date "
-        + "AND dn.kid.ban.kindergarten.id = :kindergartenId "
         + "AND dn.kid.ban.id = :banId "
         + "AND dn.writer.role != 'ROLE_GUARDIAN' "
         + "AND dn.sendTime <= CURRENT_TIMESTAMP "
         + "AND dn.isDeleted = false")
     List<DailyNote> findByYearAndMonthAndBanAndReceiverIsTeacher(@Param("date") String date,
-        @Param("kindergartenId") Long kindergartenId,
         @Param("banId") Long banId);
 }
