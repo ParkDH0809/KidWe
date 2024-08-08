@@ -40,6 +40,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         response.addCookie(refreshTokenCookie);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+
+        log.info("making response complete");
         objectMapper.writeValue(response.getWriter(), loginResponseDto);
     }
 
