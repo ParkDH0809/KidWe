@@ -13,6 +13,7 @@ public class JwtService {
     private final JwtRepository refreshTokenRepository;
 
     public void saveRefreshToken(String email, String refreshToken) {
+        log.info("save refresh token: {}", email);
         refreshTokenRepository.save(email, refreshToken, JwtUtil.getExpiredTime(refreshToken));
     }
 
