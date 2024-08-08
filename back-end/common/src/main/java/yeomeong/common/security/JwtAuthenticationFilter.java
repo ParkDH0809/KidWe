@@ -46,12 +46,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
+        log.info("[JwtAuthenticationFilter] Authorization header: {}", authorizationHeader);
         if(jwtService.isTokenStored(authorizationHeader) && !request.getRequestURI().equals("/refresh")) {
             log.debug("[JwtAuthenticationFilter] This token is refresh token");
             filterChain.doFilter(request, response);
             return;
         }
 
+        log.info("[JwtAuthenticationFilter] Token is valid");
         if(!jwtService.isTokenStored(authorizationHeader) && request.getRequestURI().equals("/refresh")) {
             log.debug("[JwtAuthenticationFilter] This token is access token");
             filterChain.doFilter(request, response);
