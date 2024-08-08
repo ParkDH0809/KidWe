@@ -1,6 +1,6 @@
 spring:
   jackson:
-    date-format: 'yyyy년: mm월 dd일 HH:mm'
+    date-format: yyyy MM월 dd일    # LocalDate 포맷
   application:
     name: kidwe
   servlet:

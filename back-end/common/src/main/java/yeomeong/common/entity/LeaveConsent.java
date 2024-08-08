@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import yeomeong.common.entity.member.Kid;
 
 
@@ -24,9 +25,9 @@ public class LeaveConsent {
     @ManyToOne(fetch = FetchType.LAZY)
     private Kid kid;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy년 MM월 dd일")
+
     private LocalDate leaveDate;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+
     private LocalTime leaveTime;
 
     private String leaveMethod;
@@ -39,13 +40,12 @@ public class LeaveConsent {
 
     private String signUrl;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy년 MM월 dd일")
     private LocalDate createdDate;
 
     private String guardianName;
 
-    @Builder.Default
-    private boolean isDeleted = false;
+    @ColumnDefault("false")
+    private boolean isDeleted;
 
     public LeaveConsent() {
 

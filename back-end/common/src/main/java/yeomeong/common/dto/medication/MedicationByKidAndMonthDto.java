@@ -1,6 +1,7 @@
 package yeomeong.common.dto.medication;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,15 +19,16 @@ public class MedicationByKidAndMonthDto {
     private Long medicationId;
     private String kidName;
     private String banName;
-    private LocalDateTime medicationCreatedDateTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy년 M월 d일")
+    private LocalDate medicationExecuteDate;
     private boolean isDeleted;
 
     @QueryProjection
-    public MedicationByKidAndMonthDto(Long medicationId, String kidName, String banName, LocalDateTime localDateTime, boolean isDeleted ) {
+    public MedicationByKidAndMonthDto(Long medicationId, String kidName, String banName, LocalDate localDate, boolean isDeleted ) {
         this.medicationId = medicationId;
         this.kidName = kidName;
         this.banName = banName;
-        this.medicationCreatedDateTime = localDateTime;
+        this.medicationExecuteDate = localDate;
         this.isDeleted = isDeleted;
     }
 }

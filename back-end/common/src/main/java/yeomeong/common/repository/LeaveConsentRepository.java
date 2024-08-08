@@ -27,4 +27,5 @@ public interface LeaveConsentRepository {
     LeaveConsentDetailDto getLeaveConsentDetail(Long leaveConsentId);
 
 
+
 }

@@ -28,6 +28,7 @@ public class Menu {
 
     private String dinner;
     private String dinnerAllergies;
+
     private LocalDate menuDate;
 
 

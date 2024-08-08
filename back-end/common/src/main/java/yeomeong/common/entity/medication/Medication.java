@@ -4,6 +4,7 @@ package yeomeong.common.entity.medication;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import yeomeong.common.entity.kindergarten.Ban;
 import yeomeong.common.entity.member.Kid;
 
@@ -41,7 +42,6 @@ public class Medication {
     private String capacity;
 
     @Column(name = "medication_execute_due_date")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy년 MM월 dd일")
     private LocalDate medicationExecuteDueDate;
 
     private String medicationExecuteTime;
@@ -54,13 +54,12 @@ public class Medication {
 
     private String guardianName;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy년 MM월 dd일 HH:mm")
     private LocalDateTime medicationCreatedDateTime;
 
     private String signUrl;
 
-    @Builder.Default
-    private boolean isDeleted = false;
+    @ColumnDefault("false")
+    private boolean isDeleted;
 
     public Medication(String name, Kid kid, String symptom, String type, String medicineImageUrl, String capacity, LocalDate medicationExecuteDueDate, String medicationExecuteTime, String numberOfDoses, String storageMethod, String guardianName,String others, String signUrl) {
         this.name = name;
