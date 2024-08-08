@@ -54,7 +54,7 @@ public class MedicationRepository {
                                 "FROM Medication m " +
                                 "JOIN m.kid k " +
                                 "JOIN k.ban b " +
-                                "WHERE m.isDeleted = true and m.medicationExecuteDueDate BETWEEN :startDate AND :endDate " +
+                                "WHERE m.isDeleted = false and m.medicationExecuteDueDate BETWEEN :startDate AND :endDate " +
                                 "AND b.id = :banId "
                         ,MedicationByKidAndMonthDto.class)
                 .setParameter("startDate", startDate)
@@ -71,7 +71,7 @@ public class MedicationRepository {
         //아이별 투약 의뢰서 ( 학부모용 )
         return em.createQuery("select new yeomeong.common.dto.medication.MedicationByKidDto (m.id, k.name, k.ban.name,m.medicationCreatedDateTime, m.isDeleted ) " +
                 " from Medication m " + "Join m.kid k " +
-                "where k.id = :kidId and m.isDeleted = true and " +
+                "where k.id = :kidId and m.isDeleted = false and " +
                 "m.medicationExecuteDueDate BETWEEN :startDate AND :endDate order by m.medicationCreatedDateTime DESC ",
                 MedicationByKidDto.class)
                 .setParameter("kidId",kidId)
