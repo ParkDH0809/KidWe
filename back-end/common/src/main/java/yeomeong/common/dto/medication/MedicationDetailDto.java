@@ -23,6 +23,8 @@ public class MedicationDetailDto {
     private String medicineUrl;
     private String parentName;
 
+    private String signUrl;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy년 M월 d일")
     private LocalDate signDate;
 
