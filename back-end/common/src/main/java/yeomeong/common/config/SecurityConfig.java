@@ -65,7 +65,7 @@ public class SecurityConfig {
                 );
 
         http
-//                .addFilterBefore(new CorsFilter(), )
+                .addFilterBefore(new CorsFilter(), CorsFilter.class)
                 .addFilterBefore(new JwtAuthenticationFilter(memberService, jwtService, userDetailsService), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jsonUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
