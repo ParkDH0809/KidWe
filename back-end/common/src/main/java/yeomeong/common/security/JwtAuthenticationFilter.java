@@ -1,6 +1,7 @@
 package yeomeong.common.security;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -89,7 +90,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
 
         } catch (Exception e) {
-            request.setAttribute("exception", Exception.class);
+            throw new JwtException("토큰 기한 만료");
         }
     }
 
