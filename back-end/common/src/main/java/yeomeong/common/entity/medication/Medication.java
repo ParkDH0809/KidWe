@@ -29,9 +29,7 @@ public class Medication {
     @JoinColumn(name = "kid_id")
     private Kid kid;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ban_id")
-    private Ban ban;
+
 
     private String symptom;
 
