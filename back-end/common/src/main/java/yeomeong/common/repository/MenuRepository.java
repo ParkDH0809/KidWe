@@ -11,10 +11,12 @@ import yeomeong.common.dto.menu.response.MenuByDayResponseDto;
 import yeomeong.common.entity.kindergarten.Menu;
 
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Repository
 public interface MenuRepository extends JpaRepository<Menu, Long> {
+
 
     @Query("SELECT new yeomeong.common.dto.menu.response.MenuByDayResponseDto(" +
             "   m.lunch, m.lunchAllergies, " +

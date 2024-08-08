@@ -19,14 +19,14 @@ public class MemoRequestDto {
 
     private String lesson;
     private List<Kid> kids;
-    private List<TagRequestDto> tagRequestDtos;
+    private List<TagRequestDto> tags;
     private String content;
 
 
     public Memo toDocument(Long teacherId) {
         List<Tag> tags = new ArrayList<>();
-        if (tagRequestDtos != null && !tagRequestDtos.isEmpty()) {
-            for (TagRequestDto tagRequestDto : tagRequestDtos) {
+        if (this.tags != null && !this.tags.isEmpty()) {
+            for (TagRequestDto tagRequestDto : this.tags) {
                 tags.add(tagRequestDto.toDocument());
             }
         }
@@ -36,6 +36,7 @@ public class MemoRequestDto {
             .updatedTime(this.updatedTime)
             .lesson(this.lesson == null ? "" : this.lesson)
             .kids(this.kids == null ? new ArrayList<>() : this.kids)
+            .tags(tags)
             .content(this.content == null ? "" : this.content)
             .build();
     }

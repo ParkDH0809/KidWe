@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import yeomeong.common.entity.Schedule;
 
+import java.time.LocalTime;
+
 @Data
 
 public class ScheduleByDayListDto {

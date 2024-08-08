@@ -11,6 +11,7 @@ import yeomeong.common.entity.kindergarten.Kindergarten;
 import yeomeong.common.entity.kindergarten.Menu;
 import yeomeong.common.repository.KindergartenRepository;
 import yeomeong.common.repository.MenuRepository;
+import static yeomeong.common.dto.menu.request.MenuCreateDto.toEntityMenu;
 
 
 @Service
@@ -37,15 +38,8 @@ public class MenuService {
         Kindergarten kindergarten = kindergartenRepository.findById(kindergartenId)
                 .orElseThrow(()-> new RuntimeException(("Kindergarten not found")));
 
-        Menu menu = new Menu(
-                kindergarten,
-                menuCreateDto.getLunch(),
-                menuCreateDto.getLunchAllergies(),
-                menuCreateDto.getSnack(),
-                menuCreateDto.getSnackAllergies(),
-                menuCreateDto.getDinner(),
-                menuCreateDto.getDinnerAllergies(),
-                menuCreateDto.getMenuDate());
+
+        Menu menu = toEntityMenu(kindergarten,menuCreateDto);
 
         menuRepository.save(menu);
     }

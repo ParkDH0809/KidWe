@@ -1,23 +1,23 @@
 package yeomeong.common.dto.medication;
 
-import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-
 @Data
 public class MedicationByKidDto {
 
     private Long medicationId;
     private String kidName;
+    private String banName;
     private LocalDateTime medicationCreatedDateTime;
+    private boolean isDeleted;
 
-    public MedicationByKidDto(Long medicationId, String kidName, LocalDateTime localDateTime){
-        this.medicationId = medicationId;
+
+    public MedicationByKidDto(Long id,String kidName, String banName, LocalDateTime medicationCreatedDateTime, boolean isDeleted) {
+        this.medicationId = id;
         this.kidName = kidName;
-        this.medicationCreatedDateTime = localDateTime;
+        this.banName = banName;
+        this.medicationCreatedDateTime = medicationCreatedDateTime;
+        this.isDeleted = isDeleted;
     }
-
 }

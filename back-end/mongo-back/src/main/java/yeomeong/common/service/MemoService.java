@@ -57,7 +57,7 @@ public class MemoService {
 
     // 메모 생성하기
     public MemoResponseDto createMemo(Long teacherId, MemoRequestDto memoRequestDto) {
-        List<Tag> tags = updateTag(memoRequestDto.getTagRequestDtos());
+        List<Tag> tags = updateTag(memoRequestDto.getTags());
         Memo updatedTagAndNotUpdatedMemo = memoRequestDto.toDocument(teacherId);
         updatedTagAndNotUpdatedMemo.setNewTags(tags);
         return new MemoResponseDto(memoRepository.save(updatedTagAndNotUpdatedMemo));
@@ -100,7 +100,7 @@ public class MemoService {
     public MemoResponseDto updateMemo(Long teacherId, String id, MemoRequestDto updatedMemoDto) {
         Memo memo = memoRepository.findMemoByTeacherIdAndId(id, teacherId);
         if (memo != null) {
-            List<Tag> tags = updateTag(updatedMemoDto.getTagRequestDtos());
+            List<Tag> tags = updateTag(updatedMemoDto.getTags());
 
             memo.setNewUpdatedTime(LocalDateTime.parse(updatedMemoDto.getUpdatedTime(), formatter));
             memo.setNewLesson(updatedMemoDto.getLesson());

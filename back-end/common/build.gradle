@@ -50,6 +50,14 @@ dependencies {
 
 	// https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-s3
 	implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.761'
+
+	// https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-core
+	implementation group: 'com.amazonaws', name: 'aws-java-sdk-core', version: '1.12.759'
+
+	// https://mvnrepository.com/artifact/io.awspring.cloud/spring-cloud-aws-starter
+	implementation group: 'io.awspring.cloud', name: 'spring-cloud-aws-starter', version: '3.1.1'
+
+
 }
 
 tasks.named('test') {

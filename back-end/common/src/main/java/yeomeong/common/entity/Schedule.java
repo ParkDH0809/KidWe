@@ -32,19 +32,21 @@ public class Schedule {
     private String content;
 
     private LocalDate eventDate;
-    private LocalTime eventTime;
+
+    private LocalTime createdTime;
 
 
-    public Schedule(Ban ban, String keyword, String content, LocalDate eventDate, LocalTime eventTime) {
+    public Schedule(Ban ban, String keyword, String content, LocalDate eventDate, LocalTime createdTime, ScheduleType scheduleType) {
         this.ban =ban;
         this.keyword = keyword;
         this.content = content;
         this.eventDate = eventDate;
-        this.eventTime = eventTime;
+        this.createdTime = createdTime;
+        this.setScheduleType(scheduleType);
     }
 
     public enum ScheduleType{
-        ALLNOTICE, FORBAN
+        ALLNOTICE, EVENT, CLASS
     }
 }
 

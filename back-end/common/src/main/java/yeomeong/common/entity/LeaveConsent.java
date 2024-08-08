@@ -35,12 +35,13 @@ public class LeaveConsent {
     private String emergencyContact;
 
     private String signUrl;
+    private LocalDate createdDate;
 
     public LeaveConsent() {
 
     }
 
-    public LeaveConsent(Kid kid, LocalDate leaveDate, LocalTime leaveTime, String leaveMethod, String guardianRelationship, String guardianContact, String emergencyRelationship, String emergencyContact, String signUrl) {
+    public LeaveConsent(Kid kid, LocalDate leaveDate, LocalTime leaveTime, String leaveMethod, String guardianRelationship, String guardianContact, String emergencyRelationship, String emergencyContact, String signUrl, LocalDate createdDate) {
         this.kid = kid;
         this.leaveDate = leaveDate;
         this.leaveTime = leaveTime;
@@ -50,5 +51,6 @@ public class LeaveConsent {
         this.emergencyRelationship = emergencyRelationship;
         this.emergencyContact = emergencyContact;
         this.signUrl = signUrl;
+        this.createdDate =  createdDate;
     }
 }

@@ -35,9 +35,10 @@ public class Medication {
 
     private String type;
 
-    private String medicineUrl;
+    private String medicineImageUrl;
 
     private String capacity;
+
     @Column(name = "medication_execute_due_date")
     private LocalDate medicationExecuteDueDate;
 
@@ -53,19 +54,22 @@ public class Medication {
 
     private String signUrl;
 
-    public Medication(String name, Kid kid, String symptom, String type, String medicineUrl, String capacity, LocalDate medicationExecuteDueDate, String medicationExecuteTime, String numberOfDoses, String storageMethod, String others, LocalDateTime medicationCreatedDateTime, String signUrl) {
+    @Builder.Default
+    private boolean isDeleted = false;
+
+    public Medication(String name, Kid kid, String symptom, String type, String medicineImageUrl, String capacity, LocalDate medicationExecuteDueDate, String medicationExecuteTime, String numberOfDoses, String storageMethod, String others, String signUrl) {
         this.name = name;
         this.kid = kid;
         this.symptom = symptom;
         this.type = type;
-        this.medicineUrl = medicineUrl;
+        this.medicineImageUrl = medicineImageUrl;
         this.capacity = capacity;
         this.medicationExecuteDueDate = medicationExecuteDueDate;
         this.medicationExecuteTime = medicationExecuteTime;
         this.numberOfDoses = numberOfDoses;
         this.storageMethod = storageMethod;
         this.others = others;
-        this.medicationCreatedDateTime = medicationCreatedDateTime;
+        this.medicationCreatedDateTime = LocalDateTime.now();
         this.signUrl = signUrl;
     }
 }

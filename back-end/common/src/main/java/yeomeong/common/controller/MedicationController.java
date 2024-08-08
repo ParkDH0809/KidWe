@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import yeomeong.common.dto.medication.MedicationByKidAndMonthDto;
 import yeomeong.common.dto.medication.MedicationByKidDto;
 import yeomeong.common.dto.medication.MedicationCreateDto;
@@ -42,9 +43,9 @@ public class MedicationController {
 
 
     @Operation(summary = "아이의 특정 월의 투약의뢰서를 조회합니다. (부모)", description = "아이 id, 연, 월을 정보를 통해 투약의뢰서 목록을 조회합니다.")
-    @GetMapping("kid/{kid_id}/{year}/{month}")
+    @GetMapping("kid/{kidId}/{year}/{month}")
     public ResponseEntity<List<MedicationByKidDto>> getMedicationByKid(
-            @PathVariable("kid_id") Long kidId,
+            @PathVariable("kidId") Long kidId,
             @PathVariable("year") int year,
             @PathVariable("month") int month){
 
@@ -53,44 +54,38 @@ public class MedicationController {
         return ResponseEntity.ok(medications);
     }
 
-    @GetMapping("/{medication_id}")
+    @GetMapping("/{medicationId}")
     @Operation(summary = "해당 투약의뢰서를 상세조회합니다.", description = "투약의뢰서 id를 통해 투약의뢰서를 상세조회합니다.")
     public ResponseEntity<MedicationDetailDto> getMedicationDetail(
-            @PathVariable("medication_id") Long medicationId){
+            @PathVariable("medicationId") Long medicationId,
+            Long memberId
+            ){
 
-        MedicationDetailDto medicationDetailDto = medicationService.getMedicationDetail(medicationId);
+        MedicationDetailDto medicationDetailDto = medicationService.getMedicationDetail(medicationId, memberId);
         return ResponseEntity.ok(medicationDetailDto);
     }
 
 
-    @PostMapping("/{kid_id}")
+    @PostMapping(value = "/{kidId}")
     @Operation(summary = "투약의뢰서를 작성합니다", description = "투약의뢰서 내용과 아이 id를 통해 투약의뢰서를 작성합니다.")
     public ResponseEntity<MedicationCreateDto> createMedication(
-            @RequestBody MedicationCreateDto medicationCreateDto,
-            @PathVariable("kid_id") Long kidId){
+            @RequestPart("medicine") MultipartFile medicineImage,
+            @RequestPart("sign") MultipartFile signImage,
+            @RequestPart("dto") MedicationCreateDto medicationCreateDto,
+            @PathVariable("kidId") Long kidId) throws Exception {
 
 
-        medicationCreateDto.setKidId(kidId);
-
-        return ResponseEntity.ok(medicationService.createMedication(medicationCreateDto,kidId));
+        return ResponseEntity.ok(medicationService.createMedication(medicineImage,signImage,medicationCreateDto,kidId));
     }
 
-    @DeleteMapping("/{medication_id}")
+    @DeleteMapping("/{medicationId}")
     @Operation(summary = "투약의뢰서 삭제합니다.", description = "해당 투약의뢰서의 id를 통해 투약의뢰서를 삭제합니다.")
     public ResponseEntity<Void> deleteMedicationRequest(
-            @PathVariable("medication_id") Long medicationId){
+            @PathVariable("medicationId") Long medicationId){
 
         medicationService.removeMedication(medicationId);
 
         return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping("/{kid_id}/uploadMedicineImage")
-    @Operation(summary = "투약의뢰서에 사진을 등록합니다.", description = "아이의 id를 통해 해당 아이의 투약의뢰서에 사진을 등록합니다.")
-    public ResponseEntity<String> uploadMedicineImage(
-            @PathVariable("kid_id") Long kidId){
-
-        return ResponseEntity.ok().build();
     }
 
 }
