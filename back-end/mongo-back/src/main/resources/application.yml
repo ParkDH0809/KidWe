@@ -2,3 +2,13 @@ spring:
   data:
     mongodb:
       uri: mongodb://i11a808.p.ssafy.io:27017/kidwe
+
+  ai:
+    openai:
+      api-key: "sk-qZXVNo6LvuaFwpmrS6IjnoXw9brInxVlwvtRh2MtDsT3BlbkFJOABm6kbNBmfMjzaACTXPxnpE2XiN3ZYpnNCLMj6a0A"
+
+resttemplate:
+  connection:
+    timeout: 3000
+  read:
+    timeout: 3000
