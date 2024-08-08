@@ -29,7 +29,7 @@ public class AnnouncementController {
     public ResponseEntity<Void> createAnnouncement(
             @PathVariable("memberId") Long memberId,
             @RequestPart(value = "images", required = false) List<MultipartFile> images ,
-            @RequestPart("dto") AnnouncementCreateDto announcementCreateDto){
+            @RequestPart("dto") AnnouncementCreateDto announcementCreateDto) throws Exception {
 
         announcementService.createAnnouncementByKindergarten(memberId,announcementCreateDto, images);
 

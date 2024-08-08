@@ -12,9 +12,13 @@ spring:
       max-request-size: 100MB
 
   datasource:
-    url: jdbc:mysql://i11a808.p.ssafy.io:3306/kidwe
-    username: ssafy
-    password: ssafy
+#    url: jdbc:mysql://i11a808.p.ssafy.io:3306/kidwe
+#    username: ssafy
+#    password: ssafy
+    url: jdbc:mysql://localhost:3306/SSAFY_DB
+    username: root
+    password: SSAFY
+
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:

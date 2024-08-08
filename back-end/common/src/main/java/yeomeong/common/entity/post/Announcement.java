@@ -33,6 +33,9 @@ public class  Announcement {
     @OneToOne(mappedBy = "announcement",fetch = FetchType.LAZY)
     private Vote vote;
 
+    @OneToMany(mappedBy = "announcement")
+    private List<AnnouncementImage> announcementImages = new ArrayList<>();
+
     @OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL)
     private List<AnnouncementComment> commentList = new ArrayList<>(); // ??
 

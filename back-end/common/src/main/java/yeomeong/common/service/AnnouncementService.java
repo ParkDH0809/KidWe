@@ -13,9 +13,11 @@ import yeomeong.common.dto.post.announcement.*;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.member.rtype;
 import yeomeong.common.entity.post.Announcement;
+import yeomeong.common.entity.post.AnnouncementImage;
 import yeomeong.common.entity.post.Vote;
 import yeomeong.common.entity.post.VoteItem;
 import yeomeong.common.entity.post.comment.AnnouncementComment;
+import yeomeong.common.repository.AnnouncementImageRepository;
 import yeomeong.common.repository.AnnouncementRepository;
 import yeomeong.common.repository.MemberRepository;
 import yeomeong.common.util.FileUtil;
@@ -31,6 +33,7 @@ public class AnnouncementService {
 
     private final AnnouncementRepository announcementRepository;
     private final MemberRepository memberRepository;
+    private final AnnouncementImageRepository announcementImageRepository;
     private final AmazonS3 s3Client;
 
     @Value("${aws.s3.bucket-name}")
@@ -41,10 +44,11 @@ public class AnnouncementService {
      * 반 별 공지사항 생성하기 (선생님)
      */
     @Transactional
-    public void createAnnouncementByKindergarten(Long memberId, AnnouncementCreateDto announcementCreateDto, List<MultipartFile> images){
+    public void createAnnouncementByKindergarten(Long memberId, AnnouncementCreateDto announcementCreateDto, List<MultipartFile> images) throws Exception {
         Announcement announcement =new Announcement(announcementCreateDto.getPost(),
                 memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("해당 멤버를 찾을 수 없습니다.")),
                 LocalDateTime.now());
+
 
         announcement.setStored(false);
 
@@ -56,9 +60,9 @@ public class AnnouncementService {
                 metadata.setContentLength(image.getSize());
                 metadata.setContentType(image.getContentType());
 
-                try {
+                String fileName = FileUtil.convertFileName(image);
 
-                    String fileName = FileUtil.convertFileName(image);
+                try {
 
                     s3Client.putObject(new PutObjectRequest(bucketName,fileName, image.getInputStream(),metadata));
 
@@ -66,6 +70,13 @@ public class AnnouncementService {
                 catch (Exception e){
                    e.printStackTrace();
                 }
+
+                AnnouncementImage announcementImage =new AnnouncementImage(
+                        s3Client.getUrl(bucketName, fileName).toString(),
+                        announcement
+                );
+                announcementImageRepository.save(announcementImage);
+                announcement.getAnnouncementImages().add(announcementImage);
 
             }
         }
