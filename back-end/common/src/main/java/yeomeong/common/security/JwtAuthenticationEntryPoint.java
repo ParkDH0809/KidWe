@@ -17,9 +17,11 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
-        log.debug("[Jwt Authentication Entry Point] API 잘못된 접근");
+        log.info("[Jwt Authentication Entry Point] API 잘못된 접근");
+
         response.setCharacterEncoding("utf-8");
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json; charset=utf-8");
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
 
 }
