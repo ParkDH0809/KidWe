@@ -20,7 +20,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
                          AuthenticationException authException) throws IOException {
         log.debug("[Jwt Authentication Entry Point] API 잘못된 접근");
         response.setCharacterEncoding("utf-8");
-        response.sendError(401, "잘못된 접근입니다.");
+        response.sendError(401, "UNAUTHORIZED_ACCESS");
     }
 
 }
