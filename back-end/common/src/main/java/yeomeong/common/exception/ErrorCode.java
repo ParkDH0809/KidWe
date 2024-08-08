@@ -14,10 +14,11 @@ public enum ErrorCode {
     UPDATE_FAILED(400, "UPDATE_FAILED", "올바르지 않은 입력 값이 있습니다. 입력 정보를 다시 확인해주세요."),
     NO_CHANGES_DETECTED(400, "NO_CHANGES_DETECTED", "변경된 정보가 없습니다. 입력 정보를 다시 확인해주세요."),
     INVALID_BAN_ID(400, "INVALID_BAN_ID", "변경할 반 정보가 올바르지 않습니다. 입력 정보를 다시 확인해주세요."),
+    INVALID_TOKEN(400, "INVALID_TOKEN", "토큰이 올바르지 않습니다."),
 
     INVALID_LOGIN_VALUE(401, "INVALID_LOGIN_VALUE", "로그인 정보가 올바르지 않습니다."),
     UNAUTHORIZED_WRITER(401, "UNAUTHORIZED_WRITER", "작성자가 아닙니다"),
-    INVALID_TOKEN(401, "INVALID_TOKEN", "토큰이 올바르지 않습니다."),
+    UNAUTHENTICATED_EXPIRED_REFRESH_TOKEN(401, "UNAUTHENTICATED_EXPIRED_REFRESH_TOKEN", "만료된 리프레시 토큰입니다."),
 
     NOT_FOUND_ID(404, "NOT_FOUND_ID", "존재하지 않는 ID입니다."),
     NOT_FOUND_KID(404, "NOT_FOUND_KID", "존재하지 않는 원생입니다"),

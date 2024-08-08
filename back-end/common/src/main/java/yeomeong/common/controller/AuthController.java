@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import yeomeong.common.dto.auth.LoginRequestDto;
 import yeomeong.common.dto.auth.RefreshResponseDto;
 import yeomeong.common.dto.member.MemberSaveRequestDto;
+import yeomeong.common.exception.CustomException;
+import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.security.jwt.JwtService;
 import yeomeong.common.security.jwt.JwtUtil;
 import yeomeong.common.service.MemberService;
@@ -57,7 +59,7 @@ public class AuthController {
                     .build()
             );
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new CustomException(ErrorCode.UNAUTHENTICATED_EXPIRED_REFRESH_TOKEN));
     }
 
 }
