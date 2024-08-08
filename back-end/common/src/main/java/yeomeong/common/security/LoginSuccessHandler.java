@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import yeomeong.common.dto.auth.LoginResponseDto;
+import yeomeong.common.repository.MemberRepository;
 import yeomeong.common.security.jwt.JwtService;
 import yeomeong.common.security.jwt.JwtUtil;
 
@@ -23,13 +24,14 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
+    private final MemberRepository memberRepository;
     private final ObjectMapper objectMapper;
     private final JwtService jwtService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException {
-        String accessToken = JwtUtil.createAccessToken(authentication.getName());
+        String accessToken = JwtUtil.createAccessToken(memberRepository.findByEmail(authentication.getName()));
         LoginResponseDto loginResponseDto = new LoginResponseDto(accessToken);
 
         Cookie refreshTokenCookie = createCookie(authentication.getName());

@@ -55,7 +55,7 @@ public class AuthController {
             return ResponseEntity.ok(
                 RefreshResponseDto
                     .builder()
-                    .accessToken(JwtUtil.createAccessToken(JwtUtil.getLoginEmail(refreshToken)))
+                    .accessToken(JwtUtil.createAccessToken(memberService.getMemberByEmail(JwtUtil.getLoginEmail(refreshToken))))
                     .build()
             );
         }

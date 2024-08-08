@@ -3,6 +3,8 @@ package yeomeong.common.security.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -11,13 +13,25 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import yeomeong.common.entity.member.Member;
 
 @Component
 @Slf4j
 public class JwtUtil {
 
     private static final String JTW_PREFIX = "Bearer ";
-    private static final String MEMBER_EMAIL = "email";
+    private static final String MEMBER_EMAIL = "memberEmail";
+    private static final String MEMBER_ID = "memberId";
+    private static final String MEMBER_ROLE = "memberRole";
+    private static final String MEMBER_STATUS = "memberStatus";
+    private static final String KINDERGARTEN_ID = "kindergartenId";
+    private static final String BAN_ID = "banId";
+    private static final String KID_IDS = "KidIds";
+
+    private static SecretKey KEY;
+    private static String ISSUER;
+    private static long ACCESS_EXPIRED_TIME;
+    private static long REFRESH_EXPIRED_TIME;
 
     @Value("${spring.application.name}")
     private String issuer;
@@ -31,11 +45,6 @@ public class JwtUtil {
     @Value("${jwt.token.refresh-expired-time}")
     private long refreshExpiredTime;
 
-    private static SecretKey KEY;
-    private static String ISSUER;
-    private static long ACCESS_EXPIRED_TIME;
-    private static long REFRESH_EXPIRED_TIME;
-
     @PostConstruct
     public void init() {
         ISSUER = this.issuer;
@@ -44,13 +53,25 @@ public class JwtUtil {
         KEY = new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
     }
 
-    public static String createAccessToken(String email){
-        log.debug("[jwtUtil - createAccessToken] email: {}", email);
+    public static String createAccessToken(Member member){
+        log.debug("[jwtUtil - createAccessToken] email: {}", member.getEmail());
+
+        List<String> kidIds = new ArrayList<>();
+        member.getKidMember().forEach(kidMember -> kidIds.add(kidMember.getKid().getId().toString()));
+
         return Jwts.builder()
                 .issuer(ISSUER)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + ACCESS_EXPIRED_TIME))
-                .claim(MEMBER_EMAIL, email)
+
+                .claim(MEMBER_EMAIL, member.getEmail())
+                .claim(MEMBER_ID, member.getId())
+                .claim(MEMBER_ROLE, member.getRole())
+                .claim(MEMBER_STATUS, member.getMemberStatus())
+                .claim(KINDERGARTEN_ID, member.getKindergarten().getId())
+                .claim(BAN_ID, member.getBan().getId())
+                .claim(KID_IDS, String.join(",", kidIds))
+
                 .signWith(KEY)
                 .compact();
     }

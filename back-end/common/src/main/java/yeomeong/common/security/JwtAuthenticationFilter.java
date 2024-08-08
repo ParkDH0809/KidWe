@@ -67,7 +67,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (JwtUtil.isExpired(authorizationHeader)) {
             log.debug("[JwtAuthenticationFilter] Token is expired");
             response.sendError(401, "UNAUTHENTICATED_EXPIRED_TOKEN");
-//            filterChain.doFilter(request, response);
+            filterChain.doFilter(request, response);
             return;
         }
 
