@@ -85,7 +85,6 @@ public class MedicationRepository {
     public MedicationDetailDto getMedicationDetail(Long medicationId, Long memberId){
         Medication medication = em.find(Medication.class, medicationId);
 
-        Member member = em.find(Member.class, memberId);
 
         return new MedicationDetailDto(
                 medication.getName(),
@@ -99,6 +98,7 @@ public class MedicationRepository {
                 medication.getOthers(),
                 medication.getMedicineImageUrl(),
                 medication.getGuardianName(),
+                medication.getSignUrl(),
                 medication.getMedicationCreatedDateTime().toLocalDate());
     }
 
