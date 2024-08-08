@@ -1,7 +1,6 @@
 package yeomeong.common.service;
 
 
-import com.amazonaws.services.s3.AmazonS3;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,8 +9,6 @@ import yeomeong.common.dto.medication.MedicationByKidAndMonthDto;
 import yeomeong.common.dto.medication.MedicationByKidDto;
 import yeomeong.common.dto.medication.MedicationCreateDto;
 import yeomeong.common.dto.medication.MedicationDetailDto;
-import yeomeong.common.entity.kindergarten.Ban;
-import yeomeong.common.entity.member.Kid;
 import yeomeong.common.repository.BanRepository;
 import yeomeong.common.repository.KidRepository;
 import yeomeong.common.repository.MedicationRepository;
@@ -47,10 +44,10 @@ public class MedicationService {
 
     //투약의뢰서 생성하기
     @Transactional
-    public MedicationCreateDto createMedication(MultipartFile medicineImage, MultipartFile signImage, MedicationCreateDto medicationCreateDto, Long kidId) throws Exception {
+    public MedicationCreateDto createMedication(MultipartFile medicineImage, MultipartFile signImage, MedicationCreateDto medicationCreateDto, Long kidId, Long memberId) throws Exception {
 
 
-        return medicationRepository.createMedication(medicineImage,signImage,medicationCreateDto, kidId);
+        return medicationRepository.createMedication(medicineImage,signImage,medicationCreateDto, kidId, memberId);
     }
 
     //투약의뢰서 제거하기

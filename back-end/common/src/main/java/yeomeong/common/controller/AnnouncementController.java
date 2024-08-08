@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import yeomeong.common.dto.post.announcement.*;
 import yeomeong.common.service.AnnouncementService;
 import yeomeong.common.service.VoteService;
@@ -27,8 +28,10 @@ public class AnnouncementController {
     @Operation(summary = "유치원 공지사항을 생성합니다." ,description = "memberId를 활용하여 공지사항을 작성합니다.")
     public ResponseEntity<Void> createAnnouncement(
             @PathVariable("memberId") Long memberId,
-            @RequestBody AnnouncementCreateDto announcementCreateDto){
-        announcementService.createAnnouncementByKindergarten(memberId,announcementCreateDto);
+            @RequestPart(value = "images", required = false) List<MultipartFile> images ,
+            @RequestPart("dto") AnnouncementCreateDto announcementCreateDto){
+
+        announcementService.createAnnouncementByKindergarten(memberId,announcementCreateDto, images);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

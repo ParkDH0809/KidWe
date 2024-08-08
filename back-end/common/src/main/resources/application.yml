@@ -1,6 +1,6 @@
 spring:
   jackson:
-    date-format: HH:mm:ss
+    date-format: HH:mm
   application:
     name: kidwe
   servlet:
@@ -19,7 +19,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     properties:
         hibernate:
           format_sql: true

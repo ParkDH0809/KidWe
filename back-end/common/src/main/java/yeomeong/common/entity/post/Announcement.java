@@ -38,6 +38,7 @@ public class  Announcement {
 
     private LocalDateTime createdTime;
 
+
     public Announcement(Post post, Member member, LocalDateTime localDateTime) {
         this.post = post;
         this.member = member;
