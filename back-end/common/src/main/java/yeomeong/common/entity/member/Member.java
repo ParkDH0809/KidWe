@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import yeomeong.common.dto.member.MemberUpdateRequestDto;
 import yeomeong.common.entity.kindergarten.Ban;
 import yeomeong.common.entity.kindergarten.Kindergarten;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +40,8 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private atype memberStatus; //ACCEPT, DECLINE, PENDING
 
+    private String picture;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Ban ban;
 
@@ -53,4 +55,11 @@ public class Member {
 
     @ColumnDefault("false")
     private Boolean isDeleted;
+
+    public void updateFromDto(MemberUpdateRequestDto dto) {
+        this.email = dto.getName() != null ? dto.getName() : this.name;
+        this.tel = dto.getTel() != null ? dto.getTel() : this.tel;
+        this.picture = dto.getPicture() != null ? dto.getPicture() : this.picture;
+    }
+
 }

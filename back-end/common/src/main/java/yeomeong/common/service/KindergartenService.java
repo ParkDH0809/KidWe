@@ -7,40 +7,48 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import yeomeong.common.dto.kindergarten.KindergartenInfoResponseDto;
 import yeomeong.common.dto.kindergarten.KindergartenSaveRequestDto;
-import yeomeong.common.dto.kindergarten.KindergartenSearchDto;
+import yeomeong.common.dto.kindergarten.KindergartenSearchRequestDto;
 import yeomeong.common.entity.kindergarten.Kindergarten;
 import yeomeong.common.entity.kindergarten.QKindergarten;
+import yeomeong.common.entity.member.atype;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.repository.KindergartenRepository;
+import yeomeong.common.repository.MemberRepository;
 
 @Service
 @Slf4j
 public class KindergartenService {
 
     private final KindergartenRepository kindergartenRepository;
+    private final MemberRepository memberRepository;
 
-    public KindergartenService(KindergartenRepository kindergartenRepository) {
+    public KindergartenService(KindergartenRepository kindergartenRepository, MemberRepository memberRepository) {
         this.kindergartenRepository = kindergartenRepository;
+        this.memberRepository = memberRepository;
     }
 
     public void createKindergarten(KindergartenSaveRequestDto kindergartenSaveRequestDto) {
-        kindergartenRepository.save(KindergartenSaveRequestDto.toKindergartenEntity(kindergartenSaveRequestDto));
+        long kindergartenId = kindergartenRepository.save(KindergartenSaveRequestDto.toKindergartenEntity(kindergartenSaveRequestDto)).getId();
+        memberRepository.updateMemberKindergarten(kindergartenSaveRequestDto.getMemberId(),
+            kindergartenRepository.findById(kindergartenId)
+                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)));
+        memberRepository.updateMemberStatus(kindergartenSaveRequestDto.getMemberId(), atype.ACCEPT);
     }
 
     public KindergartenInfoResponseDto getKindergartenInfo(Long kindergartenId) {
         return KindergartenInfoResponseDto.toKindergartenDto(kindergartenRepository.findById(kindergartenId)
-            .orElseThrow(() -> new CustomException(ErrorCode.INVALID_ID)));
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)));
     }
 
-    public List<KindergartenInfoResponseDto> getSearchedKindergartenInfo(KindergartenSearchDto kindergartenSearchDto) {
+    public List<KindergartenInfoResponseDto> getSearchedKindergartenInfo(KindergartenSearchRequestDto kindergartenSearchRequestDto) {
         List<KindergartenInfoResponseDto> kindergartenInfoResponseDtos = new ArrayList<>();
-        searchKindergartens(kindergartenSearchDto).forEach(kindergartenEntity ->
+        searchKindergartens(kindergartenSearchRequestDto).forEach(kindergartenEntity ->
             kindergartenInfoResponseDtos.add(KindergartenInfoResponseDto.toKindergartenDto(kindergartenEntity)));
         return kindergartenInfoResponseDtos;
     }
 
-    public List<Kindergarten> searchKindergartens(KindergartenSearchDto dto) {
+    public List<Kindergarten> searchKindergartens(KindergartenSearchRequestDto dto) {
         QKindergarten kindergarten = QKindergarten.kindergarten;
         BooleanBuilder builder = new BooleanBuilder();
 

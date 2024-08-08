@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
-import yeomeong.common.dto.kid.KidUpdateInfoDto;
+import yeomeong.common.dto.kid.KidUpdateInfoRequestDto;
 import yeomeong.common.entity.kindergarten.Ban;
 import yeomeong.common.entity.kindergarten.Bus;
 
@@ -62,22 +62,12 @@ public class Kid {
     @ColumnDefault("false")
     private Boolean isDeleted;
 
-    public void updateFromDto(KidUpdateInfoDto dto) {
-        Kid.builder()
-            .id(this.id)
-            .name(dto.getName() != null ? dto.getName() : this.name)
-            .birthday(dto.getBirthday() != null ? dto.getBirthday() : this.birthday)
-            .startAttendanceDate(this.startAttendanceDate)
-            .gender(dto.getGender() != null ? dto.getGender() : this.gender)
-            .allergies(dto.getAllergies() != null ? listToString(dto.getAllergies()) : this.allergies)
-            .picture(dto.getPicture() != null ? dto.getPicture() : this.picture)
-            .isTake(this.isTake)
-            .kindergarten(this.kindergarten)
-            .ban(this.ban)
-            .bus(this.bus)
-            .kidMembers(this.kidMembers)
-            .isDeleted(this.isDeleted)
-            .build();
+    public void updateFromDto(KidUpdateInfoRequestDto dto) {
+        this.name = dto.getName() != null ? dto.getName() : this.name;
+        this.birthday = dto.getBirthday() != null ? dto.getBirthday() : this.birthday;
+        this.gender = dto.getGender() != null ? dto.getGender() : this.gender;
+        this.allergies = dto.getAllergies() != null ? listToString(dto.getAllergies()) : this.allergies;
+        this.picture = dto.getPicture() != null ? dto.getPicture() : this.picture;
     }
 
     public void setNewBan(Ban ban) {

@@ -32,7 +32,8 @@ public class KidJoinRequestDto {
             .gender(kidJoinRequestDto.getGender())
             .ban(ban)
             .kindergarten(kindergarten)
-            .kidStatus(atype.DECLINE)
+            .kidStatus(atype.PENDING)
+            .isDeleted(false)
             .build();
     }
 

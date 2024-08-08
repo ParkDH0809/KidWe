@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import yeomeong.common.entity.Attendance;
+import yeomeong.common.entity.AttendanceType;
 
 @Transactional
 public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
@@ -17,7 +18,7 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
 
     @Modifying
     @Query("UPDATE Attendance a SET a.attendedToday = :attendedToday WHERE a.kid.id = :kidId AND a.date = :date")
-    int updateKidsAttendanceState(@Param("kidId") Long kidId, @Param("date") LocalDate date, @Param("attendedToday") Boolean attendedToday);
+    int updateKidsAttendanceState(@Param("kidId") Long kidId, @Param("date") LocalDate date, @Param("attendedToday") AttendanceType attendedToday);
 
     @Modifying
     @Query("UPDATE Attendance a SET a.reason = :reason WHERE a.kid.id = :kidId AND a.date = :date")

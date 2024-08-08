@@ -3,9 +3,9 @@ package yeomeong.common.dto.ban;
 import lombok.Getter;
 
 @Getter
-public class BanJoinRequestDto {
+public class BanChangeRequestDto {
 
-    Long kindergartenId;
+    Long id;
     Long banId;
 
 }

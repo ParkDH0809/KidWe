@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Schema(description = "KindergartenSearchDto")
-public class KindergartenSearchDto {
+public class KindergartenSearchRequestDto {
 
     private String sido;
     private String sigungu;

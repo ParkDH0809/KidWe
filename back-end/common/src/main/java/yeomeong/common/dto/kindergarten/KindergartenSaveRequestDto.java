@@ -8,6 +8,7 @@ import yeomeong.common.entity.kindergarten.Kindergarten;
 @Getter
 public class KindergartenSaveRequestDto {
 
+    private Long memberId;
     private String name;
     private String address;
     private String addressDetail;
