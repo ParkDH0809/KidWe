@@ -51,6 +51,7 @@ public class MedicationService {
     }
 
     //투약의뢰서 제거하기
+    @Transactional
     public void removeMedication(Long medicationId){
         medicationRepository.removeMedication(medicationId);
     }

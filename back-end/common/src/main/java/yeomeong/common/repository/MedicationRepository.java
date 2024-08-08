@@ -103,7 +103,6 @@ public class MedicationRepository {
     }
 
     //투약의뢰서 생성하기
-    @Transactional
     public MedicationCreateDto createMedication(MultipartFile medicineImage, MultipartFile signImage, MedicationCreateDto medicationCreateDto, Long kidId, Long memberId) throws Exception {
         //아이 정보 기준으로 생성하기
 
@@ -154,6 +153,7 @@ public class MedicationRepository {
     }
 
     //투약의뢰서 삭제하기
+
     public void removeMedication(Long medicationId){
 
         Medication medication = em.find(Medication.class, medicationId);
@@ -162,5 +162,6 @@ public class MedicationRepository {
 
         em.persist(medication);
 
+        medication = em.find(Medication.class, medicationId);
     }
 }
