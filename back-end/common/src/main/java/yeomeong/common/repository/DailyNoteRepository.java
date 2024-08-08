@@ -26,9 +26,19 @@ public interface DailyNoteRepository extends JpaRepository<DailyNote, Long>{
         + "AND dn.kid.id = :kidId "
         + "AND dn.writer.id = :writerId "
         + "AND dn.isDeleted = false")
-    List<DailyNote> findByYearAndMonthAndKidIdAndWriterId(@Param("date") String date,
+    List<DailyNote> findByYearAndMonthAndKidId(@Param("date") String date,
         @Param("writerId") Long writerId,
         @Param("kidId") Long kidId);
+
+    @Query("SELECT dn "
+        + "FROM DailyNote dn "
+        + "WHERE FUNCTION('DATE_FORMAT', dn.sendTime, '%Y-%m') = :date "
+        + "AND dn.kid.ban.id = :banId "
+        + "AND dn.writer.id = :writerId "
+        + "AND dn.isDeleted = false")
+    List<DailyNote> findByYearAndMonthAndBanId(@Param("date") String date,
+        @Param("writerId") Long writerId,
+        @Param("banId") Long banId);
 
     // 학부모 수신 : 학부모의 아이에게 선생님이 작성한 알림장을 조회
     @Query("SELECT dn "

@@ -45,33 +45,41 @@ public class DailyNoteService {
         return new DailyNoteResponseDto(createdDailyNote);
     }
 
-    //월별 알림장 조회하기
+    //월별 알림장 조회하기 - 학부모용
     @Transactional
-    public DailyNoteListResponseDto getDailyNotes(Long memberId, Long kidId, String yearAndMonth) {
+    public DailyNoteListResponseDto getDailyNotesByKidId(Long guardianId, Long kidId, String yearAndMonth) {
         // 사용자가 존재하는지 확인하기
-        Member member = memberRepository.findById(memberId).orElseThrow(
+        Member member = memberRepository.findById(guardianId).orElseThrow(
             () -> new CustomException(ErrorCode.NOT_FOUND_ID)
         );
 
         // 발신자로 된 알림장들
-        List<DailyNote> writeDailyNotes = dailyNoteRepository.findByYearAndMonthAndKidIdAndWriterId(yearAndMonth, kidId, memberId);
-        List<DailyNote> receivedDailyNotes = new ArrayList<>();
+        List<DailyNote> writeDailyNotes = dailyNoteRepository.findByYearAndMonthAndKidId(yearAndMonth, guardianId, kidId);
+        // 수신자로 된, 해당 아이의 선생님이 작성한 알림장 모두 조회
+        List<DailyNote> receivedDailyNotes = dailyNoteRepository.findBYearAndMonthAndKidIdAndReceiverType(yearAndMonth,
+            kidId,
+            rtype.ROLE_TEACHER);
 
-        // 수신자로 된 알림장들
-        if(member.getRole() == rtype.ROLE_TEACHER){
-            // 수신자가 선생님일 경우 담당 반 아이들의 학부모가 작성한 알림장 모두 조회
-            Ban ban = member.getBan();
-            receivedDailyNotes = dailyNoteRepository.findByYearAndMonthAndBanAndReceiverType(yearAndMonth,
+        // 작성자인, 수신자인 알림장을 합쳐서 반환
+        return new DailyNoteListResponseDto(yearAndMonth, writeDailyNotes, receivedDailyNotes);
+    }
+
+    //월별 알림장 조회하기 - 선생님, 원장님 용
+    @Transactional
+    public DailyNoteListResponseDto getDailyNotesByBanId(Long teacherId, Long banId, String yearAndMonth) {
+        // 사용자가 존재하는지 확인하기
+        Member member = memberRepository.findById(teacherId).orElseThrow(
+            () -> new CustomException(ErrorCode.NOT_FOUND_ID)
+        );
+
+        // 발신자로 된 알림장들
+        List<DailyNote> writeDailyNotes = dailyNoteRepository.findByYearAndMonthAndBanId(yearAndMonth, teacherId, banId);
+        // 수신자로 된, 반 아이들의 학부모가 작성한 알림장 모두 조회
+        Ban ban = member.getBan();
+        List<DailyNote> receivedDailyNotes = dailyNoteRepository.findByYearAndMonthAndBanAndReceiverType(yearAndMonth,
                 ban.getKindergarten().getId(),
                 ban.getId(),
                 rtype.ROLE_GUARDIAN);
-        }
-        else if(member.getRole() == rtype.ROLE_GUARDIAN){
-            // 수신자가 학부모일 경우 해당 아이의 선생님이 작성한 알림장 모두 조회
-            receivedDailyNotes = dailyNoteRepository.findBYearAndMonthAndKidIdAndReceiverType(yearAndMonth,
-                kidId,
-                rtype.ROLE_TEACHER);
-        }
 
         // 작성자인, 수신자인 알림장을 합쳐서 반환
         return new DailyNoteListResponseDto(yearAndMonth, writeDailyNotes, receivedDailyNotes);
