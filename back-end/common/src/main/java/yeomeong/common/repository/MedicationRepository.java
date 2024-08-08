@@ -30,6 +30,7 @@ public class MedicationRepository {
     private final EntityManager em;
     private final KidRepository kidRepository;
     private final AmazonS3 s3Client;
+    private final MemberRepository memberRepository;
 
     @Value("${aws.s3.bucket-name}")
     private String bucketName;
@@ -97,18 +98,19 @@ public class MedicationRepository {
                 medication.getStorageMethod(),
                 medication.getOthers(),
                 medication.getMedicineImageUrl(),
-                member.getName(),
+                medication.getGuardianName(),
                 medication.getMedicationCreatedDateTime().toLocalDate());
     }
 
     //투약의뢰서 생성하기
     @Transactional
-    public MedicationCreateDto createMedication(MultipartFile medicineImage, MultipartFile signImage, MedicationCreateDto medicationCreateDto, Long kidId) throws Exception {
+    public MedicationCreateDto createMedication(MultipartFile medicineImage, MultipartFile signImage, MedicationCreateDto medicationCreateDto, Long kidId, Long memberId) throws Exception {
         //아이 정보 기준으로 생성하기
 
         Kid kid = kidRepository.findById(kidId)
                 .orElseThrow(() -> new RuntimeException("해당 아이가 없습니다."));
 
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("해당 맴버가 없습니다."));
 
         String medicineName = FileUtil.convertFileName(medicineImage);
 
@@ -142,6 +144,7 @@ public class MedicationRepository {
                 medicationCreateDto.getNumberOfDoses(),
                 medicationCreateDto.getStorageMethod(),
                 medicationCreateDto.getOthers(),
+                member.getName(),
                 signUrl
                 );
 

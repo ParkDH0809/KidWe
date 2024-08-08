@@ -1,6 +1,6 @@
 spring:
   jackson:
-    date-format: HH:mm:ss
+    date-format: HH:mm
   application:
     name: kidwe
   servlet:
@@ -15,6 +15,8 @@ spring:
     url: jdbc:mysql://i11a808.p.ssafy.io:3306/kidwe
     username: ssafy
     password: ssafy
+
+
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:

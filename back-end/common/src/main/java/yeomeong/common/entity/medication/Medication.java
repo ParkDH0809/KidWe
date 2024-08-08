@@ -50,6 +50,8 @@ public class Medication {
 
     private String others;
 
+    private String guardianName;
+
     private LocalDateTime medicationCreatedDateTime;
 
     private String signUrl;
@@ -57,7 +59,7 @@ public class Medication {
     @Builder.Default
     private boolean isDeleted = false;
 
-    public Medication(String name, Kid kid, String symptom, String type, String medicineImageUrl, String capacity, LocalDate medicationExecuteDueDate, String medicationExecuteTime, String numberOfDoses, String storageMethod, String others, String signUrl) {
+    public Medication(String name, Kid kid, String symptom, String type, String medicineImageUrl, String capacity, LocalDate medicationExecuteDueDate, String medicationExecuteTime, String numberOfDoses, String storageMethod, String guardianName,String others, String signUrl) {
         this.name = name;
         this.kid = kid;
         this.symptom = symptom;
@@ -69,6 +71,7 @@ public class Medication {
         this.numberOfDoses = numberOfDoses;
         this.storageMethod = storageMethod;
         this.others = others;
+        this.guardianName = guardianName;
         this.medicationCreatedDateTime = LocalDateTime.now();
         this.signUrl = signUrl;
     }

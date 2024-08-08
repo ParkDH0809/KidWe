@@ -24,7 +24,7 @@ public interface LeaveConsentRepository {
 
     LeaveConsent findById(Long leaveConsentId);
 
-    LeaveConsentDetailDto getLeaveConsentDetail(Long memberId,Long leaveConsentId);
+    LeaveConsentDetailDto getLeaveConsentDetail(Long leaveConsentId);
 
 
 }

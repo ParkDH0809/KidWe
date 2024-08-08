@@ -57,10 +57,11 @@ public class LeaveConsentController {
     @Operation(summary = "귀가동의서를 생성합니다", description = "kidId, 귀가동의서에 작성한 내용을 통해 귀가동의서를 생성합니다.")
     public ResponseEntity<Void> createLeaveConsent(
             @PathVariable("kidId") Long kidId,
+            Long memberId,
             @RequestPart("dto") LeaveConsentCreateDto leaveConsentCreateDto,
             @RequestPart("sign") MultipartFile file) throws Exception {
 
-        leaveConsentService.createLeaveConsent(kidId, leaveConsentCreateDto, file);
+        leaveConsentService.createLeaveConsent(kidId,memberId, leaveConsentCreateDto, file);
 
 
         return ResponseEntity.ok().build();
@@ -82,11 +83,10 @@ public class LeaveConsentController {
     @GetMapping("/{leaveconsentId}")
     @Operation(summary = "귀가동의서 상세보기", description = "해당 귀가동의서를 상세 조회합니다.")
     public ResponseEntity<LeaveConsentDetailDto> getLeaveConsentDetail(
-            @PathVariable("leaveconsentId") Long leaveConsentId,
-            Long memberId
+            @PathVariable("leaveconsentId") Long leaveConsentId
     ){
 
-        return ResponseEntity.ok(leaveConsentService.getLeaveConsentDetail(memberId,leaveConsentId));
+        return ResponseEntity.ok(leaveConsentService.getLeaveConsentDetail(leaveConsentId));
     }
 
 

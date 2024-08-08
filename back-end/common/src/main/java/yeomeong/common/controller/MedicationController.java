@@ -69,13 +69,15 @@ public class MedicationController {
     @PostMapping(value = "/{kidId}")
     @Operation(summary = "투약의뢰서를 작성합니다", description = "투약의뢰서 내용과 아이 id를 통해 투약의뢰서를 작성합니다.")
     public ResponseEntity<MedicationCreateDto> createMedication(
+            @PathVariable("kidId") Long kidId,
+            Long memberId,
             @RequestPart("medicine") MultipartFile medicineImage,
             @RequestPart("sign") MultipartFile signImage,
-            @RequestPart("dto") MedicationCreateDto medicationCreateDto,
-            @PathVariable("kidId") Long kidId) throws Exception {
+            @RequestPart("dto") MedicationCreateDto medicationCreateDto
+            ) throws Exception {
 
 
-        return ResponseEntity.ok(medicationService.createMedication(medicineImage,signImage,medicationCreateDto,kidId));
+        return ResponseEntity.ok(medicationService.createMedication(medicineImage,signImage,medicationCreateDto,kidId, memberId));
     }
 
     @DeleteMapping("/{medicationId}")
