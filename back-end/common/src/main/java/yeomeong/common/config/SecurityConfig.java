@@ -46,15 +46,6 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
 //                .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
                 .cors(Customizer.withDefaults())
-//                .cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
-//                    CorsConfiguration config = new CorsConfiguration();
-//                    config.setAllowedOrigins(Collections.singletonList("*"));
-//                    config.setAllowedMethods(Collections.singletonList("*"));
-//                    config.setAllowCredentials(true);
-//                    config.setAllowedHeaders(Collections.singletonList("*"));
-//                    config.setMaxAge(3600L);
-//                    return config;
-//                }))
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
@@ -73,7 +64,7 @@ public class SecurityConfig {
                 );
 
         http
-//                .addFilterBefore(new SimpleCorsFilter(), ChannelProcessingFilter.class)
+                .addFilter(new SimpleCorsFilter())
                 .addFilterBefore(new JwtAuthenticationFilter(memberService, jwtService, userDetailsService), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jsonUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
