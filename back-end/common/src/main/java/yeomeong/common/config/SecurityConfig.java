@@ -1,6 +1,8 @@
 package yeomeong.common.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Arrays;
+import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +17,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import yeomeong.common.security.*;
 import yeomeong.common.security.jwt.JwtService;
 import yeomeong.common.security.jwt.JwtUtil;
@@ -38,9 +43,10 @@ public class SecurityConfig {
 
         http
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors((cors) -> cors.configurationSource(myWebsiteConfigurationSource()))
 //                .cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
 //                    CorsConfiguration config = new CorsConfiguration();
-//                    config.setAllowedOrigins(Collections.singletonList("http://localhost:3030"));
+//                    config.setAllowedOrigins(Collections.singletonList("*"));
 //                    config.setAllowedMethods(Collections.singletonList("*"));
 //                    config.setAllowCredentials(true);
 //                    config.setAllowedHeaders(Collections.singletonList("*"));
@@ -85,17 +91,14 @@ public class SecurityConfig {
         return http.build();
     }
 
-//    @Bean
-//    CorsConfigurationSource corsConfigurationSource() {
-//        return request -> {
-//            CorsConfiguration config = new CorsConfiguration();
-//            config.setAllowedHeaders(List.of("*"));
-//            config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE"));
-//            config.setAllowedOriginPatterns(List.of("http://localhost:3030"));
-//            config.setAllowCredentials(true);
-//            return config;
-//        };
-//    }
+     CorsConfigurationSource myWebsiteConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 
     @Bean
     public JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordAuthenticationFilter() {
