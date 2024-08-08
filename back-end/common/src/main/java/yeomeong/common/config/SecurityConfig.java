@@ -58,6 +58,7 @@ public class SecurityConfig {
                         authorize -> authorize
                                 .requestMatchers(HttpMethod.POST, "/login", "/join").permitAll()
                                 .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+                                .requestMatchers("/attendances").authenticated()
 //                                .anyRequest().authenticated()
                                 .anyRequest().permitAll()
                 );
