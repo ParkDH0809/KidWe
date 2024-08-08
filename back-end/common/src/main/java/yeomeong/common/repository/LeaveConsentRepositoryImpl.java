@@ -50,7 +50,8 @@ public class LeaveConsentRepositoryImpl implements LeaveConsentRepository {
                 .on(kid.ban.id.eq(ban.id)) // 추가적인 조인 조건
                 .where(leaveConsent.kid.ban.id.eq(banId)
                         .and(leaveConsent.leaveDate.year().intValue().eq(year)
-                                .and(leaveConsent.leaveDate.month().intValue().eq(month))))
+                                .and(leaveConsent.leaveDate.month().intValue().eq(month))
+                                .and(leaveConsent.isDeleted.isFalse())))
                 .fetch();
     }
     @Override
@@ -68,15 +69,12 @@ public class LeaveConsentRepositoryImpl implements LeaveConsentRepository {
                 .on(kid.ban.id.eq(ban.id)) // 추가적인 조인 조건
                 .where(leaveConsent.kid.id.eq(kidId)
                         .and(leaveConsent.leaveDate.year().intValue().eq(year)
-                                .and(leaveConsent.leaveDate.month().intValue().eq(month))))
+                                .and(leaveConsent.leaveDate.month().intValue().eq(month))
+                                .and(leaveConsent.isDeleted.isFalse())))
                 .fetch();
 
     }
 
-    @Override
-    public void remove(LeaveConsent leaveConsent) {
-
-    }
 
     @Override
     public LeaveConsent findById(Long leaveConsentId) {

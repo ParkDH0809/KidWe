@@ -15,10 +15,19 @@ public class MenuByDayResponseDto {
 
     private String lunch;
     private List<String> lunchAllergies;
+    private List<KidAllergyResponseDto> kidAllergyListOfLunch;
+
     private String snack;
     private List<String> snackAllergies;
+    private List<KidAllergyResponseDto> kidAllergyListOfSnack;
+
     private String dinner;
     private List<String> dinnerAllergies;
+    private List<KidAllergyResponseDto> kidAllergyListOfDinner;
+
+
+
+
 
     public MenuByDayResponseDto(String lunch, String lunchAllergies, String snack, String snackAllergies, String dinner, String dinnerAllergies){
         this.lunch = lunch;
@@ -39,6 +48,12 @@ public class MenuByDayResponseDto {
         }
 
         return allergiesList;
+    }
+
+    private List<KidAllergyResponseDto> getKidsOfAllergyForMenu(){
+
+
+        return null;
     }
 
 }

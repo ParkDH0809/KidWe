@@ -24,6 +24,8 @@ public interface KidRepository extends JpaRepository<Kid,Long> {
     @Query("UPDATE Kid k SET k.isDeleted = true WHERE k.id = :id")
     void deleteKidById(@Param("id") Long id);
 
+    List<Kid> findAllById(Long kindergartenId);
+
     @Modifying
     @Transactional
     @Query("UPDATE Kid k SET k.ban = :ban WHERE k.id = :id")
