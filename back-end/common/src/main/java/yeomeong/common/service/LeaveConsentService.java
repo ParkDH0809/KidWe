@@ -95,8 +95,8 @@ public class LeaveConsentService {
         leaveConsent.setDeleted(true);
     }
 
-    public LeaveConsentDetailDto getLeaveConsentDetail(Long memberId,Long leaveConsentId){
+    public LeaveConsentDetailDto getLeaveConsentDetail(Long leaveConsentId){
 
-        return leaveConsentRepository.getLeaveConsentDetail(memberId,leaveConsentId);
+        return leaveConsentRepository.getLeaveConsentDetail(leaveConsentId);
     }
 }

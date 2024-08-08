@@ -83,10 +83,8 @@ public class LeaveConsentRepositoryImpl implements LeaveConsentRepository {
 
 
     @Override
-    public LeaveConsentDetailDto getLeaveConsentDetail(Long memberId,Long leaveConsentId) {
+    public LeaveConsentDetailDto getLeaveConsentDetail(Long leaveConsentId) {
 
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("해당 멤버가 없어요"));
 
         LeaveConsent leaveConsent = em.find(LeaveConsent.class, leaveConsentId);
 
