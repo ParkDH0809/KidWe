@@ -21,12 +21,6 @@ public class JwtUtil {
 
     private static final String JTW_PREFIX = "Bearer ";
     private static final String MEMBER_EMAIL = "memberEmail";
-    private static final String MEMBER_ID = "memberId";
-    private static final String MEMBER_ROLE = "memberRole";
-    private static final String MEMBER_STATUS = "memberStatus";
-    private static final String KINDERGARTEN_ID = "kindergartenId";
-    private static final String BAN_ID = "banId";
-    private static final String KID_IDS = "KidIds";
 
     private static SecretKey KEY;
     private static String ISSUER;
@@ -55,23 +49,11 @@ public class JwtUtil {
 
     public static String createAccessToken(Member member){
         log.debug("[jwtUtil - createAccessToken] email: {}", member.getEmail());
-
-        List<String> kidIds = new ArrayList<>();
-        member.getKidMember().forEach(kidMember -> kidIds.add(kidMember.getKid().getId().toString()));
-
         return Jwts.builder()
                 .issuer(ISSUER)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + ACCESS_EXPIRED_TIME))
-
                 .claim(MEMBER_EMAIL, member.getEmail())
-                .claim(MEMBER_ID, member.getId())
-                .claim(MEMBER_ROLE, member.getRole())
-                .claim(MEMBER_STATUS, member.getMemberStatus())
-                .claim(KINDERGARTEN_ID, member.getKindergarten().getId())
-                .claim(BAN_ID, member.getBan().getId())
-                .claim(KID_IDS, String.join(",", kidIds))
-
                 .signWith(KEY)
                 .compact();
     }
