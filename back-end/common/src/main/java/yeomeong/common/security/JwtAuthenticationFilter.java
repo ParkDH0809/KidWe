@@ -1,5 +1,6 @@
 package yeomeong.common.security;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,62 +31,68 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-        FilterChain filterChain) throws ServletException, IOException {
-        log.debug("[JwtAuthenticationFilter start]");
-        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        FilterChain filterChain) throws ServletException, IOException, ExpiredJwtException {
 
-        if (authorizationHeader == null) {
-            log.debug("[JwtAuthenticationFilter] Authorization header is null");
+        try {
+            log.debug("[JwtAuthenticationFilter start]");
+            String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+
+            if (authorizationHeader == null) {
+                log.debug("[JwtAuthenticationFilter] Authorization header is null");
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+            if (!authorizationHeader.startsWith("Bearer ")) {
+                log.debug("[JwtAuthenticationFilter] Authorization header is not starting with Bearer");
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+            log.info("[JwtAuthenticationFilter] Authorization header: {}", authorizationHeader);
+            if (jwtService.isTokenStored(authorizationHeader) && !request.getRequestURI().equals("/refresh")) {
+                log.debug("[JwtAuthenticationFilter] This token is refresh token");
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+            log.info("[JwtAuthenticationFilter] Token is valid");
+            if (!jwtService.isTokenStored(authorizationHeader) && request.getRequestURI().equals("/refresh")) {
+                log.debug("[JwtAuthenticationFilter] This token is access token");
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+            if (jwtService.isLogoutAccessToken(authorizationHeader)) {
+                log.debug("[JwtAuthenticationFilter] Logout access token");
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+            if (JwtUtil.isExpired(authorizationHeader)) {
+                log.debug("[JwtAuthenticationFilter] Token is expired");
+                response.setStatus(417);
+                response.sendError(416, "UNAUTHENTICATED_EXPIRED_TOKEN");
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+            log.debug("[JwtAuthenticationFilter] Token is valid");
+            Member loginMember = memberService.getMemberByEmail(
+                JwtUtil.getLoginEmail(authorizationHeader));
+
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                userDetailsService.loadUserByUsername(loginMember.getEmail()),
+                loginMember.getPassword(),
+                List.of(new SimpleGrantedAuthority(loginMember.getRole().toString())));
+            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             filterChain.doFilter(request, response);
-            return;
+
+        } catch (Exception e) {
+            request.setAttribute("exception", e.getMessage());
         }
-
-        if (!authorizationHeader.startsWith("Bearer ")) {
-            log.debug("[JwtAuthenticationFilter] Authorization header is not starting with Bearer");
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        log.info("[JwtAuthenticationFilter] Authorization header: {}", authorizationHeader);
-        if(jwtService.isTokenStored(authorizationHeader) && !request.getRequestURI().equals("/refresh")) {
-            log.debug("[JwtAuthenticationFilter] This token is refresh token");
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        log.info("[JwtAuthenticationFilter] Token is valid");
-        if(!jwtService.isTokenStored(authorizationHeader) && request.getRequestURI().equals("/refresh")) {
-            log.debug("[JwtAuthenticationFilter] This token is access token");
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        if (jwtService.isLogoutAccessToken(authorizationHeader)) {
-            log.debug("[JwtAuthenticationFilter] Logout access token");
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        if (JwtUtil.isExpired(authorizationHeader)) {
-            log.debug("[JwtAuthenticationFilter] Token is expired");
-            response.setStatus(417);
-            response.sendError(416, "UNAUTHENTICATED_EXPIRED_TOKEN");
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        log.debug("[JwtAuthenticationFilter] Token is valid");
-        Member loginMember = memberService.getMemberByEmail(
-            JwtUtil.getLoginEmail(authorizationHeader));
-
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-            userDetailsService.loadUserByUsername(loginMember.getEmail()),
-             loginMember.getPassword(),
-            List.of(new SimpleGrantedAuthority(loginMember.getRole().toString())));
-        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        filterChain.doFilter(request, response);
     }
 
 }
