@@ -9,7 +9,6 @@ import yeomeong.common.dto.leaveconsent.LeaveConsentByMonthAndBanListDto;
 import yeomeong.common.dto.leaveconsent.LeaveConsentDetailDto;
 import yeomeong.common.dto.leaveconsent.QLeaveConsentByMonthAndBanListDto;
 import yeomeong.common.entity.LeaveConsent;
-import yeomeong.common.entity.member.Member;
 
 
 import java.util.List;
@@ -27,7 +26,6 @@ public class LeaveConsentRepositoryImpl implements LeaveConsentRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
     private final EntityManager em;
-    private final MemberRepository memberRepository;
 
     public void save(LeaveConsent leaveConsent){
         em.persist(leaveConsent);
@@ -91,6 +89,7 @@ public class LeaveConsentRepositoryImpl implements LeaveConsentRepository {
         return new LeaveConsentDetailDto(
                 leaveConsent.getLeaveDate(),
                 leaveConsent.getLeaveTime(),
+                leaveConsent.getLeaveMethod(),
                 leaveConsent.getGuardianRelationship(),
                 leaveConsent.getGuardianContact(),
                 leaveConsent.getEmergencyRelationship(),

@@ -15,6 +15,8 @@ public class LeaveConsentDetailDto {
     private LocalTime leaveTime;
 
 
+    private String leaveMethod;
+
     private String guardianRelationship;
     private String guardianContact;
 

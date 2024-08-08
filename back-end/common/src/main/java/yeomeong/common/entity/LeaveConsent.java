@@ -1,5 +1,6 @@
 package yeomeong.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +24,9 @@ public class LeaveConsent {
     @ManyToOne(fetch = FetchType.LAZY)
     private Kid kid;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy년 MM월 dd일")
     private LocalDate leaveDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     private LocalTime leaveTime;
 
     private String leaveMethod;
@@ -35,6 +38,8 @@ public class LeaveConsent {
     private String emergencyContact;
 
     private String signUrl;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy년 MM월 dd일")
     private LocalDate createdDate;
 
     private String guardianName;
