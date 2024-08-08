@@ -1,5 +1,6 @@
 package yeomeong.common.dto.leaveconsent;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 
@@ -12,6 +13,7 @@ public class LeaveConsentByMonthAndBanListDto {
     private Long leaveConsentId;
     private String kidName;
     private String banName;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy년 M월 d일")
     private LocalDate leaveDate;
 
 

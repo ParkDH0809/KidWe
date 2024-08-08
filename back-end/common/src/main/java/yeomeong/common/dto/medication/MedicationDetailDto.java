@@ -1,5 +1,6 @@
 package yeomeong.common.dto.medication;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -14,12 +15,15 @@ public class MedicationDetailDto {
     private String type;
     private String capacity;
     private String numberOfDoses;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy년 M월 d일")
     private LocalDate medicationExecuteDate;
     private String medicationExecuteTime;
     private String storageMethod;
     private String others;
     private String medicineUrl;
     private String parentName;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy년 M월 d일")
     private LocalDate signDate;
 
 }

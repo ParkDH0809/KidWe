@@ -32,10 +32,8 @@ public class Schedule {
 
     private String content;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy년 MM월 dd일")
     private LocalDate eventDate;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     private LocalTime createdTime;
 
 
