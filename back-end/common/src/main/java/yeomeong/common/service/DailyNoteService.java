@@ -56,9 +56,7 @@ public class DailyNoteService {
         // 발신자로 된 알림장들
         List<DailyNote> writeDailyNotes = dailyNoteRepository.findByYearAndMonthAndKidId(yearAndMonth, guardianId, kidId);
         // 수신자로 된, 해당 아이의 선생님이 작성한 알림장 모두 조회
-        List<DailyNote> receivedDailyNotes = dailyNoteRepository.findBYearAndMonthAndKidIdAndReceiverType(yearAndMonth,
-            kidId,
-            rtype.ROLE_TEACHER);
+        List<DailyNote> receivedDailyNotes = dailyNoteRepository.findBYearAndMonthAndKidIdAndReceiverIsGuaridain(yearAndMonth, kidId);
 
         // 작성자인, 수신자인 알림장을 합쳐서 반환
         return new DailyNoteListResponseDto(yearAndMonth, writeDailyNotes, receivedDailyNotes);
@@ -66,20 +64,19 @@ public class DailyNoteService {
 
     //월별 알림장 조회하기 - 선생님, 원장님 용
     @Transactional
-    public DailyNoteListResponseDto getDailyNotesByBanId(Long teacherId, Long banId, String yearAndMonth) {
+    public DailyNoteListResponseDto getDailyNotesByBanId(Long teacherId, Long kinderartenId, Long banId, String yearAndMonth) {
         // 사용자가 존재하는지 확인하기
         Member member = memberRepository.findById(teacherId).orElseThrow(
             () -> new CustomException(ErrorCode.NOT_FOUND_ID)
         );
 
         // 발신자로 된 알림장들
-        List<DailyNote> writeDailyNotes = dailyNoteRepository.findByYearAndMonthAndBanId(yearAndMonth, teacherId, banId);
+        List<DailyNote> writeDailyNotes = dailyNoteRepository.findByYearAndMonthAndBanId(yearAndMonth, kinderartenId, banId);
         // 수신자로 된, 반 아이들의 학부모가 작성한 알림장 모두 조회
         Ban ban = member.getBan();
-        List<DailyNote> receivedDailyNotes = dailyNoteRepository.findByYearAndMonthAndBanAndReceiverType(yearAndMonth,
+        List<DailyNote> receivedDailyNotes = dailyNoteRepository.findByYearAndMonthAndBanAndReceiverIsTeacher(yearAndMonth,
                 ban.getKindergarten().getId(),
-                ban.getId(),
-                rtype.ROLE_GUARDIAN);
+                ban.getId());
 
         // 작성자인, 수신자인 알림장을 합쳐서 반환
         return new DailyNoteListResponseDto(yearAndMonth, writeDailyNotes, receivedDailyNotes);
