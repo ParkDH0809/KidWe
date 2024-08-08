@@ -143,8 +143,8 @@ public class MedicationRepository {
                 medicationCreateDto.getMedicationExecuteTime(),
                 medicationCreateDto.getNumberOfDoses(),
                 medicationCreateDto.getStorageMethod(),
-                medicationCreateDto.getOthers(),
                 member.getName(),
+                medicationCreateDto.getOthers(),
                 signUrl
                 );
 
