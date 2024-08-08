@@ -35,7 +35,7 @@ public class DailyNoteController {
         return ResponseEntity.ok(createdDailyNote);
     }
 
-    @Operation(summary = "월별 알림장 조회 API", description = "학부모 : kid_id로 월별 알림장을 조회해 List로 반환합니다.")
+    @Operation(summary = "월별 알림장 조회 API - 학부모용", description = "학부모 : kid_id로 월별 알림장을 조회해 List로 반환합니다.")
     @GetMapping("/kid/{kid_id}/{member_id}/{year}/{month}")
     public ResponseEntity<DailyNoteListResponseDto> getDailyNotesByKid(@PathVariable("kid_id") Long kidId,
         @PathVariable("member_id") Long guardianId,
@@ -46,7 +46,7 @@ public class DailyNoteController {
         return ResponseEntity.ok(dailyNoteListResponseDto);
     }
 
-    @Operation(summary = "월별 알림장 조회 API", description = "선생, 원장 : ban_id로 월별 알림장을 조회해 List로 반환합니다.")
+    @Operation(summary = "월별 알림장 조회 API - 선생님, 원장님 용", description = "선생, 원장 : ban_id로 월별 알림장을 조회해 List로 반환합니다.")
     @GetMapping("/ban/{kinder_garten_id}/{ban_id}/{member_id}/{year}/{month}")
     public ResponseEntity<DailyNoteListResponseDto> getDailyNotesByBan(@PathVariable("kinder_garten_id") Long kinderartenId,
         @PathVariable("ban_id") Long banId,
