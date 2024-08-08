@@ -14,8 +14,10 @@ import yeomeong.common.dto.leaveconsent.LeaveConsentCreateDto;
 import yeomeong.common.dto.leaveconsent.LeaveConsentDetailDto;
 import yeomeong.common.entity.LeaveConsent;
 import yeomeong.common.entity.member.Kid;
+import yeomeong.common.entity.member.Member;
 import yeomeong.common.repository.KidRepository;
 import yeomeong.common.repository.LeaveConsentRepository;
+import yeomeong.common.repository.MemberRepository;
 import yeomeong.common.util.FileUtil;
 
 import java.time.LocalDate;
@@ -29,6 +31,7 @@ public class LeaveConsentService {
     private final LeaveConsentRepository leaveConsentRepository;
     private final KidRepository kidRepository;
     private final AmazonS3 s3Client;
+    private final MemberRepository memberRepository;
 
     @Value("${aws.s3.bucket-name}")
     private String bucketName;
@@ -47,10 +50,12 @@ public class LeaveConsentService {
     }
 
     @Transactional
-    public void createLeaveConsent(Long kidId, LeaveConsentCreateDto leaveConsentCreateDto, MultipartFile file) throws Exception {
+    public void createLeaveConsent(Long kidId, Long memberId,LeaveConsentCreateDto leaveConsentCreateDto, MultipartFile file) throws Exception {
 
         Kid kid = kidRepository.findById(kidId)
                 .orElseThrow(() -> new RuntimeException("해당하는 아이가 없어요 ㅠ_ㅠ"));
+
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("해당하는 맴버가 없어요"));
 
         String fileName = FileUtil.convertFileName(file);
 
@@ -76,7 +81,8 @@ public class LeaveConsentService {
                 leaveConsentCreateDto.getEmergencyRelationship(),
                 leaveConsentCreateDto.getEmergencyContact(),
                 signUrl,
-                LocalDate.now()
+                LocalDate.now(),
+                member.getName()
         );
 
         leaveConsentRepository.save(leaveConsent);

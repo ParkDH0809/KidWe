@@ -98,7 +98,7 @@ public class LeaveConsentRepositoryImpl implements LeaveConsentRepository {
                 leaveConsent.getEmergencyRelationship(),
                 leaveConsent.getEmergencyContact(),
                 leaveConsent.getCreatedDate(), // 수정 고려
-                member.getName(),
+                leaveConsent.getGuardianName(),
                 leaveConsent.getSignUrl()
         );
     }

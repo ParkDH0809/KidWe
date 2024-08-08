@@ -57,6 +57,8 @@ dependencies {
 	// https://mvnrepository.com/artifact/io.awspring.cloud/spring-cloud-aws-starter
 	implementation group: 'io.awspring.cloud', name: 'spring-cloud-aws-starter', version: '3.1.1'
 
+	// FCM
+	implementation 'com.google.firebase:firebase-admin:9.2.0'
 
 
 	// FCM

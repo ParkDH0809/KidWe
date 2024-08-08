@@ -57,10 +57,11 @@ public class LeaveConsentController {
     @Operation(summary = "귀가동의서를 생성합니다", description = "kidId, 귀가동의서에 작성한 내용을 통해 귀가동의서를 생성합니다.")
     public ResponseEntity<Void> createLeaveConsent(
             @PathVariable("kidId") Long kidId,
+            Long memberId,
             @RequestPart("dto") LeaveConsentCreateDto leaveConsentCreateDto,
             @RequestPart("sign") MultipartFile file) throws Exception {
 
-        leaveConsentService.createLeaveConsent(kidId, leaveConsentCreateDto, file);
+        leaveConsentService.createLeaveConsent(kidId,memberId, leaveConsentCreateDto, file);
 
 
         return ResponseEntity.ok().build();

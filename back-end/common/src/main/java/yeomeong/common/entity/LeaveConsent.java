@@ -37,6 +37,8 @@ public class LeaveConsent {
     private String signUrl;
     private LocalDate createdDate;
 
+    private String guardianName;
+
     @Builder.Default
     private boolean isDeleted = false;
 
@@ -44,7 +46,7 @@ public class LeaveConsent {
 
     }
 
-    public LeaveConsent(Kid kid, LocalDate leaveDate, LocalTime leaveTime, String leaveMethod, String guardianRelationship, String guardianContact, String emergencyRelationship, String emergencyContact, String signUrl, LocalDate createdDate) {
+    public LeaveConsent(Kid kid, LocalDate leaveDate, LocalTime leaveTime, String leaveMethod, String guardianRelationship, String guardianContact, String emergencyRelationship, String emergencyContact, String signUrl, LocalDate createdDate, String guardianName) {
         this.kid = kid;
         this.leaveDate = leaveDate;
         this.leaveTime = leaveTime;
@@ -55,5 +57,6 @@ public class LeaveConsent {
         this.emergencyContact = emergencyContact;
         this.signUrl = signUrl;
         this.createdDate =  createdDate;
+        this.guardianName = guardianName;
     }
 }
