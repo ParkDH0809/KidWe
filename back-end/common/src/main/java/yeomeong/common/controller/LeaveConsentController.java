@@ -83,11 +83,10 @@ public class LeaveConsentController {
     @GetMapping("/{leaveconsentId}")
     @Operation(summary = "귀가동의서 상세보기", description = "해당 귀가동의서를 상세 조회합니다.")
     public ResponseEntity<LeaveConsentDetailDto> getLeaveConsentDetail(
-            @PathVariable("leaveconsentId") Long leaveConsentId,
-            Long memberId
+            @PathVariable("leaveconsentId") Long leaveConsentId
     ){
 
-        return ResponseEntity.ok(leaveConsentService.getLeaveConsentDetail(memberId,leaveConsentId));
+        return ResponseEntity.ok(leaveConsentService.getLeaveConsentDetail(leaveConsentId));
     }
 
 
