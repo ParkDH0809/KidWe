@@ -10,6 +10,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -43,7 +44,8 @@ public class SecurityConfig {
 
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors((cors) -> cors.configurationSource(myWebsiteConfigurationSource()))
+//                .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
+                .cors(Customizer.withDefaults())
 //                .cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
 //                    CorsConfiguration config = new CorsConfiguration();
 //                    config.setAllowedOrigins(Collections.singletonList("*"));
@@ -65,12 +67,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         authorize -> authorize
                                 .requestMatchers(HttpMethod.POST, "/login", "/join").permitAll()
+                                .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
 //                                .anyRequest().authenticated()
                                 .anyRequest().permitAll()
                 );
 
         http
-                .addFilterBefore(new SimpleCorsFilter(), ChannelProcessingFilter.class)
+//                .addFilterBefore(new SimpleCorsFilter(), ChannelProcessingFilter.class)
                 .addFilterBefore(new JwtAuthenticationFilter(memberService, jwtService, userDetailsService), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jsonUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
@@ -91,10 +94,12 @@ public class SecurityConfig {
         return http.build();
     }
 
-     CorsConfigurationSource myWebsiteConfigurationSource() {
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
+        configuration.addAllowedOriginPattern("*");
+        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","PATCH","DELETE"));
+        configuration.setAllowCredentials(false);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
