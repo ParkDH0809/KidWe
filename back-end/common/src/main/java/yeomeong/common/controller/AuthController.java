@@ -3,6 +3,7 @@ package yeomeong.common.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ import yeomeong.common.service.MemberService;
 import yeomeong.common.util.CookieUtil;
 
 @RestController
+@Slf4j
 @Tag(name = "인증/인가 API", description = "인증/인가 관련 API")
 public class AuthController {
 
@@ -54,6 +56,7 @@ public class AuthController {
     @PostMapping("/refresh")
     public ResponseEntity<?> refresh(HttpServletRequest request) {
         String refreshToken = CookieUtil.getCookie("refreshToken", request);
+        log.info(request.getRequestURI() + " refresh token: " + refreshToken);
         if (jwtService.isTokenStored(refreshToken)) {
             return ResponseEntity.ok(
                 RefreshResponseDto
