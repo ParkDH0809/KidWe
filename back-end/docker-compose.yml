@@ -1,54 +1,69 @@
-version: '3.3'
-
 services:
+  # nginx
   nginx:
     image: nginx:latest
-    ports:
-      - "80:80"
+    container_name: nginx-container
     volumes:
       - ./nginx/html:/usr/share/nginx/html
       - ./nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - "80:80"
     depends_on:
       - back-jpa
       - back-mongo
-
+  # main back-end 
   back-jpa:
-    image: back-jpa:latest
+    build:
+      context: /home/ubuntu  # Dockerfile이 위치한 디렉토리
+      dockerfile: Back-JPA-Dockerfile
+    container_name: back-jpa-container
+    volumes:
+      - /jenkins_data/workspace/kidwe/common-0.0.1-SNAPSHOT.jar:/app/back-jpa.jar
+    command: ["java", "-jar", "back-jpa.jar"]
     ports:
       - "8080:8080"
     depends_on:
       - mysql
       - redis
-
+  # sub back-end 
   back-mongo:
-    image: back-mongo:latest
+    build:
+      context: /home/ubuntu  # Dockerfile이 위치한 디렉토리
+      dockerfile: Back-MongoDB-Dockerfile
+    container_name: back-mongo-container
+    volumes:
+      - /jenkins_data/workspace/kidwe/mongo-back-0.0.1-SNAPSHOT.jar:/app/back-mongo.jar  # 로컬 JAR 파일을 컨테이너로 마운트
+    command: ["java", "-jar", "/app/back-mongo.jar"]
     ports:
       - "8081:8080"
     depends_on:
       - mongodb
-
+  # db - mysql
   mysql:
     image: mysql:8.0.33
+    container_name: mysql-container
+    volumes:
+      - db_data:/var/lib/mysql
     ports:
       - "3306:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=ssafy
-    volumes:
-      - db_data:/var/lib/mysql
-
+  # db - redis
   redis:
     image: redis:latest
+    container_name: redis-container
     ports:
       - "6379:6379"
     environment:
       - REDIS_PASSWORD=ssafy
-
+  # db - mongo db
   mongodb:
     image: mongo:latest
-    ports:
-      - "27017:27017"
+    container_name: mongodb-container    
     volumes:
       - mongo_data:/data/db
+    ports:
+      - "27017:27017"
 
 volumes:
   db_data:

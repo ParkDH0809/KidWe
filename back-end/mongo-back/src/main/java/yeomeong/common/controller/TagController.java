@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 
 @RestController
-@RequestMapping("/tag")
+@RequestMapping("/tags")
 @Tag(name = "태그", description = "태그 관련 API")
 public class TagController {
 
