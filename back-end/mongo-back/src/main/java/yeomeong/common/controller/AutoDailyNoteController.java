@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import yeomeong.common.dto.AutoDailyNoteRequestDto;
 import yeomeong.common.dto.MemoResponseDto;
+import yeomeong.common.service.AutoDailyNoteService;
 import yeomeong.common.service.MemoService;
 import yeomeong.common.service.OpenAiService;
 
@@ -21,16 +22,11 @@ import yeomeong.common.service.OpenAiService;
 @RestController
 @RequestMapping("/dailynotecontents")
 public class AutoDailyNoteController {
-    private final OpenAiService openAIService;
-    private final MemoService memoService;
+    private final AutoDailyNoteService autoDailyNoteService;
 
-@PostMapping("/{teacher_id}")
+    @PostMapping("/{teacher_id}")
     public ResponseEntity<String> getAutoDailyNote(@PathVariable("teacher_id") Long teacherId,
         @RequestBody AutoDailyNoteRequestDto autoDailyNoteRequestDto) {
-        List<MemoResponseDto> memoResponseDtos = memoService.getMemosByTeacherIdAndDateAndKidId(autoDailyNoteRequestDto);
-        // 메모에서 정보를 추출하고, 해당 메모를 바탕으로 알림장을 생성하는 로직
-        String role = "user";
-        String prompt = "";
-        return ResponseEntity.ok(openAIService.generateText(role, prompt));
+        return ResponseEntity.ok(autoDailyNoteService.getAutoDailyNote(autoDailyNoteRequestDto));
     }
 }

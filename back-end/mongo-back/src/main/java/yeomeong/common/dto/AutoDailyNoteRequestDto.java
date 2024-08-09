@@ -7,9 +7,9 @@ import lombok.Getter;
 @Getter
 public class AutoDailyNoteRequestDto {
     private Long teacherId;
-
     private String teacherName;
 
+    private Long kidId;
     private String kidName;
     private String gender;
     private LocalDate birthday;
@@ -18,7 +18,7 @@ public class AutoDailyNoteRequestDto {
     private String banName;
 
     @Getter
-    private class ScheduleInfo{
+    public class ScheduleInfo{
         private String keyword;
         private String content;
     }
