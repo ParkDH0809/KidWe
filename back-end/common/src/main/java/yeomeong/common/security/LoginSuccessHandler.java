@@ -80,7 +80,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         String cookieValue = JwtUtil.createRefreshToken((userName));
         Cookie cookie = new Cookie(cookieName, cookieValue);
         cookie.setHttpOnly(false);
-        cookie.setSecure(false);
+        cookie.setSecure(true);
         cookie.setPath("/");
         cookie.setAttribute("SameSite", "None");
         cookie.setMaxAge(60 * 60 * 24 * 14);
