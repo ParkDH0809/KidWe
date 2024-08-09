@@ -146,6 +146,7 @@ public class DailyNoteService {
     }
 
     // 알림장 자동 생성을 위한 정보 조회
+    @Transactional
     public AutoCreateDailyNoteResponseDto getInfoForAutoCreateDailyNote(Long teacherId, Long kidId){
         Member teacher = memberRepository.findById(teacherId).orElseThrow(
             () -> new CustomException(ErrorCode.NOT_FOUND_ID)

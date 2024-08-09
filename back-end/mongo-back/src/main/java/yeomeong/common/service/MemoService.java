@@ -3,6 +3,7 @@ package yeomeong.common.service;
 import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import yeomeong.common.document.Memo;
 import yeomeong.common.document.Tag;
 import yeomeong.common.dto.MemoRequestDto;
@@ -26,7 +27,8 @@ public class MemoService {
     private final TagRepository tagRepository;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    private List<Tag> updateTag(List<TagRequestDto> tagRequestDtos) {
+    @Transactional
+    public List<Tag> updateTag(List<TagRequestDto> tagRequestDtos) {
         // 메모의 tag 생성&수정(빈도수 1 증가)하기
         if (tagRequestDtos == null) {
             return null;
@@ -53,9 +55,8 @@ public class MemoService {
         return tags;
     }
 
-    ;
-
     // 메모 생성하기
+    @Transactional
     public MemoResponseDto createMemo(Long teacherId, MemoRequestDto memoRequestDto) {
         List<Tag> tags = updateTag(memoRequestDto.getTags());
         Memo updatedTagAndNotUpdatedMemo = memoRequestDto.toDocument(teacherId);
@@ -68,6 +69,7 @@ public class MemoService {
     }
 
     // 날짜별 메모 조회하기
+    @Transactional
     public List<MemoResponseDto> getMemosByTeacherIdAndDate(Long teacherId, String date) {
         List<Memo> memos = memoRepository.findByTeacherIdAndDate(teacherId, date);
         if (memos == null) {
@@ -82,6 +84,7 @@ public class MemoService {
     }
 
     // 날짜별 아이별 메모 조회하기
+    @Transactional
     public List<MemoResponseDto> getMemosByTeacherIdAndDateAndKidId(Long teacherId, String date,
         Long kidId) {
         List<Memo> memos = memoRepository.findByTeacherIdAndDateAndKidId(teacherId, date, kidId);
@@ -97,6 +100,7 @@ public class MemoService {
     }
 
     // 메모 수정하기
+    @Transactional
     public MemoResponseDto updateMemo(Long teacherId, String id, MemoRequestDto updatedMemoDto) {
         Memo memo = memoRepository.findMemoByTeacherIdAndId(id, teacherId);
         if (memo != null) {
@@ -114,6 +118,7 @@ public class MemoService {
     }
 
     // 메모 삭제하기
+    @Transactional
     public boolean deleteMemo(Long teacherId, String id) {
         Memo memo = memoRepository.findMemoByTeacherIdAndId(id, teacherId);
         memo.delete();
