@@ -20,9 +20,13 @@ public class AnnouncementDetailDto {
 
     private Post post;
 
+    private List<AnnouncementImageDto> announcementImages;
+
     private Long voteId;
 
     private List<VoteItemDto> voteItems;
+
+
 
     private List<AnnouncementCommentDto> comment;
 
