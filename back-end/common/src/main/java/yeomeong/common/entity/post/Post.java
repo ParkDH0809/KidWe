@@ -1,6 +1,7 @@
 package yeomeong.common.entity.post;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,6 +19,7 @@ import java.util.Date;
 @Embeddable
 public class Post {
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.M.d HH:mm")
     private LocalDateTime createdDateTime;
 
     private String title;
