@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
 import yeomeong.common.dto.post.dailynote.request.DailyNoteRequestDto;
+import yeomeong.common.dto.post.dailynote.response.AutoCreateDailyNoteResponseDto;
 import yeomeong.common.dto.post.dailynote.response.DailyNoteListResponseDto;
 import yeomeong.common.dto.post.dailynote.response.DailyNoteResponseDto;
 import yeomeong.common.entity.kindergarten.Ban;
@@ -138,5 +139,13 @@ public class DailyNoteService {
         }
         oldDailyNote.delete();
         dailyNoteRepository.save(oldDailyNote);
+    }
+
+    // 알림장 자동 생성을 위한 정보 조회
+    public AutoCreateDailyNoteResponseDto getInfoForAutoCreateDailyNote(Long teacherId, Long kidId){
+        Member teacher = memberRepository.findById(teacherId).orElseThrow(
+            () -> new CustomException(ErrorCode.NOT_FOUND_ID)
+        );
+
     }
 }

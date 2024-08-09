@@ -14,7 +14,7 @@ import yeomeong.common.service.OpenAiService;
 @RequiredArgsConstructor
 
 @RestController
-@RequestMapping("/openais")
+@RequestMapping("/dailynotecontents")
 public class AutoDailyNoteController {
     private final OpenAiService openAIService;
     private final MemoService memoService;
@@ -29,7 +29,8 @@ public class AutoDailyNoteController {
         String date = year + "-" + month + "-" + day;
         List<MemoResponseDto> memoResponseDtos = memoService.getMemosByTeacherIdAndDateAndKidId(teacherId, date, kidId);
         // 메모에서 정보를 추출하고, 해당 메모를 바탕으로 알림장을 생성하는 로직
+        String role = "user";
         String prompt = "";
-        return ResponseEntity.ok(openAIService.generateText(prompt));
+        return ResponseEntity.ok(openAIService.generateText(role, prompt));
     }
 }
