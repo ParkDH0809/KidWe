@@ -14,9 +14,9 @@ import yeomeong.common.entity.member.gtype;
 @Getter
 public class AutoCreateDailyNoteResponseDto {
     private Long teacherId;
-
     private String teacherName;
 
+    private Long kidId;
     private String kidName;
     private gtype gender;
     private LocalDate birthday;
@@ -26,7 +26,7 @@ public class AutoCreateDailyNoteResponseDto {
 
     @Getter
     @NoArgsConstructor
-    private class ScheduleInfo{
+    private static class ScheduleInfo{
         private String keyword;
         private String content;
 
@@ -44,6 +44,7 @@ public class AutoCreateDailyNoteResponseDto {
         this.teacherId = teacher.getId();
         this.teacherName = teacher.getName();
 
+        this.kidId = kid.getId();
         this.kidName = kid.getName();
         this.gender = kid.getGender();
         this.birthday = kid.getBirthday();

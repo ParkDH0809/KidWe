@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.ErrorResponseException;
 import org.springframework.web.client.RestTemplate;
 import yeomeong.common.dto.Message;
@@ -31,6 +32,7 @@ public class OpenAiService {
         this.restTemplate = restTemplate;
     }
 
+    @Transactional
     public String generateText(String role, String prompt) {
         // 헤더 설정
         HttpHeaders headers = new HttpHeaders();
