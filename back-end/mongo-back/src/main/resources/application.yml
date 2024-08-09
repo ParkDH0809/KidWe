@@ -1,7 +1,12 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://ssafy:ssafy@i11a808.p.ssafy.io:27017/kidwe
+      host: 43.203.245.97
+      port: 27017
+      authentication-database: admin
+      username: ssafy
+      password: ssafy
+      database: kidwe
 
   ai:
     openai:
@@ -13,8 +18,3 @@ resttemplate:
     timeout: 3000
   read:
     timeout: 3000
-
-prompt:
-  dailynote:
-    previous: "나는 "
-    post: "안녕"
