@@ -18,7 +18,6 @@ public class AnnouncementCommentController {
 
     private final AnnouncementCommentService announcementCommentService;
 
-
     //공지사항-댓글 작성하기
     @PostMapping("/{announcementId}/{memberId}")
     @Operation(summary = "공지사항의 댓글을 작성합니다", description = "공지사항의 id와 회원의 id를 받아와서 공지사항 댓글을 작성합니다.")
