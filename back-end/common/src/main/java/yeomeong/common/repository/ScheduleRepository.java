@@ -21,6 +21,6 @@ public interface ScheduleRepository extends JpaRepository<Schedule,Long> {
     @Query("SELECT s "
         + "FROM Schedule s "
         + "WHERE s.ban.id = :banId "
-        + "AND s.createdTime = :date")
+        + "AND s.eventDate = :date")
     List<Schedule> findByBanIdAndDate(Long banId, LocalDate date);
 }

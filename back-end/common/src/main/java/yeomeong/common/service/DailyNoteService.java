@@ -146,7 +146,7 @@ public class DailyNoteService {
     }
 
     // 알림장 자동 생성을 위한 정보 조회
-    public AutoCreateDailyNoteResponseDto getInfoForAutoCreateDailyNote(Long teacherId, Long kidId, LocalDate date){
+    public AutoCreateDailyNoteResponseDto getInfoForAutoCreateDailyNote(Long teacherId, Long kidId){
         Member teacher = memberRepository.findById(teacherId).orElseThrow(
             () -> new CustomException(ErrorCode.NOT_FOUND_ID)
         );
@@ -154,7 +154,7 @@ public class DailyNoteService {
             () -> new CustomException(ErrorCode.NOT_FOUND_KID)
         );
 
-        List<Schedule> schedules = scheduleRepository.findByBanIdAndDate(teacher.getBan().getId(), date);
+        List<Schedule> schedules = scheduleRepository.findByBanIdAndDate(teacher.getBan().getId(), LocalDate.now());
         return new AutoCreateDailyNoteResponseDto(teacher, kid, schedules);
     }
 }
