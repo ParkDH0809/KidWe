@@ -7,7 +7,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import yeomeong.common.dto.attendance.AttendanceInfoChangeRequestDto;
-import yeomeong.common.dto.attendance.AttendanceReasonChangeRequestDto;
 import yeomeong.common.dto.attendance.AttendanceResponseDto;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
@@ -42,18 +41,23 @@ public class AttendanceService {
                     throw new CustomException(ErrorCode.UPDATE_FAILED);
                 }
             }
+
+            if(changeRequestDto.containsOneKidAndReason()) {
+                updateAttendanceReason(changeRequestDto);
+            }
         } catch (DateTimeException e) {
             throw new CustomException(ErrorCode.INVALID_DATE_VALUE);
         }
     }
 
-    public void updateAttendanceReason(AttendanceReasonChangeRequestDto changeRequestDto) {
+    public void updateAttendanceReason(AttendanceInfoChangeRequestDto changeRequestDto) {
         if(changeRequestDto.containsNull()) {
             throw new CustomException(ErrorCode.INVALID_INPUT_VALUE);
         }
         try {
             if(attendanceRepository.updateKidsAttendanceReason(
-                changeRequestDto.getKidId(),LocalDate.of(changeRequestDto.getYear(), changeRequestDto.getMonth(), changeRequestDto.getDay()),
+                changeRequestDto.getKidIds().get(0),
+                LocalDate.of(changeRequestDto.getYear(), changeRequestDto.getMonth(), changeRequestDto.getDay()),
                 changeRequestDto.getReason()) != 1) {
                 throw new CustomException(ErrorCode.NO_CHANGES_DETECTED);
             }
