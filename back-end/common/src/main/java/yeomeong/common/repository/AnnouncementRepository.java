@@ -16,6 +16,7 @@ public interface AnnouncementRepository extends JpaRepository<Announcement,Long>
 
     // 유치원별 전체 공지사항 조회하기
     @Query("SELECT new yeomeong.common.dto.post.announcement.AnnouncementListDto(" +
+            "a.id, " +
             "a.post.title, " +
             "a.member.name, " +
             "a.post.createdDateTime," +
@@ -27,6 +28,7 @@ public interface AnnouncementRepository extends JpaRepository<Announcement,Long>
 
     // 유치원 반 공지사항 조회하기
     @Query("SELECT new yeomeong.common.dto.post.announcement.AnnouncementListDto(" +
+            "a.id, " +
             "a.post.title," +
             "a.member.name," +
             "a.member.ban.name," +
@@ -37,6 +39,7 @@ public interface AnnouncementRepository extends JpaRepository<Announcement,Long>
 
     //유치원 반 전체 공지사항 가져오기
     @Query("SELECT new yeomeong.common.dto.post.announcement.AnnouncementListDto(" +
+            "a.id, " +
             "a.post.title, " +
             "a.member.name, " +
             "a.member.ban.name," +
