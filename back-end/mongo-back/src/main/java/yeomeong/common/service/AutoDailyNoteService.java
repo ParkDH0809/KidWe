@@ -110,7 +110,7 @@ public class AutoDailyNoteService {
             tmpPrompt.append(" " + count + "번 메모의 상세 내용 :" + memo.getContent() + "\n" );
             count += 1;
         }
-        String corePrompt = "";
+        String corePrompt = "일정과 메모내용 알려줄게!\n" + tmpPrompt.toString() +"\n";
         String postPrompt = "알림장을 대신해서 잘 작성해줬지?"
             + "나에게 사족없이 '%s : %s 부모님에게' 로 시작하는 부분부터 너가 생성한 알림장 끝까지 '알림장 내용'만 추출해줘."
             + "나는 너가 주는 데이터를 바로 알림장으로 넣어서 보낼거기 때문에 최대한 알림장 내용만 줘."
