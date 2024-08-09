@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import yeomeong.common.dto.attendance.AttendanceInfoChangeRequestDto;
-import yeomeong.common.dto.attendance.AttendanceReasonChangeRequestDto;
 import yeomeong.common.dto.attendance.AttendanceResponseDto;
 import yeomeong.common.service.AttendanceService;
 
@@ -40,13 +39,6 @@ public class AttendanceController {
     @PutMapping
     public ResponseEntity<List<AttendanceResponseDto>> updateAttendances(@RequestBody AttendanceInfoChangeRequestDto changeRequestDto) {
         attendanceService.updateAttendances(changeRequestDto);
-        return ResponseEntity.status(HttpStatus.OK).build();
-    }
-
-    @Operation(summary = "출결 내용 작성", description = "특정 아이의 특정 날짜에 대한 출결 내용 작성 내용을 저장합니다.")
-    @PutMapping("/reason")
-    public ResponseEntity<List<AttendanceResponseDto>> updateAttendanceReason(@RequestBody AttendanceReasonChangeRequestDto changeRequestDto) {
-        attendanceService.updateAttendanceReason(changeRequestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

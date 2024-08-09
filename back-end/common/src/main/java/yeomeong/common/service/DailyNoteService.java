@@ -1,5 +1,6 @@
 package yeomeong.common.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +9,10 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
 import yeomeong.common.dto.post.dailynote.request.DailyNoteRequestDto;
+import yeomeong.common.dto.post.dailynote.response.AutoCreateDailyNoteResponseDto;
 import yeomeong.common.dto.post.dailynote.response.DailyNoteListResponseDto;
 import yeomeong.common.dto.post.dailynote.response.DailyNoteResponseDto;
+import yeomeong.common.entity.Schedule;
 import yeomeong.common.entity.kindergarten.Ban;
 import yeomeong.common.entity.member.Kid;
 import yeomeong.common.entity.member.Member;
@@ -21,6 +24,7 @@ import yeomeong.common.repository.DailyNoteCommentRepository;
 import yeomeong.common.repository.DailyNoteRepository;
 import yeomeong.common.repository.KidRepository;
 import yeomeong.common.repository.MemberRepository;
+import yeomeong.common.repository.ScheduleRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +35,7 @@ public class DailyNoteService {
     private final KidRepository kidRepository;
     private final DailyNoteRepository dailyNoteRepository;
     private final DailyNoteCommentRepository dailyNoteCommentRepository;
+    private final ScheduleRepository scheduleRepository;
 
     // 알림장 생성하기
     @Transactional
@@ -138,5 +143,19 @@ public class DailyNoteService {
         }
         oldDailyNote.delete();
         dailyNoteRepository.save(oldDailyNote);
+    }
+
+    // 알림장 자동 생성을 위한 정보 조회
+    @Transactional
+    public AutoCreateDailyNoteResponseDto getInfoForAutoCreateDailyNote(Long teacherId, Long kidId){
+        Member teacher = memberRepository.findById(teacherId).orElseThrow(
+            () -> new CustomException(ErrorCode.NOT_FOUND_ID)
+        );
+        Kid kid = kidRepository.findById(kidId).orElseThrow(
+            () -> new CustomException(ErrorCode.NOT_FOUND_KID)
+        );
+
+        List<Schedule> schedules = scheduleRepository.findByBanIdAndDate(teacher.getBan().getId(), LocalDate.now());
+        return new AutoCreateDailyNoteResponseDto(teacher, kid, schedules);
     }
 }
