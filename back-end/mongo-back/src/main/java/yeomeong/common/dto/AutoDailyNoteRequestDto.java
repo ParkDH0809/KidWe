@@ -18,7 +18,7 @@ public class AutoDailyNoteRequestDto {
     private String banName;
 
     @Getter
-    public class ScheduleInfo{
+    public static class ScheduleInfo{
         private String keyword;
         private String content;
     }
