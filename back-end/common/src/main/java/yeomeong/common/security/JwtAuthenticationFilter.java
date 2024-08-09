@@ -31,52 +31,52 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserDetailsServiceImpl userDetailsService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-        FilterChain filterChain) throws ServletException, IOException, ExpiredJwtException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,FilterChain filterChain)
+        throws ServletException, IOException, ExpiredJwtException {
 
         try {
-            log.debug("[JwtAuthenticationFilter start]");
+            log.info("[JwtAuthenticationFilter start] {}", request.getRequestURI());
             String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
             if (authorizationHeader == null) {
-                log.debug("[JwtAuthenticationFilter] Authorization header is null");
+                log.info("[JwtAuthenticationFilter] Authorization header is null");
                 filterChain.doFilter(request, response);
                 return;
             }
 
             if (!authorizationHeader.startsWith("Bearer ")) {
-                log.debug("[JwtAuthenticationFilter] Authorization header is not starting with Bearer");
+                log.info("[JwtAuthenticationFilter] Authorization header is not starting with Bearer");
                 filterChain.doFilter(request, response);
                 return;
             }
 
             log.info("[JwtAuthenticationFilter] Authorization header: {}", authorizationHeader);
             if (jwtService.isTokenStored(authorizationHeader) && !request.getRequestURI().equals("/refresh")) {
-                log.debug("[JwtAuthenticationFilter] This token is refresh token");
+                log.info("[JwtAuthenticationFilter] This token is refresh token");
                 filterChain.doFilter(request, response);
                 return;
             }
 
             log.info("[JwtAuthenticationFilter] Token is valid");
             if (!jwtService.isTokenStored(authorizationHeader) && request.getRequestURI().equals("/refresh")) {
-                log.debug("[JwtAuthenticationFilter] This token is access token");
+                log.info("[JwtAuthenticationFilter] This token is access token");
                 filterChain.doFilter(request, response);
                 return;
             }
 
             if (jwtService.isLogoutAccessToken(authorizationHeader)) {
-                log.debug("[JwtAuthenticationFilter] Logout access token");
+                log.info("[JwtAuthenticationFilter] Logout access token");
                 filterChain.doFilter(request, response);
                 return;
             }
 
             if (JwtUtil.isExpired(authorizationHeader)) {
-                log.debug("[JwtAuthenticationFilter] Token is expired");
+                log.info("[JwtAuthenticationFilter] Token is expired");
                 filterChain.doFilter(request, response);
                 return;
             }
 
-            log.debug("[JwtAuthenticationFilter] Token is valid");
+            log.info("[JwtAuthenticationFilter] Token is valid");
             Member loginMember = memberService.getMemberByEmail(
                 JwtUtil.getLoginEmail(authorizationHeader));
 
@@ -89,7 +89,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             filterChain.doFilter(request, response);
 
-        } catch (Exception e) {
+        } catch (ExpiredJwtException e) {
             throw new JwtException("토큰 기한 만료");
         }
     }
