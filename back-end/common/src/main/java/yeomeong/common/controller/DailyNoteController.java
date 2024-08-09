@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import yeomeong.common.dto.post.dailynote.request.DailyNoteRequestDto;
+import yeomeong.common.dto.post.dailynote.response.AutoCreateDailyNoteResponseDto;
 import yeomeong.common.dto.post.dailynote.response.DailyNoteListResponseDto;
 import yeomeong.common.dto.post.dailynote.response.DailyNoteResponseDto;
 import yeomeong.common.service.DailyNoteService;
@@ -78,5 +79,13 @@ public class DailyNoteController {
         @PathVariable("dailynote_id") Long id) {
         dailyNoteService.deleteDailyNote(writerId, id);
         return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "알림장 자동생성을 위해 필요한 정보 요청 API", description = "응답받은 데이터로 back-mongo 서버에 전달해주세요")
+    @GetMapping("/{teacher_id}/{kid_id}")
+    public ResponseEntity<AutoCreateDailyNoteResponseDto> getInfoForAutoCreateDailyNote(@PathVariable("teacher_id") Long teacherId,
+        @PathVariable("kid_id") Long kidId) {
+        AutoCreateDailyNoteResponseDto autoCreateDailyNoteResponseDto = dailyNoteService.getInfoForAutoCreateDailyNote(teacherId, kidId);
+        return ResponseEntity.ok(autoCreateDailyNoteResponseDto);
     }
 }
