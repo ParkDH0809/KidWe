@@ -82,6 +82,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         cookie.setPath("/");
+        cookie.setAttribute("SameSite", "None");
         cookie.setMaxAge(60 * 60 * 24 * 14);
         return cookie;
     }
