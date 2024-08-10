@@ -46,7 +46,6 @@ public class JwtUtil {
     }
 
     public static String createAccessToken(Member member){
-        log.debug("[jwtUtil - createAccessToken] email: {}", member.getEmail());
         return Jwts.builder()
                 .issuer(ISSUER)
                 .issuedAt(new Date(System.currentTimeMillis()))
@@ -57,7 +56,6 @@ public class JwtUtil {
     }
 
     public static String createRefreshToken(String email){
-        log.debug("[jwtUtil - createRefreshToken] email: {}", email);
         return Jwts.builder()
                 .issuer(ISSUER)
                 .issuedAt(new Date(System.currentTimeMillis()))

@@ -20,9 +20,6 @@ public class JwtRepository {
     public void save(String key, String value, long expirationMinutes){
         ValueOperations<String, String> values = redisTemplate.opsForValue();
         values.set(key, value, Duration.ofSeconds(expirationMinutes));
-        log.info("key: {}", key);
-        log.info("value: {}", value);
-        log.info("만료 시간, 분: {}", Duration.ofSeconds(expirationMinutes));
     }
 
     public String findByKey(String key) {

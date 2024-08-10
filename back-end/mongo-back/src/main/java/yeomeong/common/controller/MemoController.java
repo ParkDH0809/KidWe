@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 
 @RestController
-@RequestMapping("/memo")
+@RequestMapping("/memos")
 @Tag(name = "메모", description = "메모 관련 API")
 public class MemoController {
 

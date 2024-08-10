@@ -2,6 +2,7 @@ package yeomeong.common.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import yeomeong.common.document.Tag;
 import yeomeong.common.dto.TagRequestDto;
 import yeomeong.common.dto.TagResponseDto;
@@ -17,6 +18,7 @@ public class TagService {
     private final TagRepository tagRepository;
 
     //선생님별로 Tag 조회하기
+    @Transactional
     public List<TagResponseDto> getTagsByTeacherId(Long teacherId) {
         List<Tag> tags = tagRepository.findTagByTeacherId(teacherId);
         if (tags == null) {
@@ -31,6 +33,7 @@ public class TagService {
     }
 
     //Tag 생성하기
+    @Transactional
     public TagResponseDto createTag(TagRequestDto tagRequestDto) {
         Tag isExistTag = tagRepository.findTagByTeacherIdAndContet(tagRequestDto.getTeacherId(),
             tagRequestDto.getContent());
@@ -41,6 +44,7 @@ public class TagService {
     }
 
     //Tag 수정하기
+    @Transactional
     public List<TagResponseDto> updateTag(Long teacheriId, List<TagRequestDto> updatedTagIds) {
         List<Tag> oldTags = tagRepository.findTagByTeacherId(teacheriId);
         if (oldTags == null) {

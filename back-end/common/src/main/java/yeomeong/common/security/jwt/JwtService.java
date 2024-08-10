@@ -14,6 +14,7 @@ public class JwtService {
 
     public void saveRefreshToken(String email, String refreshToken) {
         log.info("save refresh token: {}", email);
+        log.info("refresh token: {}", refreshToken);
         refreshTokenRepository.save(email, refreshToken, JwtUtil.getExpiredTime(refreshToken));
     }
 
@@ -22,7 +23,7 @@ public class JwtService {
     }
 
     public boolean isTokenStored(String token) {
-        return refreshTokenRepository.findByKey(JwtUtil.getLoginEmail(token)).equals(JwtUtil.removeJwtPrefix(token));
+        return refreshTokenRepository.findByKey(JwtUtil.getLoginEmail(token)).equals(token);
     }
 
     public boolean isLogoutAccessToken(String accessToken) {
