@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import yeomeong.common.dto.kid.KidSummaryResponseDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
 import yeomeong.common.dto.member.TeacherSummaryResponseDto;
+import yeomeong.common.entity.member.Kid;
+import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.member.rtype;
 import yeomeong.common.entity.post.comment.DailyNoteComment;
 
@@ -17,8 +19,9 @@ import yeomeong.common.entity.post.comment.DailyNoteComment;
 public class DailyNoteChildCommentResponseDto {
     private Long id;
 
-    private TeacherSummaryResponseDto teacher;
-    private KidSummaryResponseDto kid;
+    private rtype role;
+    private String name;
+    private String picture;
 
     private Boolean isDeleted;
     @JsonIgnore
@@ -31,12 +34,16 @@ public class DailyNoteChildCommentResponseDto {
         this.id = dailyNoteComment.getId();
 
         if(dailyNoteComment.getMember().getRole() == rtype.ROLE_GUARDIAN) {
-            this.teacher = null;
-            this.kid = new KidSummaryResponseDto(dailyNoteComment.getDailyNote().getKid());
+            this.role = rtype.ROLE_GUARDIAN;
+            Kid kid = dailyNoteComment.getDailyNote().getKid();
+            this.name = kid.getName();
+            this.picture = kid.getPicture()==null?"": kid.getPicture();
         }
         else{
-            this.teacher = new TeacherSummaryResponseDto(dailyNoteComment.getMember());
-            this.kid = null;
+            this.role = rtype.ROLE_TEACHER;
+            Member teacher = dailyNoteComment.getMember();
+            this.name = teacher.getName();
+            this.picture = teacher.getPicture()==null?"": teacher.getPicture();
         }
 
         if(dailyNoteComment.getIsDeleted()) {
