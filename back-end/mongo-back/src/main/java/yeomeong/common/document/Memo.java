@@ -4,6 +4,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.*;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.IndexDirection;
@@ -48,7 +49,7 @@ public class Memo {
 
     @Builder
     public Memo(Long teacherId,
-        String updatedTime,
+        LocalDateTime updatedTime,
         String lesson,
         List<Kid> kids,
         List<Tag> tags,
@@ -56,8 +57,7 @@ public class Memo {
         this.teacherId = teacherId;
         this.createdTime = LocalDateTime.now(zoneKorea);
         if (updatedTime != null) {
-            LocalDateTime localDateTime = LocalDateTime.parse(updatedTime, formatter);
-            this.updatedTime = localDateTime.atZone(zoneKorea).toLocalDateTime();
+            this.updatedTime = updatedTime;
         } else {
             this.updatedTime = this.createdTime;
         }
