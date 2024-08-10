@@ -29,6 +29,22 @@ public class AttendanceService {
         return attendanceResponseDtos;
     }
 
+    public List<AttendanceResponseDto> getUncheckedAttendancesByBanId(Long banId, LocalDate localDate) {
+        List<AttendanceResponseDto> attendanceResponseDtos = new ArrayList<>();
+        attendanceRepository.findAttendancesByBanIdAndDateAndTypeIsNothing(banId, localDate).forEach(attendance ->
+            attendanceResponseDtos.add(AttendanceResponseDto.toAttendanceResponseDto(attendance))
+        );
+        return attendanceResponseDtos;
+    }
+
+    public List<AttendanceResponseDto> getCheckedAttendancesByBanId(Long banId, LocalDate localDate) {
+        List<AttendanceResponseDto> attendanceResponseDtos = new ArrayList<>();
+        attendanceRepository.findAttendancesByBanIdAndDateAndTypeIsNotNothing(banId, localDate).forEach(attendance ->
+            attendanceResponseDtos.add(AttendanceResponseDto.toAttendanceResponseDto(attendance))
+        );
+        return attendanceResponseDtos;
+    }
+
     @Transactional
     public void updateAttendances(AttendanceInfoChangeRequestDto changeRequestDto) {
         if(changeRequestDto.containsNull()) {
