@@ -3,6 +3,8 @@ package yeomeong.common.dto;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import yeomeong.common.document.Memo;
@@ -14,7 +16,7 @@ import java.util.List;
 
 @Getter
 public class MemoRequestDto {
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private String updatedTime;
 
     private String lesson;

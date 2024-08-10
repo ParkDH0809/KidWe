@@ -1,44 +1,43 @@
 package yeomeong.common.dto.post.dailynote.response;
 
-import java.time.LocalDateTime;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import yeomeong.common.dto.kid.KidDetailInfoResponseDto;
-import yeomeong.common.dto.member.MemberProfileResponseDto;
+import yeomeong.common.dto.member.TeacherSummaryResponseDto;
+import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.post.DailyNote;
 import yeomeong.common.entity.post.Post;
 import yeomeong.common.entity.post.comment.DailyNoteComment;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
-public class DailyNoteResponseDto {
+public class DailyNoteTeacherResponseDto {
     private Long id;
 
     private Post post;
-
-    private KidDetailInfoResponseDto kid;
-    private MemberProfileResponseDto writer;
-    private List<DailyNoteParentCommentResponseDto> comments;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime sendTime;
 
-    public DailyNoteResponseDto(DailyNote dailyNote) {
+    private TeacherSummaryResponseDto writer;
+    private List<DailyNoteParentCommentResponseDto> comments;
+
+    @Builder
+    public DailyNoteTeacherResponseDto(DailyNote dailyNote) {
         this.id = dailyNote.getId();
-
         this.post = dailyNote.getPost();
+        this.sendTime = dailyNote.getSendTime();
 
-        this.kid = KidDetailInfoResponseDto.toKidDetailInfoDto(dailyNote.getKid());
-        this.writer = MemberProfileResponseDto.toMemberProfileDto(dailyNote.getWriter());
+        this.writer = new TeacherSummaryResponseDto(dailyNote.getWriter());
         this.comments = new ArrayList<>();
         for(DailyNoteComment comment : dailyNote.getComments()){
             if(comment.getParentComment()==null){
                 comments.add(new DailyNoteParentCommentResponseDto(comment));
             }
         }
-
-        this.sendTime = dailyNote.getSendTime();
     }
 }

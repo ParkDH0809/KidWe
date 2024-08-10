@@ -1,6 +1,8 @@
 package yeomeong.common.dto.post.dailynote.request;
 
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import yeomeong.common.entity.member.Kid;
 import yeomeong.common.entity.member.Member;
@@ -13,6 +15,7 @@ public class DailyNoteRequestDto {
 
     private Long kidId;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime sendTime;
 
     public DailyNote toEntity(Kid kid,
