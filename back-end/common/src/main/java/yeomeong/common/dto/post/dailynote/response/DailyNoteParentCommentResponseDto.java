@@ -21,7 +21,7 @@ public class DailyNoteParentCommentResponseDto {
     private String content;
     private List<DailyNoteChildCommentResponseDto> childs;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-    private LocalDateTime updateTime;
+    private LocalDateTime createdTime;
 
     public DailyNoteParentCommentResponseDto(DailyNoteComment dailyNoteComment) {
         this.id = dailyNoteComment.getId();
@@ -36,6 +36,6 @@ public class DailyNoteParentCommentResponseDto {
         for(DailyNoteComment dailyNoteChildComment : dailyNoteComment.getReplies()){
             childs.add(new DailyNoteChildCommentResponseDto(dailyNoteChildComment));
         }
-        this.updateTime = dailyNoteComment.getUpdateTime();
+        this.createdTime = dailyNoteComment.getCreatedTime();
     }
 }

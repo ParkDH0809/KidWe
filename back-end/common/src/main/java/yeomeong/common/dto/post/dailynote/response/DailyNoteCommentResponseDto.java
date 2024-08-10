@@ -21,7 +21,7 @@ public class DailyNoteCommentResponseDto {
     private String content;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-    private LocalDateTime updateTime;
+    private LocalDateTime createdTime;
 
     public DailyNoteCommentResponseDto(DailyNoteComment dailyNoteComment) {
         this.id = dailyNoteComment.getId();
@@ -32,6 +32,6 @@ public class DailyNoteCommentResponseDto {
         else{
             this.content = dailyNoteComment.getContent();
         }
-        this.updateTime = dailyNoteComment.getUpdateTime();
+        this.createdTime = dailyNoteComment.getCreatedTime();
     }
 }

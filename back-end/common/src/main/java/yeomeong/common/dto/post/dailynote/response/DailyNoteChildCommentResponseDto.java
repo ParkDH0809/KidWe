@@ -18,7 +18,7 @@ public class DailyNoteChildCommentResponseDto {
     private final static String deletedMessage = "삭제된 댓글입니다";
     private String content;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-    private LocalDateTime updateTime;
+    private LocalDateTime createdTime;
 
     public DailyNoteChildCommentResponseDto(DailyNoteComment dailyNoteComment) {
         this.id = dailyNoteComment.getId();
@@ -29,6 +29,6 @@ public class DailyNoteChildCommentResponseDto {
         else{
             this.content = dailyNoteComment.getContent();
         }
-        this.updateTime = dailyNoteComment.getUpdateTime();
+        this.createdTime = dailyNoteComment.getCreatedTime();
     }
 }
