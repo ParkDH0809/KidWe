@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import yeomeong.common.dto.kid.KidBasicInfoResponseDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
 import yeomeong.common.dto.member.MemberSaveRequestDto;
+import yeomeong.common.dto.member.MemberUpdatePasswordRequestDto;
 import yeomeong.common.dto.member.MemberUpdateRequestDto;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.exception.CustomException;
@@ -53,6 +54,12 @@ public class MemberService {
         Member member = memberRepository.findById(memberUpdateRequestDto.getId())
             .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE));
         member.updateFromDto(memberUpdateRequestDto);
+    }
+
+    public void updateMemberPassword(MemberUpdatePasswordRequestDto memberUpdatePasswordRequestDto) {
+        Member member = memberRepository.findById(memberUpdatePasswordRequestDto.getId())
+            .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE));
+        member.setPassword(passwordEncoder.encode(memberUpdatePasswordRequestDto.getPassword()));
     }
 
     public void deleteMember(String email) {
