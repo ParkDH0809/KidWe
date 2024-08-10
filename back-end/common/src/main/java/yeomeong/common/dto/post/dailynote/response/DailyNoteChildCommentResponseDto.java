@@ -29,6 +29,6 @@ public class DailyNoteChildCommentResponseDto {
         else{
             this.content = dailyNoteComment.getContent();
         }
-        this.updatedAt = dailyNoteComment.getUpdatedAt();
+        this.updateTime = dailyNoteComment.getUpdatedAt();
     }
 }

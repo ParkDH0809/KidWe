@@ -27,12 +27,12 @@ public class DailyNoteTeacherResponseDto {
     private List<DailyNoteParentCommentResponseDto> comments;
 
     @Builder
-    public DailyNoteTeacherResponseDto(Member teacher, DailyNote dailyNote) {
+    public DailyNoteTeacherResponseDto(DailyNote dailyNote) {
         this.id = dailyNote.getId();
         this.post = dailyNote.getPost();
         this.sendTime = dailyNote.getSendTime();
 
-        this.writer = new TeacherSummaryResponseDto(teacher);
+        this.writer = new TeacherSummaryResponseDto(dailyNote.getWriter());
         this.comments = new ArrayList<>();
         for(DailyNoteComment comment : dailyNote.getComments()){
             if(comment.getParentComment()==null){

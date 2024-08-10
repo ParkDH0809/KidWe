@@ -31,11 +31,11 @@ public class DailyNoteGuardianResponseDto {
     private List<DailyNoteParentCommentResponseDto> comments;
 
     @Builder
-    public DailyNoteGuardianResponseDto(Kid kid, DailyNote dailyNote) {
+    public DailyNoteGuardianResponseDto(DailyNote dailyNote) {
         this.id = dailyNote.getId();
         this.post = dailyNote.getPost();
 
-        this.kid = new KidSummaryResponseDto(kid);
+        this.kid = new KidSummaryResponseDto(dailyNote.getKid());
         this.comments = new ArrayList<>();
         for(DailyNoteComment comment : dailyNote.getComments()){
             if(comment.getParentComment()==null){

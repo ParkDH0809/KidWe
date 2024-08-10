@@ -59,7 +59,7 @@ public class DailyNoteController {
 
     @Operation(summary = "특정 알림장 상세정보 조회 API", description = "특정 알림장의 상세정보를 반환합니다.")
     @GetMapping("/detail/{member_id}/{dailynote_id}")
-    public ResponseEntity<DailyNoteGuardianResponseDto> getDailyNote(@PathVariable("member_id") Long writerId,
+    public ResponseEntity<Object> getDailyNote(@PathVariable("member_id") Long writerId,
                                                                      @PathVariable("dailynote_id") Long id) {
         return ResponseEntity.ok(dailyNoteService.getDailyNote(writerId, id));
     }

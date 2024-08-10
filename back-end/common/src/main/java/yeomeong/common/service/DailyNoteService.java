@@ -47,12 +47,15 @@ public class DailyNoteService {
             () -> new CustomException(ErrorCode.NOT_FOUND_KID)
         );
         DailyNote createdDailyNote = dailyNoteRepository.save(dailyNoteCreateRequestDto.toEntity(kid, writer));
+        // 학부모라면
         if(writer.getRole() == rtype.ROLE_GUARDIAN){
-            return new DailyNoteGuardianResponseDto(kid, createdDailyNote);
+            return new DailyNoteGuardianResponseDto(createdDailyNote);
         }
+        // 선생님이라면
         else if (writer.getRole() == rtype.ROLE_TEACHER){
-            return new DailyNoteTeacherResponseDto(writer, createdDailyNote);
+            return new DailyNoteTeacherResponseDto(createdDailyNote);
         }
+        // 원장님이라면
         else {
             throw new CustomException(ErrorCode.UNAUTHORIZED_WRITER);
         }
@@ -96,31 +99,43 @@ public class DailyNoteService {
 
     // 알림장 상세정보 조회하기
     @Transactional
-    public DailyNoteGuardianResponseDto getDailyNote(Long memberId, Long id) {
+    public Object getDailyNote(Long memberId, Long id) {
         Member member = memberRepository.findById(memberId).orElseThrow(
             () -> new CustomException(ErrorCode.NOT_FOUND_ID)
         );
+        if(member.getRole() == rtype.ROLE_DIRECTOR){
+            throw new CustomException(ErrorCode.UNAUTHORIZED_WRITER);
+        }
 
         DailyNote dailyNote = dailyNoteRepository.findByDailyNoteId(id);
         if(dailyNote == null) throw new CustomException(ErrorCode.NOT_FOUND_DAILYNOTE_ID);
-        // 발신자거나
+        // 발신자인 경우
         if(dailyNote.getWriter().getId().equals(member.getId())) {
-            return new DailyNoteGuardianResponseDto(dailyNote);
-        }
-        // 전송시간이 지난 수신자거나
-        else{
-            if(member.getRole() == rtype.ROLE_TEACHER){
-                if(dailyNote.getWriter().getRole() != rtype.ROLE_GUARDIAN || dailyNote.getSendTime().isBefore(LocalDateTime.now())){
-                    throw new CustomException(ErrorCode.UNAUTHORIZED_WRITER);
-                }
+            // 학부모라면
+            if(member.getRole() == rtype.ROLE_GUARDIAN){
+                return new DailyNoteGuardianResponseDto(dailyNote);
             }
-            else if(member.getRole() == rtype.ROLE_GUARDIAN){
+            // 선생님이라면
+            else {
+                return new DailyNoteTeacherResponseDto(dailyNote);
+            }
+        }
+        // 전송시간이 지난 수신자인 경우
+        else{
+            if(member.getRole() == rtype.ROLE_GUARDIAN){
                 if(dailyNote.getWriter().getRole() != rtype.ROLE_TEACHER || dailyNote.getSendTime().isBefore(LocalDateTime.now())){
                     throw new CustomException(ErrorCode.UNAUTHORIZED_WRITER);
                 }
+                return new DailyNoteTeacherResponseDto(dailyNote);
+            }
+
+            else{
+                if(dailyNote.getWriter().getRole() != rtype.ROLE_GUARDIAN || dailyNote.getSendTime().isBefore(LocalDateTime.now())){
+                    throw new CustomException(ErrorCode.UNAUTHORIZED_WRITER);
+                }
+                return new DailyNoteTeacherResponseDto(dailyNote);
             }
         }
-        throw new CustomException(ErrorCode.UNAUTHORIZED_WRITER);
     }
 
     // 알림장 수정하기
