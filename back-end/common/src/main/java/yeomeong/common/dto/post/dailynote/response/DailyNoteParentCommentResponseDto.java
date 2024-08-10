@@ -36,6 +36,6 @@ public class DailyNoteParentCommentResponseDto {
         for(DailyNoteComment dailyNoteChildComment : dailyNoteComment.getReplies()){
             childs.add(new DailyNoteChildCommentResponseDto(dailyNoteChildComment));
         }
-        this.updateTime = dailyNoteComment.getUpdatedAt();
+        this.updateTime = dailyNoteComment.getUpdateTime();
     }
 }
