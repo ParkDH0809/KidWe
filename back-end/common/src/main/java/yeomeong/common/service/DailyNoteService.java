@@ -112,7 +112,7 @@ public class DailyNoteService {
         // 발신자인 경우
         if(dailyNote.getWriter().getId().equals(member.getId())) {
             // 학부모라면
-            if(member.getRole() == rtype.ROLE_GUARDIAN){
+            if(dailyNote.getWriter().getRole() == rtype.ROLE_GUARDIAN){
                 return new DailyNoteGuardianResponseDto(dailyNote);
             }
             // 선생님이라면
@@ -122,7 +122,7 @@ public class DailyNoteService {
         }
         // 전송시간이 지난 수신자인 경우
         else{
-            if(member.getRole() == rtype.ROLE_GUARDIAN){
+            if(dailyNote.getWriter().getRole() == rtype.ROLE_GUARDIAN){
                 if(dailyNote.getWriter().getRole() != rtype.ROLE_TEACHER || dailyNote.getSendTime().isBefore(LocalDateTime.now())){
                     throw new CustomException(ErrorCode.UNAUTHORIZED_WRITER);
                 }
