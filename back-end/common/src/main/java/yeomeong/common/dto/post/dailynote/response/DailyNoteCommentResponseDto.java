@@ -5,9 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import yeomeong.common.dto.kid.KidSummaryResponseDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
+import yeomeong.common.dto.member.TeacherSummaryResponseDto;
+import yeomeong.common.entity.member.rtype;
 import yeomeong.common.entity.post.comment.DailyNoteComment;
 
 @Getter
@@ -15,23 +19,38 @@ import yeomeong.common.entity.post.comment.DailyNoteComment;
 public class DailyNoteCommentResponseDto {
     private Long id;
 
-    private MemberProfileResponseDto member;
+    private TeacherSummaryResponseDto teacher;
+    private KidSummaryResponseDto kid;
 
+    private Boolean isDeleted;
+    @JsonIgnore
     private final static String deletedMessage = "삭제된 댓글입니다";
-    private String content;
 
+    private String content;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime createdTime;
 
     public DailyNoteCommentResponseDto(DailyNoteComment dailyNoteComment) {
         this.id = dailyNoteComment.getId();
-        this.member = MemberProfileResponseDto.toMemberProfileDto(dailyNoteComment.getMember());
+
+        if(dailyNoteComment.getMember().getRole() == rtype.ROLE_GUARDIAN) {
+            this.teacher = null;
+            this.kid = new KidSummaryResponseDto(dailyNoteComment.getDailyNote().getKid());
+        }
+        else{
+            this.teacher = new TeacherSummaryResponseDto(dailyNoteComment.getMember());
+            this.kid = null;
+        }
+
         if(dailyNoteComment.getIsDeleted()) {
+            this.isDeleted = true;
             this.content = deletedMessage;
         }
         else{
+            this.isDeleted = false;
             this.content = dailyNoteComment.getContent();
         }
+
         this.createdTime = dailyNoteComment.getCreatedTime();
     }
 }
