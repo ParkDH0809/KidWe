@@ -60,11 +60,12 @@ public class AnnouncementService {
                 metadata.setContentLength(image.getSize());
                 metadata.setContentType(image.getContentType());
 
+
                 String fileName = FileUtil.convertFileName(image);
 
                 try {
 
-                    s3Client.putObject(new PutObjectRequest(bucketName,fileName, image.getInputStream(),metadata));
+                    s3Client.putObject(new PutObjectRequest(bucketName, fileName, image.getInputStream(),metadata));
 
                 }
                 catch (Exception e){
@@ -157,10 +158,21 @@ public class AnnouncementService {
             }
         }
 
+        List<AnnouncementImage> announcementImages = announcement.getAnnouncementImages();
+
+        List<AnnouncementImageDto> images = new ArrayList<>();
+
+        if(announcementImages != null) {
+            for (AnnouncementImage image : announcementImages) {
+                images.add(new AnnouncementImageDto(image.getImageUrl()));
+            }
+        }
+
         // AnnouncementDetailDto를 생성하여 반환
         return new AnnouncementDetailDto(
                 announcement.getMember().getBan().getName(),
                 announcement.getPost(),
+                !images.isEmpty() ? images : null,
                 vote != null ? vote.getId() : null, // Vote가 없으면 null
                 voteItemDtoList, // VoteItemDto 리스트는 비어있을 수 있음
                 announcementCommentDto // CommentDto 리스트는 비어있을 수 있음

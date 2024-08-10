@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class AnnouncementListDto {
 
+    private Long announcementId;
     private String title;
     private String memberName;
     private String memberBan;
@@ -18,7 +19,8 @@ public class AnnouncementListDto {
     private int commentCnt;
 
 
-    public AnnouncementListDto(String title, String memberName, String memberBan, LocalDateTime createdDateTime, int commentCnt) {
+    public AnnouncementListDto(Long announcementId,String title, String memberName, String memberBan, LocalDateTime createdDateTime, int commentCnt) {
+        this.announcementId = announcementId;
         this.title = title;
         this.memberName = memberName;
         this.memberBan = memberBan;
@@ -26,7 +28,8 @@ public class AnnouncementListDto {
         this.commentCnt = commentCnt;
     }
 
-    public AnnouncementListDto(String title, String memberName, LocalDateTime createdDateTime, int commentCnt) {
+    public AnnouncementListDto(Long announcementId,String title, String memberName, LocalDateTime createdDateTime, int commentCnt) {
+        this.announcementId = announcementId;
         this.title = title;
         this.memberName = memberName;
         this.createdDate = createdDateTime;

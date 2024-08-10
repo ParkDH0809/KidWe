@@ -1,6 +1,8 @@
 package yeomeong.common.dto.post.dailynote.response;
 
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import yeomeong.common.dto.kid.KidBasicInfoResponseDto;
@@ -13,6 +15,7 @@ public class DailyNoteListItemResponseDto {
     private Long id;
     private KidBasicInfoResponseDto kid;
     private MemberProfileResponseDto writer;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime sendTime;
     private String stringSendTime;
 

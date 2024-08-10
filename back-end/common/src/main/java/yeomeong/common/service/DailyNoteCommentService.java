@@ -37,11 +37,8 @@ public class DailyNoteCommentService {
         if(member == null) throw new CustomException(ErrorCode.NOT_FOUND_ID);
         /////////////////////////////////////////////////////////////////////
         // 알림장을 열람할 수 있는 사람인가?
+        // 작성자이거나
         if(!dailyNote.getWriter().getId().equals(member.getId())) {
-            throw new CustomException(ErrorCode.UNAUTHORIZED_WRITER);
-        }
-        // 전송시간이 지난 수신자거나
-        else{
             if(member.getRole() == rtype.ROLE_TEACHER){
                 if(dailyNote.getWriter().getRole() != rtype.ROLE_GUARDIAN || dailyNote.getSendTime().isBefore(
                     LocalDateTime.now())){
