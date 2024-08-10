@@ -25,7 +25,6 @@ public class MemoService {
 
     private final MemoRepository memoRepository;
     private final TagRepository tagRepository;
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Transactional
     public List<Tag> updateTag(List<TagRequestDto> tagRequestDtos) {
@@ -107,7 +106,7 @@ public class MemoService {
         if (memo != null) {
             List<Tag> tags = updateTag(updatedMemoDto.getTags());
 
-            memo.setNewUpdatedTime(LocalDateTime.parse(updatedMemoDto.getUpdatedTime(), formatter));
+            memo.setNewUpdatedTime(LocalDateTime.parse(updatedMemoDto.getUpdatedTime()));
             memo.setNewLesson(updatedMemoDto.getLesson());
             memo.setNewKids(updatedMemoDto.getKids());
             memo.setNewTags(tags);

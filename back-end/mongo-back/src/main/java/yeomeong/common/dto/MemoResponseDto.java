@@ -1,6 +1,8 @@
 package yeomeong.common.dto;
 
 import java.time.format.DateTimeFormatter;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import yeomeong.common.document.Memo;
 import yeomeong.common.document.Tag;
@@ -17,21 +19,20 @@ public class MemoResponseDto {
 
     private Long teacherId;
 
-    private String updatedTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+    private LocalDateTime updatedTime;
 
     private String lesson;
     private List<Kid> kids;
     private List<TagResponseDto> tags;
     private String content;
 
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
     public MemoResponseDto(Memo memo) {
         this.id = memo.getId();
 
         this.teacherId = memo.getTeacherId();
 
-        this.updatedTime = memo.getUpdatedTime().format(formatter);
+        this.updatedTime = memo.getUpdatedTime();
 
         this.lesson = memo.getLesson();
         this.kids = memo.getKids();

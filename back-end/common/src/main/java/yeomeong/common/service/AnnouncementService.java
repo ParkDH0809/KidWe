@@ -60,11 +60,12 @@ public class AnnouncementService {
                 metadata.setContentLength(image.getSize());
                 metadata.setContentType(image.getContentType());
 
+
                 String fileName = FileUtil.convertFileName(image);
 
                 try {
 
-                    s3Client.putObject(new PutObjectRequest(bucketName,fileName, image.getInputStream(),metadata));
+                    s3Client.putObject(new PutObjectRequest(bucketName, fileName, image.getInputStream(),metadata));
 
                 }
                 catch (Exception e){

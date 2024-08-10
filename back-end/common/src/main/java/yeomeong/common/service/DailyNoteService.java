@@ -2,7 +2,6 @@ package yeomeong.common.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,7 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import yeomeong.common.dto.post.dailynote.request.DailyNoteRequestDto;
 import yeomeong.common.dto.post.dailynote.response.AutoCreateDailyNoteResponseDto;
 import yeomeong.common.dto.post.dailynote.response.DailyNoteListResponseDto;
-import yeomeong.common.dto.post.dailynote.response.DailyNoteResponseDto;
+import yeomeong.common.dto.post.dailynote.response.DailyNoteGuardianResponseDto;
+import yeomeong.common.dto.post.dailynote.response.DailyNoteTeacherResponseDto;
 import yeomeong.common.entity.Schedule;
 import yeomeong.common.entity.kindergarten.Ban;
 import yeomeong.common.entity.member.Kid;
@@ -39,7 +39,7 @@ public class DailyNoteService {
 
     // 알림장 생성하기
     @Transactional
-    public DailyNoteResponseDto createDailyNote(Long writerId, DailyNoteRequestDto dailyNoteCreateRequestDto) {
+    public Object createDailyNote(Long writerId, DailyNoteRequestDto dailyNoteCreateRequestDto) {
         Member writer = memberRepository.findById(writerId).orElseThrow(
             () -> new CustomException(ErrorCode.NOT_FOUND_WRITER)
         );
@@ -47,7 +47,15 @@ public class DailyNoteService {
             () -> new CustomException(ErrorCode.NOT_FOUND_KID)
         );
         DailyNote createdDailyNote = dailyNoteRepository.save(dailyNoteCreateRequestDto.toEntity(kid, writer));
-        return new DailyNoteResponseDto(createdDailyNote);
+        if(writer.getRole() == rtype.ROLE_GUARDIAN){
+            return new DailyNoteGuardianResponseDto(kid, createdDailyNote);
+        }
+        else if (writer.getRole() == rtype.ROLE_TEACHER){
+            return new DailyNoteTeacherResponseDto(writer, createdDailyNote);
+        }
+        else {
+            throw new CustomException(ErrorCode.UNAUTHORIZED_WRITER);
+        }
     }
 
     //월별 알림장 조회하기 - 학부모용
@@ -88,7 +96,7 @@ public class DailyNoteService {
 
     // 알림장 상세정보 조회하기
     @Transactional
-    public DailyNoteResponseDto getDailyNote(Long memberId, Long id) {
+    public DailyNoteGuardianResponseDto getDailyNote(Long memberId, Long id) {
         Member member = memberRepository.findById(memberId).orElseThrow(
             () -> new CustomException(ErrorCode.NOT_FOUND_ID)
         );
@@ -97,7 +105,7 @@ public class DailyNoteService {
         if(dailyNote == null) throw new CustomException(ErrorCode.NOT_FOUND_DAILYNOTE_ID);
         // 발신자거나
         if(dailyNote.getWriter().getId().equals(member.getId())) {
-            return new DailyNoteResponseDto(dailyNote);
+            return new DailyNoteGuardianResponseDto(dailyNote);
         }
         // 전송시간이 지난 수신자거나
         else{
@@ -117,7 +125,7 @@ public class DailyNoteService {
 
     // 알림장 수정하기
     @Transactional
-    public DailyNoteResponseDto updateDailyNote(Long writerId, Long id, DailyNoteRequestDto updatedDailyNoteRequsetDto) {
+    public DailyNoteGuardianResponseDto updateDailyNote(Long writerId, Long id, DailyNoteRequestDto updatedDailyNoteRequsetDto) {
         DailyNote oldDailyNote = dailyNoteRepository.findById(id).orElseThrow(
             () -> new CustomException(ErrorCode.NOT_FOUND_DAILYNOTE_ID)
         );
@@ -126,7 +134,7 @@ public class DailyNoteService {
         }
         oldDailyNote.setNewPost(updatedDailyNoteRequsetDto.getPost());
         oldDailyNote.setNewSendTime(updatedDailyNoteRequsetDto.getSendTime());
-        return new DailyNoteResponseDto(dailyNoteRepository.save(oldDailyNote));
+        return new DailyNoteGuardianResponseDto(dailyNoteRepository.save(oldDailyNote));
     }
 
     //알림장 삭제하기
