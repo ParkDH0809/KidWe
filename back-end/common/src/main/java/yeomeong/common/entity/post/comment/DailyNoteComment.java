@@ -34,8 +34,8 @@ public class DailyNoteComment {
     @OneToMany(mappedBy = "parentComment",cascade = CascadeType.ALL)
     private List<DailyNoteComment> replies;
 
-    private LocalDateTime createTime;
-    private LocalDateTime updateTime;
+    private LocalDateTime createdTime;
+    private LocalDateTime updatedTime;
     private Boolean isDeleted;
 
     @Builder
@@ -45,8 +45,8 @@ public class DailyNoteComment {
         this.content = content;
         this.parentComment = parentComment;
         this.replies = new ArrayList<>();
-        this.createTime = LocalDateTime.now();
-        this.updateTime = this.createTime;
+        this.createdTime = LocalDateTime.now();
+        this.updatedTime = this.createdTime;
         this.isDeleted = false;
     }
 
@@ -55,7 +55,7 @@ public class DailyNoteComment {
     }
 
     public void update(){
-        this.updateTime = LocalDateTime.now();
+        this.updatedTime = LocalDateTime.now();
     }
 
     public void delete(){

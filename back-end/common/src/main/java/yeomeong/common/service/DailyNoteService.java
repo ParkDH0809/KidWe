@@ -103,12 +103,10 @@ public class DailyNoteService {
         Member member = memberRepository.findById(memberId).orElseThrow(
             () -> new CustomException(ErrorCode.NOT_FOUND_ID)
         );
-        if(member.getRole() == rtype.ROLE_DIRECTOR){
-            throw new CustomException(ErrorCode.UNAUTHORIZED_WRITER);
-        }
 
         DailyNote dailyNote = dailyNoteRepository.findByDailyNoteId(id);
         if(dailyNote == null) throw new CustomException(ErrorCode.NOT_FOUND_DAILYNOTE_ID);
+
         // 발신자인 경우
         if(dailyNote.getWriter().getId().equals(member.getId())) {
             // 학부모라면
@@ -116,22 +114,25 @@ public class DailyNoteService {
                 return new DailyNoteGuardianResponseDto(dailyNote);
             }
             // 선생님이라면
-            else {
+            else if(dailyNote.getWriter().getRole() == rtype.ROLE_TEACHER){
                 return new DailyNoteTeacherResponseDto(dailyNote);
+            }
+            else {
+                throw new CustomException(ErrorCode.UNAUTHORIZED_WRITER);
             }
         }
         // 전송시간이 지난 수신자인 경우
         else{
-            if(dailyNote.getWriter().getRole() == rtype.ROLE_GUARDIAN){
+            if(member.getRole() == rtype.ROLE_GUARDIAN){
                 if(dailyNote.getWriter().getRole() != rtype.ROLE_TEACHER || dailyNote.getSendTime().isBefore(LocalDateTime.now())){
-                    throw new CustomException(ErrorCode.UNAUTHORIZED_WRITER);
+                    throw new CustomException(ErrorCode.UNAUTHORIZED_RECEIVER);
                 }
                 return new DailyNoteTeacherResponseDto(dailyNote);
             }
 
             else{
                 if(dailyNote.getWriter().getRole() != rtype.ROLE_GUARDIAN || dailyNote.getSendTime().isBefore(LocalDateTime.now())){
-                    throw new CustomException(ErrorCode.UNAUTHORIZED_WRITER);
+                    throw new CustomException(ErrorCode.UNAUTHORIZED_RECEIVER);
                 }
                 return new DailyNoteTeacherResponseDto(dailyNote);
             }
