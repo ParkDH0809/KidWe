@@ -12,6 +12,7 @@ import yeomeong.common.entity.post.comment.DailyNoteComment;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -24,6 +25,7 @@ public class DailyNoteTeacherResponseDto {
     private LocalDateTime sendTime;
 
     private TeacherSummaryResponseDto writer;
+    private Long commentCount;
     private List<DailyNoteParentCommentResponseDto> comments;
 
     @Builder
@@ -39,5 +41,11 @@ public class DailyNoteTeacherResponseDto {
                 comments.add(new DailyNoteParentCommentResponseDto(comment));
             }
         }
+        Collections.sort(comments, (a, b) -> {
+            return a.getCreatedTime().isEqual(b.getCreatedTime()) ? 1 : -1;
+        });
+        commentCount = comments.stream()
+                .filter(comment -> !comment.getIsDeleted())
+                .count();
     }
 }

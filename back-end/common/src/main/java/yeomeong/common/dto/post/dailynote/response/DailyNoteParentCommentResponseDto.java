@@ -2,6 +2,8 @@ package yeomeong.common.dto.post.dailynote.response;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -11,6 +13,8 @@ import lombok.NoArgsConstructor;
 import yeomeong.common.dto.kid.KidSummaryResponseDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
 import yeomeong.common.dto.member.TeacherSummaryResponseDto;
+import yeomeong.common.entity.member.Kid;
+import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.member.rtype;
 import yeomeong.common.entity.post.comment.DailyNoteComment;
 
@@ -19,8 +23,9 @@ import yeomeong.common.entity.post.comment.DailyNoteComment;
 public class DailyNoteParentCommentResponseDto {
     private Long id;
 
-    private TeacherSummaryResponseDto teacher;
-    private KidSummaryResponseDto kid;
+    private rtype role;
+    private String name;
+    private String picture;
 
     private Boolean isDeleted;
     @JsonIgnore
@@ -34,12 +39,16 @@ public class DailyNoteParentCommentResponseDto {
     public DailyNoteParentCommentResponseDto(DailyNoteComment dailyNoteComment) {
         this.id = dailyNoteComment.getId();
         if(dailyNoteComment.getMember().getRole() == rtype.ROLE_GUARDIAN) {
-            this.teacher = null;
-            this.kid = new KidSummaryResponseDto(dailyNoteComment.getDailyNote().getKid());
+            this.role = rtype.ROLE_GUARDIAN;
+            Kid kid = dailyNoteComment.getDailyNote().getKid();
+            this.name = kid.getName();
+            this.picture = kid.getPicture()==null?"": kid.getPicture();
         }
         else{
-            this.teacher = new TeacherSummaryResponseDto(dailyNoteComment.getMember());
-            this.kid = null;
+            this.role = rtype.ROLE_TEACHER;
+            Member teacher = dailyNoteComment.getMember();
+            this.name = teacher.getName();
+            this.picture = teacher.getPicture()==null?"": teacher.getPicture();
         }
 
         if(dailyNoteComment.getIsDeleted()) {
@@ -55,6 +64,9 @@ public class DailyNoteParentCommentResponseDto {
         for(DailyNoteComment dailyNoteChildComment : dailyNoteComment.getReplies()){
             childs.add(new DailyNoteChildCommentResponseDto(dailyNoteChildComment));
         }
+        Collections.sort(childs, (a, b) -> {
+            return a.getCreatedTime().isEqual(b.getCreatedTime()) ? 1 : -1;
+        });
         this.createdTime = dailyNoteComment.getCreatedTime();
     }
 }

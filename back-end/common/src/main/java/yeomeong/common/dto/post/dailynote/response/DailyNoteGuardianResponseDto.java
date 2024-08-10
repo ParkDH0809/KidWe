@@ -3,6 +3,7 @@ package yeomeong.common.dto.post.dailynote.response;
 import java.time.LocalDateTime;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -28,21 +29,28 @@ public class DailyNoteGuardianResponseDto {
     private LocalDateTime sendTime;
 
     private KidSummaryResponseDto kid;
+    private Long commentCount;
     private List<DailyNoteParentCommentResponseDto> comments;
 
     @Builder
     public DailyNoteGuardianResponseDto(DailyNote dailyNote) {
         this.id = dailyNote.getId();
         this.post = dailyNote.getPost();
+        this.sendTime = dailyNote.getSendTime();
 
         this.kid = new KidSummaryResponseDto(dailyNote.getKid());
         this.comments = new ArrayList<>();
+
         for(DailyNoteComment comment : dailyNote.getComments()){
             if(comment.getParentComment()==null){
                 comments.add(new DailyNoteParentCommentResponseDto(comment));
             }
         }
-
-        this.sendTime = dailyNote.getSendTime();
+        Collections.sort(comments, (a, b) -> {
+            return a.getCreatedTime().isEqual(b.getCreatedTime()) ? 1 : -1;
+        });
+        commentCount = comments.stream()
+                .filter(comment -> !comment.getIsDeleted())
+                .count();
     }
 }
