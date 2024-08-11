@@ -2,10 +2,20 @@ package yeomeong.common.dto.post.dailynote.response;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import yeomeong.common.dto.kid.KidSummaryResponseDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
+import yeomeong.common.dto.member.TeacherSummaryResponseDto;
+import yeomeong.common.entity.member.Kid;
+import yeomeong.common.entity.member.Member;
+import yeomeong.common.entity.member.rtype;
 import yeomeong.common.entity.post.comment.DailyNoteComment;
 
 @Getter
@@ -13,26 +23,50 @@ import yeomeong.common.entity.post.comment.DailyNoteComment;
 public class DailyNoteParentCommentResponseDto {
     private Long id;
 
-    private MemberProfileResponseDto member;
+    private rtype role;
+    private String name;
+    private String picture;
 
+    private Boolean isDeleted;
+    @JsonIgnore
     private final static String deletedMessage = "삭제된 댓글입니다";
+
     private String content;
     private List<DailyNoteChildCommentResponseDto> childs;
-    private LocalDateTime updatedAt;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+    private LocalDateTime createdTime;
 
     public DailyNoteParentCommentResponseDto(DailyNoteComment dailyNoteComment) {
         this.id = dailyNoteComment.getId();
-        this.member = MemberProfileResponseDto.toMemberProfileDto(dailyNoteComment.getMember());
+        if(dailyNoteComment.getMember().getRole() == rtype.ROLE_GUARDIAN) {
+            this.role = rtype.ROLE_GUARDIAN;
+            Kid kid = dailyNoteComment.getDailyNote().getKid();
+            this.name = kid.getName();
+            this.picture = kid.getPicture()==null?"": kid.getPicture();
+        }
+        else{
+            this.role = rtype.ROLE_TEACHER;
+            Member teacher = dailyNoteComment.getMember();
+            this.name = teacher.getName();
+            this.picture = teacher.getPicture()==null?"": teacher.getPicture();
+        }
+
         if(dailyNoteComment.getIsDeleted()) {
+            this.isDeleted = true;
             this.content = deletedMessage;
         }
         else{
+            this.isDeleted = false;
             this.content = dailyNoteComment.getContent();
         }
+
         childs = new ArrayList<>();
         for(DailyNoteComment dailyNoteChildComment : dailyNoteComment.getReplies()){
             childs.add(new DailyNoteChildCommentResponseDto(dailyNoteChildComment));
         }
-        this.updatedAt = dailyNoteComment.getUpdatedAt();
+        Collections.sort(childs, (a, b) -> {
+            return a.getCreatedTime().isEqual(b.getCreatedTime()) ? 1 : -1;
+        });
+        this.createdTime = dailyNoteComment.getCreatedTime();
     }
 }

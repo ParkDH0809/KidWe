@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import yeomeong.common.dto.kid.KidBasicInfoResponseDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
+import yeomeong.common.dto.member.MemberUpdatePasswordRequestDto;
 import yeomeong.common.dto.member.MemberUpdateRequestDto;
 import yeomeong.common.service.MemberService;
 
