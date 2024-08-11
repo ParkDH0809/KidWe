@@ -9,18 +9,17 @@ import java.time.LocalDateTime;
 public class MedicationByKidDto {
 
     private Long medicationId;
+    private String kidPicture;
     private String kidName;
     private String banName;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy년 M월 d일")
     private LocalDate medicationExecuteDate;
-    private boolean isDeleted;
 
 
-    public MedicationByKidDto(Long id,String kidName, String banName, LocalDate medicationExecuteDate, boolean isDeleted) {
+    public MedicationByKidDto(Long id,String kidName, String banName, LocalDate medicationExecuteDate) {
         this.medicationId = id;
         this.kidName = kidName;
         this.banName = banName;
         this.medicationExecuteDate = medicationExecuteDate;
-        this.isDeleted = isDeleted;
     }
 }

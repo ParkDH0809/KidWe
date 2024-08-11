@@ -2,9 +2,11 @@ package yeomeong.common.entity.post.comment;
 
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import yeomeong.common.entity.post.Announcement;
 
 import java.time.LocalDateTime;
@@ -34,6 +36,9 @@ public class AnnouncementComment {
     private List<AnnouncementComment> replies =new ArrayList<>();
 
     private LocalDateTime localDateTime;
+
+    @ColumnDefault("false")
+    private boolean isDeleted;
 
 
     public AnnouncementComment(Long memberId, String content, Announcement announcement) {

@@ -17,18 +17,17 @@ import java.util.Date;
 public class MedicationByKidAndMonthDto {
 
     private Long medicationId;
+    private String kidPicture;
     private String kidName;
     private String banName;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy년 M월 d일")
     private LocalDate medicationExecuteDate;
-    private boolean isDeleted;
 
     @QueryProjection
-    public MedicationByKidAndMonthDto(Long medicationId, String kidName, String banName, LocalDate localDate, boolean isDeleted ) {
+    public MedicationByKidAndMonthDto(Long medicationId, String kidName, String banName, LocalDate localDate ) {
         this.medicationId = medicationId;
         this.kidName = kidName;
         this.banName = banName;
         this.medicationExecuteDate = localDate;
-        this.isDeleted = isDeleted;
     }
 }

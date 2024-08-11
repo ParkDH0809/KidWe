@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.post.comment.AnnouncementComment;
 
@@ -41,6 +42,8 @@ public class  Announcement {
 
     private LocalDateTime createdTime;
 
+    @ColumnDefault("false")
+    private boolean isDeleted;
 
     public Announcement(Post post, Member member, LocalDateTime localDateTime) {
         this.post = post;

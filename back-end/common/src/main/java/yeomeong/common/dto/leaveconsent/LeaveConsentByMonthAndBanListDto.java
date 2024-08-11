@@ -11,10 +11,12 @@ public class LeaveConsentByMonthAndBanListDto {
 
 
     private Long leaveConsentId;
+    private String kidPicture;
     private String kidName;
     private String banName;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy년 M월 d일")
     private LocalDate leaveDate;
+
 
 
     @QueryProjection
