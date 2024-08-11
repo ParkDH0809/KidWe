@@ -69,9 +69,9 @@ public class Memo {
         this.content = content;
     }
 
-    public void setNewUpdatedTime(LocalDateTime newUpdatedTime) {
-        this.updatedTime = updatedTime == null? this.updatedTime: this.createdTime;
-        this.date = this.updatedTime.toString().split("T")[0];
+    public void setNewUpdatedTime(LocalDateTime updatedTime) {
+        this.updatedTime = updatedTime;
+        this.date = this.updatedTime.toString().split(" ")[0];
     }
 
     public void setNewLesson(String newLesson) {
