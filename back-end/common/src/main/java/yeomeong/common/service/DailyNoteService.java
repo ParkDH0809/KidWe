@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import yeomeong.common.dto.post.dailynote.request.DailyNoteRequestDto;
 import yeomeong.common.dto.post.dailynote.response.AutoCreateDailyNoteResponseDto;
 import yeomeong.common.dto.post.dailynote.response.DailyNoteListResponseDto;
@@ -39,14 +40,24 @@ public class DailyNoteService {
 
     // 알림장 생성하기
     @Transactional
-    public Object createDailyNote(Long writerId, DailyNoteRequestDto dailyNoteCreateRequestDto) {
+    public Object createDailyNote(Long writerId,
+                                  DailyNoteRequestDto dailyNoteCreateRequestDto,
+                                  List<MultipartFile> images) {
         Member writer = memberRepository.findById(writerId).orElseThrow(
             () -> new CustomException(ErrorCode.NOT_FOUND_WRITER)
         );
         Kid kid = kidRepository.findById(dailyNoteCreateRequestDto.getKidId()).orElseThrow(
             () -> new CustomException(ErrorCode.NOT_FOUND_KID)
         );
+
         DailyNote createdDailyNote = dailyNoteRepository.save(dailyNoteCreateRequestDto.toEntity(kid, writer));
+
+        if(images != null && !images.isEmpty()) {
+            for (MultipartFile image : images) {
+
+            }
+        }
+
         // 학부모라면
         if(writer.getRole() == rtype.ROLE_GUARDIAN){
             return new DailyNoteGuardianResponseDto(createdDailyNote);
