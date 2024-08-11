@@ -19,7 +19,6 @@ public class MemoRequestDto {
     private List<TagRequestDto> tags;
     private String content;
 
-
     public Memo toDocument(Long teacherId) {
         List<Tag> tags = new ArrayList<>();
         if (this.tags != null && !this.tags.isEmpty()) {

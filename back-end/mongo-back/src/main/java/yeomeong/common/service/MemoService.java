@@ -106,7 +106,7 @@ public class MemoService {
         if (memo != null) {
             List<Tag> tags = updateTag(updatedMemoDto.getTags());
 
-            memo.setNewUpdatedTime(updatedMemoDto.getUpdatedTime());
+            if(updatedMemoDto.getUpdatedTime() != null) memo.setNewUpdatedTime(updatedMemoDto.getUpdatedTime());
             memo.setNewLesson(updatedMemoDto.getLesson());
             memo.setNewKids(updatedMemoDto.getKids());
             memo.setNewTags(tags);
