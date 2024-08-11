@@ -28,7 +28,7 @@ public class DailyNoteController {
     public ResponseEntity<Object> createDailyNote(
         @PathVariable("member_id") Long writerId,
         @RequestPart(value = "images", required = false) List<MultipartFile> images ,
-        @RequestPart("dto") DailyNoteRequestDto dailyNoteCreateRequestDto) {
+        @RequestPart("dailynote") DailyNoteRequestDto dailyNoteCreateRequestDto) {
         return ResponseEntity.ok(dailyNoteService.createDailyNote(writerId, dailyNoteCreateRequestDto, images));
     }
 
