@@ -33,10 +33,13 @@ public class MenuService {
 
 
     //일자별 메뉴 가져오기
-    public MenuByDayResponseDto getMenuByDay(
-            MenuByDayRequestDto menuByDayRequestDto) {
+    public MenuByDayResponseDto getMenuByDay(MenuByDayRequestDto menuByDayRequestDto) {
         //메뉴 가져오기
         MenuByDayResponseDto menuByDay = menuRepository.getMenuByDay(menuByDayRequestDto.getDay(), menuByDayRequestDto.getKindergartenId());
+
+        if(menuByDay == null ){
+            return menuByDay;
+        }
 
         //해당 유치원의 모든 아이
         List<Kid> allKidsByKindergarten = kidRepository.findAllById(menuByDayRequestDto.getKindergartenId());
