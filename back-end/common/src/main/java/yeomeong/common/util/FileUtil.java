@@ -3,16 +3,15 @@ package yeomeong.common.util;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.UUID;
 
 public class FileUtil {
 
 
-    public static String convertFileName(MultipartFile file) throws Exception {
+    private static String convertFileName(MultipartFile file) throws Exception {
         if(file.isEmpty())
             throw new Exception("파일이 비어 있어요 유유");
 
@@ -35,7 +34,7 @@ public class FileUtil {
 
         s3Client.putObject(new PutObjectRequest(bucketName, fileName, file.getInputStream(), metadata));
 
-        return s3Client.getUrl(bucketName, fileName).toString();
+        return fileName;
     }
 
 

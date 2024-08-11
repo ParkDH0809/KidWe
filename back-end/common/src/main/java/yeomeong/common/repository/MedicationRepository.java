@@ -22,6 +22,8 @@ import yeomeong.common.util.FileUtil;
 import java.time.LocalDate;
 import java.util.List;
 
+import static yeomeong.common.util.FileUtil.uploadFileToS3;
+
 @Repository
 @RequiredArgsConstructor
 
@@ -111,25 +113,10 @@ public class MedicationRepository {
 
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("해당 맴버가 없습니다."));
 
-        String medicineName = FileUtil.convertFileName(medicineImage);
+        String medicineUrl = uploadFileToS3(s3Client, bucketName, medicineImage);
 
-        ObjectMetadata objectMetadataOfMedicine = new ObjectMetadata();
-        objectMetadataOfMedicine.setContentLength(medicineImage.getSize());
-        objectMetadataOfMedicine.setContentType(medicineImage.getContentType());
+        String signUrl = uploadFileToS3(s3Client,bucketName,signImage);
 
-        s3Client.putObject(new PutObjectRequest(bucketName, medicineName, medicineImage.getInputStream(), objectMetadataOfMedicine));
-
-        String sighName = FileUtil.convertFileName(signImage);
-
-        ObjectMetadata objectMetadataOfSign = new ObjectMetadata();
-        objectMetadataOfSign.setContentType(signImage.getContentType());
-        objectMetadataOfSign.setContentLength(signImage.getSize());
-
-        s3Client.putObject(new PutObjectRequest(bucketName, sighName, signImage.getInputStream(), objectMetadataOfSign));
-
-
-        String medicineUrl = s3Client.getUrl(bucketName, medicineName).toString();
-        String signUrl = s3Client.getUrl(bucketName, sighName).toString();
 
         Medication medication =new Medication(
                 medicationCreateDto.getMedicineName(),
@@ -162,6 +149,5 @@ public class MedicationRepository {
 
         em.persist(medication);
 
-        medication = em.find(Medication.class, medicationId);
     }
 }
