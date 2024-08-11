@@ -8,7 +8,6 @@ public class MemberUpdateRequestDto {
     Long id;
     String name;
     String tel;
-    String email;
     String picture;
     String password;
 
