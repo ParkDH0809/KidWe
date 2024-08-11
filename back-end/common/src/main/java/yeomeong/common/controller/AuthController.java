@@ -9,7 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import yeomeong.common.dto.auth.LoginRequestDto;
 import yeomeong.common.dto.auth.RefreshResponseDto;
 import yeomeong.common.dto.member.MemberSaveRequestDto;
@@ -35,8 +37,10 @@ public class AuthController {
 
     @Operation(summary = "회원가입", description = "회원가입을 합니다.")
     @PostMapping("/signup")
-    public ResponseEntity<Void> signup(@RequestBody MemberSaveRequestDto memberSaveRequestDto) {
-        memberService.joinMember(memberSaveRequestDto);
+    public ResponseEntity<Void> signup(
+            @RequestPart("dto") MemberSaveRequestDto memberSaveRequestDto,
+            @RequestPart(required = false) MultipartFile picture) {
+        memberService.joinMember(memberSaveRequestDto, picture);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
