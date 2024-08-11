@@ -28,7 +28,7 @@ public class DailyNoteTeacherResponseDto {
     private TeacherSummaryResponseDto writer;
     private Long commentCount;
     private List<DailyNoteParentCommentResponseDto> comments;
-    
+
     private List<String> tumbnails;
     private List<String> images;
 
