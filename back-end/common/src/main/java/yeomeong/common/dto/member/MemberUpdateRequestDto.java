@@ -10,5 +10,6 @@ public class MemberUpdateRequestDto {
     String tel;
     String email;
     String picture;
+    String password;
 
 }

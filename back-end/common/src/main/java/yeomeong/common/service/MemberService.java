@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import yeomeong.common.dto.kid.KidBasicInfoResponseDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
 import yeomeong.common.dto.member.MemberSaveRequestDto;
+import yeomeong.common.dto.member.MemberUpdatePasswordRequestDto;
 import yeomeong.common.dto.member.MemberUpdateRequestDto;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.exception.CustomException;
@@ -52,6 +53,9 @@ public class MemberService {
     public void updateMemberProfile(MemberUpdateRequestDto memberUpdateRequestDto) {
         Member member = memberRepository.findById(memberUpdateRequestDto.getId())
             .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE));
+        if (memberUpdateRequestDto.getPassword() != null) {
+            member.setPassword(passwordEncoder.encode(memberUpdateRequestDto.getPassword()));
+        }
         member.updateFromDto(memberUpdateRequestDto);
     }
 

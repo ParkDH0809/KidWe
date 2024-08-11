@@ -64,6 +64,7 @@ public class AnnouncementService {
                 metadata.setContentLength(image.getSize());
                 metadata.setContentType(image.getContentType());
 
+
                 String fileName = FileUtil.convertFileName(image);
 
                 try {
