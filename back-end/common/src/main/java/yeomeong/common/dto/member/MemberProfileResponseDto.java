@@ -13,6 +13,7 @@ public class MemberProfileResponseDto {
     private String name;
     private String email;
     private String tel;
+    private String picture;
     private rtype role;
 
     public static MemberProfileResponseDto toMemberProfileDto(Member member) {
@@ -22,6 +23,7 @@ public class MemberProfileResponseDto {
             .name(member.getName())
             .email(member.getEmail())
             .tel(member.getTel())
+            .picture(member.getPicture())
             .role(member.getRole())
             .build();
     }

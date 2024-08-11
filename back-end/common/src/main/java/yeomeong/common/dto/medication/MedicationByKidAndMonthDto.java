@@ -24,8 +24,9 @@ public class MedicationByKidAndMonthDto {
     private LocalDate medicationExecuteDate;
 
     @QueryProjection
-    public MedicationByKidAndMonthDto(Long medicationId, String kidName, String banName, LocalDate localDate ) {
+    public MedicationByKidAndMonthDto(Long medicationId, String kidPicture, String kidName, String banName, LocalDate localDate ) {
         this.medicationId = medicationId;
+        this.kidPicture = kidPicture;
         this.kidName = kidName;
         this.banName = banName;
         this.medicationExecuteDate = localDate;

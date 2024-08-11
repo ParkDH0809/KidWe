@@ -14,7 +14,6 @@ public class KidUpdateInfoRequestDto {
     LocalDate birthday;
     gtype gender;
     List<String> allergies;
-    MultipartFile picture;
     Long banId;
     Long kindergartenId;
 

@@ -18,17 +18,16 @@ public class MemberSaveRequestDto {
     private String tel;
     private String email;
     private String password;
-    private String picture;
     private String role;
 
-    public static Member toMemberEntity(MemberSaveRequestDto memberSaveRequestDto) {
+    public static Member toMemberEntity(MemberSaveRequestDto memberSaveRequestDto, String picture) {
         return Member.builder()
             .name(memberSaveRequestDto.getName())
             .tel(memberSaveRequestDto.getTel())
             .email(memberSaveRequestDto.getEmail())
             .password(memberSaveRequestDto.getPassword())
             .role(rtype.valueOf(memberSaveRequestDto.getRole()))
-            .picture(memberSaveRequestDto.getPicture())
+            .picture(picture)
             .memberStatus(atype.NOTHING)
             .build();
     }

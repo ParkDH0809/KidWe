@@ -10,11 +10,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import yeomeong.common.dto.kid.KidBasicInfoResponseDto;
+import org.springframework.web.multipart.MultipartFile;
+import yeomeong.common.dto.kid.KidDetailInfoResponseDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
 import yeomeong.common.dto.member.MemberUpdateRequestDto;
 import yeomeong.common.service.MemberService;
-import yeomeong.common.util.FileUtil;
 
 @Slf4j
 @RestController("/members")
@@ -22,14 +22,9 @@ import yeomeong.common.util.FileUtil;
 public class MemberController {
 
     final MemberService memberService;
-    private final AmazonS3 s3Client;
 
-    @Value("${aws.s3.bucket-name}")
-    private String bucketName;
-
-    public MemberController(MemberService memberService, AmazonS3 s3Client) {
+    public MemberController(MemberService memberService) {
         this.memberService = memberService;
-        this.s3Client = s3Client;
     }
 
     @Operation(summary = "사용자 조회", description = "특정 사용자 정보를 조회합니다.")
@@ -48,15 +43,15 @@ public class MemberController {
     @Operation(summary = "사용자 정보 수정", description = "특정 사용자 정보를 수정합니다.")
     @PatchMapping("/profile")
     public ResponseEntity<Void> updateMemberProfile(
-        @RequestBody MemberUpdateRequestDto memberUpdateRequestDto) {
-        String picture = FileUtil.uploadFileToS3(s3Client, bucketName, memberUpdateRequestDto.getPicture());
+            @RequestPart("dto") MemberUpdateRequestDto memberUpdateRequestDto,
+            @RequestPart(required = false) MultipartFile picture) {
         memberService.updateMemberProfile(memberUpdateRequestDto, picture);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @Operation(summary = "사용자 자녀 조회", description = "부모의 자녀 정보를 조회합니다.")
     @GetMapping("/children")
-    public ResponseEntity<List<KidBasicInfoResponseDto>> getChildrenByMember(Authentication authentication) {
+    public ResponseEntity<List<KidDetailInfoResponseDto>> getChildrenByMember(Authentication authentication) {
         return ResponseEntity.status(HttpStatus.OK).body(memberService.getChildrenByMember(authentication.getName()));
     }
 
