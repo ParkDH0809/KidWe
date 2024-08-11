@@ -6,10 +6,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import yeomeong.common.dto.kid.KidDetailInfoResponseDto;
 import yeomeong.common.dto.kid.KidUpdateInfoRequestDto;
 import yeomeong.common.service.KidService;
-import yeomeong.common.util.FileUtil;
 
 @RestController
 @RequestMapping("/kids")
@@ -35,8 +35,9 @@ public class KidController {
 
     @Operation(summary = "아이 정보 변경 API", description = "특정 아이 정보를 변경합니다.")
     @PatchMapping
-    public ResponseEntity<Void> updateKid(@RequestBody KidUpdateInfoRequestDto kidUpdateInfoRequestDto) {
-        String picture = FileUtil.uploadFileToS3(s3Client, bucketName, kidUpdateInfoRequestDto.getPicture());
+    public ResponseEntity<Void> updateKid(
+        @RequestPart("dto") KidUpdateInfoRequestDto kidUpdateInfoRequestDto,
+        @RequestPart(required = false) MultipartFile picture) {
         kidService.updateKidInfo(kidUpdateInfoRequestDto, picture);
         return ResponseEntity.ok().build();
     }

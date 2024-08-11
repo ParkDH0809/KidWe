@@ -1,9 +1,12 @@
 package yeomeong.common.service;
 
+import com.amazonaws.services.s3.AmazonS3;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import yeomeong.common.dto.approval.AcceptRequestDto;
 import yeomeong.common.dto.approval.ApprovalRequestDto;
 import yeomeong.common.dto.approval.PendingKidResponseDto;
@@ -21,6 +24,7 @@ import yeomeong.common.repository.KidMemberRepository;
 import yeomeong.common.repository.KidRepository;
 import yeomeong.common.repository.KindergartenRepository;
 import yeomeong.common.repository.MemberRepository;
+import yeomeong.common.util.FileUtil;
 
 @Service
 public class ApprovalService {
@@ -31,15 +35,21 @@ public class ApprovalService {
     private final KidRepository kidRepository;
     private final KindergartenRepository kindergartenRepository;
     private final KidMemberRepository kidMemberRepository;
+    private final AmazonS3 amazonS3;
+
+    @Value("${aws.s3.bucket-name}")
+    private String bucketName;
 
     public ApprovalService(ApprovalRepository approvalRepository, MemberRepository memberRepository, BanRepository banRepository,
-        KidRepository kidRepository, KindergartenRepository kindergartenRepository, KidMemberRepository kidMemberRepository) {
+        KidRepository kidRepository, KindergartenRepository kindergartenRepository, KidMemberRepository kidMemberRepository,
+        AmazonS3 amazonS3) {
         this.approvalRepository = approvalRepository;
         this.memberRepository = memberRepository;
         this.banRepository = banRepository;
         this.kidRepository = kidRepository;
         this.kindergartenRepository = kindergartenRepository;
         this.kidMemberRepository = kidMemberRepository;
+        this.amazonS3 = amazonS3;
     }
 
     public void applyForKindergartenByTeacher(TeacherJoinKindergartenRequestDto teacherJoinRequestDto) {
@@ -56,8 +66,12 @@ public class ApprovalService {
     }
 
     @Transactional
-    public void applyForKindergartenByGuardian(KidJoinKindergartenRequestDto kidJoinKindergartenRequestDto) {
-        long kidId = kidRepository.save(KidJoinKindergartenRequestDto.toKidEntity(kidJoinKindergartenRequestDto)).getId();
+    public void applyForKindergartenByGuardian(KidJoinKindergartenRequestDto kidJoinKindergartenRequestDto, MultipartFile picture) {
+        String pictureName = null;
+        if (picture != null && !picture.isEmpty()) {
+            pictureName = FileUtil.uploadFileToS3(amazonS3, bucketName, picture);
+        }
+        long kidId = kidRepository.save(KidJoinKindergartenRequestDto.toKidEntity(kidJoinKindergartenRequestDto, pictureName)).getId();
         ApprovalRequestDto approvalRequestDto = new ApprovalRequestDto(
             kidRepository.findById(kidId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)),
