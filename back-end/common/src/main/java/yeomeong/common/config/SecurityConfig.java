@@ -54,11 +54,14 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(
                         authorize -> authorize
-                                .requestMatchers(HttpMethod.POST, "/login", "/join", "/refresh").permitAll()
+                                .requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/*", "/api-docs", "/api-docs/*", "/v3/api-docs/*").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/login", "/signup", "/refresh").permitAll()
                                 .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-                                .requestMatchers("/attendances/**").authenticated()
+//                                .requestMatchers("/directors/**").hasAuthority("DIRECTOR")
+//                                .requestMatchers("/teachers/**").hasAuthority("TEACHER")
+//                                .requestMatchers("/guardians/**").hasAuthority("GUARDIAN")
 //                                .anyRequest().authenticated()
-                                .anyRequest().permitAll()
+                            .anyRequest().permitAll()
                 );
 
         http
