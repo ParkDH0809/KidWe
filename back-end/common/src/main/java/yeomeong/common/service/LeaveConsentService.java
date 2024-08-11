@@ -24,6 +24,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static yeomeong.common.util.FileUtil.uploadFileToS3;
+
 @Service
 @RequiredArgsConstructor
 public class LeaveConsentService {
@@ -57,19 +59,8 @@ public class LeaveConsentService {
 
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("해당하는 맴버가 없어요"));
 
-        String fileName = FileUtil.convertFileName(file);
+        String fileName = uploadFileToS3(s3Client, bucketName, file);
 
-        ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentLength(file.getSize());
-        metadata.setContentType(file.getContentType());
-
-        try {
-            s3Client.putObject(new PutObjectRequest(bucketName,fileName, file.getInputStream(), metadata));
-        } catch (Exception e){
-            throw new Exception("S3 파일 업로드 중 오류 발생");
-        }
-
-        String signUrl = s3Client.getUrl(bucketName,fileName).toString();
 
         LeaveConsent leaveConsent = new LeaveConsent(
                 kid,
@@ -80,7 +71,7 @@ public class LeaveConsentService {
                 leaveConsentCreateDto.getGuardianContact(),
                 leaveConsentCreateDto.getEmergencyRelationship(),
                 leaveConsentCreateDto.getEmergencyContact(),
-                signUrl,
+                fileName,
                 LocalDate.now(),
                 member.getName()
         );

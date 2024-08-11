@@ -26,6 +26,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static yeomeong.common.util.FileUtil.uploadFileToS3;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -53,27 +55,13 @@ public class AnnouncementService {
                 member,
                 LocalDateTime.now());
 
-
         announcement.setStored(false);
 
         if(images != null ){
             for( MultipartFile image : images){
 
-                ObjectMetadata metadata =new ObjectMetadata();
+                String fileName = uploadFileToS3(s3Client, bucketName, image);
 
-                metadata.setContentLength(image.getSize());
-                metadata.setContentType(image.getContentType());
-
-
-                String fileName = FileUtil.convertFileName(image);
-
-                try {
-                    s3Client.putObject(new PutObjectRequest(bucketName,fileName, image.getInputStream(),metadata));
-
-                }
-                catch (Exception e){
-                   e.printStackTrace();
-                }
                 AnnouncementImage announcementImage =new AnnouncementImage(
                         s3Client.getUrl(bucketName, fileName).toString(),
                         announcement
