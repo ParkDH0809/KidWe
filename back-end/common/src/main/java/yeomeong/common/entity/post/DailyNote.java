@@ -41,12 +41,17 @@ public class DailyNote {
     private Member writer;
     @OneToMany(mappedBy = "dailyNote", cascade = CascadeType.ALL)
     private List<DailyNoteComment> comments;
+    @OneToMany(mappedBy = "dailyNote", cascade = CascadeType.ALL)
+    private List<DailyNoteImage> images;
 
     private LocalDateTime sendTime;
     private Boolean isDeleted;
 
     @Builder
-    public DailyNote(Post post, Kid kid, Member writer, LocalDateTime sendTime){
+    public DailyNote(Post post,
+                     Kid kid,
+                     Member writer,
+                     LocalDateTime sendTime){
         this.post = post;
         this.kid = kid;
         this.writer = writer;

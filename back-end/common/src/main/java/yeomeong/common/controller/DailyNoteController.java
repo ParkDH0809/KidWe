@@ -4,19 +4,15 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import yeomeong.common.dto.post.dailynote.request.DailyNoteRequestDto;
 import yeomeong.common.dto.post.dailynote.response.AutoCreateDailyNoteResponseDto;
 import yeomeong.common.dto.post.dailynote.response.DailyNoteListResponseDto;
 import yeomeong.common.dto.post.dailynote.response.DailyNoteGuardianResponseDto;
 import yeomeong.common.service.DailyNoteService;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 
@@ -31,8 +27,9 @@ public class DailyNoteController {
     @PostMapping("/{member_id}")
     public ResponseEntity<Object> createDailyNote(
         @PathVariable("member_id") Long writerId,
+        @RequestPart(value = "images", required = false) List<MultipartFile> images ,
         @RequestBody DailyNoteRequestDto dailyNoteCreateRequestDto) {
-        return ResponseEntity.ok(dailyNoteService.createDailyNote(writerId, dailyNoteCreateRequestDto));
+        return ResponseEntity.ok(dailyNoteService.createDailyNote(writerId, dailyNoteCreateRequestDto, images));
     }
 
     @Operation(summary = "월별 알림장 조회 API - 학부모용", description = "학부모 : kid_id로 월별 알림장을 조회해 List로 반환합니다.")
