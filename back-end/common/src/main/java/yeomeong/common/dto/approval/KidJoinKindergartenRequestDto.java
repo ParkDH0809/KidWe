@@ -17,16 +17,15 @@ public class KidJoinKindergartenRequestDto {
     LocalDate birthday;
     gtype gender;
     List<String> allergies;
-    String picture;
     Long kindergartenId;
     Long banId;
 
-    public static Kid toKidEntity(KidJoinKindergartenRequestDto kidJoinKindergartenRequestDto) {
+    public static Kid toKidEntity(KidJoinKindergartenRequestDto kidJoinKindergartenRequestDto, String picture) {
         return Kid.builder()
             .name(kidJoinKindergartenRequestDto.getKidName())
             .birthday(kidJoinKindergartenRequestDto.getBirthday())
             .allergies(listToString(kidJoinKindergartenRequestDto.getAllergies()))
-            .picture(kidJoinKindergartenRequestDto.getPicture())
+            .picture(picture)
             .gender(kidJoinKindergartenRequestDto.getGender())
             .kidStatus(atype.PENDING)
             .isDeleted(false)

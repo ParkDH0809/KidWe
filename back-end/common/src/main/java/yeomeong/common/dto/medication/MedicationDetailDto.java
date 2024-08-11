@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class MedicationDetailDto {
 
+    private String kidPicture;
     private String medicineName;
     private String symptom;
     private String type;
