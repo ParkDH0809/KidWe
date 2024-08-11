@@ -1,10 +1,7 @@
 package yeomeong.common.dto;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 import yeomeong.common.document.Memo;
 import yeomeong.common.document.Tag;
 
@@ -14,14 +11,13 @@ import java.util.List;
 
 @Getter
 public class MemoRequestDto {
-
-    private String updatedTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+    private LocalDateTime updatedTime;
 
     private String lesson;
     private List<Kid> kids;
     private List<TagRequestDto> tags;
     private String content;
-
 
     public Memo toDocument(Long teacherId) {
         List<Tag> tags = new ArrayList<>();

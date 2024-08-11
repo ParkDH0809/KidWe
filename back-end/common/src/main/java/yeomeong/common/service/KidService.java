@@ -31,14 +31,14 @@ public class KidService {
             kidRepository.findByIdAndIsDeletedFalse(kidId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_KID)));
     }
 
-    public void updateKidInfo(KidUpdateInfoRequestDto kidUpdateInfoRequestDto) {
+    public void updateKidInfo(KidUpdateInfoRequestDto kidUpdateInfoRequestDto, String picture) {
         Kid kid = kidRepository.findByIdAndIsDeletedFalse(kidUpdateInfoRequestDto.getId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_KID));
-        kid.updateFromDto(kidUpdateInfoRequestDto);
+        kid.updateFromDto(kidUpdateInfoRequestDto, picture);
         if (kidUpdateInfoRequestDto.hasBanId()) {
             kid.setNewBan(banRepository.findById(kidUpdateInfoRequestDto.getBanId())
                 .orElseThrow(() -> new CustomException(ErrorCode.INVALID_BAN_ID)));
         }
-        if(kidUpdateInfoRequestDto.hasKindergartenId()) {
+        if (kidUpdateInfoRequestDto.hasKindergartenId()) {
             kid.setNewKindergarten(kindergartenRepository.findById(kidUpdateInfoRequestDto.getKindergartenId())
                 .orElseThrow(() -> new CustomException(ErrorCode.INVALID_BAN_ID)));
         }

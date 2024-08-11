@@ -27,11 +27,25 @@ public class AttendanceController {
         this.attendanceService = attendanceService;
     }
 
-    @Operation(summary = "출석 정보 조회", description = "특정 반의 특정 날짜에 대한 출석 정보를 조회합니다.")
+    @Operation(summary = "전체 출석 정보 조회", description = "특정 반의 특정 날짜에 대한 출석 정보를 조회합니다.")
     @GetMapping("/{banId}/{year}/{month}/{day}")
     public ResponseEntity<List<AttendanceResponseDto>> getAttendancesByBanId(
         @PathVariable Long banId, @PathVariable Integer year, @PathVariable Integer month, @PathVariable Integer day) {
         return ResponseEntity.status(HttpStatus.OK).body(attendanceService.getAttendancesByBanId(banId, LocalDate.of(year, month, day)));
+    }
+
+    @Operation(summary = "출석 미처리 정보 조회", description = "특정 반의 특정 날짜에 대한 출석 미처리 정보를 조회합니다.")
+    @GetMapping("/{banId}/{year}/{month}/{day}/unchecked")
+    public ResponseEntity<List<AttendanceResponseDto>> getUncheckedAttendancesByBanId(
+        @PathVariable Long banId, @PathVariable Integer year, @PathVariable Integer month, @PathVariable Integer day) {
+        return ResponseEntity.status(HttpStatus.OK).body(attendanceService.getUncheckedAttendancesByBanId(banId, LocalDate.of(year, month, day)));
+    }
+
+    @Operation(summary = "출석 처리 정보 조회", description = "특정 반의 특정 날짜에 대한 출석 처리(출석 or 결석) 정보를 조회합니다.")
+    @GetMapping("/{banId}/{year}/{month}/{day}/checked")
+    public ResponseEntity<List<AttendanceResponseDto>> getCheckedAttendancesByBanId(
+        @PathVariable Long banId, @PathVariable Integer year, @PathVariable Integer month, @PathVariable Integer day) {
+        return ResponseEntity.status(HttpStatus.OK).body(attendanceService.getCheckedAttendancesByBanId(banId, LocalDate.of(year, month, day)));
     }
 
     @Operation(summary = "출석 정보 변경",

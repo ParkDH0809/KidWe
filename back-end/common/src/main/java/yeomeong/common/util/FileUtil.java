@@ -25,18 +25,24 @@ public class FileUtil {
         return UUID.randomUUID() + fileExtension;
 
     }
-    public static String uploadFileToS3(AmazonS3 s3Client, String bucketName, MultipartFile file) throws Exception {
-        String fileName = FileUtil.convertFileName(file);
+    public static String uploadFileToS3(AmazonS3 s3Client, String bucketName, MultipartFile file) {
+        if (file == null) {
+            return null;
+        }
 
-        ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentLength(file.getSize());
-        metadata.setContentType(file.getContentType());
+        String fileName = null;
+        try {
+            fileName = FileUtil.convertFileName(file);
 
-        s3Client.putObject(new PutObjectRequest(bucketName, fileName, file.getInputStream(), metadata));
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentLength(file.getSize());
+            metadata.setContentType(file.getContentType());
 
+            s3Client.putObject(new PutObjectRequest(bucketName, fileName, file.getInputStream(), metadata));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return fileName;
     }
-
-
 
 }

@@ -33,12 +33,12 @@ public class MemberService {
 
     @Transactional
     public void joinMember(MemberSaveRequestDto memberSaveRequestDto) {
-        if(memberRepository.findByEmail(memberSaveRequestDto.getEmail()) != null) {
+        if (memberRepository.findByEmail(memberSaveRequestDto.getEmail()) != null) {
             throw new CustomException(ErrorCode.DUPLICATED_USER_EMAIL);
         }
         Member member = MemberSaveRequestDto.toMemberEntity(memberSaveRequestDto);
         member.setPassword(passwordEncoder.encode(member.getPassword()));
-         memberRepository.save(member);
+        memberRepository.save(member);
     }
 
     public Member getMemberByEmail(String email) {
@@ -49,10 +49,13 @@ public class MemberService {
         return MemberProfileResponseDto.toMemberProfileDto(memberRepository.findByEmail(email));
     }
 
-    public void updateMemberProfile(MemberUpdateRequestDto memberUpdateRequestDto) {
+    public void updateMemberProfile(MemberUpdateRequestDto memberUpdateRequestDto, String picture) {
         Member member = memberRepository.findById(memberUpdateRequestDto.getId())
             .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE));
-        member.updateFromDto(memberUpdateRequestDto);
+        if (memberUpdateRequestDto.getPassword() != null) {
+            member.setPassword(passwordEncoder.encode(memberUpdateRequestDto.getPassword()));
+        }
+        member.updateFromDto(memberUpdateRequestDto, picture);
     }
 
     public void deleteMember(String email) {
