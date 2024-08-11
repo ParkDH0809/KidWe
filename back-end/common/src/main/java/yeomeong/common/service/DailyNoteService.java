@@ -3,7 +3,10 @@ package yeomeong.common.service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import com.amazonaws.services.s3.AmazonS3;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +35,11 @@ import static yeomeong.common.util.FileUtil.uploadFileToS3;
 @Transactional(readOnly = true)
 public class DailyNoteService {
 
+    private static AmazonS3 s3Client;
+
+    @Value("${aws.s3.bucket-name}")
+    private static String bucketName;
+
     private final MemberRepository memberRepository;
     private final KidRepository kidRepository;
     private final DailyNoteRepository dailyNoteRepository;
@@ -55,7 +63,7 @@ public class DailyNoteService {
 
         if(images != null && !images.isEmpty()) {
             for (MultipartFile image : images) {
-                DailyNoteImage dailyNoteImage = new DailyNoteImage(uploadFileToS3(image), createdDailyNote);
+                DailyNoteImage dailyNoteImage = new DailyNoteImage(uploadFileToS3(s3Client, bucketName, image), createdDailyNote);
                 dailyNoteImageRepository.save(dailyNoteImage);
             }
         }
