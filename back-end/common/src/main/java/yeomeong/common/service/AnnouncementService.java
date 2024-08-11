@@ -45,8 +45,12 @@ public class AnnouncementService {
      */
     @Transactional
     public void createAnnouncementByKindergarten(Long memberId, AnnouncementCreateDto announcementCreateDto, List<MultipartFile> images) throws Exception {
+
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("해당 맴버가 없어용"));
+
+
         Announcement announcement =new Announcement(announcementCreateDto.getPost(),
-                memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("해당 멤버를 찾을 수 없습니다.")),
+                member,
                 LocalDateTime.now());
 
 
@@ -63,14 +67,12 @@ public class AnnouncementService {
                 String fileName = FileUtil.convertFileName(image);
 
                 try {
-
                     s3Client.putObject(new PutObjectRequest(bucketName,fileName, image.getInputStream(),metadata));
 
                 }
                 catch (Exception e){
                    e.printStackTrace();
                 }
-
                 AnnouncementImage announcementImage =new AnnouncementImage(
                         s3Client.getUrl(bucketName, fileName).toString(),
                         announcement
@@ -92,24 +94,18 @@ public class AnnouncementService {
          Member member = memberRepository.findById(memberId)
                  .orElseThrow(() -> new RuntimeException("해당 멤버를 찾을 수 없습니다."));
 
-         List<AnnouncementListDto> announcementDtoList = new ArrayList<>();
+         List<AnnouncementListDto> announcementByAll = announcementRepository.getAnnouncementByAll(member.getKindergarten().getId());
+         List<AnnouncementListDto> announcementDtoList = new ArrayList<>(announcementByAll);
+         //전체 공지사항 가져오기
 
          if(member.getRole() == rtype.ROLE_DIRECTOR){ //원장님일 때 해당 유치원 공지사항 모두 가져오기
-             List<AnnouncementListDto> announcementByAll = announcementRepository.getAnnouncementByAll(member.getKindergarten().getId());
+
              List<AnnouncementListDto> announcementByAllBan = announcementRepository.getAnnouncementByAllBan(member.getKindergarten().getId());
-
-             System.out.println(announcementByAll);
-             System.out.println(announcementByAllBan);
-
-             announcementDtoList.addAll(announcementByAll);
              announcementDtoList.addAll(announcementByAllBan);
 
-         }
+         } //해당 유치원 전체 반에 대한 공지사항 가져오기
          else {
-             List<AnnouncementListDto> announcementByAll = announcementRepository.getAnnouncementByAll(member.getKindergarten().getId());
              List<AnnouncementListDto> announcementByBan = announcementRepository.getAnnouncementByAllBan(member.getBan().getId());
-
-             announcementDtoList.addAll(announcementByAll);
              announcementDtoList.addAll(announcementByBan);
 
          } //선생님이나 학부모일 땐 해당 반 + 전체 공지 다 가져오기
@@ -132,7 +128,6 @@ public class AnnouncementService {
                  .orElseThrow(() -> new RuntimeException("해당 공지사항을 찾을 수 없습니다."));
 
         List<AnnouncementCommentDto> announcementCommentDto = new ArrayList<>();
-
 
 
         for(AnnouncementComment announcementComment : announcement.getCommentList()) {
@@ -169,11 +164,12 @@ public class AnnouncementService {
 
         // AnnouncementDetailDto를 생성하여 반환
         return new AnnouncementDetailDto(
-                announcement.getMember().getBan().getName(),
+                announcement.getMember().getBan() != null? announcement.getMember().getBan().getName() : "전체 공지",
                 announcement.getPost(),
                 !images.isEmpty() ? images : null,
                 vote != null ? vote.getId() : null, // Vote가 없으면 null
                 voteItemDtoList, // VoteItemDto 리스트는 비어있을 수 있음
+                announcement.getCommentList().size(),
                 announcementCommentDto // CommentDto 리스트는 비어있을 수 있음
         );
 
@@ -195,7 +191,11 @@ public class AnnouncementService {
     //공지사항 삭제하기
     @Transactional
     public void deleteAnnouncement(Long announcementId) {
-         announcementRepository.deleteById(announcementId);
+        Announcement announcement = announcementRepository.findById(announcementId)
+                .orElseThrow(() -> new RuntimeException("해당 공지사항이 없으세요"));
+
+        announcement.setDeleted(true);
+
     }
 
     /**

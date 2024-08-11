@@ -1,5 +1,6 @@
 package yeomeong.common.dto.post.announcement;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ public class AnnouncementListDto {
     private String title;
     private String memberName;
     private String memberBan;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.M.d HH:mm")
     private LocalDateTime createdDate;
     private int commentCnt;
 

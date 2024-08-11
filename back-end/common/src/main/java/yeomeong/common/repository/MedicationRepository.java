@@ -50,11 +50,11 @@ public class MedicationRepository {
 
 
         return em.createQuery(
-                        "SELECT new yeomeong.common.dto.medication.MedicationByKidAndMonthDto (m.id, k.name, b.name, m.medicationExecuteDueDate, m.isDeleted) " +
+                        "SELECT new yeomeong.common.dto.medication.MedicationByKidAndMonthDto (m.id, k.name, b.name, m.medicationExecuteDueDate) " +
                                 "FROM Medication m " +
                                 "JOIN m.kid k " +
                                 "JOIN k.ban b " +
-                                "WHERE m.isDeleted = false and m.medicationExecuteDueDate BETWEEN :startDate AND :endDate " +
+                                "WHERE m.isDeleted = false and m.medicationExecuteDueDate BETWEEN :startDate AND :endDate and m.isDeleted = false " +
                                 "AND b.id = :banId "
                         ,MedicationByKidAndMonthDto.class)
                 .setParameter("startDate", startDate)
@@ -69,10 +69,10 @@ public class MedicationRepository {
         LocalDate endDate = startDate.plusMonths(1).minusDays(1);
 
         //아이별 투약 의뢰서 ( 학부모용 )
-        return em.createQuery("select new yeomeong.common.dto.medication.MedicationByKidDto (m.id, k.name, k.ban.name,m.medicationExecuteDueDate, m.isDeleted ) " +
+        return em.createQuery("select new yeomeong.common.dto.medication.MedicationByKidDto (m.id, k.name, k.ban.name,m.medicationExecuteDueDate ) " +
                 " from Medication m " + "Join m.kid k " +
                 "where k.id = :kidId and m.isDeleted = false and " +
-                "m.medicationExecuteDueDate BETWEEN :startDate AND :endDate order by m.medicationCreatedDateTime DESC ",
+                "m.medicationExecuteDueDate BETWEEN :startDate AND :endDate and m.isDeleted = false order by m.medicationCreatedDateTime DESC ",
                 MedicationByKidDto.class)
                 .setParameter("kidId",kidId)
                 .setParameter("startDate", startDate)
