@@ -53,13 +53,10 @@ public class MemberService {
     public void updateMemberProfile(MemberUpdateRequestDto memberUpdateRequestDto) {
         Member member = memberRepository.findById(memberUpdateRequestDto.getId())
             .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE));
+        if (memberUpdateRequestDto.getPassword() != null) {
+            member.setPassword(passwordEncoder.encode(memberUpdateRequestDto.getPassword()));
+        }
         member.updateFromDto(memberUpdateRequestDto);
-    }
-
-    public void updateMemberPassword(MemberUpdatePasswordRequestDto memberUpdatePasswordRequestDto) {
-        Member member = memberRepository.findById(memberUpdatePasswordRequestDto.getId())
-            .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE));
-        member.setPassword(passwordEncoder.encode(memberUpdatePasswordRequestDto.getPassword()));
     }
 
     public void deleteMember(String email) {

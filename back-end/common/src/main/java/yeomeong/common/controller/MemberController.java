@@ -45,13 +45,6 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @Operation(summary = "사용자 비밀번호 수정", description = "특정 사용자의 비밀번호를 수정합니다.")
-    @PutMapping("/profile/password")
-    public ResponseEntity<Void> updateMemberPassword(@RequestBody MemberUpdatePasswordRequestDto memberUpdatePasswordRequestDto) {
-        memberService.updateMemberPassword(memberUpdatePasswordRequestDto);
-        return ResponseEntity.status(HttpStatus.OK).build();
-    }
-
     @Operation(summary = "사용자 자녀 조회", description = "부모의 자녀 정보를 조회합니다.")
     @GetMapping("/children")
     public ResponseEntity<List<KidBasicInfoResponseDto>> getChildrenByMember(Authentication authentication) {
