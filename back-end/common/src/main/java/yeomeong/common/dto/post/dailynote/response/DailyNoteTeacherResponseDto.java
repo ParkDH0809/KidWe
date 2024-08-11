@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import yeomeong.common.dto.member.TeacherSummaryResponseDto;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.post.DailyNote;
+import yeomeong.common.entity.post.DailyNoteImage;
 import yeomeong.common.entity.post.Post;
 import yeomeong.common.entity.post.comment.DailyNoteComment;
 
@@ -28,6 +29,9 @@ public class DailyNoteTeacherResponseDto {
     private Long commentCount;
     private List<DailyNoteParentCommentResponseDto> comments;
 
+    private List<String> tumbnails;
+    private List<String> images;
+
     @Builder
     public DailyNoteTeacherResponseDto(DailyNote dailyNote) {
         this.id = dailyNote.getId();
@@ -47,5 +51,10 @@ public class DailyNoteTeacherResponseDto {
         commentCount = comments.stream()
                 .filter(comment -> !comment.getIsDeleted())
                 .count();
+
+        images = new ArrayList<>();
+        for(DailyNoteImage image : dailyNote.getImages()){
+            images.add(image.getImageUrl());
+        }
     }
 }

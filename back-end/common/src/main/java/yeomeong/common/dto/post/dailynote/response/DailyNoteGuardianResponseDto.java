@@ -16,6 +16,7 @@ import yeomeong.common.dto.member.MemberProfileResponseDto;
 import yeomeong.common.entity.member.Kid;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.post.DailyNote;
+import yeomeong.common.entity.post.DailyNoteImage;
 import yeomeong.common.entity.post.Post;
 import yeomeong.common.entity.post.comment.DailyNoteComment;
 
@@ -31,6 +32,9 @@ public class DailyNoteGuardianResponseDto {
     private KidSummaryResponseDto kid;
     private Long commentCount;
     private List<DailyNoteParentCommentResponseDto> comments;
+
+    private List<String> tumbnails;
+    private List<String> images;
 
     @Builder
     public DailyNoteGuardianResponseDto(DailyNote dailyNote) {
@@ -52,5 +56,10 @@ public class DailyNoteGuardianResponseDto {
         commentCount = comments.stream()
                 .filter(comment -> !comment.getIsDeleted())
                 .count();
+
+        images = new ArrayList<>();
+        for(DailyNoteImage image : dailyNote.getImages()){
+            images.add(image.getImageUrl());
+        }
     }
 }
