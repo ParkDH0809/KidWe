@@ -71,7 +71,7 @@ public class Memo {
 
     public void setNewUpdatedTime(LocalDateTime updatedTime) {
         this.updatedTime = updatedTime;
-        this.date = this.updatedTime.toString().split(" ")[0];
+        this.date = this.updatedTime.toString().split("T")[0];
     }
 
     public void setNewLesson(String newLesson) {

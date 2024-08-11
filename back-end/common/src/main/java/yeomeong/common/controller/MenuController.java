@@ -35,6 +35,7 @@ public class MenuController {
         MenuByDayRequestDto requestDto = new MenuByDayRequestDto(kindergartenId, LocalDate.of(year,month,day));
         MenuByDayResponseDto menu = menuService.getMenuByDay(requestDto);
 
+
         return ResponseEntity.ok(menu);
     }
 
