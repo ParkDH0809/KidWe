@@ -57,11 +57,10 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Notification> notification;
 
-    public void updateFromDto(MemberUpdateRequestDto dto) {
+    public void updateFromDto(MemberUpdateRequestDto dto, String picture) {
         this.name = dto.getName() != null ? dto.getName() : this.name;
-        this.email = dto.getEmail() != null ? dto.getEmail() : this.email;
         this.tel = dto.getTel() != null ? dto.getTel() : this.tel;
-        this.picture = dto.getPicture() != null ? dto.getPicture() : this.picture;
+        this.picture = picture != null ? picture : this.picture;
     }
 
 }

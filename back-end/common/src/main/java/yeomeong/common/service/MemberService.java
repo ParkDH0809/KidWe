@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import yeomeong.common.dto.kid.KidBasicInfoResponseDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
 import yeomeong.common.dto.member.MemberSaveRequestDto;
-import yeomeong.common.dto.member.MemberUpdatePasswordRequestDto;
 import yeomeong.common.dto.member.MemberUpdateRequestDto;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.exception.CustomException;
@@ -34,12 +33,12 @@ public class MemberService {
 
     @Transactional
     public void joinMember(MemberSaveRequestDto memberSaveRequestDto) {
-        if(memberRepository.findByEmail(memberSaveRequestDto.getEmail()) != null) {
+        if (memberRepository.findByEmail(memberSaveRequestDto.getEmail()) != null) {
             throw new CustomException(ErrorCode.DUPLICATED_USER_EMAIL);
         }
         Member member = MemberSaveRequestDto.toMemberEntity(memberSaveRequestDto);
         member.setPassword(passwordEncoder.encode(member.getPassword()));
-         memberRepository.save(member);
+        memberRepository.save(member);
     }
 
     public Member getMemberByEmail(String email) {
@@ -50,13 +49,13 @@ public class MemberService {
         return MemberProfileResponseDto.toMemberProfileDto(memberRepository.findByEmail(email));
     }
 
-    public void updateMemberProfile(MemberUpdateRequestDto memberUpdateRequestDto) {
+    public void updateMemberProfile(MemberUpdateRequestDto memberUpdateRequestDto, String picture) {
         Member member = memberRepository.findById(memberUpdateRequestDto.getId())
             .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE));
         if (memberUpdateRequestDto.getPassword() != null) {
             member.setPassword(passwordEncoder.encode(memberUpdateRequestDto.getPassword()));
         }
-        member.updateFromDto(memberUpdateRequestDto);
+        member.updateFromDto(memberUpdateRequestDto, picture);
     }
 
     public void deleteMember(String email) {
