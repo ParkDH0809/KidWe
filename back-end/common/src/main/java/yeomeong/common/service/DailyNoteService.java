@@ -19,13 +19,13 @@ import yeomeong.common.entity.member.Kid;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.member.rtype;
 import yeomeong.common.entity.post.DailyNote;
+import yeomeong.common.entity.post.DailyNoteImage;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
-import yeomeong.common.repository.DailyNoteCommentRepository;
-import yeomeong.common.repository.DailyNoteRepository;
-import yeomeong.common.repository.KidRepository;
-import yeomeong.common.repository.MemberRepository;
-import yeomeong.common.repository.ScheduleRepository;
+import yeomeong.common.repository.*;
+import yeomeong.common.util.FileUtil;
+
+import static yeomeong.common.util.FileUtil.uploadFileToS3;
 
 @Service
 @RequiredArgsConstructor
@@ -35,8 +35,9 @@ public class DailyNoteService {
     private final MemberRepository memberRepository;
     private final KidRepository kidRepository;
     private final DailyNoteRepository dailyNoteRepository;
-    private final DailyNoteCommentRepository dailyNoteCommentRepository;
+    private final DailyNoteImageRepository dailyNoteImageRepository;
     private final ScheduleRepository scheduleRepository;
+    private final FileUtil fileUtil;
 
     // 알림장 생성하기
     @Transactional
@@ -54,17 +55,18 @@ public class DailyNoteService {
 
         if(images != null && !images.isEmpty()) {
             for (MultipartFile image : images) {
-
+                DailyNoteImage dailyNoteImage = new DailyNoteImage(uploadFileToS3(image), createdDailyNote);
+                dailyNoteImageRepository.save(dailyNoteImage);
             }
         }
 
         // 학부모라면
         if(writer.getRole() == rtype.ROLE_GUARDIAN){
-            return new DailyNoteGuardianResponseDto(createdDailyNote);
+            return new DailyNoteGuardianResponseDto(dailyNoteRepository.findByDailyNoteId(createdDailyNote.getId()));
         }
         // 선생님이라면
         else if (writer.getRole() == rtype.ROLE_TEACHER){
-            return new DailyNoteTeacherResponseDto(createdDailyNote);
+            return new DailyNoteTeacherResponseDto(dailyNoteRepository.findByDailyNoteId(createdDailyNote.getId()));
         }
         // 원장님이라면
         else {
