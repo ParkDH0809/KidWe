@@ -38,6 +38,7 @@ public class LeaveConsentRepositoryImpl implements LeaveConsentRepository {
         return jpaQueryFactory
                 .select(new QLeaveConsentByMonthAndBanListDto(
                         leaveConsent.id,
+                        kid.picture,
                         kid.name,
                         ban.name,
                         leaveConsent.leaveDate
@@ -57,6 +58,7 @@ public class LeaveConsentRepositoryImpl implements LeaveConsentRepository {
 
         return jpaQueryFactory.select(new QLeaveConsentByMonthAndBanListDto(
                 leaveConsent.id,
+                kid.picture,
                 kid.name,
                 ban.name,
                 leaveConsent.leaveDate))
@@ -86,7 +88,9 @@ public class LeaveConsentRepositoryImpl implements LeaveConsentRepository {
 
         LeaveConsent leaveConsent = em.find(LeaveConsent.class, leaveConsentId);
 
+
         return new LeaveConsentDetailDto(
+                leaveConsent.getKid().getPicture(),
                 leaveConsent.getLeaveDate(),
                 leaveConsent.getLeaveTime(),
                 leaveConsent.getLeaveMethod(),

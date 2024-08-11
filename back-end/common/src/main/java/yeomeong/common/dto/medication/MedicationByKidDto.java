@@ -16,8 +16,9 @@ public class MedicationByKidDto {
     private LocalDate medicationExecuteDate;
 
 
-    public MedicationByKidDto(Long id,String kidName, String banName, LocalDate medicationExecuteDate) {
+    public MedicationByKidDto(Long id,String kidName, String kidPicture, String banName, LocalDate medicationExecuteDate) {
         this.medicationId = id;
+        this.kidPicture = kidPicture;
         this.kidName = kidName;
         this.banName = banName;
         this.medicationExecuteDate = medicationExecuteDate;

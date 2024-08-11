@@ -26,7 +26,7 @@ import yeomeong.common.service.MemberService;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig {
+public class SecurityConfig  {
 
     private final ObjectMapper objectMapper;
     private final UserDetailsServiceImpl userDetailsService;
@@ -39,6 +39,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, MemberService memberService, JwtService jwtService) throws Exception {
+
 
         http
                 .csrf(AbstractHttpConfigurer::disable)
