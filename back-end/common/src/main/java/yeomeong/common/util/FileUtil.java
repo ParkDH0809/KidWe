@@ -10,7 +10,6 @@ import java.util.UUID;
 
 public class FileUtil {
 
-
     private static String convertFileName(MultipartFile file) throws Exception {
         if(file.isEmpty())
             throw new Exception("파일이 비어 있어요 유유");

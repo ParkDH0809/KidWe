@@ -20,8 +20,9 @@ public class LeaveConsentByMonthAndBanListDto {
 
 
     @QueryProjection
-    public LeaveConsentByMonthAndBanListDto(Long leaveConsentId, String kidName, String banName, LocalDate leaveDate) {
+    public LeaveConsentByMonthAndBanListDto(Long leaveConsentId,String kidPicture ,String kidName, String banName, LocalDate leaveDate) {
         this.leaveConsentId = leaveConsentId;
+        this.kidPicture = kidPicture;
         this.kidName = kidName;
         this.banName = banName;
         this.leaveDate = leaveDate;

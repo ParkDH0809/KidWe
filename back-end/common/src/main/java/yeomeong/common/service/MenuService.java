@@ -45,7 +45,6 @@ public class MenuService {
         List<Kid> allKidsByKindergarten = kidRepository.findAllById(menuByDayRequestDto.getKindergartenId());
 
         for (Kid kid : allKidsByKindergarten) { //모든 아이들에 대해서 검사
-
             addKidAllergiesToMenu(menuByDay.getLunchAllergies(), kid, menuByDay.getKidAllergyListOfLunch());
             addKidAllergiesToMenu(menuByDay.getSnackAllergies(), kid, menuByDay.getKidAllergyListOfSnack());
             addKidAllergiesToMenu(menuByDay.getDinnerAllergies(), kid, menuByDay.getKidAllergyListOfDinner());
