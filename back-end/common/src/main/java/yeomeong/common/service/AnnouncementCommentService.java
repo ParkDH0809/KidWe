@@ -39,11 +39,13 @@ public class AnnouncementCommentService {
     }
 
     //공지사항 (대)댓글 삭제하기
+    @Transactional
     public void deleteComment(Long announcementCommentId) {
         AnnouncementComment comment = announcementCommentRepository.findById(announcementCommentId)
                 .orElseThrow(() -> new RuntimeException("해당 공지사항 댓글을 찾을 수 없습니다"));
 
-        announcementCommentRepository.delete(comment);
+        comment.setDeleted(true);
+
     }
 
     //공지사항 대댓글 작성하기
