@@ -3,6 +3,7 @@ package yeomeong.common.dto.kid;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.Getter;
+import org.springframework.web.multipart.MultipartFile;
 import yeomeong.common.entity.member.gtype;
 
 @Getter
@@ -13,7 +14,7 @@ public class KidUpdateInfoRequestDto {
     LocalDate birthday;
     gtype gender;
     List<String> allergies;
-    String picture;
+    MultipartFile picture;
     Long banId;
     Long kindergartenId;
 

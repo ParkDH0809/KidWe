@@ -62,12 +62,12 @@ public class Kid {
     @ColumnDefault("false")
     private Boolean isDeleted;
 
-    public void updateFromDto(KidUpdateInfoRequestDto dto) {
+    public void updateFromDto(KidUpdateInfoRequestDto dto, String picture) {
         this.name = dto.getName() != null ? dto.getName() : this.name;
         this.birthday = dto.getBirthday() != null ? dto.getBirthday() : this.birthday;
         this.gender = dto.getGender() != null ? dto.getGender() : this.gender;
         this.allergies = dto.getAllergies() != null ? listToString(dto.getAllergies()) : this.allergies;
-        this.picture = dto.getPicture() != null ? dto.getPicture() : this.picture;
+        this.picture = picture != null ? picture : this.picture;
     }
 
     public void setNewBan(Ban ban) {
