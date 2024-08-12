@@ -19,7 +19,7 @@ public enum ErrorCode {
     REFRESH_TOKEN_NOT_ALLOWED(400, "REFRESH_TOKEN_NOT_ALLOWED", "Refresh Token으로 접근할 수 없습니다. Access Token이 필요합니다."),
     ACCESS_TOKEN_REQUIRED(400, "ACCESS_TOKEN_REQUIRED", "Access Token으로 접근할 수 없습니다. Refresh Token이 필요합니다."),
     LOGGED_OUT_ACCESS_TOKEN(400, "LOGGED_OUT_ACCESS_TOKEN", "로그아웃된 Access Token입니다."),
-    EXPIRED_TOKEN(400, "EXPIRED_TOKEN", "토큰이 만료되었습니다. 새로 로그인 해주세요."),
+    EXPIRED_TOKEN(400, "EXPIRED_TOKEN", "토큰이 만료되었습니다."),
     TOKEN_MISSING(400, "TOKEN_MISSING", "요청에 토큰이 없습니다. 토큰을 제공해 주세요."),
     UNKNOWN_TOKEN_ERROR(400, "UNKNOWN_TOKEN_ERROR", "알 수 없는 Token 오류가 발생했습니다."),
 

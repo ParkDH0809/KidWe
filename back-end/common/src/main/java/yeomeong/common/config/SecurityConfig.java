@@ -45,7 +45,6 @@ public class SecurityConfig  {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-//                .requiresChannel(channel -> channel.anyRequest().requiresSecure());
 
         http
                 .formLogin(config -> config
@@ -55,7 +54,7 @@ public class SecurityConfig  {
                 .authorizeHttpRequests(
                         authorize -> authorize
                                 .requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/*", "/api-docs", "/api-docs/*", "/v3/api-docs/*").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/login", "/signup", "/refresh").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/login", "/signup").permitAll()
                                 .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
 //                                .requestMatchers("/directors/**").hasAuthority("DIRECTOR")
 //                                .requestMatchers("/teachers/**").hasAuthority("TEACHER")
