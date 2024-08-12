@@ -1,6 +1,7 @@
 package yeomeong.common.exception;
 
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ErrorCode {
@@ -38,7 +39,8 @@ public enum ErrorCode {
 
     DUPLICATED_USER_EMAIL(409, "DUPLICATED_USER_EMAIL", "이미 회원가입된 이메일입니다."),
 
-    REPOSITORY_ERROR(500, "REPOSITORY_ERROR", "레포지토리에서 문제가 생겼습니다");
+    REPOSITORY_ERROR(500, "REPOSITORY_ERROR", "레포지토리에서 문제가 생겼습니다"),
+    RESIZING_ERRORH(500, "RESIZING_ERRORH", "파일 리사이즈에 실패했습니다.");
 
     private final int status;
     private final String code;
