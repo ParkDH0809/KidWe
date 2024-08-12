@@ -14,16 +14,6 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 public class FileUtil {
-    private static AmazonS3 s3Client;
-
-    @Value("${aws.s3.bucket-name}")
-    private static String bucketName;
-
-    public FileUtil(AmazonS3 s3Client, String bucketName) {
-        this.s3Client = s3Client;
-        this.bucketName = bucketName;
-    }
-
     private static String convertFileName(MultipartFile file) throws Exception {
         if(file.isEmpty())
             throw new Exception("파일이 비어 있어요 유유");
@@ -37,22 +27,6 @@ public class FileUtil {
 
         return UUID.randomUUID() + fileExtension;
 
-    }
-
-    public static String uploadFileToS3(MultipartFile file) {
-        String fileName = null;
-        try {
-            fileName = FileUtil.convertFileName(file);
-
-            ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentLength(file.getSize());
-            metadata.setContentType(file.getContentType());
-
-            s3Client.putObject(new PutObjectRequest(bucketName, fileName, file.getInputStream(), metadata));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return fileName;
     }
 
     public static String uploadFileToS3(AmazonS3 s3Client, String bucketName, MultipartFile file) {

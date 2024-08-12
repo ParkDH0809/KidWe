@@ -85,10 +85,10 @@ public class MemoService {
 
     // 날짜별 아이별 메모 조회하기
     @Transactional
-    public List<MemoResponseDto> getMemosByTeacherIdAndKidIdAndDate(Long teacherId,
-        Long kidId,
-        String date) {
-        List<Memo> memos = memoRepository.findByTeacherIdAndKidIdAndDate(teacherId, kidId, date);
+    public List<MemoResponseDto> getMemosByTeacherIdAndDateAndKidId(Long teacherId,
+        String date,
+        Long kidId) {
+        List<Memo> memos = memoRepository.findByTeacherIdAndDateAndKidId(teacherId, date, kidId);
         if (memos == null) {
             return null;
         }
