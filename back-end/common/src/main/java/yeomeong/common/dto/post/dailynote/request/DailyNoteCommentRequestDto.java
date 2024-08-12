@@ -11,7 +11,6 @@ import yeomeong.common.entity.post.comment.DailyNoteComment;
 public class DailyNoteCommentRequestDto {
     private Long dailynoteId;
     private Long memberId;
-
     private String content;
     private Long parentCommentId;
 

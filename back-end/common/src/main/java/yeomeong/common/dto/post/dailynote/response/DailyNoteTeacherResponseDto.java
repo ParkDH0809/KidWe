@@ -35,7 +35,7 @@ public class DailyNoteTeacherResponseDto {
     @Builder
     public DailyNoteTeacherResponseDto(DailyNote dailyNote) {
         this.id = dailyNote.getId();
-        
+
         this.writer = new TeacherSummaryResponseDto(dailyNote.getWriter());
         this.content = dailyNote.getContent();
         this.sendTime = dailyNote.getSendTime();

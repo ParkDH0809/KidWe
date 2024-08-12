@@ -51,7 +51,7 @@ public interface DailyNoteRepository extends JpaRepository<DailyNote, Long>{
     // 선생님 수신 : 담당반 아이들에게 학부모가 작성한 알림장을 조회
     @Query("SELECT dn "
         + "FROM DailyNote dn "
-        + "WHERE FUNCTION('DATE_FORMAT', dn.post.createdDateTime, '%Y-%m') = :date "
+        + "WHERE FUNCTION('DATE_FORMAT', dn.sendTime, '%Y-%m') = :date "
         + "AND dn.kid.ban.id = :banId "
         + "AND dn.writer.role != 'ROLE_GUARDIAN' "
         + "AND dn.sendTime <= CURRENT_TIMESTAMP "

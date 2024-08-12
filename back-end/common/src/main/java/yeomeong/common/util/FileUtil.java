@@ -117,7 +117,7 @@ public class FileUtil {
             thumbnailMetadata.setContentType(thumbnailFile.getContentType());
 
             s3Client.putObject(new PutObjectRequest(bucketName, fileName, originalFile.getInputStream(), originalMetadata));
-            s3Client.putObject(new PutObjectRequest(bucketName, "thumb/"+ fileName, thumbnailFile.getInputStream(), thumbnailMetadata));
+            s3Client.putObject(new PutObjectRequest(bucketName, "thumb_"+ fileName, thumbnailFile.getInputStream(), thumbnailMetadata));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
