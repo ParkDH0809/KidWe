@@ -2,7 +2,6 @@ package yeomeong.common.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +19,6 @@ import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.security.jwt.JwtService;
 import yeomeong.common.security.jwt.JwtUtil;
 import yeomeong.common.service.MemberService;
-import yeomeong.common.util.CookieUtil;
 
 @RestController
 @Slf4j
@@ -58,9 +56,8 @@ public class AuthController {
 
     @Operation(summary = "Access JWT 재요청", description = "Access JWT를 재요청합니다.")
     @PostMapping("/refresh")
-    public ResponseEntity<?> refresh(HttpServletRequest request) {
-        String refreshToken = CookieUtil.getCookie("refreshToken", request);
-        log.info(request.getRequestURI() + " refresh token: " + refreshToken);
+    public ResponseEntity<?> refresh(@RequestHeader("Authorization") String refreshToken) {
+        log.info(" refresh token: {}", refreshToken);
         if (jwtService.isTokenStored(refreshToken)) {
             return ResponseEntity.ok(
                 RefreshResponseDto
@@ -71,5 +68,22 @@ public class AuthController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new CustomException(ErrorCode.UNAUTHENTICATED_EXPIRED_REFRESH_TOKEN));
     }
+
+//    cookie 확인 API
+//    @Operation(summary = "Access JWT 재요청", description = "Access JWT를 재요청합니다.")
+//    @PostMapping("/refresh")
+//    public ResponseEntity<?> refresh(HttpServletRequest request) {
+//        String refreshToken = CookieUtil.getCookie("refreshToken", request);
+//        log.info(request.getRequestURI() + " refresh token: " + refreshToken);
+//        if (jwtService.isTokenStored(refreshToken)) {
+//            return ResponseEntity.ok(
+//                RefreshResponseDto
+//                    .builder()
+//                    .accessToken(JwtUtil.createAccessToken(memberService.getMemberByEmail(JwtUtil.getLoginEmail(refreshToken))))
+//                    .build()
+//            );
+//        }
+//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new CustomException(ErrorCode.UNAUTHENTICATED_EXPIRED_REFRESH_TOKEN));
+//    }
 
 }
