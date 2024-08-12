@@ -63,7 +63,7 @@ dependencies {
 	// image resizing
 	implementation 'com.github.downgoon:marvin:1.5.5'
 	implementation 'com.github.downgoon:MarvinPlugins:1.5.5'
-	compile group: 'org.springframework', name: 'spring-test'
+	implementation 'org.springframework:spring-test'
 }
 
 tasks.named('test') {
