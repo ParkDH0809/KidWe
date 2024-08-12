@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 import yeomeong.common.dto.kid.KidDetailInfoResponseDto;
 import yeomeong.common.dto.kid.KidSummaryResponseDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
+import yeomeong.common.dto.member.TeacherSummaryResponseDto;
 import yeomeong.common.entity.member.Kid;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.post.DailyNote;
@@ -25,26 +26,33 @@ import yeomeong.common.entity.post.comment.DailyNoteComment;
 public class DailyNoteGuardianResponseDto {
     private Long id;
 
-    private Post post;
+    private KidSummaryResponseDto kid;
+    private String content;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime sendTime;
 
-    private KidSummaryResponseDto kid;
+    private List<String> images;
+    private List<String> thumbnails;
+
     private Long commentCount;
     private List<DailyNoteParentCommentResponseDto> comments;
-
-    private List<String> tumbnails;
-    private List<String> images;
 
     @Builder
     public DailyNoteGuardianResponseDto(DailyNote dailyNote) {
         this.id = dailyNote.getId();
-        this.post = dailyNote.getPost();
-        this.sendTime = dailyNote.getSendTime();
 
         this.kid = new KidSummaryResponseDto(dailyNote.getKid());
-        this.comments = new ArrayList<>();
+        this.content = dailyNote.getContent();
+        this.sendTime = dailyNote.getSendTime();
 
+        images = new ArrayList<>();
+        thumbnails = new ArrayList<>();
+        for(DailyNoteImage image : dailyNote.getImages()){
+            images.add(image.getImageUrl());
+            thumbnails.add("thumb/" + image.getImageUrl());
+        }
+
+        this.comments = new ArrayList<>();
         for(DailyNoteComment comment : dailyNote.getComments()){
             if(comment.getParentComment()==null){
                 comments.add(new DailyNoteParentCommentResponseDto(comment));
@@ -56,10 +64,5 @@ public class DailyNoteGuardianResponseDto {
         commentCount = comments.stream()
                 .filter(comment -> !comment.getIsDeleted())
                 .count();
-
-        images = new ArrayList<>();
-        for(DailyNoteImage image : dailyNote.getImages()){
-            images.add(image.getImageUrl());
-        }
     }
 }
