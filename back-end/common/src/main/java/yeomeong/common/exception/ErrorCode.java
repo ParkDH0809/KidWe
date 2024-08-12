@@ -20,7 +20,7 @@ public enum ErrorCode {
     REFRESH_TOKEN_NOT_ALLOWED(400, "REFRESH_TOKEN_NOT_ALLOWED", "Refresh Token으로 접근할 수 없습니다. Access Token이 필요합니다."),
     ACCESS_TOKEN_REQUIRED(400, "ACCESS_TOKEN_REQUIRED", "Access Token으로 접근할 수 없습니다. Refresh Token이 필요합니다."),
     LOGGED_OUT_ACCESS_TOKEN(400, "LOGGED_OUT_ACCESS_TOKEN", "로그아웃된 Access Token입니다."),
-    EXPIRED_TOKEN(400, "EXPIRED_TOKEN", "토큰이 만료되었습니다. 새로 로그인 해주세요."),
+    EXPIRED_TOKEN(400, "EXPIRED_TOKEN", "토큰이 만료되었습니다."),
     TOKEN_MISSING(400, "TOKEN_MISSING", "요청에 토큰이 없습니다. 토큰을 제공해 주세요."),
     UNKNOWN_TOKEN_ERROR(400, "UNKNOWN_TOKEN_ERROR", "알 수 없는 Token 오류가 발생했습니다."),
 
@@ -36,6 +36,7 @@ public enum ErrorCode {
     NOT_FOUND_DAILYNOTE_COMMENT_ID(404, "NOT_FOUND_DAILYNOTE_COMMENT_ID", "존재하지 않는 알림장 댓글입니다."),
     NOT_FOUND_WRITER(404, "NOT_FOUND_WRITER", "존재하지 않는 작성자ID입니다"),
     NOT_FOUND_POST(404, "NOT_FOUND_POST", "존재하지 않는 게시물입니다."),
+    NOT_FOUND_KIDS(404, "NOT_FOUND_KIDS", "저장된 아이 정보가 없습니다."),
 
     DUPLICATED_USER_EMAIL(409, "DUPLICATED_USER_EMAIL", "이미 회원가입된 이메일입니다."),
 
