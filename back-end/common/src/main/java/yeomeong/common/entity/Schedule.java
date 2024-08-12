@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import yeomeong.common.entity.kindergarten.Ban;
+import yeomeong.common.entity.kindergarten.Kindergarten;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,6 +26,9 @@ public class Schedule {
     @JoinColumn(name = "ban_id")
     private Ban ban;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Kindergarten kindergarten;
+
     @Enumerated(EnumType.STRING)
     private ScheduleType scheduleType; //전체공지사항, 반 공지사항
 
@@ -37,7 +41,8 @@ public class Schedule {
     private LocalTime createdTime;
 
 
-    public Schedule(Ban ban, String keyword, String content, LocalDate eventDate, LocalTime createdTime, ScheduleType scheduleType) {
+    public Schedule(Kindergarten kindergarten,Ban ban, String keyword, String content, LocalDate eventDate, LocalTime createdTime, ScheduleType scheduleType) {
+        this.kindergarten = kindergarten;
         this.ban =ban;
         this.keyword = keyword;
         this.content = content;

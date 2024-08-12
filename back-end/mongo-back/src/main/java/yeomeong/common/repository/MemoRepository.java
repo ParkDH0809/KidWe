@@ -25,6 +25,6 @@ public interface MemoRepository extends MongoRepository<Memo, String> {
 
     // 삭제되지 않은 경우에만 선생님별 날짜별 메모 중 해당 kid_id를 포함하고 있는 메모 가져오기
     // 중첩된 구조일 경우 elemMatch를 이용해 찾기
-    @Query("{ 'teacher_id': ?0,  'date': ?1, 'is_deleted': false, 'kids': { '$elemMatch': { 'kid_id': ?2 } } }")
-    List<Memo> findByTeacherIdAndKidIdAndDate(Long teacherId, Long kidId, String date);
+    @Query("{ 'teacher_id': ?0, 'date': ?1, 'kids': { '$elemMatch': { 'kid_id': ?2 }}, 'is_deleted': false }")
+    List<Memo> findByTeacherIdAndDateAndKidId(Long teacherId, String date,  Long kidId);
 }

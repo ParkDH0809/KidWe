@@ -62,8 +62,8 @@ public class MemoController {
         @PathVariable("day") String day,
         @PathVariable("kid_id") Long kidId) {
         String date = year + "-" + month + "-" + day;
-        List<MemoResponseDto> memoResponseDtos = memoService.getMemosByTeacherIdAndKidIdAndDate(
-            teacherId, kidId, date);
+        List<MemoResponseDto> memoResponseDtos = memoService.getMemosByTeacherIdAndDateAndKidId(
+            teacherId, date, kidId);
         if (memoResponseDtos == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
