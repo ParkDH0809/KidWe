@@ -1,12 +1,13 @@
 package yeomeong.common.dto;
 
 import lombok.Getter;
+import org.springframework.lang.Nullable;
 import yeomeong.common.document.Tag;
 import yeomeong.common.document.mtype;
 
 @Getter
 public class TagRequestDto {
-
+    @Nullable
     private String id;
 
     private Long teacherId;

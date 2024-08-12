@@ -78,9 +78,9 @@ public class AutoDailyNoteService {
         // 메모 추출하기
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String today = LocalDate.now().format(formatter);
-        List<Memo> memos = memoRepository.findByTeacherIdAndKidIdAndDate(teacherId,
-            kidId,
-            today
+        List<Memo> memos = memoRepository.findByTeacherIdAndDateAndKidId(teacherId,
+            today,
+            kidId
         );
         // 메모에서 정보를 추출하고, 해당 메모를 바탕으로 알림장을 생성하는 로직
         String role = "user";
