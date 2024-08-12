@@ -61,8 +61,8 @@ public class SecurityConfig  {
 //                                .requestMatchers("/directors/**").hasAuthority("DIRECTOR")
 //                                .requestMatchers("/teachers/**").hasAuthority("TEACHER")
 //                                .requestMatchers("/guardians/**").hasAuthority("GUARDIAN")
-//                                .anyRequest().authenticated()
-                            .anyRequest().permitAll()
+                                .anyRequest().authenticated()
+//                            .anyRequest().permitAll()
                 );
 
         http
