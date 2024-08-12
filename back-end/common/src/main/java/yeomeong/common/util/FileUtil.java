@@ -23,8 +23,7 @@ import yeomeong.common.exception.ErrorCode;
 @RequiredArgsConstructor
 public class FileUtil {
     private static String convertFileName(MultipartFile file) throws Exception {
-        if(file.isEmpty())
-            throw new Exception("파일이 비어 있어요 유유");
+        if(file.isEmpty()) throw new Exception("파일이 비어 있습니다");
 
         String fileExtension = "";
         String originalFileName = file.getOriginalFilename();
@@ -38,6 +37,13 @@ public class FileUtil {
 
     private static MultipartFile resizeFile(MultipartFile file, int width, int height) throws Exception {
         try {
+            String fileExtension = "";
+            String originalFileName = file.getOriginalFilename();
+
+            if(originalFileName != null && originalFileName.contains(".")){
+                fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+            }
+
             // MultipartFile -> BufferedImage Convert
             BufferedImage image = ImageIO.read(file.getInputStream());
             int originWidth = image.getWidth();
@@ -62,7 +68,7 @@ public class FileUtil {
 
             BufferedImage imageNoAlpha = imageMarvin.getBufferedImageNoAlpha();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(imageNoAlpha, "jpg", baos); // 여기서 fileFormatName을 "jpg"로 설정
+            ImageIO.write(imageNoAlpha, fileExtension, baos); // 여기서 fileFormatName을 "jpg"로 설정
             baos.flush();
 
             return new MockMultipartFile(file.getOriginalFilename(), baos.toByteArray());
@@ -92,20 +98,26 @@ public class FileUtil {
         return fileName;
     }
 
-    public static String uploadTumbToS3(AmazonS3 s3Client, String bucketName, MultipartFile file, int width, int height) {
-        if (file == null) {
-            return null;
-        }
+    public static String uploadOriginalAdnThumbnailToS3(AmazonS3 s3Client, String bucketName, MultipartFile file, int width, int height) throws Exception {
+        MultipartFile originalFile = file;
+        if(originalFile == null) return null;
+        MultipartFile thumbnailFile = resizeFile(originalFile, width, height);
+        if (thumbnailFile == null) return null;
 
         String fileName = null;
         try {
-            fileName = FileUtil.convertFileName(resizeFile(file, width, height));
+            fileName = FileUtil.convertFileName(originalFile);
 
-            ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentLength(file.getSize());
-            metadata.setContentType(file.getContentType());
+            ObjectMetadata originalMetadata = new ObjectMetadata();
+            originalMetadata.setContentLength(originalFile.getSize());
+            originalMetadata.setContentType(originalFile.getContentType());
 
-            s3Client.putObject(new PutObjectRequest(bucketName, "tumb/"+ fileName, file.getInputStream(), metadata));
+            ObjectMetadata thumbnailMetadata = new ObjectMetadata();
+            thumbnailMetadata.setContentLength(thumbnailFile.getSize());
+            thumbnailMetadata.setContentType(thumbnailFile.getContentType());
+
+            s3Client.putObject(new PutObjectRequest(bucketName, fileName, originalFile.getInputStream(), originalMetadata));
+            s3Client.putObject(new PutObjectRequest(bucketName, "tumb/"+ fileName, thumbnailFile.getInputStream(), thumbnailMetadata));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
