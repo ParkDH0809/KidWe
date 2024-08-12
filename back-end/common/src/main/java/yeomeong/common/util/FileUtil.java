@@ -11,14 +11,11 @@ import javax.imageio.ImageIO;
 import lombok.RequiredArgsConstructor;
 import marvin.image.MarvinImage;
 import org.marvinproject.image.transform.scale.Scale;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
-import org.springframework.web.server.ResponseStatusException;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
 
@@ -37,10 +34,9 @@ public class FileUtil {
         }
 
         return UUID.randomUUID() + fileExtension;
-
     }
 
-    MultipartFile resizeFile(MultipartFile file, int width, int height) throws Exception {
+    private static MultipartFile resizeFile(MultipartFile file, int width, int height) throws Exception {
         try {
             // MultipartFile -> BufferedImage Convert
             BufferedImage image = ImageIO.read(file.getInputStream());
@@ -70,12 +66,10 @@ public class FileUtil {
             baos.flush();
 
             return new MockMultipartFile(file.getOriginalFilename(), baos.toByteArray());
-
         } catch (IOException e) {
             throw new CustomException(ErrorCode.RESIZING_ERRORH);
         }
     }
-
 
     public static String uploadFileToS3(AmazonS3 s3Client, String bucketName, MultipartFile file) {
         if (file == null) {
@@ -94,7 +88,28 @@ public class FileUtil {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
         return fileName;
     }
 
+    public static String uploadTumbToS3(AmazonS3 s3Client, String bucketName, MultipartFile file, int width, int height) {
+        if (file == null) {
+            return null;
+        }
+
+        String fileName = null;
+        try {
+            fileName = FileUtil.convertFileName(resizeFile(file, width, height));
+
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentLength(file.getSize());
+            metadata.setContentType(file.getContentType());
+
+            s3Client.putObject(new PutObjectRequest(bucketName + "/tumb", fileName, file.getInputStream(), metadata));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return fileName;
+    }
 }

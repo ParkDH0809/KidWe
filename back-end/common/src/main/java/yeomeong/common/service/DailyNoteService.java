@@ -33,8 +33,6 @@ import static yeomeong.common.util.FileUtil.uploadFileToS3;
 @Service
 @RequiredArgsConstructor
 public class DailyNoteService {
-    private static AmazonS3 s3Client;
-
     @Value("${aws.s3.bucket-name}")
     private static String bucketName;
 
@@ -43,6 +41,7 @@ public class DailyNoteService {
     private final DailyNoteRepository dailyNoteRepository;
     private final DailyNoteImageRepository dailyNoteImageRepository;
     private final ScheduleRepository scheduleRepository;
+    private final AmazonS3 s3Client;
 
     // 알림장 생성하기
     @Transactional

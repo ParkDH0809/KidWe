@@ -56,6 +56,7 @@ public class DailyNote {
         this.kid = kid;
         this.writer = writer;
         this.comments = new ArrayList<>();
+        this.images = new ArrayList<>(); 
         this.sendTime = sendTime;
         this.isDeleted = false;
     }
