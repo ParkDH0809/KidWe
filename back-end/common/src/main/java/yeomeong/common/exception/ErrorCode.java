@@ -15,6 +15,13 @@ public enum ErrorCode {
     NO_CHANGES_DETECTED(400, "NO_CHANGES_DETECTED", "변경된 정보가 없습니다. 입력 정보를 다시 확인해주세요."),
     INVALID_BAN_ID(400, "INVALID_BAN_ID", "변경할 반 정보가 올바르지 않습니다. 입력 정보를 다시 확인해주세요."),
     INVALID_TOKEN(400, "INVALID_TOKEN", "토큰이 올바르지 않습니다."),
+    TOKEN_NOT_BEARER(400, "TOKEN_NOT_BEARER", "토큰이 Bearer로 시작하지 않습니다."),
+    REFRESH_TOKEN_NOT_ALLOWED(400, "REFRESH_TOKEN_NOT_ALLOWED", "Refresh Token으로 접근할 수 없습니다. Access Token이 필요합니다."),
+    ACCESS_TOKEN_REQUIRED(400, "ACCESS_TOKEN_REQUIRED", "Access Token으로 접근할 수 없습니다. Refresh Token이 필요합니다."),
+    LOGGED_OUT_ACCESS_TOKEN(400, "LOGGED_OUT_ACCESS_TOKEN", "로그아웃된 Access Token입니다."),
+    EXPIRED_TOKEN(400, "EXPIRED_TOKEN", "토큰이 만료되었습니다. 새로 로그인 해주세요."),
+    TOKEN_MISSING(400, "TOKEN_MISSING", "요청에 토큰이 없습니다. 토큰을 제공해 주세요."),
+    UNKNOWN_TOKEN_ERROR(400, "UNKNOWN_TOKEN_ERROR", "알 수 없는 Token 오류가 발생했습니다."),
 
     INVALID_LOGIN_VALUE(401, "INVALID_LOGIN_VALUE", "로그인 정보가 올바르지 않습니다."),
     UNAUTHORIZED_WRITER(401, "UNAUTHORIZED_WRITER", "작성자가 아닙니다"),
