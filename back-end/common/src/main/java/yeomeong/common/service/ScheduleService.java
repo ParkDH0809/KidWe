@@ -38,7 +38,7 @@ public class ScheduleService {
     //전체 공지용 스케줄 목록 가져오기
     public List<ScheduleByDayListDto> getScheduleByAllNoticeAndDayList(Long kindergartenId, LocalDate localDate){
 
-        List<Schedule> allByKindergartenIdAndEventDate = scheduleRepository.findAllByBan_Kindergarten_IdAndEventDateAndScheduleTypeOrderByCreatedTimeDesc(kindergartenId, localDate, Schedule.ScheduleType.ALLNOTICE);
+        List<Schedule> allByKindergartenIdAndEventDate = scheduleRepository.findAllByKindergarten_IdAndEventDateAndScheduleTypeOrderByCreatedTimeDesc(kindergartenId, localDate, Schedule.ScheduleType.ALLNOTICE);
 
         return getScheduleByDayListDtos(allByKindergartenIdAndEventDate);
     }
@@ -79,6 +79,7 @@ public class ScheduleService {
                 .orElseThrow(() -> new RuntimeException("해당 멤버가 없습니다"));
 
         Schedule schedule = new Schedule(
+                member.getKindergarten(),
                 member.getBan(),
                 createScheduleDto.getKeyword(),
                 createScheduleDto.getContent(),
