@@ -34,7 +34,7 @@ import static yeomeong.common.util.FileUtil.uploadFileToS3;
 @RequiredArgsConstructor
 public class DailyNoteService {
     @Value("${aws.s3.bucket-name}")
-    private static String bucketName;
+    private String bucketName;
 
     private final MemberRepository memberRepository;
     private final KidRepository kidRepository;

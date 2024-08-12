@@ -105,7 +105,7 @@ public class FileUtil {
             metadata.setContentLength(file.getSize());
             metadata.setContentType(file.getContentType());
 
-            s3Client.putObject(new PutObjectRequest(bucketName + "/tumb", fileName, file.getInputStream(), metadata));
+            s3Client.putObject(new PutObjectRequest(bucketName, "tumb/"+ fileName, file.getInputStream(), metadata));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
