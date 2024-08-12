@@ -1,15 +1,14 @@
 package yeomeong.common.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.exception.ErrorResponse;
 
@@ -22,17 +21,24 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
         try {
             chain.doFilter(req, res);
-        } catch (JwtException ex) {
-            setErrorResponse(HttpStatus.UNAUTHORIZED, res, ex);
+        } catch (CustomException e) {
+            setErrorResponse(req, res, e);
         }
     }
 
-    public void setErrorResponse(HttpStatus status, HttpServletResponse response, Throwable ex) throws IOException {
+    public void setErrorResponse(HttpServletRequest req, HttpServletResponse response, Throwable ex) throws IOException {
+        Object exception = req.getAttribute("exception");
         response.setHeader("Content-type","application/json");
         response.setCharacterEncoding("utf-8");
+        if(exception instanceof ErrorCode){
+            ErrorCode errorCode = (ErrorCode) exception;
+            response.getWriter().write(objectMapper.writeValueAsString(
+                new ErrorResponse(errorCode)
+            ));
+            return;
+        }
 
-        response.setStatus(status.value());
-        response.getWriter().write(objectMapper.writeValueAsString(new ErrorResponse(ErrorCode.UNAUTHENTICATED_ACCESS_TOKEN)));
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
     }
 
 }
