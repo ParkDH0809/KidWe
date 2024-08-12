@@ -30,6 +30,7 @@ public class MemberController {
     @Operation(summary = "사용자 조회", description = "특정 사용자 정보를 조회합니다.")
     @GetMapping("/profile")
     public ResponseEntity<MemberProfileResponseDto> getMemberProfile(Authentication authentication) {
+        log.info("사용자 정보 조회 API 접근");
         return ResponseEntity.status(HttpStatus.OK).body(memberService.getMemberProfile(authentication.getName()));
     }
 
