@@ -16,6 +16,7 @@ import yeomeong.common.entity.member.rtype;
 public class LoginResponseDto {
 
     private String accessToken;
+    private String refreshToken;
     private Long memberId;
     private String memberEmail;
     private rtype memberRole;
@@ -24,9 +25,10 @@ public class LoginResponseDto {
     private Long banId;
     private List<Long> kidIds;
 
-    public static LoginResponseDto of(String accessToken, Member member) {
+    public static LoginResponseDto of(String accessToken, String refreshToken, Member member) {
         return LoginResponseDto.builder()
             .accessToken(accessToken)
+            .refreshToken(refreshToken)
             .memberId(member.getId())
             .memberEmail(member.getEmail())
             .memberRole(member.getRole())
