@@ -60,6 +60,7 @@ public class SecurityConfig  {
 //                                .requestMatchers("/teachers/**").hasAuthority("TEACHER")
 //                                .requestMatchers("/guardians/**").hasAuthority("GUARDIAN")
 //                                .anyRequest().authenticated()
+                            .requestMatchers("/attendances").authenticated()
                             .anyRequest().permitAll()
                 );
 
