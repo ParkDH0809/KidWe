@@ -1,11 +1,9 @@
 package yeomeong.common.controller;
 
-import com.amazonaws.services.s3.AmazonS3;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -17,7 +15,8 @@ import yeomeong.common.dto.member.MemberUpdateRequestDto;
 import yeomeong.common.service.MemberService;
 
 @Slf4j
-@RestController("/members")
+@RestController
+@RequestMapping("/members")
 @Tag(name = "사용자 API", description = "사용자 관련 API")
 public class MemberController {
 
