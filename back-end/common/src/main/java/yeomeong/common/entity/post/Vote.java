@@ -35,10 +35,11 @@ public class Vote {
     private List<VoteItem> items = new ArrayList<>();
 
 
-    public Vote(String title, LocalDate startDate, LocalDate endDate,Announcement announcement ){
+    public Vote(String title, LocalDate startDate, LocalDate endDate,List<VoteItem> items,Announcement announcement ){
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.items = items;
         this.announcement = announcement;
     }
 }

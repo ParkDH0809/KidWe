@@ -60,9 +60,10 @@ dependencies {
 	// FCM
 	implementation 'com.google.firebase:firebase-admin:9.2.0'
 
-
-	// FCM
-	implementation 'com.google.firebase:firebase-admin:9.2.0'
+	// image resizing
+	implementation 'com.github.downgoon:marvin:1.5.5'
+	implementation 'com.github.downgoon:MarvinPlugins:1.5.5'
+	implementation 'org.springframework:spring-test'
 }
 
 tasks.named('test') {
