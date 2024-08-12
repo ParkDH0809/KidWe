@@ -44,9 +44,8 @@ public class SecurityConfig  {
                 .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .requiresChannel(channel -> channel.anyRequest().requiresSecure()
-        );
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+//                .requiresChannel(channel -> channel.anyRequest().requiresSecure());
 
         http
                 .formLogin(config -> config
