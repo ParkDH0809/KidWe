@@ -33,20 +33,20 @@ public class SecurityConfig  {
     private final AuthenticationProviderImpl authenticationProvider;
     private final LoginSuccessHandler loginSuccessHandler;
     private final LoginFailureHandler loginFailureHandler;
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final JwtExceptionFilter jwtExceptionFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, MemberService memberService, JwtService jwtService) throws Exception {
 
-
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .requiresChannel(channel -> channel.anyRequest().requiresSecure()
+        );
 
         http
                 .formLogin(config -> config
@@ -72,8 +72,7 @@ public class SecurityConfig  {
 
         http
                 .exceptionHandling((exceptionHandling) ->
-                        exceptionHandling.authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                                .accessDeniedHandler(jwtAccessDeniedHandler)
+                    exceptionHandling.accessDeniedHandler(jwtAccessDeniedHandler)
                 );
 
         http
