@@ -131,7 +131,7 @@ public class ApprovalService {
         } else {
             memberRepository.updateMemberStatus(approval.getMember().getId(), atype.DECLINE);
         }
-        approvalRepository.delete(approval);
+        approvalRepository.deleteByMemberId(approval.getMember().getId());
     }
 
     @Transactional
