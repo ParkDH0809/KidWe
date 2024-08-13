@@ -40,6 +40,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
             return;
         }
 
+        log.info("[Exception] 401 error");
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
     }
 
