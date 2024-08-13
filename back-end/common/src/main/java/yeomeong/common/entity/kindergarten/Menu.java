@@ -31,5 +31,33 @@ public class Menu {
 
     private LocalDate menuDate;
 
+    private boolean isDeleted;
+
+
+    public Menu(String lunch, String lunchAllergies, String snack, String snackAllergies, String dinner, String dinnerAllergies) {
+        this.lunch = lunch;
+        this.lunchAllergies = lunchAllergies;
+        this.snack = snack;
+        this.snackAllergies = snackAllergies;
+        this.dinner = dinner;
+        this.dinnerAllergies = dinnerAllergies;
+    }
+
+    public Menu updateMenu(
+            String lunch,
+            String lunchAllergies,
+            String snack,
+            String snackAllergies,
+            String dinner,
+            String dinnerAllergies
+    ){
+       return new Menu(this.lunch = lunch,
+        this.lunchAllergies = lunchAllergies,
+        this.snack = snack,
+        this.snackAllergies = snackAllergies,
+        this.dinner = dinner,
+        this.dinnerAllergies = dinnerAllergies);
+    }
+
 
 }

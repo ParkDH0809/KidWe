@@ -21,24 +21,32 @@ import java.util.List;
 public class DailyNoteTeacherResponseDto {
     private Long id;
 
-    private Post post;
+    private TeacherSummaryResponseDto writer;
+    private String content;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime sendTime;
 
-    private TeacherSummaryResponseDto writer;
+    private List<String> images;
+    private List<String> thumbnails;
+
     private Long commentCount;
     private List<DailyNoteParentCommentResponseDto> comments;
-
-    private List<String> tumbnails;
-    private List<String> images;
 
     @Builder
     public DailyNoteTeacherResponseDto(DailyNote dailyNote) {
         this.id = dailyNote.getId();
-        this.post = dailyNote.getPost();
-        this.sendTime = dailyNote.getSendTime();
 
         this.writer = new TeacherSummaryResponseDto(dailyNote.getWriter());
+        this.content = dailyNote.getContent();
+        this.sendTime = dailyNote.getSendTime();
+
+        images = new ArrayList<>();
+        thumbnails = new ArrayList<>();
+        for(DailyNoteImage image : dailyNote.getImages()){
+            images.add(image.getImageUrl());
+            thumbnails.add("thumb/" + image.getImageUrl());
+        }
+
         this.comments = new ArrayList<>();
         for(DailyNoteComment comment : dailyNote.getComments()){
             if(comment.getParentComment()==null){
@@ -52,9 +60,5 @@ public class DailyNoteTeacherResponseDto {
                 .filter(comment -> !comment.getIsDeleted())
                 .count();
 
-        images = new ArrayList<>();
-        for(DailyNoteImage image : dailyNote.getImages()){
-            images.add(image.getImageUrl());
-        }
     }
 }

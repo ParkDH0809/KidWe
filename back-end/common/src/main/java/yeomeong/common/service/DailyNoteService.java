@@ -28,13 +28,13 @@ import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.repository.*;
 import yeomeong.common.util.FileUtil;
 
-import static yeomeong.common.util.FileUtil.uploadFileToS3;
+import static yeomeong.common.util.FileUtil.*;
 
 @Service
 @RequiredArgsConstructor
 public class DailyNoteService {
     @Value("${aws.s3.bucket-name}")
-    private static String bucketName;
+    private String bucketName;
 
     private final MemberRepository memberRepository;
     private final KidRepository kidRepository;
@@ -47,7 +47,7 @@ public class DailyNoteService {
     @Transactional
     public Object createDailyNote(Long writerId,
                                   DailyNoteRequestDto dailyNoteCreateRequestDto,
-                                  List<MultipartFile> images) {
+                                  List<MultipartFile> images) throws Exception {
         Member writer = memberRepository.findById(writerId).orElseThrow(
             () -> new CustomException(ErrorCode.NOT_FOUND_WRITER)
         );
@@ -59,8 +59,11 @@ public class DailyNoteService {
 
         if(images != null && !images.isEmpty()) {
             for (MultipartFile image : images) {
-                DailyNoteImage dailyNoteImage = new DailyNoteImage(uploadFileToS3(s3Client, bucketName, image), createdDailyNote);
-                dailyNoteImageRepository.save(dailyNoteImage);
+                String imageUrl = uploadOriginalAndThumbnailToS3(s3Client, bucketName, image, 100, 100);
+                if(imageUrl != null) {
+                    DailyNoteImage dailyNoteImage = new DailyNoteImage(imageUrl, createdDailyNote);
+                    dailyNoteImageRepository.save(dailyNoteImage);
+                }
             }
         }
 
@@ -165,7 +168,7 @@ public class DailyNoteService {
         if(oldDailyNote.getWriter().getId() != writerId){
             throw new CustomException(ErrorCode.UNAUTHORIZED_WRITER);
         }
-        oldDailyNote.setNewPost(updatedDailyNoteRequsetDto.getPost());
+        oldDailyNote.setNewContent(updatedDailyNoteRequsetDto.getContent());
         oldDailyNote.setNewSendTime(updatedDailyNoteRequsetDto.getSendTime());
         return new DailyNoteGuardianResponseDto(dailyNoteRepository.save(oldDailyNote));
     }

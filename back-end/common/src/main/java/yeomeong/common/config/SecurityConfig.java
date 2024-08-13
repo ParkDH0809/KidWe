@@ -3,6 +3,7 @@ package yeomeong.common.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -23,6 +24,7 @@ import yeomeong.common.security.jwt.JwtService;
 import yeomeong.common.security.jwt.JwtUtil;
 import yeomeong.common.service.MemberService;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -60,6 +62,7 @@ public class SecurityConfig  {
 //                                .requestMatchers("/teachers/**").hasAuthority("TEACHER")
 //                                .requestMatchers("/guardians/**").hasAuthority("GUARDIAN")
 //                                .anyRequest().authenticated()
+                            .requestMatchers("/attendances/**").authenticated()
                             .anyRequest().permitAll()
                 );
 
@@ -87,6 +90,7 @@ public class SecurityConfig  {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
+        log.info("[CORS] Loading CorsConfigurationSource");
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOriginPattern("*");
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
