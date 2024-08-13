@@ -58,8 +58,6 @@ aws:
       secret-access-key: Hg9sa6K91c2Bh3ECU1la6tOfvEPP1yTxmRQtkx+c
     stack:
       auto: false
-#  cloudfront:
-#    distribution-url: https://d175w2yu39lrw9.cloudfront.net
 
 
 springdoc:

@@ -48,7 +48,6 @@ public class MenuService {
             addKidAllergiesToMenu(menuByDay.getLunchAllergies(), kid, menuByDay.getKidAllergyListOfLunch());
             addKidAllergiesToMenu(menuByDay.getSnackAllergies(), kid, menuByDay.getKidAllergyListOfSnack());
             addKidAllergiesToMenu(menuByDay.getDinnerAllergies(), kid, menuByDay.getKidAllergyListOfDinner());
-
         }
         return menuByDay;
     }
@@ -86,6 +85,7 @@ public class MenuService {
         toEntityMenu(menu.getKindergarten(), menuCreateDto);
 
         return new MenuByDayResponseDto(
+                menuId,
                 menu.getLunch(),
                 menu.getLunchAllergies(),
                 menu.getSnack(),

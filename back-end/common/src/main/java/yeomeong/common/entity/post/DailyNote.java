@@ -50,7 +50,8 @@ public class DailyNote {
     public DailyNote(Kid kid,
                      Member writer,
                      String content,
-                     LocalDateTime sendTime){
+                     LocalDateTime sendTime,
+                     Boolean isStored){
         this.kid = kid;
         this.writer = writer;
         this.content = content;
