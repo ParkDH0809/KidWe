@@ -32,16 +32,16 @@ public class TagService {
         return tagResponseDtos;
     }
 
-    //Tag 생성하기
-    @Transactional
-    public TagResponseDto createTag(TagRequestDto tagRequestDto) {
-        Tag isExistTag = tagRepository.findTagByTeacherIdAndContet(tagRequestDto.getTeacherId(),
-            tagRequestDto.getContent());
-        if (isExistTag == null) {
-            return new TagResponseDto(tagRepository.save(tagRequestDto.toDocument()));
-        }
-        return null;
-    }
+//    //Tag 생성하기
+//    @Transactional
+//    public TagResponseDto createTag(TagRequestDto tagRequestDto) {
+//        Tag isExistTag = tagRepository.findTagByTeacherIdAndContet(tagRequestDto.getTeacherId(),
+//            tagRequestDto.getContent());
+//        if (isExistTag == null) {
+//            return new TagResponseDto(tagRepository.save(tagRequestDto.toDocument()));
+//        }
+//        return null;
+//    }
 
     //Tag 수정하기
     @Transactional

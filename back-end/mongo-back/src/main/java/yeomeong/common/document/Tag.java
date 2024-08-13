@@ -19,11 +19,11 @@ public class Tag {
     private Long teacherId;
 
     private String content;
-    private mtype morpheme;
+    private String morpheme;
     private Long count;
 
     @Builder
-    public Tag(Long teacherId, String content, mtype morpheme) {
+    public Tag(Long teacherId, String content, String morpheme) {
         this.teacherId = teacherId;
         this.content = content;
         this.morpheme = morpheme;

@@ -2,40 +2,20 @@ package yeomeong.common.service;
 
 import ai.bareun.tagger.Tagged;
 import ai.bareun.tagger.Tagger;
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 import yeomeong.common.document.Memo;
 import yeomeong.common.document.Tag;
-import yeomeong.common.dto.BareunRequestDto;
-import yeomeong.common.dto.BareunResponseDto;
-import yeomeong.common.dto.BareunResponseDto.Sentence;
 import yeomeong.common.dto.MemoRequestDto;
 import yeomeong.common.dto.MemoResponseDto;
-import yeomeong.common.dto.Message;
-import yeomeong.common.dto.OpenAiRequestDto;
-import yeomeong.common.dto.OpenAiResponseDto;
 import yeomeong.common.dto.TagRequestDto;
-import yeomeong.common.dto.TagResponseDto;
-import yeomeong.common.exception.CustomException;
-import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.repository.MemoRepository;
 import yeomeong.common.repository.TagRepository;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -49,8 +29,10 @@ public class MemoService {
     private final TagRepository tagRepository;
 
     private String getMorpheme(String content){
-        Tagged tag = new Tagger(bareunHost, bareunApiKey).tag(content);
-        return tag.morphs().get(0);
+        System.out.println(content);
+        Tagged tag = new Tagger(bareunApiKey).tag(content);
+        System.out.println(tag.morphs().size());
+        return tag.morphs().toString();
     }
 
     @Transactional
@@ -75,7 +57,7 @@ public class MemoService {
                 // 처음 사용하는 Tag라면 생성하기
                 else {
                     String morpheme = getMorpheme(tagRequestDto.getContent());
-                    tags.add(tagRepository.save(tagRepository.save(tagRequestDto.toDocument())));
+                    tags.add(tagRepository.save(tagRepository.save(tagRequestDto.toDocument(morpheme))));
                 }
             }
         }
