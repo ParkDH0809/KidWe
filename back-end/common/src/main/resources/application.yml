@@ -44,10 +44,10 @@ jwt:
   token:
     header: Authorization
     secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
-    access-expired-time: 1800000 #30m
-#    access-expired-time: 3000 #5s
-    refresh-expired-time: 1209600000 #14d
-#    refresh-expired-time: 6000 #10s
+#    access-expired-time: 1800000 #30m
+    access-expired-time: 3000 #5s
+#    refresh-expired-time: 1209600000 #14d
+    refresh-expired-time: 6000 #10s
 
 aws:
   s3:
