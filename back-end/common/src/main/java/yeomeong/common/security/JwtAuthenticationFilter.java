@@ -93,8 +93,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throw new CustomException(e.getErrorCode());
         } catch (ExpiredJwtException e) {
             if(request.getRequestURI().equals("/refresh")) {
+                request.setAttribute("exception", ErrorCode.UNAUTHENTICATED_EXPIRED_REFRESH_TOKEN);
                 throw new CustomException(ErrorCode.UNAUTHENTICATED_EXPIRED_REFRESH_TOKEN);
             } else {
+                request.setAttribute("exception", ErrorCode.EXPIRED_TOKEN);
                 throw new CustomException(ErrorCode.EXPIRED_TOKEN);
             }
         }

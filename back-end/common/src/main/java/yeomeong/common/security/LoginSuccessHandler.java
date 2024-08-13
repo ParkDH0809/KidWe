@@ -65,13 +65,21 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         if(member.getKidMember() != null) {
             List<KidMember> kidMembers = member.getKidMember();
-            List<Long> kidIds = new ArrayList<>();
             for(KidMember kidMember : kidMembers) {
                 Kid kid = kidMember.getKid();
-                kidIds.add(kid.getId());
+                loginResponseDto.setKidId(kid.getId());
             }
-            loginResponseDto.setKidIds(kidIds);
         }
+
+//        if(member.getKidMember() != null) {
+//            List<KidMember> kidMembers = member.getKidMember();
+//            List<Long> kidIds = new ArrayList<>();
+//            for(KidMember kidMember : kidMembers) {
+//                Kid kid = kidMember.getKid();
+//                kidIds.add(kid.getId());
+//            }
+//            loginResponseDto.setKidIds(member.getKidMember());
+//        }
 
         objectMapper.writeValue(response.getWriter(), loginResponseDto);
     }

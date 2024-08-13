@@ -18,3 +18,7 @@ resttemplate:
     timeout: 3000
   read:
     timeout: 3000
+
+bareun:
+  host: "i11a808.p.ssafy.io"
+  api-key: "koba-ZARQV7A-HRKUDOY-V6U7LJY-YEE7ZFI"

@@ -16,7 +16,6 @@ import yeomeong.common.dto.post.dailynote.response.DailyNoteCommentResponseDto;
 import yeomeong.common.service.DailyNoteCommentService;
 
 @RequiredArgsConstructor
-
 @RestController
 @RequestMapping("/dailynotecomments")
 @Tag(name = "알림장 댓글 API", description = "알림장 댓글 관련 API")

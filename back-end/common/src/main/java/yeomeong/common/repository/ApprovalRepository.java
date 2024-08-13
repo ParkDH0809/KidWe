@@ -17,4 +17,8 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     Approval findByMemberId(Long teacherId);
 
     Approval findByKidId(Long id);
+
+    void deleteByMemberId(Long id);
+
+    void deleteByKidId(Long id);
 }

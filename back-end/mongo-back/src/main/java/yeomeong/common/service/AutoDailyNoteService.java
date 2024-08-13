@@ -20,7 +20,6 @@ import yeomeong.common.document.Memo;
 import yeomeong.common.document.Tag;
 import yeomeong.common.dto.AutoDailyNoteRequestDto;
 import yeomeong.common.dto.AutoDailyNoteRequestDto.ScheduleInfo;
-import yeomeong.common.dto.MemoResponseDto;
 import yeomeong.common.dto.Message;
 import yeomeong.common.dto.OpenAiRequestDto;
 import yeomeong.common.dto.OpenAiResponseDto;
@@ -37,8 +36,8 @@ public class AutoDailyNoteService {
     @Value(("${spring.ai.openai.url}"))
     private String apiUrl;
 
-    private final RestTemplate restTemplate;
     private final MemoRepository memoRepository;
+    private final RestTemplate restTemplate;
 
     private String getOpenAI(String role, String prePrompt, String corePrompt, String postPrompt){
         // 헤더 설정

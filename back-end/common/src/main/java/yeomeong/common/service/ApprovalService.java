@@ -2,6 +2,7 @@ package yeomeong.common.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import jakarta.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,11 +15,13 @@ import yeomeong.common.dto.member.TeacherDetailInfoResponseDto;
 import yeomeong.common.dto.approval.KidJoinKindergartenRequestDto;
 import yeomeong.common.dto.approval.TeacherJoinKindergartenRequestDto;
 import yeomeong.common.entity.member.Approval;
+import yeomeong.common.entity.member.Kid;
 import yeomeong.common.entity.member.KidMember;
 import yeomeong.common.entity.member.atype;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.repository.ApprovalRepository;
+import yeomeong.common.repository.AttendanceRepository;
 import yeomeong.common.repository.BanRepository;
 import yeomeong.common.repository.KidMemberRepository;
 import yeomeong.common.repository.KidRepository;
@@ -36,13 +39,14 @@ public class ApprovalService {
     private final KindergartenRepository kindergartenRepository;
     private final KidMemberRepository kidMemberRepository;
     private final AmazonS3 amazonS3;
+    private final AttendanceRepository attendanceRepository;
 
     @Value("${aws.s3.bucket-name}")
     private String bucketName;
 
     public ApprovalService(ApprovalRepository approvalRepository, MemberRepository memberRepository, BanRepository banRepository,
         KidRepository kidRepository, KindergartenRepository kindergartenRepository, KidMemberRepository kidMemberRepository,
-        AmazonS3 amazonS3) {
+        AmazonS3 amazonS3, AttendanceRepository attendanceRepository) {
         this.approvalRepository = approvalRepository;
         this.memberRepository = memberRepository;
         this.banRepository = banRepository;
@@ -50,8 +54,10 @@ public class ApprovalService {
         this.kindergartenRepository = kindergartenRepository;
         this.kidMemberRepository = kidMemberRepository;
         this.amazonS3 = amazonS3;
+        this.attendanceRepository = attendanceRepository;
     }
 
+    @Transactional
     public void applyForKindergartenByTeacher(TeacherJoinKindergartenRequestDto teacherJoinRequestDto) {
         ApprovalRequestDto approvalRequestDto = new ApprovalRequestDto(
             memberRepository.findById(teacherJoinRequestDto.getMemberId())
@@ -103,7 +109,7 @@ public class ApprovalService {
 
     public List<TeacherDetailInfoResponseDto> getAcceptTeachers(Long kindergartenId) {
         List<TeacherDetailInfoResponseDto> teacherDetailInfoResponseDtos = new ArrayList<>();
-        memberRepository.findMemberByKindergartenId(kindergartenId)
+        memberRepository.findMemberByKindergartenIdAndBanIsNotNull(kindergartenId)
             .forEach(m -> teacherDetailInfoResponseDtos.add(TeacherDetailInfoResponseDto.toTeacherDetailResponseDto(m)));
         return teacherDetailInfoResponseDtos;
     }
@@ -122,26 +128,25 @@ public class ApprovalService {
         return pendingKidResponseDtos;
     }
 
+    @Transactional
     public void acceptTeacherRequestDto(AcceptRequestDto acceptRequestDto) {
         Approval approval = approvalRepository.findByMemberId(acceptRequestDto.getId());
         if (acceptRequestDto.getAccepted()) {
             acceptTeacher(approval);
         } else {
-            declineTeacher(acceptRequestDto.getId());
+            memberRepository.updateMemberStatus(approval.getMember().getId(), atype.DECLINE);
         }
-        approvalRepository.delete(approval);
+        approvalRepository.deleteByMemberId(approval.getMember().getId());
     }
 
+    @Transactional
     public void acceptTeacher(Approval approval) {
         memberRepository.updateMemberBan(approval.getMember().getId(), approval.getBan());
         memberRepository.updateMemberKindergarten(approval.getMember().getId(), approval.getKindergarten());
         memberRepository.updateMemberStatus(approval.getMember().getId(), atype.ACCEPT);
     }
 
-    public void declineTeacher(Long memberId) {
-        memberRepository.updateMemberStatus(memberId, atype.DECLINE);
-    }
-
+    @Transactional
     public void acceptKidRequestDto(AcceptRequestDto acceptRequestDto) {
         Approval approval = approvalRepository.findByKidId(acceptRequestDto.getId());
         if (acceptRequestDto.getAccepted()) {
@@ -149,18 +154,25 @@ public class ApprovalService {
         } else {
             declineKid(acceptRequestDto.getId());
         }
-        approvalRepository.delete(approval);
+        approvalRepository.deleteByKidId(approval.getKid().getId());
     }
 
-    private void acceptKid(Approval approval) {
+    @Transactional
+    public void acceptKid(Approval approval) {
         KidMember kidMember = kidMemberRepository.findByKidId(approval.getKid().getId());
         kidRepository.updateKidBan(approval.getKid().getId(), approval.getBan());
         kidRepository.updateKidKindergarten(approval.getKid().getId(), approval.getKindergarten());
         kidRepository.updateKidStatus(approval.getKid().getId(), atype.ACCEPT);
         memberRepository.updateMemberStatus(kidMember.getMember().getId(), atype.ACCEPT);
+        createAttendance(approval.getKid());
     }
 
-    private void declineKid(Long id) {
+    private void createAttendance(Kid kid) {
+        attendanceRepository.createNewKid(kid.getId(), LocalDate.now());
+    }
+
+    @Transactional
+    public void declineKid(Long id) {
         KidMember kidMember = kidMemberRepository.findByKidId(id);
         if (memberRepository.findById(kidMember.getMember().getId()).get().getMemberStatus() != atype.ACCEPT) {
             memberRepository.updateMemberStatus(kidMember.getMember().getId(), atype.DECLINE);
@@ -169,12 +181,14 @@ public class ApprovalService {
         kidRepository.deleteKidById(id);
     }
 
+    @Transactional
     public void dropTeacher(Long teacherId) {
         memberRepository.updateMemberBan(teacherId, null);
         memberRepository.updateMemberKindergarten(teacherId, null);
         memberRepository.updateMemberStatus(teacherId, atype.DECLINE);
     }
 
+    @Transactional
     public void dropKid(Long kidId) {
         KidMember kidMember = kidMemberRepository.findByKidId(kidId);
         Long parentId = kidMember.getMember().getId();

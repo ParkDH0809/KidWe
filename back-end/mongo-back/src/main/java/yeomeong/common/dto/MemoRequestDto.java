@@ -21,11 +21,11 @@ public class MemoRequestDto {
 
     public Memo toDocument(Long teacherId) {
         List<Tag> tags = new ArrayList<>();
-        if (this.tags != null && !this.tags.isEmpty()) {
-            for (TagRequestDto tagRequestDto : this.tags) {
-                tags.add(tagRequestDto.toDocument());
-            }
-        }
+//        if (this.tags != null && !this.tags.isEmpty()) {
+//            for (TagRequestDto tagRequestDto : this.tags) {
+//                tags.add(tagRequestDto.toDocument());
+//            }
+//        }
 
         return Memo.builder()
             .teacherId(teacherId)

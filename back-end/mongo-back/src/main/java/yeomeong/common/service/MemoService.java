@@ -1,7 +1,9 @@
 package yeomeong.common.service;
 
-import java.time.format.DateTimeFormatter;
+import ai.bareun.tagger.Tagged;
+import ai.bareun.tagger.Tagger;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import yeomeong.common.document.Memo;
@@ -9,22 +11,29 @@ import yeomeong.common.document.Tag;
 import yeomeong.common.dto.MemoRequestDto;
 import yeomeong.common.dto.MemoResponseDto;
 import yeomeong.common.dto.TagRequestDto;
-import yeomeong.common.dto.TagResponseDto;
 import yeomeong.common.repository.MemoRepository;
 import yeomeong.common.repository.TagRepository;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class MemoService {
+    @Value(("${bareun.api-key"))
+    String bareunApiKey;
+    @Value("${bareun.host}")
+    String bareunHost;
 
     private final MemoRepository memoRepository;
     private final TagRepository tagRepository;
+
+    private String getMorpheme(String content){
+        System.out.println(content);
+        Tagged tag = new Tagger(bareunApiKey).tag(content);
+        System.out.println(tag.morphs().size());
+        return tag.morphs().toString();
+    }
 
     @Transactional
     public List<Tag> updateTag(List<TagRequestDto> tagRequestDtos) {
@@ -42,12 +51,13 @@ public class MemoService {
                     if (oldTag == null) {
                         return null;
                     }
-                    oldTag.setCount(oldTag.getCount() + 1);
+                    oldTag.count();
                     tags.add(tagRepository.save(oldTag));
                 }
                 // 처음 사용하는 Tag라면 생성하기
                 else {
-                    tags.add(tagRepository.save(tagRepository.save(tagRequestDto.toDocument())));
+                    String morpheme = getMorpheme(tagRequestDto.getContent());
+                    tags.add(tagRepository.save(tagRepository.save(tagRequestDto.toDocument(morpheme))));
                 }
             }
         }
