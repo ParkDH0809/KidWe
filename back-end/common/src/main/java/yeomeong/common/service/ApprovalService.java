@@ -152,40 +152,22 @@ public class ApprovalService {
         memberRepository.updateMemberStatus(approval.getMember().getId(), atype.ACCEPT);
     }
 
-    private void sendAcceptMessage(Approval approval) {
-        log.info("[Notification] 승인 알림 전송 시작");
-        NotificationUtil.sendMessages(NotificationRequestDto.builder()
-                .token(List.of(memberRepository.getNotificationTokenBayMemberId(approval.getMember().getId())
-                        .orElseThrow(() -> new CustomException(ErrorCode.NOTIFICATION_TOKEN_MISSING))))
-                .notificationContent(NotificationContent.JOIN_APPROVAL)
-                .build());
-        log.info("[Notification] 승인 알림 전송 완료");
-    }
-
-    private void sendDeclineMessage(Approval approval) {
-        log.info("[Notification] 거절 알림 전송 시작");
-        NotificationUtil.sendMessages(NotificationRequestDto.builder()
-            .token(List.of(memberRepository.getNotificationTokenBayMemberId(approval.getMember().getId())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOTIFICATION_TOKEN_MISSING))))
-            .notificationContent(NotificationContent.JOIN_DECLINE)
-            .build());
-        log.info("[Notification] 거절 알림 전송 완료");
-    }
-
     @Transactional
     public void acceptKidRequestDto(AcceptRequestDto acceptRequestDto) {
         Approval approval = approvalRepository.findByKidId(acceptRequestDto.getId());
+        KidMember kidMember = kidMemberRepository.findByKidId(approval.getKid().getId());
         if (acceptRequestDto.getAccepted()) {
-            acceptKid(approval);
+            acceptKid(approval, kidMember);
+            sendAcceptMessage(kidMember.getMember().getId());
         } else {
             declineKid(acceptRequestDto.getId());
+            sendDeclineMessage(kidMember.getMember().getId());
         }
         approvalRepository.deleteByKidId(approval.getKid().getId());
     }
 
     @Transactional
-    public void acceptKid(Approval approval) {
-        KidMember kidMember = kidMemberRepository.findByKidId(approval.getKid().getId());
+    public void acceptKid(Approval approval, KidMember kidMember) {
         kidRepository.updateKidBan(approval.getKid().getId(), approval.getBan());
         kidRepository.updateKidKindergarten(approval.getKid().getId(), approval.getKindergarten());
         kidRepository.updateKidStatus(approval.getKid().getId(), atype.ACCEPT);
@@ -205,6 +187,26 @@ public class ApprovalService {
         }
         kidMemberRepository.delete(kidMember);
         kidRepository.deleteKidById(id);
+    }
+
+    private void sendAcceptMessage(Long memberId) {
+        log.info("[Notification] 승인 알림 전송 시작");
+        NotificationUtil.sendMessages(NotificationRequestDto.builder()
+            .token(List.of(memberRepository.getNotificationTokenBayMemberId(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOTIFICATION_TOKEN_MISSING))))
+            .notificationContent(NotificationContent.JOIN_APPROVAL)
+            .build());
+        log.info("[Notification] 승인 알림 전송 완료");
+    }
+
+    private void sendDeclineMessage(Long memberId) {
+        log.info("[Notification] 거절 알림 전송 시작");
+        NotificationUtil.sendMessages(NotificationRequestDto.builder()
+            .token(List.of(memberRepository.getNotificationTokenBayMemberId(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOTIFICATION_TOKEN_MISSING))))
+            .notificationContent(NotificationContent.JOIN_DECLINE)
+            .build());
+        log.info("[Notification] 거절 알림 전송 완료");
     }
 
     @Transactional
