@@ -1,7 +1,6 @@
 package yeomeong.common.exception;
 
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ErrorCode {
@@ -22,6 +21,7 @@ public enum ErrorCode {
     LOGGED_OUT_ACCESS_TOKEN(400, "LOGGED_OUT_ACCESS_TOKEN", "로그아웃된 Access Token입니다."),
     EXPIRED_TOKEN(400, "EXPIRED_TOKEN", "토큰이 만료되었습니다."),
     TOKEN_MISSING(400, "TOKEN_MISSING", "요청에 토큰이 없습니다. 토큰을 제공해 주세요."),
+    NOTIFICATION_TOKEN_MISSING(400, "NOTIFICATION_TOKEN_MISSING", "알림 토큰이 없습니다."),
     UNKNOWN_TOKEN_ERROR(400, "UNKNOWN_TOKEN_ERROR", "알 수 없는 Token 오류가 발생했습니다."),
 
     INVALID_LOGIN_VALUE(401, "INVALID_LOGIN_VALUE", "로그인 정보가 올바르지 않습니다."),

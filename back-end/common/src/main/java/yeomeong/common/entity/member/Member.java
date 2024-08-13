@@ -31,7 +31,6 @@ public class Member {
 
     private String tel;
 
-
     @Enumerated(EnumType.STRING)
     private rtype role; //[ROLE_DIRECTOR, ROLE_TEACHER, ROLE_GUARDIAN ]
 
@@ -54,8 +53,7 @@ public class Member {
     @ColumnDefault("false")
     private Boolean isDeleted;
 
-    @OneToMany(mappedBy = "member")
-    private List<Notification> notification;
+    private String notificationToken;
 
     public void updateFromDto(MemberUpdateRequestDto dto, String picture) {
         this.name = dto.getName() != null ? dto.getName() : this.name;

@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +15,7 @@ import yeomeong.common.dto.approval.PendingKidResponseDto;
 import yeomeong.common.dto.member.TeacherDetailInfoResponseDto;
 import yeomeong.common.dto.approval.KidJoinKindergartenRequestDto;
 import yeomeong.common.dto.approval.TeacherJoinKindergartenRequestDto;
+import yeomeong.common.dto.notification.NotificationRequestDto;
 import yeomeong.common.entity.member.Approval;
 import yeomeong.common.entity.member.Kid;
 import yeomeong.common.entity.member.KidMember;
@@ -28,8 +30,10 @@ import yeomeong.common.repository.KidRepository;
 import yeomeong.common.repository.KindergartenRepository;
 import yeomeong.common.repository.MemberRepository;
 import yeomeong.common.util.FileUtil;
+import yeomeong.common.util.NotificationUtil;
 
 @Service
+@Slf4j
 public class ApprovalService {
 
     private final ApprovalRepository approvalRepository;
@@ -131,12 +135,15 @@ public class ApprovalService {
     @Transactional
     public void acceptTeacherRequestDto(AcceptRequestDto acceptRequestDto) {
         Approval approval = approvalRepository.findByMemberId(acceptRequestDto.getId());
+        Long memberId = approval.getMember().getId();
         if (acceptRequestDto.getAccepted()) {
             acceptTeacher(approval);
+            sendAcceptMessage(memberId);
         } else {
-            memberRepository.updateMemberStatus(approval.getMember().getId(), atype.DECLINE);
+            memberRepository.updateMemberStatus(memberId, atype.DECLINE);
+            sendDeclineMessage(memberId);
         }
-        approvalRepository.deleteByMemberId(approval.getMember().getId());
+        approvalRepository.deleteByMemberId(memberId);
     }
 
     @Transactional
@@ -149,17 +156,19 @@ public class ApprovalService {
     @Transactional
     public void acceptKidRequestDto(AcceptRequestDto acceptRequestDto) {
         Approval approval = approvalRepository.findByKidId(acceptRequestDto.getId());
+        KidMember kidMember = kidMemberRepository.findByKidId(approval.getKid().getId());
         if (acceptRequestDto.getAccepted()) {
-            acceptKid(approval);
+            acceptKid(approval, kidMember);
+            sendAcceptMessage(kidMember.getMember().getId());
         } else {
             declineKid(acceptRequestDto.getId());
+            sendDeclineMessage(kidMember.getMember().getId());
         }
         approvalRepository.deleteByKidId(approval.getKid().getId());
     }
 
     @Transactional
-    public void acceptKid(Approval approval) {
-        KidMember kidMember = kidMemberRepository.findByKidId(approval.getKid().getId());
+    public void acceptKid(Approval approval, KidMember kidMember) {
         kidRepository.updateKidBan(approval.getKid().getId(), approval.getBan());
         kidRepository.updateKidKindergarten(approval.getKid().getId(), approval.getKindergarten());
         kidRepository.updateKidStatus(approval.getKid().getId(), atype.ACCEPT);
@@ -179,6 +188,26 @@ public class ApprovalService {
         }
         kidMemberRepository.delete(kidMember);
         kidRepository.deleteKidById(id);
+    }
+
+    private void sendAcceptMessage(Long memberId) {
+        log.info("[Notification] 승인 알림 전송 시작");
+        NotificationUtil.sendMessages(NotificationRequestDto.builder()
+            .token(List.of(memberRepository.getNotificationTokenBayMemberId(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOTIFICATION_TOKEN_MISSING))))
+            .notificationContent(NotificationContent.JOIN_APPROVAL)
+            .build());
+        log.info("[Notification] 승인 알림 전송 완료");
+    }
+
+    private void sendDeclineMessage(Long memberId) {
+        log.info("[Notification] 거절 알림 전송 시작");
+        NotificationUtil.sendMessages(NotificationRequestDto.builder()
+            .token(List.of(memberRepository.getNotificationTokenBayMemberId(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOTIFICATION_TOKEN_MISSING))))
+            .notificationContent(NotificationContent.JOIN_DECLINE)
+            .build());
+        log.info("[Notification] 거절 알림 전송 완료");
     }
 
     @Transactional

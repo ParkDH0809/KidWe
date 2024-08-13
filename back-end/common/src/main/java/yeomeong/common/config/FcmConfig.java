@@ -18,28 +18,23 @@
 //    FirebaseMessaging firebaseMessaging() throws IOException {
 //        ClassPathResource resource = new ClassPathResource("firebase-cloud-message.json");
 //        InputStream refreshToken = resource.getInputStream();
-//        FirebaseOptions options = FirebaseOptions.builder()
-//            .setCredentials(GoogleCredentials.fromStream(refreshToken))
-//            .build();
-//        FirebaseApp firebaseApp = FirebaseApp.initializeApp(options);
-//        return FirebaseMessaging.getInstance(firebaseApp);
 //
-////        FirebaseApp firebaseApp = null;
-////        List<FirebaseApp> firebaseAppList = FirebaseApp.getApps();
-////        if (firebaseAppList != null && !firebaseAppList.isEmpty()) {
-////            for (FirebaseApp app : firebaseAppList) {
-////                if (app.getName().equals(FirebaseApp.DEFAULT_APP_NAME)) {
-////                    firebaseApp = app;
-////                }
-////            }
-////        } else {
-////            FirebaseOptions options = FirebaseOptions.builder()
-////                .setCredentials(GoogleCredentials.fromStream(refreshToken))
-////                .build();
-////            firebaseApp = FirebaseApp.initializeApp(options);
-////        }
-////
-////        return FirebaseMessaging.getInstance(firebaseApp);
+//        FirebaseApp firebaseApp = null;
+//        List<FirebaseApp> firebaseAppList = FirebaseApp.getApps();
+//        if (firebaseAppList != null && !firebaseAppList.isEmpty()) {
+//            for (FirebaseApp app : firebaseAppList) {
+//                if (app.getName().equals(FirebaseApp.DEFAULT_APP_NAME)) {
+//                    firebaseApp = app;
+//                }
+//            }
+//        } else {
+//            FirebaseOptions options = FirebaseOptions.builder()
+//                .setCredentials(GoogleCredentials.fromStream(refreshToken))
+//                .build();
+//            firebaseApp = FirebaseApp.initializeApp(options);
+//        }
+//
+//        return FirebaseMessaging.getInstance(firebaseApp);
 //    }
 //
 //}
