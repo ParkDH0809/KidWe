@@ -92,7 +92,7 @@ public class FileUtil {
         return fileName;
     }
 
-    public static String uploadTumbToS3(AmazonS3 s3Client, String bucketName, MultipartFile file, int width, int height) {
+    public static String uploadThumbToS3(AmazonS3 s3Client, String bucketName, MultipartFile file, int width, int height) {
         if (file == null) {
             return null;
         }
@@ -105,7 +105,7 @@ public class FileUtil {
             metadata.setContentLength(file.getSize());
             metadata.setContentType(file.getContentType());
 
-            s3Client.putObject(new PutObjectRequest(bucketName + "/tumb", fileName, file.getInputStream(), metadata));
+            s3Client.putObject(new PutObjectRequest(bucketName + "/thumbnail", fileName, file.getInputStream(), metadata));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
