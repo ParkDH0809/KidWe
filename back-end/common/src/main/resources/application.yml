@@ -16,6 +16,9 @@ spring:
     username: ssafy
     password: ssafy
 
+
+
+
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -58,8 +61,6 @@ aws:
       secret-access-key: Hg9sa6K91c2Bh3ECU1la6tOfvEPP1yTxmRQtkx+c
     stack:
       auto: false
-#  cloudfront:
-#    distribution-url: https://d175w2yu39lrw9.cloudfront.net
 
 
 springdoc:
