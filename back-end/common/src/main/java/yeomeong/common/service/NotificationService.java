@@ -15,7 +15,7 @@ public class NotificationService {
 
     public void addNotificationToken(String email, String token) {
         Member member = memberRepository.findByEmail(email);
-//        notificationRepository.save(yeomeong.common.entity.member.Notification.of(member, token));
+        memberRepository.updateNotificationToken(member.getId(), token);
     }
 
 }
