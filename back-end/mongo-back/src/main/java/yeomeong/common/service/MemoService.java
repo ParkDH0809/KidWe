@@ -30,7 +30,7 @@ public class MemoService {
 
     private String getMorpheme(String content){
         System.out.println(content);
-        Tagged tag = new Tagger(bareunApiKey).tag(content);
+        Tagged tag = new Tagger(bareunHost, bareunApiKey).tag(content);
         System.out.println(tag.morphs().size());
         return tag.morphs().toString();
     }
