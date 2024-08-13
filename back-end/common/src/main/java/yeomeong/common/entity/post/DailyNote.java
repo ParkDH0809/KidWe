@@ -29,9 +29,6 @@ public class DailyNote {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Embedded
-    private Post post;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "kid_id")
     private Kid kid;
@@ -39,30 +36,32 @@ public class DailyNote {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member writer;
-    @OneToMany(mappedBy = "dailyNote", cascade = CascadeType.ALL)
-    private List<DailyNoteComment> comments;
+    private String content;
     @OneToMany(mappedBy = "dailyNote", cascade = CascadeType.ALL)
     private List<DailyNoteImage> images;
-
     private LocalDateTime sendTime;
+
+    @OneToMany(mappedBy = "dailyNote", cascade = CascadeType.ALL)
+    private List<DailyNoteComment> comments;
+
     private Boolean isDeleted;
 
     @Builder
-    public DailyNote(Post post,
-                     Kid kid,
+    public DailyNote(Kid kid,
                      Member writer,
+                     String content,
                      LocalDateTime sendTime){
-        this.post = post;
         this.kid = kid;
         this.writer = writer;
-        this.comments = new ArrayList<>();
-        this.images = new ArrayList<>(); 
+        this.content = content;
+        this.images = new ArrayList<>();
         this.sendTime = sendTime;
+        this.comments = new ArrayList<>();
         this.isDeleted = false;
     }
 
-    public void setNewPost(Post post){
-        this.post = post;
+    public void setNewContent(String content){
+        this.content = content;
     }
 
     public void setNewSendTime(LocalDateTime sendTime){
