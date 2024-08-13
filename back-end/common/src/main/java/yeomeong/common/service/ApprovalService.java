@@ -19,6 +19,7 @@ import yeomeong.common.entity.member.atype;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.repository.ApprovalRepository;
+import yeomeong.common.repository.AttendanceRepository;
 import yeomeong.common.repository.BanRepository;
 import yeomeong.common.repository.KidMemberRepository;
 import yeomeong.common.repository.KidRepository;
@@ -36,13 +37,14 @@ public class ApprovalService {
     private final KindergartenRepository kindergartenRepository;
     private final KidMemberRepository kidMemberRepository;
     private final AmazonS3 amazonS3;
+    private final AttendanceRepository attendanceRepository;
 
     @Value("${aws.s3.bucket-name}")
     private String bucketName;
 
     public ApprovalService(ApprovalRepository approvalRepository, MemberRepository memberRepository, BanRepository banRepository,
         KidRepository kidRepository, KindergartenRepository kindergartenRepository, KidMemberRepository kidMemberRepository,
-        AmazonS3 amazonS3) {
+        AmazonS3 amazonS3, AttendanceRepository attendanceRepository) {
         this.approvalRepository = approvalRepository;
         this.memberRepository = memberRepository;
         this.banRepository = banRepository;
@@ -50,6 +52,7 @@ public class ApprovalService {
         this.kindergartenRepository = kindergartenRepository;
         this.kidMemberRepository = kidMemberRepository;
         this.amazonS3 = amazonS3;
+        this.attendanceRepository = attendanceRepository;
     }
 
     public void applyForKindergartenByTeacher(TeacherJoinKindergartenRequestDto teacherJoinRequestDto) {
@@ -149,6 +152,7 @@ public class ApprovalService {
         } else {
             declineKid(acceptRequestDto.getId());
         }
+//        attendanceRepository.save();
         approvalRepository.delete(approval);
     }
 

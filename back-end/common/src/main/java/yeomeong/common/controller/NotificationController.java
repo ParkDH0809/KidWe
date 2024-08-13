@@ -1,11 +1,10 @@
 package yeomeong.common.controller;
 
-import java.io.IOException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import yeomeong.common.dto.notification.NotificationRequestDto;
 import yeomeong.common.service.NotificationService;
 
 @RestController("/notification")
@@ -17,10 +16,16 @@ public class NotificationController {
         this.notificationService = notificationService;
     }
 
-    @PostMapping("/test")
-    public ResponseEntity<Void> pushMessage(@RequestBody NotificationRequestDto notificationRequestDto) throws IOException {
-        notificationService.sendMessageTo(notificationRequestDto);
+    @PostMapping
+    public ResponseEntity<Void> initNotificationToken(Authentication authentication, @RequestParam String notificationToken) {
+        notificationService.initNotificationToken(authentication.getName(), notificationToken);
         return ResponseEntity.ok().build();
     }
+
+//    @PostMapping("/push")
+//    public ResponseEntity<Void> pushMessage(@RequestBody NotificationRequestDto notificationRequestDto) {
+//        System.out.println(notificationService.sendMessageTo(notificationRequestDto));
+//        return ResponseEntity.ok().build();
+//    }
 
 }
