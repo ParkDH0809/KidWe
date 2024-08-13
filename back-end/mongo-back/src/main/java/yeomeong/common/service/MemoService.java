@@ -1,16 +1,16 @@
 package yeomeong.common.service;
 
-import ai.bareun.tagger.Tagged;
-import ai.bareun.tagger.Tagger;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 import yeomeong.common.document.Memo;
 import yeomeong.common.document.Tag;
-import yeomeong.common.dto.MemoRequestDto;
-import yeomeong.common.dto.MemoResponseDto;
-import yeomeong.common.dto.TagRequestDto;
+import yeomeong.common.dto.*;
+import yeomeong.common.exception.CustomException;
+import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.repository.MemoRepository;
 import yeomeong.common.repository.TagRepository;
 
@@ -20,19 +20,37 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class MemoService {
-    @Value(("${bareun.api-key"))
+    private final RestTemplate restTemplate;
+    @Value("${bareun.api-key}")
     String bareunApiKey;
-    @Value("${bareun.host}")
-    String bareunHost;
+    @Value("${bareun.url}")
+    String bareunUrl;
 
     private final MemoRepository memoRepository;
     private final TagRepository tagRepository;
 
     private String getMorpheme(String content){
-        System.out.println(content);
-        Tagged tag = new Tagger(bareunHost, bareunApiKey).tag(content);
-        System.out.println(tag.morphs().size());
-        return tag.morphs().toString();
+        // 헤더 설정
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("api-key", bareunApiKey);
+
+        // 바디 설정
+        BareunRequestDto request = new BareunRequestDto();
+        request.setContent(content);
+
+        HttpEntity<BareunRequestDto> entity = new HttpEntity<>(request, headers);
+
+        ResponseEntity<BareunResponseDto> response = restTemplate.exchange(
+                bareunUrl, HttpMethod.POST, entity, BareunResponseDto.class);
+        // 응답이 있으면
+        if (response.getBody() != null && !response.getBody().getSentences().isEmpty()) {
+            return response.getBody().getSentences().get(0).getTokens().get(0).getMorphemes().get(0).getTag();
+        }
+        // 응답이 없으면
+        else {
+            throw new CustomException(ErrorCode.NOT_RESPONSE);
+        }
     }
 
     @Transactional
