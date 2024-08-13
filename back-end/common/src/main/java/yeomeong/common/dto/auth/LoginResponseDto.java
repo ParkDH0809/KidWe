@@ -23,7 +23,8 @@ public class LoginResponseDto {
     private atype memberStatus;
     private Long kindergartenId;
     private Long banId;
-    private List<Long> kidIds;
+    private Long kidId;
+//    private List<Long> kidIds;
 
     public static LoginResponseDto of(String accessToken, String refreshToken, Member member) {
         return LoginResponseDto.builder()
