@@ -33,7 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserDetailsServiceImpl userDetailsService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,FilterChain filterChain)
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
         throws ServletException, IOException, ExpiredJwtException {
         if (request.getRequestURI().equals("/login") ||
             request.getRequestURI().equals("/logout") ||
@@ -92,9 +92,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             request.setAttribute("exception", e.getErrorCode());
             throw new CustomException(e.getErrorCode());
         } catch (ExpiredJwtException e) {
-            if(request.getRequestURI().equals("/refresh")) {
+            if (request.getRequestURI().equals("/refresh")) {
+                request.setAttribute("exception", ErrorCode.UNAUTHENTICATED_EXPIRED_REFRESH_TOKEN);
                 throw new CustomException(ErrorCode.UNAUTHENTICATED_EXPIRED_REFRESH_TOKEN);
             } else {
+                request.setAttribute("exception", ErrorCode.EXPIRED_TOKEN);
                 throw new CustomException(ErrorCode.EXPIRED_TOKEN);
             }
         }
@@ -104,7 +106,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         return StringUtils.startsWithAny(request.getRequestURI()
-            ,"/swagger", "/swagger-ui.html", "/swagger-ui/*", "/api-docs", "/api-docs/*", "/v3/api-docs/*"
+            , "/swagger", "/swagger-ui.html", "/swagger-ui/*", "/api-docs", "/api-docs/*", "/v3/api-docs/*"
             , "/v3/api-docs/swagger-config", "/v3/api-docs/KIDWE");
     }
 

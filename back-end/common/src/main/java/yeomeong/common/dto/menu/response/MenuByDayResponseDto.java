@@ -13,6 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 public class MenuByDayResponseDto {
 
+    private Long menuId;
+
     private String lunch;
     private List<String> lunchAllergies;
     private List<KidAllergyResponseDto> kidAllergyListOfLunch;
@@ -25,11 +27,8 @@ public class MenuByDayResponseDto {
     private List<String> dinnerAllergies;
     private List<KidAllergyResponseDto> kidAllergyListOfDinner;
 
-
-
-
-
-    public MenuByDayResponseDto(String lunch, String lunchAllergies, String snack, String snackAllergies, String dinner, String dinnerAllergies){
+    public MenuByDayResponseDto(Long menuId,String lunch, String lunchAllergies, String snack, String snackAllergies, String dinner, String dinnerAllergies){
+        this.menuId = menuId;
         this.lunch = lunch;
         this.lunchAllergies = parseAllergies(lunchAllergies);
         this.dinner = dinner;
@@ -48,12 +47,6 @@ public class MenuByDayResponseDto {
         }
 
         return allergiesList;
-    }
-
-    private List<KidAllergyResponseDto> getKidsOfAllergyForMenu(){
-
-
-        return null;
     }
 
 }

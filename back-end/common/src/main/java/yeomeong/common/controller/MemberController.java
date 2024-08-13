@@ -41,10 +41,11 @@ public class MemberController {
     }
 
     @Operation(summary = "사용자 정보 수정", description = "특정 사용자 정보를 수정합니다.")
-    @PatchMapping("/profile")
+    @PostMapping("/profile")
     public ResponseEntity<Void> updateMemberProfile(
             @RequestPart("dto") MemberUpdateRequestDto memberUpdateRequestDto,
-            @RequestPart(required = false) MultipartFile picture) {
+            @RequestPart(required = false) MultipartFile picture
+    ) {
         memberService.updateMemberProfile(memberUpdateRequestDto, picture);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

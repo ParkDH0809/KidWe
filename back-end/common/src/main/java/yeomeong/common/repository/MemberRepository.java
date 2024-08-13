@@ -1,6 +1,7 @@
 package yeomeong.common.repository;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,7 +20,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     List<Member> findMemberByBanId(Long banId);
 
-    List<Member> findMemberByKindergartenId(Long kindergartenId);
+    List<Member> findMemberByKindergartenIdAndBanIsNotNull(Long kindergartenId);
 
     @Modifying
     @Query("UPDATE Member m SET m.isDeleted = true WHERE m.email = :email")
@@ -38,5 +39,13 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Modifying
     @Transactional
     @Query("UPDATE Member m SET m.memberStatus = :atype WHERE m.id = :id")
-    void updateMemberStatus(Long id, atype atype);
+    void updateMemberStatus(@Param("id") Long id, @Param("atype") atype atype);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Member m SET m.notificationToken = :token WHERE m.id = :id")
+    void updateNotificationToken(@Param("id") Long id, @Param("token") String token);
+
+    @Query("SELECT m.notificationToken FROM Member m WHERE m.id = :id")
+    Optional<String> getNotificationTokenBayMemberId(Long id);
 }

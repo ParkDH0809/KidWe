@@ -1,30 +1,60 @@
 package yeomeong.common.service;
 
-import java.time.format.DateTimeFormatter;
+import ai.bareun.tagger.Tagged;
+import ai.bareun.tagger.Tagger;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 import yeomeong.common.document.Memo;
 import yeomeong.common.document.Tag;
-import yeomeong.common.dto.MemoRequestDto;
-import yeomeong.common.dto.MemoResponseDto;
-import yeomeong.common.dto.TagRequestDto;
-import yeomeong.common.dto.TagResponseDto;
+import yeomeong.common.dto.*;
+import yeomeong.common.exception.CustomException;
+import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.repository.MemoRepository;
 import yeomeong.common.repository.TagRepository;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class MemoService {
+    private final RestTemplate restTemplate;
+    @Value("${bareun.api-key}")
+    String bareunApiKey;
+    @Value("${bareun.url}")
+    String bareunUrl;
 
     private final MemoRepository memoRepository;
     private final TagRepository tagRepository;
+
+    private String getMorpheme(String content){
+        // 헤더 설정
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("api-key", bareunApiKey);
+
+        // 바디 설정
+        BareunRequestDto request = new BareunRequestDto();
+        request.setContent(content);
+
+        HttpEntity<BareunRequestDto> entity = new HttpEntity<>(request, headers);
+
+        ResponseEntity<BareunResponseDto> response = restTemplate.exchange(
+                bareunUrl, HttpMethod.POST, entity, BareunResponseDto.class);
+        // 응답이 있으면
+        if (response.getBody() != null && !response.getBody().getSentences().isEmpty()) {
+            return response.getBody().getSentences().get(0).getTokens().get(0).getMorphemes().get(0).getTag();
+        }
+        // 응답이 없으면
+        else {
+            throw new CustomException(ErrorCode.NOT_RESPONSE);
+        }
+    }
 
     @Transactional
     public List<Tag> updateTag(List<TagRequestDto> tagRequestDtos) {
@@ -42,12 +72,13 @@ public class MemoService {
                     if (oldTag == null) {
                         return null;
                     }
-                    oldTag.setCount(oldTag.getCount() + 1);
+                    oldTag.count();
                     tags.add(tagRepository.save(oldTag));
                 }
                 // 처음 사용하는 Tag라면 생성하기
                 else {
-                    tags.add(tagRepository.save(tagRepository.save(tagRequestDto.toDocument())));
+                    String morpheme = getMorpheme(tagRequestDto.getContent());
+                    tags.add(tagRepository.save(tagRepository.save(tagRequestDto.toDocument(morpheme))));
                 }
             }
         }

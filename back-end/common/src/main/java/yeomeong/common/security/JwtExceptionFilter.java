@@ -35,12 +35,12 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
         response.setCharacterEncoding("utf-8");
         if(exception instanceof ErrorCode){
             ErrorCode errorCode = (ErrorCode) exception;
-            response.getWriter().write(objectMapper.writeValueAsString(
-                new ErrorResponse(errorCode)
-            ));
+            response.setStatus(errorCode.getStatus());
+            response.getWriter().write(objectMapper.writeValueAsString(new ErrorResponse(errorCode)));
             return;
         }
 
+        log.info("[Exception] 401 error");
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
     }
 
