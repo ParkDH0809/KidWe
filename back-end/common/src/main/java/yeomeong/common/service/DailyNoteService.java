@@ -26,7 +26,7 @@ import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.repository.*;
 
-import static yeomeong.common.util.FileUtil.uploadOriginalAdnThumbnailToS3;
+import static yeomeong.common.util.FileUtil.*;
 
 @Service
 @RequiredArgsConstructor
@@ -57,7 +57,7 @@ public class DailyNoteService {
 
         if(images != null && !images.isEmpty()) {
             for (MultipartFile image : images) {
-                String imageUrl = uploadOriginalAdnThumbnailToS3(s3Client, bucketName, image, 100, 100);
+                String imageUrl = uploadOriginalAndThumbnailToS3(s3Client, bucketName, image, 10, 10);
                 if(imageUrl != null) {
                     DailyNoteImage dailyNoteImage = new DailyNoteImage(imageUrl, createdDailyNote);
                     dailyNoteImageRepository.save(dailyNoteImage);

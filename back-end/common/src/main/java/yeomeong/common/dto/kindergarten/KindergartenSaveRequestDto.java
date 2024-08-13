@@ -1,5 +1,6 @@
 package yeomeong.common.dto.kindergarten;
 
+import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
 import yeomeong.common.entity.kindergarten.Kindergarten;
@@ -22,6 +23,7 @@ public class KindergartenSaveRequestDto {
             .addressDetail(kindergartenSaveRequestDto.addressDetail)
             .zipCode(kindergartenSaveRequestDto.zipCode)
             .tel(kindergartenSaveRequestDto.tel)
+            .openDate(LocalDate.now())
             .build();
     }
 

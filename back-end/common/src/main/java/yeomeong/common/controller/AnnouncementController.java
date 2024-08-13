@@ -28,12 +28,26 @@ public class AnnouncementController {
     @Operation(summary = "유치원 공지사항을 생성합니다." ,description = "memberId를 활용하여 공지사항을 작성합니다.")
     public ResponseEntity<Void> createAnnouncement(
             @PathVariable("memberId") Long memberId,
-            @RequestPart(value = "images", required = false) List<MultipartFile> images ,
-            @RequestPart("dto") AnnouncementCreateDto announcementCreateDto) throws Exception {
+            @RequestPart(value = "images", required = false) List<MultipartFile> images,
+            @RequestPart("dto") AnnouncementCreateDto announcementCreateDto,
+            @RequestPart(value = "vote", required = false) VoteCreateDto voteCreateDto
+    ) throws Exception {
 
-        announcementService.createAnnouncementByKindergarten(memberId,announcementCreateDto, images);
+        announcementService.createAnnouncementByKindergarten(memberId,announcementCreateDto,voteCreateDto ,images);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    //공지사항에 투표 생성하기
+    @PostMapping("/vote/{announcementId}")
+    @Operation(summary = "공지사항 투표를 생성합니다.", description = "공지사항 id와 투표형식을 받아옵니다. 공지사항이 먼저 작성된 후 투표를 작성할 수 있습니다.")
+    public ResponseEntity<VoteCreateDto> createVote(
+            @PathVariable ("announcementId") Long announcement_id,
+            @RequestBody VoteCreateDto voteCreateDto){
+
+        voteService.createVote(announcement_id, voteCreateDto);
+
+        return ResponseEntity.ok().build();
     }
 
     //유치원 공지사항 조회하기 ( {선생님,학부모} , 원장님 따로 )
@@ -80,17 +94,6 @@ public class AnnouncementController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    //공지사항에 투표 생성하기
-    @PostMapping("/vote/{announcementId}")
-    @Operation(summary = "공지사항 투표를 생성합니다.", description = "공지사항 id와 투표형식을 받아옵니다. 공지사항이 먼저 작성된 후 투표를 작성할 수 있습니다.")
-    public ResponseEntity<VoteCreateDto> createVote(
-            @PathVariable ("announcementId") Long announcement_id,
-            @RequestBody VoteCreateDto voteCreateDto){
-
-        voteService.createVote(announcement_id, voteCreateDto);
-
-        return ResponseEntity.ok().build();
-    }
 
     //투표하기
     @PostMapping("/vote/items/{voteId}/{voteItemId}")

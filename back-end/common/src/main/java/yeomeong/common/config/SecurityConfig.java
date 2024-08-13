@@ -3,6 +3,7 @@ package yeomeong.common.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -23,6 +24,7 @@ import yeomeong.common.security.jwt.JwtService;
 import yeomeong.common.security.jwt.JwtUtil;
 import yeomeong.common.service.MemberService;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -33,13 +35,11 @@ public class SecurityConfig  {
     private final AuthenticationProviderImpl authenticationProvider;
     private final LoginSuccessHandler loginSuccessHandler;
     private final LoginFailureHandler loginFailureHandler;
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final JwtExceptionFilter jwtExceptionFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, MemberService memberService, JwtService jwtService) throws Exception {
-
 
         http
                 .csrf(AbstractHttpConfigurer::disable)
@@ -55,11 +55,15 @@ public class SecurityConfig  {
         http
                 .authorizeHttpRequests(
                         authorize -> authorize
-                                .requestMatchers(HttpMethod.POST, "/login", "/join", "/refresh").permitAll()
+                                .requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/*", "/api-docs", "/api-docs/*", "/v3/api-docs/*").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/login", "/signup").permitAll()
                                 .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-                                .requestMatchers("/attendances/**").authenticated()
+//                                .requestMatchers("/directors/**").hasAuthority("DIRECTOR")
+//                                .requestMatchers("/teachers/**").hasAuthority("TEACHER")
+//                                .requestMatchers("/guardians/**").hasAuthority("GUARDIAN")
 //                                .anyRequest().authenticated()
-                                .anyRequest().permitAll()
+                            .requestMatchers("/attendances/**").authenticated()
+                            .anyRequest().permitAll()
                 );
 
         http
@@ -69,8 +73,7 @@ public class SecurityConfig  {
 
         http
                 .exceptionHandling((exceptionHandling) ->
-                        exceptionHandling.authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                                .accessDeniedHandler(jwtAccessDeniedHandler)
+                    exceptionHandling.accessDeniedHandler(jwtAccessDeniedHandler)
                 );
 
         http
@@ -87,6 +90,7 @@ public class SecurityConfig  {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
+        log.info("[CORS] Loading CorsConfigurationSource");
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOriginPattern("*");
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));

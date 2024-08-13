@@ -1,8 +1,6 @@
 package yeomeong.common.service;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,10 +15,7 @@ import yeomeong.common.entity.post.AnnouncementImage;
 import yeomeong.common.entity.post.Vote;
 import yeomeong.common.entity.post.VoteItem;
 import yeomeong.common.entity.post.comment.AnnouncementComment;
-import yeomeong.common.repository.AnnouncementImageRepository;
-import yeomeong.common.repository.AnnouncementRepository;
-import yeomeong.common.repository.MemberRepository;
-import yeomeong.common.util.FileUtil;
+import yeomeong.common.repository.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -37,6 +32,8 @@ public class AnnouncementService {
     private final MemberRepository memberRepository;
     private final AnnouncementImageRepository announcementImageRepository;
     private final AmazonS3 s3Client;
+    private final VoteRepository voteRepository;
+    private final VoteItemRepository voteItemRepository;
 
     @Value("${aws.s3.bucket-name}")
     private String bucketName;
@@ -46,7 +43,7 @@ public class AnnouncementService {
      * 반 별 공지사항 생성하기 (선생님)
      */
     @Transactional
-    public void createAnnouncementByKindergarten(Long memberId, AnnouncementCreateDto announcementCreateDto, List<MultipartFile> images) throws Exception {
+    public void createAnnouncementByKindergarten(Long memberId, AnnouncementCreateDto announcementCreateDto,VoteCreateDto voteCreateDto ,List<MultipartFile> images) throws Exception {
 
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("해당 맴버가 없어용"));
 
@@ -70,6 +67,28 @@ public class AnnouncementService {
                 announcement.getAnnouncementImages().add(announcementImage);
 
             }
+        }
+
+        if(voteCreateDto != null) {
+
+            List<VoteItem> voteItems = new ArrayList<>();
+
+            for(VoteItemRequestDto voteItemDto : voteCreateDto.getItems()) {
+                VoteItem voteItem = new VoteItem(voteItemDto.getItemName());
+                voteItems.add(voteItem);
+                voteItemRepository.save(voteItem);
+            }
+
+            Vote vote =new Vote(voteCreateDto.getTitle(),
+                    voteCreateDto.getVoteStartDate(),
+                    voteCreateDto.getVoteEndDate(),
+                    voteItems,
+                    announcement);
+
+            for (VoteItem voteItem : voteItems) voteItem.setVote(vote);
+            
+            voteRepository.save(vote);
+
         }
 
         announcementRepository.save(announcement);

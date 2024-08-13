@@ -35,7 +35,6 @@ public class MenuController {
         MenuByDayRequestDto requestDto = new MenuByDayRequestDto(kindergartenId, LocalDate.of(year,month,day));
         MenuByDayResponseDto menu = menuService.getMenuByDay(requestDto);
 
-
         return ResponseEntity.ok(menu);
     }
 
@@ -52,5 +51,25 @@ public class MenuController {
     }
 
     //해당 일자 식단 수정하기
+    @PutMapping("/{menuId}")
+    @Operation(summary = "해당 식단을 수정합니다.", description = "해당 식단 id를 통해 식단을 수정합니다.")
+    public ResponseEntity<MenuByDayResponseDto> updateMenu(
+            @PathVariable("menuId") Long menuId,
+            MenuCreateDto menuCreatedDto){
+
+        return ResponseEntity.ok(
+                menuService.updateMenu(menuId, menuCreatedDto )
+        );
+    }
+
+    @DeleteMapping("/{menuId}")
+    @Operation(summary = "해당 식단을 삭제합니다.", description = "menu id로 접근하여 해당 메뉴를 삭제합니다.")
+    public ResponseEntity<Void> deleteMenu(
+            @PathVariable("menuId") Long menuId
+    ){
+        menuService.removeMenu(menuId);
+
+        return ResponseEntity.ok().build();
+    }
 
 }
