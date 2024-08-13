@@ -14,12 +14,12 @@ public class TagRequestDto {
 
     private String content;
 
-    public Tag toDocument() {
+    public Tag toDocument(String morpheme) {
         Tag tag = Tag.builder()
             .teacherId(this.teacherId)
             .content(this.content)
             //content의 morpheme은 서버에서 정해준다
-            .morpheme(mtype.SUBJECT)
+            .morpheme(morpheme)
             .build();
         return tag;
     }

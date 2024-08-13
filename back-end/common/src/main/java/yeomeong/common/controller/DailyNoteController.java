@@ -38,7 +38,8 @@ public class DailyNoteController {
         @PathVariable("member_id") Long guardianId,
         @PathVariable("year") String year,
         @PathVariable("month") String month) {
-        String yearAndMonth = year + "-" + String.format("%02d", month);
+        int monthInt = Integer.parseInt(month);
+        String yearAndMonth = year + "-" + String.format("%02d", monthInt);
         DailyNoteListResponseDto dailyNoteListResponseDto = dailyNoteService.getDailyNotesByKidId(guardianId, kidId, yearAndMonth);
         return ResponseEntity.ok(dailyNoteListResponseDto);
     }
@@ -49,7 +50,8 @@ public class DailyNoteController {
         @PathVariable("member_id") Long writerId,
         @PathVariable("year") String year,
         @PathVariable("month") String month) {
-        String yearAndMonth = year + "-" + String.format("%02d", month);
+        int monthInt = Integer.parseInt(month);
+        String yearAndMonth = year + "-" + String.format("%02d", monthInt);
         DailyNoteListResponseDto dailyNoteListResponseDto = dailyNoteService.getDailyNotesByBanId(writerId, banId, yearAndMonth);
         return ResponseEntity.ok(dailyNoteListResponseDto);
     }
