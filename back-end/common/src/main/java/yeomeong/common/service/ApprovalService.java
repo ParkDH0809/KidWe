@@ -19,7 +19,6 @@ import yeomeong.common.entity.member.atype;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.repository.ApprovalRepository;
-import yeomeong.common.repository.AttendanceRepository;
 import yeomeong.common.repository.BanRepository;
 import yeomeong.common.repository.KidMemberRepository;
 import yeomeong.common.repository.KidRepository;
@@ -130,9 +129,9 @@ public class ApprovalService {
         if (acceptRequestDto.getAccepted()) {
             acceptTeacher(approval);
         } else {
-            declineTeacher(acceptRequestDto.getId());
+            memberRepository.updateMemberStatus(acceptRequestDto.getId(), atype.DECLINE);
         }
-        approvalRepository.deleteByMemberId(approval.getId());
+        approvalRepository.delete(approval);
     }
 
     @Transactional
@@ -140,11 +139,6 @@ public class ApprovalService {
         memberRepository.updateMemberBan(approval.getMember().getId(), approval.getBan());
         memberRepository.updateMemberKindergarten(approval.getMember().getId(), approval.getKindergarten());
         memberRepository.updateMemberStatus(approval.getMember().getId(), atype.ACCEPT);
-    }
-
-    @Transactional
-    public void declineTeacher(Long memberId) {
-        memberRepository.updateMemberStatus(memberId, atype.DECLINE);
     }
 
     @Transactional
