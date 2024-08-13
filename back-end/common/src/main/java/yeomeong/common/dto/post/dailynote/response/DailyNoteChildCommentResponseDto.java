@@ -19,10 +19,11 @@ import yeomeong.common.entity.post.comment.DailyNoteComment;
 public class DailyNoteChildCommentResponseDto {
     private Long id;
 
-    private rtype role;
     private String name;
     private String picture;
+    private rtype role;
 
+    private Boolean canDelete;
     private Boolean isDeleted;
     @JsonIgnore
     private final static String deletedMessage = "삭제된 댓글입니다";
@@ -30,7 +31,7 @@ public class DailyNoteChildCommentResponseDto {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime createdTime;
 
-    public DailyNoteChildCommentResponseDto(DailyNoteComment dailyNoteComment) {
+    public DailyNoteChildCommentResponseDto(Long memberId, DailyNoteComment dailyNoteComment) {
         this.id = dailyNoteComment.getId();
 
         if(dailyNoteComment.getMember().getRole() == rtype.ROLE_GUARDIAN) {
@@ -45,6 +46,8 @@ public class DailyNoteChildCommentResponseDto {
             this.name = teacher.getName();
             this.picture = teacher.getPicture()==null?"": teacher.getPicture();
         }
+
+        this.canDelete = memberId == dailyNoteComment.getMember().getId() ? true : false;
 
         if(dailyNoteComment.getIsDeleted()) {
             this.isDeleted = true;

@@ -60,7 +60,7 @@ public class DailyNoteCommentService {
             );
         }
 
-        return new DailyNoteCommentResponseDto(dailyNoteCommentRepository.save(dailyNoteCommentCreateRequestDto.toEntity(dailyNote, member, parentDailyNoteComment)));
+        return new DailyNoteCommentResponseDto(writerId, dailyNoteCommentRepository.save(dailyNoteCommentCreateRequestDto.toEntity(dailyNote, member, parentDailyNoteComment)));
     }
 
     // 알림장에 (대)댓글 수정하기
@@ -78,7 +78,7 @@ public class DailyNoteCommentService {
 
         oldDailyNoteComment.setNewContent(updatedContent);
         oldDailyNoteComment.update();
-        return new DailyNoteCommentResponseDto(dailyNoteCommentRepository.save(oldDailyNoteComment));
+        return new DailyNoteCommentResponseDto(writerId, dailyNoteCommentRepository.save(oldDailyNoteComment));
     }
 
     // 알림장에 (대)댓글 삭제하기
@@ -94,6 +94,6 @@ public class DailyNoteCommentService {
 
         oldDailyNoteComment.delete();
         System.out.println(oldDailyNoteComment.getIsDeleted());
-        return new DailyNoteCommentResponseDto(dailyNoteCommentRepository.save(oldDailyNoteComment));
+        return new DailyNoteCommentResponseDto(writerId, dailyNoteCommentRepository.save(oldDailyNoteComment));
     }
 }

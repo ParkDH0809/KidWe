@@ -9,7 +9,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.ErrorResponseException;
 import org.springframework.web.client.RestTemplate;
 import yeomeong.common.dto.Message;
 import yeomeong.common.dto.OpenAiRequestDto;
@@ -18,7 +17,7 @@ import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
 
 @Service
-public class OpenAiService {
+public class OpenAIService {
 
     @Value("${spring.ai.openai.api-key}")
     private String apiKey;
@@ -28,7 +27,7 @@ public class OpenAiService {
 
     private final RestTemplate restTemplate;
 
-    public OpenAiService(RestTemplate restTemplate) {
+    public OpenAIService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 

@@ -55,7 +55,7 @@ public class TagService {
         for (Tag oldTag : oldTags) {
             for (TagRequestDto updateTagRequestDto : updatedTagIds) {
                 if (updateTagRequestDto.getId().equals(oldTag.getId())) {
-                    oldTag.setCount(oldTag.getCount() + 1);
+                    oldTag.count();
                     updatedTags.add(new TagResponseDto(tagRepository.save(oldTag)));
                 } else {
                     updatedTags.add(new TagResponseDto(oldTag));
