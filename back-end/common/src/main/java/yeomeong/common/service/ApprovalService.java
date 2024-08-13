@@ -129,7 +129,7 @@ public class ApprovalService {
         if (acceptRequestDto.getAccepted()) {
             acceptTeacher(approval);
         } else {
-            memberRepository.updateMemberStatus(acceptRequestDto.getId(), atype.DECLINE);
+            memberRepository.updateMemberStatus(approval.getMember().getId(), atype.DECLINE);
         }
         approvalRepository.delete(approval);
     }
