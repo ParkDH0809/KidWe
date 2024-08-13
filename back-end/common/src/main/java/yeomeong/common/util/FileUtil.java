@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import javax.imageio.ImageIO;
 import lombok.RequiredArgsConstructor;
 import marvin.image.MarvinImage;
@@ -46,13 +47,6 @@ public class FileUtil {
 
             // MultipartFile -> BufferedImage Convert
             BufferedImage image = ImageIO.read(file.getInputStream());
-            int originWidth = image.getWidth();
-            int originHeight = image.getHeight();
-
-            // origin 이미지가 resizing될 사이즈보다 작을 경우 resizing 작업 안 함
-            if (originWidth < width && originHeight < height) {
-                return file;
-            }
 
             MarvinImage imageMarvin = new MarvinImage(image);
 
@@ -68,7 +62,7 @@ public class FileUtil {
 
             BufferedImage imageNoAlpha = imageMarvin.getBufferedImageNoAlpha();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(imageNoAlpha, fileExtension, baos); // 여기서 fileFormatName을 "jpg"로 설정
+            ImageIO.write(imageNoAlpha, fileExtension, baos);
             baos.flush();
 
             return new MockMultipartFile(file.getOriginalFilename(), baos.toByteArray());
