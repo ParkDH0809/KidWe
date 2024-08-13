@@ -1,15 +1,29 @@
 package yeomeong.common.service;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 import yeomeong.common.document.Memo;
 import yeomeong.common.document.Tag;
+import yeomeong.common.dto.BareunRequestDto;
 import yeomeong.common.dto.MemoRequestDto;
 import yeomeong.common.dto.MemoResponseDto;
+import yeomeong.common.dto.Message;
+import yeomeong.common.dto.OpenAiRequestDto;
+import yeomeong.common.dto.OpenAiResponseDto;
 import yeomeong.common.dto.TagRequestDto;
 import yeomeong.common.dto.TagResponseDto;
+import yeomeong.common.exception.CustomException;
+import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.repository.MemoRepository;
 import yeomeong.common.repository.TagRepository;
 
@@ -22,9 +36,35 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class MemoService {
+    @Value("${bareun.url}")
+    String bareunUrl;
 
     private final MemoRepository memoRepository;
     private final TagRepository tagRepository;
+    private final RestTemplate restTemplate;
+
+    private String getMorpheme(String content){
+        // 헤더 설정
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        // 바디 설정
+        BareunRequestDto request = new BareunRequestDto();
+        request.setContent(content);
+
+        HttpEntity<BareunRequestDto> entity = new HttpEntity<>(request, headers);
+
+        ResponseEntity<OpenAiResponseDto> response = restTemplate.exchange(
+            bareunUrl, HttpMethod.POST, entity, OpenAiResponseDto.class);
+        // 응답이 있으면
+        if (response.getBody() != null && !response.getBody().getChoices().isEmpty()) {
+            return response.getBody().getChoices().get(0).getMessage().getContent();
+        }
+        // 응답이 없으면
+        else {
+            throw new CustomException(ErrorCode.NOT_RESPONSE);
+        }
+    }
 
     @Transactional
     public List<Tag> updateTag(List<TagRequestDto> tagRequestDtos) {
