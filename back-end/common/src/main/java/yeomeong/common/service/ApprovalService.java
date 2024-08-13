@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +15,7 @@ import yeomeong.common.dto.approval.PendingKidResponseDto;
 import yeomeong.common.dto.member.TeacherDetailInfoResponseDto;
 import yeomeong.common.dto.approval.KidJoinKindergartenRequestDto;
 import yeomeong.common.dto.approval.TeacherJoinKindergartenRequestDto;
+import yeomeong.common.dto.notification.NotificationRequestDto;
 import yeomeong.common.entity.member.Approval;
 import yeomeong.common.entity.member.Kid;
 import yeomeong.common.entity.member.KidMember;
@@ -28,8 +30,10 @@ import yeomeong.common.repository.KidRepository;
 import yeomeong.common.repository.KindergartenRepository;
 import yeomeong.common.repository.MemberRepository;
 import yeomeong.common.util.FileUtil;
+import yeomeong.common.util.NotificationUtil;
 
 @Service
+@Slf4j
 public class ApprovalService {
 
     private final ApprovalRepository approvalRepository;
@@ -133,8 +137,10 @@ public class ApprovalService {
         Approval approval = approvalRepository.findByMemberId(acceptRequestDto.getId());
         if (acceptRequestDto.getAccepted()) {
             acceptTeacher(approval);
+            sendAcceptMessage(approval);
         } else {
             memberRepository.updateMemberStatus(approval.getMember().getId(), atype.DECLINE);
+            sendDeclineMessage(approval);
         }
         approvalRepository.deleteByMemberId(approval.getMember().getId());
     }
@@ -144,6 +150,26 @@ public class ApprovalService {
         memberRepository.updateMemberBan(approval.getMember().getId(), approval.getBan());
         memberRepository.updateMemberKindergarten(approval.getMember().getId(), approval.getKindergarten());
         memberRepository.updateMemberStatus(approval.getMember().getId(), atype.ACCEPT);
+    }
+
+    private void sendAcceptMessage(Approval approval) {
+        log.info("[Notification] 승인 알림 전송 시작");
+        NotificationUtil.sendMessages(NotificationRequestDto.builder()
+                .token(List.of(memberRepository.getNotificationTokenBayMemberId(approval.getMember().getId())
+                        .orElseThrow(() -> new CustomException(ErrorCode.NOTIFICATION_TOKEN_MISSING))))
+                .notificationContent(NotificationContent.JOIN_APPROVAL)
+                .build());
+        log.info("[Notification] 승인 알림 전송 완료");
+    }
+
+    private void sendDeclineMessage(Approval approval) {
+        log.info("[Notification] 거절 알림 전송 시작");
+        NotificationUtil.sendMessages(NotificationRequestDto.builder()
+            .token(List.of(memberRepository.getNotificationTokenBayMemberId(approval.getMember().getId())
+                .orElseThrow(() -> new CustomException(ErrorCode.NOTIFICATION_TOKEN_MISSING))))
+            .notificationContent(NotificationContent.JOIN_DECLINE)
+            .build());
+        log.info("[Notification] 거절 알림 전송 완료");
     }
 
     @Transactional
