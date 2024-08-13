@@ -2,6 +2,7 @@ package yeomeong.common.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import jakarta.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,11 +15,13 @@ import yeomeong.common.dto.member.TeacherDetailInfoResponseDto;
 import yeomeong.common.dto.approval.KidJoinKindergartenRequestDto;
 import yeomeong.common.dto.approval.TeacherJoinKindergartenRequestDto;
 import yeomeong.common.entity.member.Approval;
+import yeomeong.common.entity.member.Kid;
 import yeomeong.common.entity.member.KidMember;
 import yeomeong.common.entity.member.atype;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.repository.ApprovalRepository;
+import yeomeong.common.repository.AttendanceRepository;
 import yeomeong.common.repository.BanRepository;
 import yeomeong.common.repository.KidMemberRepository;
 import yeomeong.common.repository.KidRepository;
@@ -36,13 +39,14 @@ public class ApprovalService {
     private final KindergartenRepository kindergartenRepository;
     private final KidMemberRepository kidMemberRepository;
     private final AmazonS3 amazonS3;
+    private final AttendanceRepository attendanceRepository;
 
     @Value("${aws.s3.bucket-name}")
     private String bucketName;
 
     public ApprovalService(ApprovalRepository approvalRepository, MemberRepository memberRepository, BanRepository banRepository,
         KidRepository kidRepository, KindergartenRepository kindergartenRepository, KidMemberRepository kidMemberRepository,
-        AmazonS3 amazonS3) {
+        AmazonS3 amazonS3, AttendanceRepository attendanceRepository) {
         this.approvalRepository = approvalRepository;
         this.memberRepository = memberRepository;
         this.banRepository = banRepository;
@@ -50,6 +54,7 @@ public class ApprovalService {
         this.kindergartenRepository = kindergartenRepository;
         this.kidMemberRepository = kidMemberRepository;
         this.amazonS3 = amazonS3;
+        this.attendanceRepository = attendanceRepository;
     }
 
     @Transactional
@@ -149,8 +154,7 @@ public class ApprovalService {
         } else {
             declineKid(acceptRequestDto.getId());
         }
-//        attendanceRepository.save();
-        approvalRepository.delete(approval);
+        approvalRepository.deleteByKidId(approval.getKid().getId());
     }
 
     @Transactional
@@ -160,6 +164,11 @@ public class ApprovalService {
         kidRepository.updateKidKindergarten(approval.getKid().getId(), approval.getKindergarten());
         kidRepository.updateKidStatus(approval.getKid().getId(), atype.ACCEPT);
         memberRepository.updateMemberStatus(kidMember.getMember().getId(), atype.ACCEPT);
+        createAttendance(approval.getKid());
+    }
+
+    private void createAttendance(Kid kid) {
+        attendanceRepository.createNewKid(kid.getId(), LocalDate.now());
     }
 
     @Transactional

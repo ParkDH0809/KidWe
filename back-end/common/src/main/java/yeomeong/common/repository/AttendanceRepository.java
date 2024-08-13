@@ -30,4 +30,9 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
     @Query("UPDATE Attendance a SET a.reason = :reason WHERE a.kid.id = :kidId AND a.date = :date")
     int updateKidsAttendanceReason(@Param("kidId") Long kidId, @Param("date") LocalDate date, @Param("reason") String reason);
 
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO attendance (kid_id, date, attended_today) VALUES (:kidId, :date, 'NOTHING')", nativeQuery = true)
+    void createNewKid(@Param("kidId") Long kidId, @Param("date") LocalDate date);
+
 }
