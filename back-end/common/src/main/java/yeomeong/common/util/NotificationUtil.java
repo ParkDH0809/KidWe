@@ -4,24 +4,28 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.MulticastMessage;
 import com.google.firebase.messaging.Notification;
-import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import yeomeong.common.dto.notification.NotificationRequestDto;
 
+@Slf4j
 public class NotificationUtil {
 
-    public static void sendMessages(NotificationRequestDto notificationRequestDto) throws FirebaseMessagingException {
-        FirebaseMessaging.getInstance().sendEachForMulticast(
-            makeMessages(notificationRequestDto.getTitle(), notificationRequestDto.getBody(), notificationRequestDto.getToken()));
+    public static void sendMessages(NotificationRequestDto notificationRequestDto) {
+        try {
+            FirebaseMessaging.getInstance().sendEachForMulticast(makeMessages(notificationRequestDto));
+        } catch (FirebaseMessagingException e) {
+            log.info("[FCM Excpetion] 알림 전송 중 오류가 발생했습니다: {}", e.getMessage());
+        }
     }
 
-    public static MulticastMessage makeMessages(String title, String body, List<String> targetTokens) {
+    private static MulticastMessage makeMessages(NotificationRequestDto notificationRequestDto) {
         Notification notification = Notification.builder()
-            .setTitle(title)
-            .setBody(body)
+            .setTitle(notificationRequestDto.getNotificationContent().getTitle())
+            .setBody(notificationRequestDto.getNotificationContent().getBody())
             .build();
         return MulticastMessage.builder()
             .setNotification(notification)
-            .addAllTokens(targetTokens)
+            .addAllTokens(notificationRequestDto.getToken())
             .build();
     }
 
