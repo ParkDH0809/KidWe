@@ -18,14 +18,8 @@ public class NotificationController {
 
     @PostMapping
     public ResponseEntity<Void> initNotificationToken(Authentication authentication, @RequestParam String notificationToken) {
-        notificationService.initNotificationToken(authentication.getName(), notificationToken);
+        notificationService.addNotificationToken(authentication.getName(), notificationToken);
         return ResponseEntity.ok().build();
     }
-
-//    @PostMapping("/push")
-//    public ResponseEntity<Void> pushMessage(@RequestBody NotificationRequestDto notificationRequestDto) {
-//        System.out.println(notificationService.sendMessageTo(notificationRequestDto));
-//        return ResponseEntity.ok().build();
-//    }
 
 }
