@@ -19,6 +19,7 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
 
 
     @Query("SELECT new yeomeong.common.dto.menu.response.MenuByDayResponseDto(" +
+            " m.id, " +
             "   m.lunch, m.lunchAllergies, " +
             "   m.snack, m.snackAllergies, " +
             "   m.dinner, m.dinnerAllergies) " +
@@ -27,7 +28,6 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
             "  AND m.kindergarten.id = :kindergartenId " +
             " AND m.isDeleted = false ")
     MenuByDayResponseDto getMenuByDay(@Param("menuDate") LocalDate menuDate, @Param("kindergartenId") Long kindergartenId);
-
 
 }
 
