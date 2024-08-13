@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import yeomeong.common.dto.post.dailynote.request.DailyNoteRequestDto;
 import yeomeong.common.dto.post.dailynote.response.AutoCreateDailyNoteResponseDto;
 import yeomeong.common.dto.post.dailynote.response.DailyNoteListResponseDto;
-import yeomeong.common.dto.post.dailynote.response.DailyNoteGuardianResponseDto;
+import yeomeong.common.dto.post.dailynote.response.DailyNoteResponseDto;
 import yeomeong.common.service.DailyNoteService;
 
 import java.util.List;
@@ -25,7 +25,7 @@ public class DailyNoteController {
 
     @Operation(summary = "알림장 생성 API", description = "알림장을 생성합니다.")
     @PostMapping("/{member_id}")
-    public ResponseEntity<Object> createDailyNote(
+    public ResponseEntity<DailyNoteResponseDto> createDailyNote(
         @PathVariable("member_id") Long writerId,
         @RequestPart(value = "images", required = false) List<MultipartFile> images ,
         @RequestPart("dailynote") DailyNoteRequestDto dailyNoteCreateRequestDto) throws Exception {
@@ -56,14 +56,14 @@ public class DailyNoteController {
 
     @Operation(summary = "특정 알림장 상세정보 조회 API", description = "특정 알림장의 상세정보를 반환합니다.")
     @GetMapping("/detail/{member_id}/{dailynote_id}")
-    public ResponseEntity<Object> getDailyNote(@PathVariable("member_id") Long writerId,
+    public ResponseEntity<DailyNoteResponseDto> getDailyNote(@PathVariable("member_id") Long writerId,
                                                                      @PathVariable("dailynote_id") Long id) {
         return ResponseEntity.ok(dailyNoteService.getDailyNote(writerId, id));
     }
 
     @Operation(summary = "알림장 수정 API", description = "전송시간이 지나지 않은 알림장에 한정해 알림장을 수정합니다.")
     @PutMapping("/{member_id}/{dailynote_id}")
-    public ResponseEntity<DailyNoteGuardianResponseDto> updateDailyNote(@PathVariable("member_id") Long writerId,
+    public ResponseEntity<DailyNoteResponseDto> updateDailyNote(@PathVariable("member_id") Long writerId,
                                                                         @PathVariable("dailynote_id") Long id,
                                                                         @RequestBody DailyNoteRequestDto dailyNoteRequestDto) {
         return ResponseEntity.ok(dailyNoteService.updateDailyNote(writerId, id, dailyNoteRequestDto));

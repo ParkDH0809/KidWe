@@ -1,5 +1,7 @@
 package yeomeong.common.service;
 
+import ai.bareun.tagger.Tagged;
+import ai.bareun.tagger.Tagger;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,8 @@ import org.springframework.web.client.RestTemplate;
 import yeomeong.common.document.Memo;
 import yeomeong.common.document.Tag;
 import yeomeong.common.dto.BareunRequestDto;
+import yeomeong.common.dto.BareunResponseDto;
+import yeomeong.common.dto.BareunResponseDto.Sentence;
 import yeomeong.common.dto.MemoRequestDto;
 import yeomeong.common.dto.MemoResponseDto;
 import yeomeong.common.dto.Message;
@@ -36,34 +40,17 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class MemoService {
+    @Value(("${bareun.api-key"))
+    String bareunApiKey;
     @Value("${bareun.url}")
     String bareunUrl;
 
     private final MemoRepository memoRepository;
     private final TagRepository tagRepository;
-    private final RestTemplate restTemplate;
 
     private String getMorpheme(String content){
-        // 헤더 설정
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        // 바디 설정
-        BareunRequestDto request = new BareunRequestDto();
-        request.setContent(content);
-
-        HttpEntity<BareunRequestDto> entity = new HttpEntity<>(request, headers);
-
-        ResponseEntity<OpenAiResponseDto> response = restTemplate.exchange(
-            bareunUrl, HttpMethod.POST, entity, OpenAiResponseDto.class);
-        // 응답이 있으면
-        if (response.getBody() != null && !response.getBody().getChoices().isEmpty()) {
-            return response.getBody().getChoices().get(0).getMessage().getContent();
-        }
-        // 응답이 없으면
-        else {
-            throw new CustomException(ErrorCode.NOT_RESPONSE);
-        }
+        Tagged tag = new Tagger(bareunUrl, bareunApiKey).tag(content);
+        return tag.morphs().get(0);
     }
 
     @Transactional
@@ -82,11 +69,12 @@ public class MemoService {
                     if (oldTag == null) {
                         return null;
                     }
-                    oldTag.setCount(oldTag.getCount() + 1);
+                    oldTag.count();
                     tags.add(tagRepository.save(oldTag));
                 }
                 // 처음 사용하는 Tag라면 생성하기
                 else {
+                    String morpheme = getMorpheme(tagRequestDto.getContent());
                     tags.add(tagRepository.save(tagRepository.save(tagRequestDto.toDocument())));
                 }
             }

@@ -27,6 +27,7 @@ public class DailyNoteParentCommentResponseDto {
     private String name;
     private String picture;
 
+    private Boolean canDelete;
     private Boolean isDeleted;
     @JsonIgnore
     private final static String deletedMessage = "삭제된 댓글입니다";
@@ -36,7 +37,7 @@ public class DailyNoteParentCommentResponseDto {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime createdTime;
 
-    public DailyNoteParentCommentResponseDto(DailyNoteComment dailyNoteComment) {
+    public DailyNoteParentCommentResponseDto(Long memberId, DailyNoteComment dailyNoteComment) {
         this.id = dailyNoteComment.getId();
         if(dailyNoteComment.getMember().getRole() == rtype.ROLE_GUARDIAN) {
             this.role = rtype.ROLE_GUARDIAN;
@@ -51,6 +52,8 @@ public class DailyNoteParentCommentResponseDto {
             this.picture = teacher.getPicture()==null?"": teacher.getPicture();
         }
 
+        this.canDelete = memberId == dailyNoteComment.getMember().getId() ? true : false;
+
         if(dailyNoteComment.getIsDeleted()) {
             this.isDeleted = true;
             this.content = deletedMessage;
@@ -62,7 +65,7 @@ public class DailyNoteParentCommentResponseDto {
 
         childs = new ArrayList<>();
         for(DailyNoteComment dailyNoteChildComment : dailyNoteComment.getReplies()){
-            childs.add(new DailyNoteChildCommentResponseDto(dailyNoteChildComment));
+            childs.add(new DailyNoteChildCommentResponseDto(memberId, dailyNoteChildComment));
         }
         Collections.sort(childs, (a, b) -> {
             return a.getCreatedTime().isEqual(b.getCreatedTime()) ? 1 : -1;

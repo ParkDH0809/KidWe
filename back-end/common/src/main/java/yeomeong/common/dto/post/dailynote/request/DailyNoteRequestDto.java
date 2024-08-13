@@ -16,6 +16,7 @@ public class DailyNoteRequestDto {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime sendTime;
     private String content;
+    private Boolean isStored;
 
     public DailyNote toEntity(Kid kid,
                                 Member writer){
