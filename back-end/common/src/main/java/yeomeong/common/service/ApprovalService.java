@@ -132,7 +132,7 @@ public class ApprovalService {
         } else {
             declineTeacher(acceptRequestDto.getId());
         }
-        approvalRepository.delete(approval);
+        approvalRepository.deleteByMemberId(approval.getId());
     }
 
     @Transactional
