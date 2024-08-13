@@ -135,14 +135,15 @@ public class ApprovalService {
     @Transactional
     public void acceptTeacherRequestDto(AcceptRequestDto acceptRequestDto) {
         Approval approval = approvalRepository.findByMemberId(acceptRequestDto.getId());
+        Long memberId = approval.getMember().getId();
         if (acceptRequestDto.getAccepted()) {
             acceptTeacher(approval);
-            sendAcceptMessage(approval);
+            sendAcceptMessage(memberId);
         } else {
-            memberRepository.updateMemberStatus(approval.getMember().getId(), atype.DECLINE);
-            sendDeclineMessage(approval);
+            memberRepository.updateMemberStatus(memberId, atype.DECLINE);
+            sendDeclineMessage(memberId);
         }
-        approvalRepository.deleteByMemberId(approval.getMember().getId());
+        approvalRepository.deleteByMemberId(memberId);
     }
 
     @Transactional
