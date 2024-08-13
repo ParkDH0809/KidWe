@@ -24,7 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemoService {
     private final RestTemplate restTemplate;
-    @Value(("${bareun.api-key"))
+    @Value("${bareun.api-key}")
     String bareunApiKey;
     @Value("${bareun.url}")
     String bareunUrl;
