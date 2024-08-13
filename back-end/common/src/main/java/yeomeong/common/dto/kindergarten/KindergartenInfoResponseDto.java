@@ -1,7 +1,7 @@
 package yeomeong.common.dto.kindergarten;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -24,7 +24,7 @@ public class KindergartenInfoResponseDto {
     private String addressDetail;
     private String tel;
     private Bus bus;
-    private Date openDate;
+    private LocalDate openDate;
     @Builder.Default
     private List<BanBasicInfoResponseDto> bans = new ArrayList<>();
 
@@ -38,8 +38,8 @@ public class KindergartenInfoResponseDto {
             .bus(kindergarten.getBus())
             .openDate(kindergarten.getOpenDate())
             .bans(kindergarten.getBans().stream()
-                .map(BanBasicInfoResponseDto::toBanBasicInfoDto)
-                .collect(Collectors.toList()))
+                    .map(BanBasicInfoResponseDto::toBanBasicInfoDto)
+                    .collect(Collectors.toList()))
             .build();
     }
 

@@ -78,6 +78,30 @@ public class MenuService {
         menuRepository.save(menu);
     }
 
-    // 일자별 메뉴 수정하기
+    @Transactional
+    public MenuByDayResponseDto updateMenu(Long menuId, MenuCreateDto menuCreateDto) {
+
+        Menu menu = menuRepository.findById(menuId).orElseThrow(() -> new RuntimeException("해당 메뉴가 없습니다"));
+
+        toEntityMenu(menu.getKindergarten(), menuCreateDto);
+
+        return new MenuByDayResponseDto(
+                menu.getLunch(),
+                menu.getLunchAllergies(),
+                menu.getSnack(),
+                menu.getSnackAllergies(),
+                menu.getDinner(),
+                menu.getDinnerAllergies()
+        );
+    }
+
+    @Transactional
+    public void removeMenu(Long menuId){
+        Menu menu = menuRepository.findById(menuId)
+                .orElseThrow(() -> new RuntimeException("해당 메뉴가 없습니다."));
+
+        menu.setDeleted(true);
+    }
+
 
 }

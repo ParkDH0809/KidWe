@@ -3,6 +3,7 @@ package yeomeong.common.entity.kindergarten;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,7 +11,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -44,6 +44,6 @@ public class Kindergarten {
 
     private boolean isVehicle;
 
-    private Date openDate;
+    private LocalDate openDate;
 
 }

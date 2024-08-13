@@ -23,7 +23,11 @@ public class JwtService {
     }
 
     public boolean isTokenStored(String token) {
-        return refreshTokenRepository.findByKey(JwtUtil.getLoginEmail(token)).equals(token);
+        String savedToken = refreshTokenRepository.findByKey(JwtUtil.getLoginEmail(token));
+        if(savedToken == null) {
+            return false;
+        }
+        return savedToken.equals(JwtUtil.removeJwtPrefix(token));
     }
 
     public boolean isLogoutAccessToken(String accessToken) {
