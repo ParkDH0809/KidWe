@@ -142,6 +142,7 @@ public class ApprovalService {
         memberRepository.updateMemberStatus(approval.getMember().getId(), atype.ACCEPT);
     }
 
+    @Transactional
     public void declineTeacher(Long memberId) {
         memberRepository.updateMemberStatus(memberId, atype.DECLINE);
     }
