@@ -49,7 +49,7 @@ public class DailyNoteController {
         @PathVariable("member_id") Long writerId,
         @PathVariable("year") String year,
         @PathVariable("month") String month) {
-        String yearAndMonth = year + "-" + month;
+        String yearAndMonth = year + "-" + String.format("%02d", month);
         DailyNoteListResponseDto dailyNoteListResponseDto = dailyNoteService.getDailyNotesByBanId(writerId, banId, yearAndMonth);
         return ResponseEntity.ok(dailyNoteListResponseDto);
     }
