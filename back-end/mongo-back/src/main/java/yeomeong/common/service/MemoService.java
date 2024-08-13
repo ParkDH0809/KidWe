@@ -42,14 +42,14 @@ import java.util.Optional;
 public class MemoService {
     @Value(("${bareun.api-key"))
     String bareunApiKey;
-    @Value("${bareun.url}")
-    String bareunUrl;
+    @Value("${bareun.host}")
+    String bareunHost;
 
     private final MemoRepository memoRepository;
     private final TagRepository tagRepository;
 
     private String getMorpheme(String content){
-        Tagged tag = new Tagger(bareunUrl, bareunApiKey).tag(content);
+        Tagged tag = new Tagger(bareunHost, bareunApiKey).tag(content);
         return tag.morphs().get(0);
     }
 
