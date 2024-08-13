@@ -41,27 +41,11 @@ public class MemberController {
     }
 
     @Operation(summary = "사용자 정보 수정", description = "특정 사용자 정보를 수정합니다.")
-    @PutMapping("/profile")
-    public ResponseEntity<Void> updateMemberProfile2(
+    @PatchMapping("/profile")
+    public ResponseEntity<Void> updateMemberProfile(
             @RequestPart("dto") MemberUpdateRequestDto memberUpdateRequestDto,
             @RequestPart(required = false) MultipartFile picture
     ) {
-        log.info("id: {}", memberUpdateRequestDto.getId());
-        log.info(memberUpdateRequestDto.toString());
-
-        memberService.updateMemberProfile(memberUpdateRequestDto, picture);
-        return ResponseEntity.status(HttpStatus.OK).build();
-    }
-
-    @Operation(summary = "사용자 정보 수정", description = "특정 사용자 정보를 수정합니다.")
-    @PatchMapping("/profile")
-    public ResponseEntity<Void> updateMemberProfile(
-        @RequestPart("dto") MemberUpdateRequestDto memberUpdateRequestDto,
-        @RequestPart(required = false) MultipartFile picture
-    ) {
-        log.info("id: {}", memberUpdateRequestDto.getId());
-        log.info(memberUpdateRequestDto.toString());
-
         memberService.updateMemberProfile(memberUpdateRequestDto, picture);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
