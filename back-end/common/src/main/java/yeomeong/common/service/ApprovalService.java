@@ -37,14 +37,13 @@ public class ApprovalService {
     private final KindergartenRepository kindergartenRepository;
     private final KidMemberRepository kidMemberRepository;
     private final AmazonS3 amazonS3;
-    private final AttendanceRepository attendanceRepository;
 
     @Value("${aws.s3.bucket-name}")
     private String bucketName;
 
     public ApprovalService(ApprovalRepository approvalRepository, MemberRepository memberRepository, BanRepository banRepository,
         KidRepository kidRepository, KindergartenRepository kindergartenRepository, KidMemberRepository kidMemberRepository,
-        AmazonS3 amazonS3, AttendanceRepository attendanceRepository) {
+        AmazonS3 amazonS3) {
         this.approvalRepository = approvalRepository;
         this.memberRepository = memberRepository;
         this.banRepository = banRepository;
@@ -52,7 +51,6 @@ public class ApprovalService {
         this.kindergartenRepository = kindergartenRepository;
         this.kidMemberRepository = kidMemberRepository;
         this.amazonS3 = amazonS3;
-        this.attendanceRepository = attendanceRepository;
     }
 
     public void applyForKindergartenByTeacher(TeacherJoinKindergartenRequestDto teacherJoinRequestDto) {
@@ -106,7 +104,7 @@ public class ApprovalService {
 
     public List<TeacherDetailInfoResponseDto> getAcceptTeachers(Long kindergartenId) {
         List<TeacherDetailInfoResponseDto> teacherDetailInfoResponseDtos = new ArrayList<>();
-        memberRepository.findMemberByKindergartenId(kindergartenId)
+        memberRepository.findMemberByKindergartenIdAndBanIsNotNull(kindergartenId)
             .forEach(m -> teacherDetailInfoResponseDtos.add(TeacherDetailInfoResponseDto.toTeacherDetailResponseDto(m)));
         return teacherDetailInfoResponseDtos;
     }
