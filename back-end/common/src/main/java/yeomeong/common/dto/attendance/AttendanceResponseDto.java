@@ -19,21 +19,23 @@ public class AttendanceResponseDto {
     String kidName;
 
     String reason;
+    String image;
     AttendanceType attendedToday;
 
     LocalDate date;
 
     public static AttendanceResponseDto toAttendanceResponseDto(Attendance attendance) {
         return AttendanceResponseDto.builder()
-            .attendanceId(attendance.getId())
-            .banId(attendance.getKid().getBan().getId())
-            .banName(attendance.getKid().getBan().getName())
-            .kidId(attendance.getKid().getId())
-            .kidName(attendance.getKid().getName())
-            .reason(attendance.getReason())
-            .attendedToday(attendance.getAttendedToday())
-            .date(attendance.getDate())
-            .build();
+                .attendanceId(attendance.getId())
+                .banId(attendance.getKid().getBan().getId())
+                .banName(attendance.getKid().getBan().getName())
+                .kidId(attendance.getKid().getId())
+                .kidName(attendance.getKid().getName())
+                .reason(attendance.getReason())
+                .image(attendance.getKid().getPicture())
+                .attendedToday(attendance.getAttendedToday())
+                .date(attendance.getDate())
+                .build();
     }
 
 }

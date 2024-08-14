@@ -28,6 +28,7 @@ public class MemberSaveRequestDto {
             .password(memberSaveRequestDto.getPassword())
             .role(rtype.valueOf(memberSaveRequestDto.getRole()))
             .picture(picture)
+            .isDeleted(false)
             .memberStatus(atype.NOTHING)
             .build();
     }
