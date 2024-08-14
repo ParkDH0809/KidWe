@@ -191,11 +191,11 @@ public class AnnouncementService {
 
         List<AnnouncementImage> announcementImages = announcement.getAnnouncementImages();
 
-        List<AnnouncementImageDto> images = new ArrayList<>();
+        List<String> images = new ArrayList<>();
 
         if(announcementImages != null) {
             for (AnnouncementImage image : announcementImages) {
-                images.add(new AnnouncementImageDto(image.getImageUrl()));
+                images.add(image.getImageUrl());
             }
         }
 

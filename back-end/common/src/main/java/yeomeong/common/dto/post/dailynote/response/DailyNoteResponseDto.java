@@ -30,7 +30,7 @@ public class DailyNoteResponseDto {
     private LocalDateTime sendTime;
 
     private List<String> images;
-    private List<String> thumbnails;
+//    private List<String> thumbnails;
 
     private Boolean canDelete;
 
@@ -49,10 +49,10 @@ public class DailyNoteResponseDto {
         this.sendTime = dailyNote.getSendTime();
 
         images = new ArrayList<>();
-        thumbnails = new ArrayList<>();
+//        thumbnails = new ArrayList<>();
         for(DailyNoteImage image : dailyNote.getImages()){
             images.add(image.getImageUrl());
-            thumbnails.add("thumb/" + image.getImageUrl());
+//            thumbnails.add("thumb/" + image.getImageUrl());
         }
 
         canDelete = memberId == dailyNote.getWriter().getId() ? true : false;
@@ -84,10 +84,10 @@ public class DailyNoteResponseDto {
         this.sendTime = dailyNote.getSendTime();
 
         images = new ArrayList<>();
-        thumbnails = new ArrayList<>();
+//        thumbnails = new ArrayList<>();
         for(DailyNoteImage image : dailyNote.getImages()){
             images.add(image.getImageUrl());
-            thumbnails.add("thumb/" + image.getImageUrl());
+//            thumbnails.add("thumb/" + image.getImageUrl());
         }
 
         canDelete =memberId == dailyNote.getWriter().getId() ? true : false;
