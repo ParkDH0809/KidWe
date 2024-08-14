@@ -42,8 +42,7 @@ public class MemberService {
     private String bucketName;
 
     public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder, KidMemberRepository kidMemberRepository,
-        NotificationUtil notificationUtil,
-            AmazonS3 amazonS3) {
+            NotificationUtil notificationUtil, AmazonS3 amazonS3) {
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
         this.kidMemberRepository = kidMemberRepository;
@@ -123,10 +122,11 @@ public class MemberService {
         try {
             Member member = memberRepository.findByEmail(email);
             notificationUtil.sendMessages(NotificationRequestDto.builder()
-                .token(List.of(memberRepository.getNotificationTokenBayMemberId(member.getId())
-                    .orElseThrow(() -> new CustomException(ErrorCode.NOTIFICATION_TOKEN_MISSING))))
-                .notificationContent(NotificationContent.TEST)
-                .build());
+                    .token(List.of(memberRepository.getNotificationTokenByMemberId(member.getId())
+                            .orElseThrow(() -> new CustomException(ErrorCode.NOTIFICATION_TOKEN_MISSING))))
+                    .email(List.of(member.getEmail()))
+                    .notificationContent(NotificationContent.TEST)
+                    .build());
         } catch (CustomException e) {
             log.info("[Notification] 알림 토큰이 없는 회원입니다.");
         }

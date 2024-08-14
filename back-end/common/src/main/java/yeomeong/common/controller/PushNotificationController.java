@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import yeomeong.common.dto.notification.NotificationDeleteRequestDto;
 import yeomeong.common.dto.notification.NotificationInfoResponseDto;
-import yeomeong.common.dto.notification.NotificationSaveRequestDto;
 import yeomeong.common.service.PushNotificationService;
 
 @Slf4j
@@ -36,14 +35,6 @@ public class PushNotificationController {
     public ResponseEntity<Void> initNotificationToken(Authentication authentication, @RequestParam String notificationToken) {
         log.info("[initNotificationToken] email: {}, token: {}", authentication.getName(), notificationToken);
         pushNotificationService.addNotificationToken(authentication.getName(), notificationToken);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping
-    @Operation(summary = "알림 내용 저장", description = "회원의 알림 메시지를 저장합니다.")
-    public ResponseEntity<Void> addNotificationMessage(Authentication authentication,
-            @RequestBody NotificationSaveRequestDto notificationSaveRequestDto) {
-        pushNotificationService.addNotificationMessage(authentication.getName(), notificationSaveRequestDto);
         return ResponseEntity.ok().build();
     }
 

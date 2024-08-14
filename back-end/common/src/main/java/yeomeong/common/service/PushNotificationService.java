@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import yeomeong.common.dto.notification.NotificationDeleteRequestDto;
 import yeomeong.common.dto.notification.NotificationInfoResponseDto;
-import yeomeong.common.dto.notification.NotificationSaveRequestDto;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.member.PushNotification;
 import yeomeong.common.repository.MemberRepository;
@@ -30,11 +29,11 @@ public class PushNotificationService {
         memberRepository.updateNotificationToken(member.getId(), token);
     }
 
-    public void addNotificationMessage(String email, NotificationSaveRequestDto dto) {
+    public void addNotificationMessage(String email, NotificationContent push) {
         Member member = memberRepository.findByEmail(email);
         pushNotificationRepository.save(PushNotification.builder()
-                        .title(dto.getTitle())
-                        .content(dto.getContent())
+                        .title(push.getTitle())
+                        .content(push.getContent())
                         .member(member)
                         .createDateTime(LocalDateTime.now())
                         .isDeleted(false)
