@@ -18,8 +18,6 @@ public class AnnouncementCommentDto {
     private String memberProfile;
     private rtype memberRole;
 
-    private List<AnnouncementCommentDto> children;
-
     private String memberName;
     private String content;
 
@@ -27,6 +25,8 @@ public class AnnouncementCommentDto {
     private LocalDateTime dateTimeWritten;
 
     private boolean canDelete;
+    private List<AnnouncementCommentChildDto> children = new ArrayList<>();
+
 
     public AnnouncementCommentDto(Long id,String memberProfile, rtype memberRole, String memberName, String content, LocalDateTime dateTimeWritten, boolean canDelete) {
         this.commentId = id;

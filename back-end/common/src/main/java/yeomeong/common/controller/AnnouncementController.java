@@ -33,6 +33,7 @@ public class AnnouncementController {
             @RequestPart(value = "vote", required = false) VoteCreateDto voteCreateDto
     ) throws Exception {
 
+
         announcementService.createAnnouncementByKindergarten(memberId,announcementCreateDto,voteCreateDto ,images);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
