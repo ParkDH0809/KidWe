@@ -21,7 +21,7 @@ import org.hibernate.annotations.ColumnDefault;
 public class PushNotification {
 
     @Id @GeneratedValue
-    private long id;
+    private Long id;
 
     private String title;
 
@@ -31,10 +31,10 @@ public class PushNotification {
     private LocalDateTime createDateTime;
 
     @ColumnDefault("false")
-    private boolean isChecked;
+    private Boolean isChecked;
 
     @ColumnDefault("false")
-    private boolean isDeleted;
+    private Boolean isDeleted;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
