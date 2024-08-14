@@ -47,5 +47,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     void updateNotificationToken(@Param("id") Long id, @Param("token") String token);
 
     @Query("SELECT m.notificationToken FROM Member m WHERE m.id = :id")
-    Optional<String> getNotificationTokenBayMemberId(Long id);
+    Optional<String> getNotificationTokenByMemberId(Long id);
+
+    @Query("SELECT m.email FROM Member m WHERE m.id = :id")
+    String getEmailByMemberId(Long id);
+
 }

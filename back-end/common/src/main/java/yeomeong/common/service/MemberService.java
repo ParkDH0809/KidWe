@@ -14,6 +14,7 @@ import yeomeong.common.dto.kid.KidDetailInfoResponseDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
 import yeomeong.common.dto.member.MemberSaveRequestDto;
 import yeomeong.common.dto.member.MemberUpdateRequestDto;
+import yeomeong.common.dto.notification.NotificationRequestDto;
 import yeomeong.common.entity.member.Kid;
 import yeomeong.common.entity.member.KidMember;
 import yeomeong.common.entity.member.Member;
@@ -24,6 +25,7 @@ import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.repository.KidMemberRepository;
 import yeomeong.common.repository.MemberRepository;
 import yeomeong.common.util.FileUtil;
+import yeomeong.common.util.NotificationUtil;
 
 @Service
 @Transactional
@@ -33,16 +35,18 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
     private final KidMemberRepository kidMemberRepository;
+    private final NotificationUtil notificationUtil;
     private final AmazonS3 amazonS3;
 
     @Value("${aws.s3.bucket-name}")
     private String bucketName;
 
     public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder, KidMemberRepository kidMemberRepository,
-            AmazonS3 amazonS3) {
+            NotificationUtil notificationUtil, AmazonS3 amazonS3) {
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
         this.kidMemberRepository = kidMemberRepository;
+        this.notificationUtil = notificationUtil;
         this.amazonS3 = amazonS3;
     }
 
@@ -111,6 +115,20 @@ public class MemberService {
                     .collect(Collectors.toList());
         } catch (JpaSystemException e) {
             throw new CustomException(ErrorCode.NOT_FOUND_KIDS);
+        }
+    }
+
+    public void testNotification(String email) {
+        try {
+            Member member = memberRepository.findByEmail(email);
+            notificationUtil.sendMessages(NotificationRequestDto.builder()
+                    .token(List.of(memberRepository.getNotificationTokenByMemberId(member.getId())
+                            .orElseThrow(() -> new CustomException(ErrorCode.NOTIFICATION_TOKEN_MISSING))))
+                    .email(List.of(member.getEmail()))
+                    .notificationContent(NotificationContent.TEST)
+                    .build());
+        } catch (CustomException e) {
+            log.info("[Notification] 알림 토큰이 없는 회원입니다.");
         }
     }
 

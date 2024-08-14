@@ -1,8 +1,10 @@
 spring:
   jackson:
     date-format: yyyy MM월 dd일    # LocalDate 포맷
+
   application:
     name: kidwe
+
   servlet:
     multipart:
       enabled: true # 멀티 파트 지원여부
@@ -15,9 +17,6 @@ spring:
     url: jdbc:mysql://i11a808.p.ssafy.io:3306/kidwe
     username: ssafy
     password: ssafy
-
-
-
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -46,8 +45,8 @@ jwt:
   token:
     header: Authorization
     secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
-#    access-expired-time: 1800000 #30m
-    access-expired-time: 6000 #5s
+    access-expired-time: 1800000 #30m
+#    access-expired-time: 6000 #10s
     refresh-expired-time: 1209600000 #14d
 #    refresh-expired-time: 6000 #10s
 
@@ -60,7 +59,6 @@ aws:
       secret-access-key: Hg9sa6K91c2Bh3ECU1la6tOfvEPP1yTxmRQtkx+c
     stack:
       auto: false
-
 
 springdoc:
   swagger-ui:
