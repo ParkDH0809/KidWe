@@ -4,16 +4,13 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import javax.imageio.ImageIO;
-import lombok.RequiredArgsConstructor;
+
 import marvin.image.MarvinImage;
 import org.marvinproject.image.transform.scale.Scale;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -70,16 +67,12 @@ public class FileUtil {
             // 비율을 무시하고 리사이즈
             scale.process(imageMarvin.clone(), imageMarvin, null, null, false);
 
-            BufferedImage imageNoAlpha = new BufferedImage(width,height, BufferedImage.TYPE_INT_RGB);
-            Graphics2D g = imageNoAlpha.createGraphics();
-            g.drawImage(image, 0, 0, width, height, null);
-            g.dispose();
-
+            BufferedImage imageNoAlpha = imageMarvin.getBufferedImageNoAlpha();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(imageNoAlpha, fileExtension, baos);
             baos.flush();
 
-            return new MockMultipartFile(file.getOriginalFilename(), baos.toByteArray());
+            return new MockMultipartFile(file.getName(), baos.toByteArray());
         } catch (IOException e) {
             throw new CustomException(ErrorCode.RESIZING_ERRORH);
         }

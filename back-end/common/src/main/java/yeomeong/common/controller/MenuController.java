@@ -55,7 +55,7 @@ public class MenuController {
     @Operation(summary = "해당 식단을 수정합니다.", description = "해당 식단 id를 통해 식단을 수정합니다.")
     public ResponseEntity<MenuByDayResponseDto> updateMenu(
             @PathVariable("menuId") Long menuId,
-            MenuCreateDto menuCreatedDto){
+            @RequestBody MenuCreateDto menuCreatedDto){
 
         return ResponseEntity.ok(
                 menuService.updateMenu(menuId, menuCreatedDto )

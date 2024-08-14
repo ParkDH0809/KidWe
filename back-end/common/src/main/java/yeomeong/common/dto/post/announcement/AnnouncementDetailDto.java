@@ -4,6 +4,7 @@ import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import yeomeong.common.entity.member.rtype;
 import yeomeong.common.entity.post.Post;
 import yeomeong.common.entity.post.Vote;
 import yeomeong.common.entity.post.VoteItem;
@@ -15,6 +16,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AnnouncementDetailDto {
+
+    private String memberProfile;
+
+    private rtype rtype;
 
     private String banName;
 
@@ -29,6 +34,8 @@ public class AnnouncementDetailDto {
     private int commentCnt;
 
     private List<AnnouncementCommentDto> comment;
+
+    private boolean canDelete;
 
     public AnnouncementDetailDto(String banName, Post post, List<AnnouncementCommentDto> comment) {
         this.banName = banName;

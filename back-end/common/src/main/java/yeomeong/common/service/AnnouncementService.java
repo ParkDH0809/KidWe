@@ -3,6 +3,7 @@ package yeomeong.common.service;
 import com.amazonaws.services.s3.AmazonS3;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,10 +11,7 @@ import yeomeong.common.dto.post.announcement.*;
 
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.member.rtype;
-import yeomeong.common.entity.post.Announcement;
-import yeomeong.common.entity.post.AnnouncementImage;
-import yeomeong.common.entity.post.Vote;
-import yeomeong.common.entity.post.VoteItem;
+import yeomeong.common.entity.post.*;
 import yeomeong.common.entity.post.comment.AnnouncementComment;
 import yeomeong.common.repository.*;
 
@@ -47,8 +45,12 @@ public class AnnouncementService {
 
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("해당 맴버가 없어용"));
 
+        Post post =new Post(announcementCreateDto.getCreatedDateTime(),
+                announcementCreateDto.getTitle(),
+                announcementCreateDto.getContent());
 
-        Announcement announcement =new Announcement(announcementCreateDto.getPost(),
+        Announcement announcement =new Announcement(
+                post,
                 member,
                 LocalDateTime.now());
 
@@ -130,23 +132,41 @@ public class AnnouncementService {
      }
 
 
-    public AnnouncementDetailDto getAnnouncementDetail(Long announcementId) {
+    public AnnouncementDetailDto getAnnouncementDetail(Long memberId,Long announcementId) {
 
          Announcement announcement = announcementRepository.findById(announcementId)
                  .orElseThrow(() -> new RuntimeException("해당 공지사항을 찾을 수 없습니다."));
 
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("해당 맴버가 없어요."));
         List<AnnouncementCommentDto> announcementCommentDto = new ArrayList<>();
-
 
         for(AnnouncementComment announcementComment : announcement.getCommentList()) {
 
-            AnnouncementComment parentComment = announcementComment.getParentComment();
-
-            announcementCommentDto.add(new AnnouncementCommentDto(announcementComment.getId(),
-                    parentComment != null ? parentComment.getId() : null,
+            AnnouncementCommentDto parentComment = new AnnouncementCommentDto(
+                    announcementComment.getId(),
+                    member.getPicture(),
+                    member.getRole(),
                     announcement.getMember().getName(),
                     announcementComment.getContent(),
-                    announcementComment.getLocalDateTime()));
+                    announcementComment.getLocalDateTime(),
+                    memberId.equals(announcement.getMember().getId())
+            );
+
+            List<AnnouncementCommentDto> childCommentDtos = new ArrayList<>();
+
+            for(AnnouncementComment childComment : announcementComment.getReplies()) {
+                childCommentDtos.add(new AnnouncementCommentDto(
+                        childComment.getId(),
+                        member.getPicture(),
+                        member.getRole(),
+                        childComment.getMember().getName(),
+                        childComment.getContent(),
+                        childComment.getLocalDateTime(),
+                        memberId.equals(childComment.getMember().getId())
+                ));
+            }
+            parentComment.setChildren(childCommentDtos);
+            announcementCommentDto.add(parentComment);
         }
 
         List<VoteItemDto> voteItemDtoList = new ArrayList<>();
@@ -172,13 +192,16 @@ public class AnnouncementService {
 
         // AnnouncementDetailDto를 생성하여 반환
         return new AnnouncementDetailDto(
+                member.getPicture(),
+                member.getRole(),
                 announcement.getMember().getBan() != null? announcement.getMember().getBan().getName() : "전체 공지",
                 announcement.getPost(),
                 !images.isEmpty() ? images : null,
                 vote != null ? vote.getId() : null, // Vote가 없으면 null
                 voteItemDtoList, // VoteItemDto 리스트는 비어있을 수 있음
                 announcement.getCommentList().size(),
-                announcementCommentDto // CommentDto 리스트는 비어있을 수 있음
+                announcementCommentDto, // CommentDto 리스트는 비어있을 수 있음
+                memberId.equals(announcement.getMember().getId())
         );
 
     }
@@ -191,7 +214,11 @@ public class AnnouncementService {
          Announcement announcement = announcementRepository.findById(announcementId)
                  .orElseThrow(() -> new RuntimeException("해당 공지사항을 수정할 수 없습니다."));
 
-         announcement.setPost(announcementCreateDto.getPost());
+        Post post =new Post(announcementCreateDto.getCreatedDateTime(),
+                announcementCreateDto.getTitle(),
+                announcementCreateDto.getContent());
+
+        announcement.setPost(post);
          announcementRepository.save(announcement);
     }
 
@@ -215,7 +242,11 @@ public class AnnouncementService {
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("해당 멤버를 찾을 수 없습니다."));
-        Announcement announcement = new Announcement(announcementCreateDto.getPost(), member,LocalDateTime.now());
+
+        Post post =new Post(announcementCreateDto.getCreatedDateTime(),
+                announcementCreateDto.getTitle(),
+                announcementCreateDto.getContent());
+        Announcement announcement = new Announcement(post, member,LocalDateTime.now());
         announcement.setStored(true);
         announcementRepository.save(announcement);
     }
