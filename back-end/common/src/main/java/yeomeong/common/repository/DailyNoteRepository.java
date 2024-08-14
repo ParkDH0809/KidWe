@@ -42,7 +42,7 @@ public interface DailyNoteRepository extends JpaRepository<DailyNote, Long>{
         + "FROM DailyNote dn "
         + "WHERE FUNCTION('DATE_FORMAT', dn.sendTime, '%Y-%m') = :date "
         + "AND dn.kid.id = :kidId "
-        + "AND dn.writer.role = 'ROLE_GUARDIAN' "
+        + "AND dn.writer.role = 'ROLE_TEACHER' "
         + "AND dn.sendTime <= CURRENT_TIMESTAMP "
         + "AND dn.isDeleted = false")
     List<DailyNote> findBYearAndMonthAndKidIdAndReceiverIsGuaridain(@Param("date") String date,
