@@ -8,10 +8,10 @@ import yeomeong.common.document.Tag;
 import java.util.List;
 
 @Repository
-public interface TagRepository extends MongoRepository<Tag, String> {
+public interface TagRepository extends MongoRepository<Tag, String>, TagCustomRepository {
 
-    @Query(value = "{'teacher_id' : ?0}", sort = "{'count' :  -1}")
-    List<Tag> findTagByTeacherId(Long teacherId);
+//    @Query(value = "{'teacher_id' : ?0}", sort = "{'count' :  -1}")
+//    List<Tag> findTagByTeacherId(Long teacherId);
 
     @Query("{'teacher_id' : ?0, 'contet' :  ?1}")
     Tag findTagByTeacherIdAndContet(Long teacherId, String contet);
