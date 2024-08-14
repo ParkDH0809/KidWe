@@ -24,6 +24,7 @@ import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.repository.KidMemberRepository;
 import yeomeong.common.repository.MemberRepository;
+import yeomeong.common.security.jwt.JwtUtil;
 import yeomeong.common.util.FileUtil;
 import yeomeong.common.util.NotificationUtil;
 
@@ -130,6 +131,11 @@ public class MemberService {
         } catch (CustomException e) {
             log.info("[Notification] 알림 토큰이 없는 회원입니다.");
         }
+    }
+
+    public void deleteNotificationToken(String accessToken) {
+        log.info("[notification token deleted]");
+        memberRepository.deleteNotificationTokenByEmail(JwtUtil.getLoginEmail(accessToken));
     }
 
 }

@@ -50,8 +50,6 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 
-        log.info("making response complete");
-
         Member member = memberRepository.findByEmail(authentication.getName());
         LoginResponseDto loginResponseDto = LoginResponseDto.of(accessToken, refreshToken, member);
 
