@@ -14,7 +14,11 @@ import yeomeong.common.dto.kid.KidDetailInfoResponseDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
 import yeomeong.common.dto.member.MemberSaveRequestDto;
 import yeomeong.common.dto.member.MemberUpdateRequestDto;
+import yeomeong.common.entity.member.Kid;
+import yeomeong.common.entity.member.KidMember;
 import yeomeong.common.entity.member.Member;
+import yeomeong.common.entity.member.atype;
+import yeomeong.common.entity.member.rtype;
 import yeomeong.common.exception.CustomException;
 import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.repository.KidMemberRepository;
@@ -34,9 +38,8 @@ public class MemberService {
     @Value("${aws.s3.bucket-name}")
     private String bucketName;
 
-
     public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder, KidMemberRepository kidMemberRepository,
-        AmazonS3 amazonS3) {
+            AmazonS3 amazonS3) {
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
         this.kidMemberRepository = kidMemberRepository;
@@ -63,7 +66,24 @@ public class MemberService {
     }
 
     public MemberProfileResponseDto getMemberProfile(String email) {
-        return MemberProfileResponseDto.toMemberProfileDto(memberRepository.findByEmail(email));
+        Member member = getMemberByEmail(email);
+        MemberProfileResponseDto dto = MemberProfileResponseDto.toMemberProfileDto(member);
+        if (member.getMemberStatus() == atype.ACCEPT) {
+            initKindergartenName(member, dto);
+        }
+        return dto;
+    }
+
+    private void initKindergartenName(Member member, MemberProfileResponseDto dto) {
+        if (member.getRole() == rtype.ROLE_GUARDIAN) {
+            List<KidMember> kidMembers = member.getKidMember();
+            for (KidMember kidMember : kidMembers) {
+                Kid kid = kidMember.getKid();
+                dto.setKindergartenName(kid.getKindergarten().getName());
+            }
+        } else {
+            dto.setKindergartenName(member.getKindergarten().getName());
+        }
     }
 
     public void updateMemberProfile(MemberUpdateRequestDto memberUpdateRequestDto, MultipartFile picture) {
@@ -72,7 +92,7 @@ public class MemberService {
             pictureName = FileUtil.uploadFileToS3(amazonS3, bucketName, picture);
         }
         Member member = memberRepository.findById(memberUpdateRequestDto.getId())
-            .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE));
+                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE));
         if (memberUpdateRequestDto.getPassword() != null) {
             member.setPassword(passwordEncoder.encode(memberUpdateRequestDto.getPassword()));
         }
@@ -86,9 +106,9 @@ public class MemberService {
     public List<KidDetailInfoResponseDto> getChildrenByMember(String email) {
         try {
             return kidMemberRepository.findKidMemberByMember_Id(memberRepository.findByEmail(email).getId())
-                .stream()
-                .map(KidDetailInfoResponseDto::toKidDetailInfoDto)
-                .collect(Collectors.toList());
+                    .stream()
+                    .map(KidDetailInfoResponseDto::toKidDetailInfoDto)
+                    .collect(Collectors.toList());
         } catch (JpaSystemException e) {
             throw new CustomException(ErrorCode.NOT_FOUND_KIDS);
         }

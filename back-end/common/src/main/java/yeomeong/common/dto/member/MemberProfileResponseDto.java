@@ -15,6 +15,7 @@ public class MemberProfileResponseDto {
     private String tel;
     private String picture;
     private rtype role;
+    private String kindergartenName;
 
     public static MemberProfileResponseDto toMemberProfileDto(Member member) {
         return MemberProfileResponseDto
@@ -26,6 +27,10 @@ public class MemberProfileResponseDto {
             .picture(member.getPicture())
             .role(member.getRole())
             .build();
+    }
+
+    public void setKindergartenName(String kindergartenName) {
+        this.kindergartenName = kindergartenName;
     }
 
 }
