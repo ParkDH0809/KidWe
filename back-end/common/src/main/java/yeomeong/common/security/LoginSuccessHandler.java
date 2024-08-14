@@ -37,7 +37,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     @Transactional
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws IOException {
+            Authentication authentication) throws IOException {
         String accessToken = JwtUtil.createAccessToken(memberRepository.findByEmail(authentication.getName()));
         String refreshToken = JwtUtil.createRefreshToken(authentication.getName());
         jwtService.saveRefreshToken(authentication.getName(), refreshToken);
@@ -55,19 +55,20 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         Member member = memberRepository.findByEmail(authentication.getName());
         LoginResponseDto loginResponseDto = LoginResponseDto.of(accessToken, refreshToken, member);
 
-        if(member.getKindergarten() != null) {
+        if (member.getKindergarten() != null) {
             loginResponseDto.setKindergartenId(member.getKindergarten().getId());
         }
 
-        if(member.getBan() != null) {
+        if (member.getBan() != null) {
             loginResponseDto.setBanId(member.getBan().getId());
         }
 
-        if(member.getKidMember() != null) {
+        if (member.getKidMember() != null) {
             List<KidMember> kidMembers = member.getKidMember();
-            for(KidMember kidMember : kidMembers) {
+            for (KidMember kidMember : kidMembers) {
                 Kid kid = kidMember.getKid();
                 loginResponseDto.setKidId(kid.getId());
+                loginResponseDto.setKindergartenId(kid.getKindergarten().getId());
             }
         }
 
