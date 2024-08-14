@@ -4,6 +4,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.MulticastMessage;
 import com.google.firebase.messaging.Notification;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import yeomeong.common.dto.notification.NotificationRequestDto;
@@ -21,6 +22,7 @@ public class NotificationUtil {
 
     public void sendMessages(NotificationRequestDto notificationRequestDto) {
         try {
+            log.info("[Notification] 알림 전송 시작: {}", notificationRequestDto.getNotificationContent().getTitle());
             FirebaseMessaging.getInstance().sendEachForMulticast(makeMessages(notificationRequestDto));
             saveNotification(notificationRequestDto);
         } catch (FirebaseMessagingException e) {
