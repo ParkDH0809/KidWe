@@ -8,22 +8,24 @@ import lombok.NoArgsConstructor;
 import yeomeong.common.dto.kid.KidBasicInfoResponseDto;
 import yeomeong.common.dto.member.MemberProfileResponseDto;
 import yeomeong.common.entity.post.DailyNote;
+import yeomeong.common.entity.member.rtype;
 
 @Getter
 @NoArgsConstructor
 public class DailyNoteListItemResponseDto {
     private Long id;
-    private KidBasicInfoResponseDto kid;
-    private MemberProfileResponseDto writer;
+
+    private String banName;
+    private String kidName;
+    private rtype writerRole;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime sendTime;
-    private String stringSendTime;
 
     public DailyNoteListItemResponseDto(DailyNote dailyNote) {
         this.id = dailyNote.getId();
-        this.kid = KidBasicInfoResponseDto.toKidBasicInfoDto(dailyNote.getKid());
-        this.writer = MemberProfileResponseDto.toMemberProfileDto(dailyNote.getWriter());
+        this.banName = dailyNote.getKid().getBan().getName();
+        this.kidName = dailyNote.getKid().getName();
+        this.writerRole = dailyNote.getWriter().getRole();
         this.sendTime = dailyNote.getSendTime();
-        this.stringSendTime = sendTime.toString();
     }
 }

@@ -90,7 +90,7 @@ public class DailyNoteService {
         // 발신자로 된 알림장들
         List<DailyNote> writeDailyNotes = dailyNoteRepository.findByYearAndMonthAndKidId(yearAndMonth, guardianId, kidId);
         // 수신자로 된, 해당 아이의 선생님이 작성한 알림장 모두 조회
-        List<DailyNote> receivedDailyNotes = dailyNoteRepository.findBYearAndMonthAndKidIdAndReceiverIsGuaridain(yearAndMonth, kidId);
+        List<DailyNote> receivedDailyNotes = dailyNoteRepository.findBYearAndMonthAndKidIdAndReceiverIsGuardian(yearAndMonth, kidId);
 
         // 작성자인, 수신자인 알림장을 합쳐서 반환
         return new DailyNoteListResponseDto(writeDailyNotes, receivedDailyNotes);

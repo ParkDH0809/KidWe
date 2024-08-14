@@ -45,7 +45,7 @@ public interface DailyNoteRepository extends JpaRepository<DailyNote, Long>{
         + "AND dn.writer.role = 'ROLE_TEACHER' "
         + "AND dn.sendTime <= CURRENT_TIMESTAMP "
         + "AND dn.isDeleted = false")
-    List<DailyNote> findBYearAndMonthAndKidIdAndReceiverIsGuaridain(@Param("date") String date,
+    List<DailyNote> findBYearAndMonthAndKidIdAndReceiverIsGuardian(@Param("date") String date,
         @Param("kidId") Long kidId);
 
     // 선생님 수신 : 담당반 아이들에게 학부모가 작성한 알림장을 조회
@@ -53,7 +53,7 @@ public interface DailyNoteRepository extends JpaRepository<DailyNote, Long>{
         + "FROM DailyNote dn "
         + "WHERE FUNCTION('DATE_FORMAT', dn.sendTime, '%Y-%m') = :date "
         + "AND dn.kid.ban.id = :banId "
-        + "AND dn.writer.role != 'ROLE_GUARDIAN' "
+        + "AND dn.writer.role = 'ROLE_GUARDIAN' "
         + "AND dn.sendTime <= CURRENT_TIMESTAMP "
         + "AND dn.isDeleted = false")
     List<DailyNote> findByYearAndMonthAndBanAndReceiverIsTeacher(@Param("date") String date,
