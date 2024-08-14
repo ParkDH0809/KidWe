@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface TagRepository extends MongoRepository<Tag, String> {
 
-    @Query("{'teacher_id' : ?0}")
+    @Query(value = "{'teacher_id' : ?0}", sort = "{'count' :  -1}")
     List<Tag> findTagByTeacherId(Long teacherId);
 
     @Query("{'teacher_id' : ?0, 'contet' :  ?1}")
