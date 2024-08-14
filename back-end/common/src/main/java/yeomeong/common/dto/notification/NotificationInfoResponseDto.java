@@ -12,7 +12,7 @@ public class NotificationInfoResponseDto {
     Long notificationId;
     String title;
     String content;
-    boolean isChecked;
+    Boolean isChecked;
     LocalDateTime createTime;
 
     public static NotificationInfoResponseDto toNotificationInfoResponseDto(PushNotification notification) {
@@ -20,7 +20,7 @@ public class NotificationInfoResponseDto {
                 .notificationId(notification.getId())
                 .title(notification.getTitle())
                 .content(notification.getContent())
-                .isChecked(notification.isChecked())
+                .isChecked(notification.getIsChecked())
                 .createTime(notification.getCreateDateTime())
                 .build();
     }
