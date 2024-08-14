@@ -49,8 +49,8 @@ public class ApprovalService {
     private String bucketName;
 
     public ApprovalService(ApprovalRepository approvalRepository, MemberRepository memberRepository, BanRepository banRepository,
-        KidRepository kidRepository, KindergartenRepository kindergartenRepository, KidMemberRepository kidMemberRepository,
-        AmazonS3 amazonS3, AttendanceRepository attendanceRepository) {
+            KidRepository kidRepository, KindergartenRepository kindergartenRepository, KidMemberRepository kidMemberRepository,
+            AmazonS3 amazonS3, AttendanceRepository attendanceRepository) {
         this.approvalRepository = approvalRepository;
         this.memberRepository = memberRepository;
         this.banRepository = banRepository;
@@ -64,12 +64,12 @@ public class ApprovalService {
     @Transactional
     public void applyForKindergartenByTeacher(TeacherJoinKindergartenRequestDto teacherJoinRequestDto) {
         ApprovalRequestDto approvalRequestDto = new ApprovalRequestDto(
-            memberRepository.findById(teacherJoinRequestDto.getMemberId())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)),
-            banRepository.findById(teacherJoinRequestDto.getBanId())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)),
-            kindergartenRepository.findById(teacherJoinRequestDto.getKindergartenId())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID))
+                memberRepository.findById(teacherJoinRequestDto.getMemberId())
+                        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)),
+                banRepository.findById(teacherJoinRequestDto.getBanId())
+                        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)),
+                kindergartenRepository.findById(teacherJoinRequestDto.getKindergartenId())
+                        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID))
         );
         approvalRepository.save(ApprovalRequestDto.toApprovalEntity(approvalRequestDto));
         memberRepository.updateMemberStatus(teacherJoinRequestDto.getMemberId(), atype.PENDING);
@@ -83,20 +83,20 @@ public class ApprovalService {
         }
         long kidId = kidRepository.save(KidJoinKindergartenRequestDto.toKidEntity(kidJoinKindergartenRequestDto, pictureName)).getId();
         ApprovalRequestDto approvalRequestDto = new ApprovalRequestDto(
-            kidRepository.findById(kidId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)),
-            banRepository.findById(kidJoinKindergartenRequestDto.getBanId())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)),
-            kindergartenRepository.findById(kidJoinKindergartenRequestDto.getKindergartenId())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID))
+                kidRepository.findById(kidId)
+                        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)),
+                banRepository.findById(kidJoinKindergartenRequestDto.getBanId())
+                        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID)),
+                kindergartenRepository.findById(kidJoinKindergartenRequestDto.getKindergartenId())
+                        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID))
         );
         approvalRepository.save(ApprovalRequestDto.toApprovalEntity(approvalRequestDto));
         kidMemberRepository.save(
-            KidMember.builder()
-                .kid(kidRepository.findById(kidId).orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)))
-                .member(memberRepository.findById(kidJoinKindergartenRequestDto.getMemberId())
-                    .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)))
-                .build()
+                KidMember.builder()
+                        .kid(kidRepository.findById(kidId).orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)))
+                        .member(memberRepository.findById(kidJoinKindergartenRequestDto.getMemberId())
+                                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INPUT_VALUE)))
+                        .build()
         );
 
         if (memberRepository.findById(kidJoinKindergartenRequestDto.getMemberId()).get().getMemberStatus() != atype.ACCEPT) {
@@ -107,28 +107,28 @@ public class ApprovalService {
     public List<TeacherDetailInfoResponseDto> getPendingTeachers(Long kindergartenId) {
         List<TeacherDetailInfoResponseDto> teacherDetailInfoResponseDtos = new ArrayList<>();
         approvalRepository.findByKindergartenIdAndMemberIdIsNotNull(kindergartenId)
-            .forEach(m -> teacherDetailInfoResponseDtos.add(TeacherDetailInfoResponseDto.toTeacherDetailResponseDto(m)));
+                .forEach(m -> teacherDetailInfoResponseDtos.add(TeacherDetailInfoResponseDto.toTeacherDetailResponseDto(m)));
         return teacherDetailInfoResponseDtos;
     }
 
     public List<TeacherDetailInfoResponseDto> getAcceptTeachers(Long kindergartenId) {
         List<TeacherDetailInfoResponseDto> teacherDetailInfoResponseDtos = new ArrayList<>();
         memberRepository.findMemberByKindergartenIdAndBanIsNotNull(kindergartenId)
-            .forEach(m -> teacherDetailInfoResponseDtos.add(TeacherDetailInfoResponseDto.toTeacherDetailResponseDto(m)));
+                .forEach(m -> teacherDetailInfoResponseDtos.add(TeacherDetailInfoResponseDto.toTeacherDetailResponseDto(m)));
         return teacherDetailInfoResponseDtos;
     }
 
     public List<PendingKidResponseDto> getPendingKids(Long kindergartenId) {
         List<PendingKidResponseDto> pendingKidResponseDtos = new ArrayList<>();
         approvalRepository.findByKindergartenIdAndKidIdIsNotNull(kindergartenId)
-            .forEach(m ->pendingKidResponseDtos.add(PendingKidResponseDto.toPendingKidResponseDto(m)));
+                .forEach(m -> pendingKidResponseDtos.add(PendingKidResponseDto.toPendingKidResponseDto(m)));
         return pendingKidResponseDtos;
     }
 
     public List<PendingKidResponseDto> getAcceptKids(Long kindergartenId) {
         List<PendingKidResponseDto> pendingKidResponseDtos = new ArrayList<>();
         kidRepository.findByKindergartenIdAndIsDeletedFalse(kindergartenId)
-            .forEach(m ->pendingKidResponseDtos.add(PendingKidResponseDto.toPendingKidResponseDto(m)));
+                .forEach(m -> pendingKidResponseDtos.add(PendingKidResponseDto.toPendingKidResponseDto(m)));
         return pendingKidResponseDtos;
     }
 
@@ -192,21 +192,29 @@ public class ApprovalService {
 
     private void sendAcceptMessage(Long memberId) {
         log.info("[Notification] 승인 알림 전송 시작");
-        NotificationUtil.sendMessages(NotificationRequestDto.builder()
-            .token(List.of(memberRepository.getNotificationTokenBayMemberId(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOTIFICATION_TOKEN_MISSING))))
-            .notificationContent(NotificationContent.JOIN_APPROVAL)
-            .build());
+        try {
+            NotificationUtil.sendMessages(NotificationRequestDto.builder()
+                    .token(List.of(memberRepository.getNotificationTokenBayMemberId(memberId)
+                            .orElseThrow(() -> new CustomException(ErrorCode.NOTIFICATION_TOKEN_MISSING))))
+                    .notificationContent(NotificationContent.JOIN_APPROVAL)
+                    .build());
+        } catch (CustomException e) {
+            log.info("[Notification] 알림 토큰이 없는 회원입니다.");
+        }
         log.info("[Notification] 승인 알림 전송 완료");
     }
 
     private void sendDeclineMessage(Long memberId) {
         log.info("[Notification] 거절 알림 전송 시작");
-        NotificationUtil.sendMessages(NotificationRequestDto.builder()
-            .token(List.of(memberRepository.getNotificationTokenBayMemberId(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOTIFICATION_TOKEN_MISSING))))
-            .notificationContent(NotificationContent.JOIN_DECLINE)
-            .build());
+        try {
+            NotificationUtil.sendMessages(NotificationRequestDto.builder()
+                    .token(List.of(memberRepository.getNotificationTokenBayMemberId(memberId)
+                            .orElseThrow(() -> new CustomException(ErrorCode.NOTIFICATION_TOKEN_MISSING))))
+                    .notificationContent(NotificationContent.JOIN_DECLINE)
+                    .build());
+        } catch (CustomException e) {
+            log.info("[Notification] 알림 토큰이 없는 회원입니다.");
+        }
         log.info("[Notification] 거절 알림 전송 완료");
     }
 
