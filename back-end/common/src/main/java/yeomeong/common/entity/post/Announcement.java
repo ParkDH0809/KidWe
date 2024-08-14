@@ -1,6 +1,7 @@
 package yeomeong.common.entity.post;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,7 +46,7 @@ public class  Announcement {
     @ColumnDefault("false")
     private boolean isDeleted;
 
-    public Announcement(Post post, Member member, LocalDateTime localDateTime) {
+    public Announcement( Post post ,Member member, LocalDateTime localDateTime) {
         this.post = post;
         this.member = member;
         this.createdTime = localDateTime;

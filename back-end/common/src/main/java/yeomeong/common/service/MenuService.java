@@ -84,6 +84,8 @@ public class MenuService {
 
         toEntityMenu(menu.getKindergarten(), menuCreateDto);
 
+        menuRepository.save(menu);
+
         return new MenuByDayResponseDto(
                 menuId,
                 menu.getLunch(),

@@ -65,9 +65,10 @@ public class AnnouncementController {
     @GetMapping("/detail/{announcementId}")
     @Operation(summary = "유치원의 공지사항을 상세보기합니다" , description = "공지사항 id를 활용하여 공지사항을 상세 조회합니다.")
     public ResponseEntity<AnnouncementDetailDto> getAnnouncementDetail(
-            @PathVariable("announcementId") Long announcementId){
+            @PathVariable("announcementId") Long announcementId,
+            long memberId){
 
-        AnnouncementDetailDto announcementDetailDto = announcementService.getAnnouncementDetail(announcementId);
+        AnnouncementDetailDto announcementDetailDto = announcementService.getAnnouncementDetail(memberId,announcementId);
 
         return ResponseEntity.ok(announcementDetailDto);
     }

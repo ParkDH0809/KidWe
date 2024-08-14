@@ -6,6 +6,7 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +18,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Embeddable
+@AllArgsConstructor
 public class Post {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.M.d HH:mm")
@@ -26,5 +28,7 @@ public class Post {
 
     private String content;
 
-    private String picture;
+    public Post() {
+
+    }
 }

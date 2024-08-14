@@ -70,7 +70,7 @@ public class MedicationController {
     public ResponseEntity<MedicationCreateDto> createMedication(
             @PathVariable("kidId") Long kidId,
             Long memberId,
-            @RequestPart("medicine") MultipartFile medicineImage,
+            @RequestPart(name = "medicine", required = false) MultipartFile medicineImage,
             @RequestPart("sign") MultipartFile signImage,
             @RequestPart("dto") MedicationCreateDto medicationCreateDto
             ) throws Exception {

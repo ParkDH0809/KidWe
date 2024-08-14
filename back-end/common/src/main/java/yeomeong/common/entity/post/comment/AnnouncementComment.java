@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.post.Announcement;
 
 import java.time.LocalDateTime;
@@ -22,7 +23,9 @@ public class AnnouncementComment {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long memberId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     private String content;
 
@@ -41,8 +44,8 @@ public class AnnouncementComment {
     private boolean isDeleted;
 
 
-    public AnnouncementComment(Long memberId, String content, Announcement announcement) {
-        this.memberId = memberId;
+    public AnnouncementComment(Member member, String content, Announcement announcement) {
+        this.member= member;
         this.content = content;
         this.announcement = announcement;
         this.localDateTime = LocalDateTime.now();
