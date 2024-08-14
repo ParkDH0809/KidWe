@@ -101,21 +101,11 @@ public class FileUtil {
     }
 
 
-    public static String uploadOriginalAndThumbnailToS3(AmazonS3 s3Client, String bucketName, MultipartFile file, int width, int height) throws Exception {
+    public static String uploadOriginalAndThumbnailToS3(AmazonS3 s3Client, String bucketName, MultipartFile file) throws Exception {
         if(file == null) return null;
 
-        String fileName = uploadFileToS3(s3Client,bucketName,file);
 
-        MultipartFile thumbnailFile = resizeFile(file, width, height);
-
-        String thumbnailFileName = fileName.substring(0,fileName.lastIndexOf("."))
-                + "_thumbnail"
-                + fileName.substring(fileName.lastIndexOf("."));
-
-        uploadFileToS3(s3Client,bucketName, thumbnailFile, thumbnailFileName);
-
-
-        return fileName;
+        return "thumbnail_" + uploadFileToS3(s3Client,bucketName,file);
     }
 
     // uploadFileToS3 메소드 오버로딩 (파일 이름 추가)

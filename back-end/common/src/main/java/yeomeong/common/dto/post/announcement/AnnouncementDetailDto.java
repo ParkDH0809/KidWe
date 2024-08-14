@@ -18,23 +18,23 @@ import java.util.List;
 @NoArgsConstructor
 public class AnnouncementDetailDto {
 
-    private String memberProfile;
+    private String picture;
 
-    private rtype rtype;
+    private rtype role;
 
     private String banName;
 
     private Post post;
 
-    private List<AnnouncementImageDto> announcementImages;
+    private List<String> images;
 
     private Long voteId;
 
     private List<VoteItemDto> voteItems;
 
-    private int commentCnt;
+    private int commentCount;
 
-    private List<AnnouncementCommentDto> comment = new ArrayList<>();
+    private List<AnnouncementCommentDto> comments = new ArrayList<>();
 
     private boolean canDelete;
 
