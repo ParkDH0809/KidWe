@@ -41,12 +41,12 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         String accessToken = JwtUtil.createAccessToken(memberRepository.findByEmail(authentication.getName()));
         String refreshToken = JwtUtil.createRefreshToken(authentication.getName());
         jwtService.saveRefreshToken(authentication.getName(), refreshToken);
-//        Cookie refreshTokenCookie = createCookie(authentication.getName());
-//        jwtService.saveRefreshToken(authentication.getName(), refreshTokenCookie.getValue());
-//        log.debug("redis store data: {}", refreshTokenCookie.getValue());
+        Cookie refreshTokenCookie = createCookie(authentication.getName());
+        jwtService.saveRefreshToken(authentication.getName(), refreshTokenCookie.getValue());
+        log.debug("redis store data: {}", refreshTokenCookie.getValue());
 
         response.setStatus(HttpStatus.OK.value());
-//        response.addCookie(refreshTokenCookie);
+        response.addCookie(refreshTokenCookie);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 
