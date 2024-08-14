@@ -114,12 +114,12 @@ public class AnnouncementService {
              List<AnnouncementListDto> announcementByAllBan = announcementRepository.getAnnouncementByAllBan(member.getKindergarten().getId());
              announcementDtoList.addAll(announcementByAllBan);
 
-         } //해당 유치원 전체 반에 대한 공지사항 가져오기
-         else {
-             List<AnnouncementListDto> announcementByBan = announcementRepository.getAnnouncementByAllBan(member.getBan().getId());
+         }
+         else {//선생님이나 학부모일 땐 해당 반 + 전체 공지 다 가져오기
+             List<AnnouncementListDto> announcementByBan = announcementRepository.getAnnouncementByBan(member.getBan().getId());
              announcementDtoList.addAll(announcementByBan);
 
-         } //선생님이나 학부모일 땐 해당 반 + 전체 공지 다 가져오기
+         }
 
          for(AnnouncementListDto announcementOne : announcementDtoList){
              if(announcementOne.getMemberBan() == null){
