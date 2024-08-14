@@ -1,7 +1,5 @@
 package yeomeong.common.service;
 
-import ai.bareun.tagger.Tagged;
-import ai.bareun.tagger.Tagger;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -17,7 +15,6 @@ import yeomeong.common.repository.MemoRepository;
 import yeomeong.common.repository.TagRepository;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
