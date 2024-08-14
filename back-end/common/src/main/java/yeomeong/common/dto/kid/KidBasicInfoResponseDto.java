@@ -10,9 +10,14 @@ public class KidBasicInfoResponseDto {
 
     long id;
     String name;
+    String image;
 
     public static KidBasicInfoResponseDto toKidBasicInfoDto(Kid kid) {
-        return KidBasicInfoResponseDto.builder().id(kid.getId()).name(kid.getName()).build();
+        return KidBasicInfoResponseDto.builder()
+                .id(kid.getId())
+                .name(kid.getName())
+                .image(kid.getPicture())
+                .build();
     }
 
 }
