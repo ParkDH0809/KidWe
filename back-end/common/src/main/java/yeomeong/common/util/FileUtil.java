@@ -62,7 +62,7 @@ public class FileUtil {
 
             // 주어진 width와 height로 설정
             scale.setAttribute("newWidth", width);
-            scale.setAttribute("newHeight", height);
+            scale.setAttribute("newHeight", width * originHeight / originWidth);
 
             // 비율을 무시하고 리사이즈
             scale.process(imageMarvin.clone(), imageMarvin, null, null, false);
