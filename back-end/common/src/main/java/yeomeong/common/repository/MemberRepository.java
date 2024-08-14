@@ -48,4 +48,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Query("SELECT m.notificationToken FROM Member m WHERE m.id = :id")
     Optional<String> getNotificationTokenBayMemberId(Long id);
+
 }

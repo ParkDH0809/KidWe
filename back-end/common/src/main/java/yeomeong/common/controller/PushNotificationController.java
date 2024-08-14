@@ -67,11 +67,4 @@ public class PushNotificationController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/test")
-    @Operation(summary = "알림 테스트")
-    public ResponseEntity<Void> getNotificationInfo(Authentication authentication) {
-        pushNotificationService.testNotification(authentication.getName());
-        return ResponseEntity.ok().build();
-    }
-
 }
