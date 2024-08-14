@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import yeomeong.common.dto.post.announcement.*;
 
+import yeomeong.common.entity.member.Kid;
+import yeomeong.common.entity.member.KidMember;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.member.rtype;
 import yeomeong.common.entity.post.*;
@@ -141,13 +143,16 @@ public class AnnouncementService {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("해당 맴버가 없어요."));
         List<AnnouncementCommentDto> announcementCommentDto = new ArrayList<>();
 
+
         for(AnnouncementComment announcementComment : announcement.getCommentList()) {
+
 
             AnnouncementCommentDto parentComment = new AnnouncementCommentDto(
                     announcementComment.getId(),
                     member.getPicture(),
                     member.getRole(),
-                    announcement.getMember().getName(),
+                    announcementComment.getMember().getRole() == rtype.ROLE_GUARDIAN ?
+                            announcementComment.getMember().getKidMember().get(0).getKid().getName(): announcementComment.getMember().getName(),
                     announcementComment.getContent(),
                     announcementComment.getLocalDateTime(),
                     memberId.equals(announcement.getMember().getId())
@@ -160,14 +165,15 @@ public class AnnouncementService {
                         childComment.getId(),
                         member.getPicture(),
                         member.getRole(),
-                        childComment.getMember().getName(),
+                        childComment.getMember().getRole() == rtype.ROLE_GUARDIAN ?
+                        childComment.getMember().getKidMember().get(0).getKid().getName() : childComment.getMember().getName(),
                         childComment.getContent(),
                         childComment.getLocalDateTime(),
                         memberId.equals(childComment.getMember().getId())
                 ));
             }
 
-            parentComment.setChildren(childCommentDto);
+            parentComment.setChilds(childCommentDto);
             announcementCommentDto.add(parentComment);
         }
 
