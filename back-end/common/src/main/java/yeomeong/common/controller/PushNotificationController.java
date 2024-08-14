@@ -3,6 +3,7 @@ package yeomeong.common.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +19,7 @@ import yeomeong.common.dto.notification.NotificationInfoResponseDto;
 import yeomeong.common.dto.notification.NotificationSaveRequestDto;
 import yeomeong.common.service.PushNotificationService;
 
+@Slf4j
 @RestController
 @RequestMapping("/notification")
 @Tag(name = "알림 API", description = "알림 관련 API")
@@ -32,6 +34,7 @@ public class PushNotificationController {
     @PostMapping("/token")
     @Operation(summary = "알림 Token 저장", description = "회원의 알림 Token을 저장합니다.")
     public ResponseEntity<Void> initNotificationToken(Authentication authentication, @RequestParam String notificationToken) {
+        log.info("[initNotificationToken] email: {}, token: {}", authentication.getName(), notificationToken);
         pushNotificationService.addNotificationToken(authentication.getName(), notificationToken);
         return ResponseEntity.ok().build();
     }
