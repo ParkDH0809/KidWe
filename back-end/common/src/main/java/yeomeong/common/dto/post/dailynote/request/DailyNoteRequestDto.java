@@ -3,6 +3,7 @@ package yeomeong.common.dto.post.dailynote.request;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import java.time.ZoneId;
 import lombok.Getter;
 import org.springframework.lang.Nullable;
 import yeomeong.common.entity.member.Kid;
@@ -23,7 +24,7 @@ public class DailyNoteRequestDto {
             .kid(kid)
             .writer(writer)
             .content(this.content)
-            .sendTime(this.sendTime == null ? LocalDateTime.now() : this.sendTime)
+            .sendTime(this.sendTime == null ? LocalDateTime.now().atZone(ZoneId.of("Asia/Seoul")).toLocalDateTime() : this.sendTime)
             .build();
     }
 }
