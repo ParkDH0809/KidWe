@@ -71,7 +71,8 @@ public class AnnouncementService {
             }
         }
 
-        if(voteCreateDto != null) {
+        if(voteCreateDto != null && !voteCreateDto.getTitle().isEmpty()) {
+
 
             List<VoteItem> voteItems = new ArrayList<>();
 
@@ -152,10 +153,10 @@ public class AnnouncementService {
                     memberId.equals(announcement.getMember().getId())
             );
 
-            List<AnnouncementCommentDto> childCommentDtos = new ArrayList<>();
+            List<AnnouncementCommentChildDto> childCommentDto = new ArrayList<>();
 
             for(AnnouncementComment childComment : announcementComment.getReplies()) {
-                childCommentDtos.add(new AnnouncementCommentDto(
+                childCommentDto.add(new AnnouncementCommentChildDto(
                         childComment.getId(),
                         member.getPicture(),
                         member.getRole(),
@@ -165,7 +166,8 @@ public class AnnouncementService {
                         memberId.equals(childComment.getMember().getId())
                 ));
             }
-            parentComment.setChildren(childCommentDtos);
+
+            parentComment.setChildren(childCommentDto);
             announcementCommentDto.add(parentComment);
         }
 

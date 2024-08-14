@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import static yeomeong.common.dto.menu.request.MenuCreateDto.toEntityMenu;
+import static yeomeong.common.dto.menu.request.MenuCreateDto.*;
 
 
 @Service
@@ -82,7 +82,7 @@ public class MenuService {
 
         Menu menu = menuRepository.findById(menuId).orElseThrow(() -> new RuntimeException("해당 메뉴가 없습니다"));
 
-        toEntityMenu(menu.getKindergarten(), menuCreateDto);
+        updateEntityMenu(menu,menuCreateDto);
 
         menuRepository.save(menu);
 
@@ -96,6 +96,7 @@ public class MenuService {
                 menu.getDinnerAllergies()
         );
     }
+
 
     @Transactional
     public void removeMenu(Long menuId){

@@ -21,6 +21,7 @@ public class AnnouncementCreateDto {
 
     private String content;
 
+
     public AnnouncementCreateDto(Post post){
         this.createdDateTime = post.getCreatedDateTime();
         this.title = post.getTitle();

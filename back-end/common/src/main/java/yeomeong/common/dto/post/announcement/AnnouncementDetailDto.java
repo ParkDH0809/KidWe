@@ -10,6 +10,7 @@ import yeomeong.common.entity.post.Vote;
 import yeomeong.common.entity.post.VoteItem;
 import yeomeong.common.entity.post.comment.AnnouncementComment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -33,13 +34,8 @@ public class AnnouncementDetailDto {
 
     private int commentCnt;
 
-    private List<AnnouncementCommentDto> comment;
+    private List<AnnouncementCommentDto> comment = new ArrayList<>();
 
     private boolean canDelete;
 
-    public AnnouncementDetailDto(String banName, Post post, List<AnnouncementCommentDto> comment) {
-        this.banName = banName;
-        this.post = post;
-        this.comment = comment;
-    }
 }

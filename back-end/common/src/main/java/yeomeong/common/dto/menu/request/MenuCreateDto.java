@@ -35,9 +35,31 @@ public class MenuCreateDto {
                 .snack(menuCreateDto.getSnack())
                 .snackAllergies(listToString(menuCreateDto.snackAllergies)).build();
     }
+    public static Menu toEntityMenu(Long id,Kindergarten kindergarten, MenuCreateDto menuCreateDto){
+        return Menu.builder()
+                .id(id)
+                .kindergarten(kindergarten)
+                .menuDate(menuCreateDto.getMenuDate())
+                .lunch(menuCreateDto.getLunch())
+                .lunchAllergies(listToString(menuCreateDto.lunchAllergies))
+                .dinner(menuCreateDto.getDinner())
+                .dinnerAllergies(listToString(menuCreateDto.dinnerAllergies))
+                .snack(menuCreateDto.getSnack())
+                .snackAllergies(listToString(menuCreateDto.snackAllergies)).build();
+    }
+
 
     private static String listToString(List<String> list) {
         return String.join(",", list);
+    }
+    public static void updateEntityMenu(Menu menu, MenuCreateDto menuCreateDto) {
+        menu.setMenuDate(menuCreateDto.getMenuDate());
+        menu.setLunch(menuCreateDto.getLunch());
+        menu.setLunchAllergies(listToString(menuCreateDto.getLunchAllergies()));
+        menu.setDinner(menuCreateDto.getDinner());
+        menu.setDinnerAllergies(listToString(menuCreateDto.getDinnerAllergies()));
+        menu.setSnack(menuCreateDto.getSnack());
+        menu.setSnackAllergies(listToString(menuCreateDto.getSnackAllergies()));
     }
 
 }

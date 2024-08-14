@@ -49,10 +49,12 @@ public class AnnouncementCommentService {
                 .orElseThrow(() -> new RuntimeException("해당 공지사항 댓글을 찾을 수 없습니다"));
 
         comment.setDeleted(true);
+        comment.setContent("삭제된 댓글입니다.");
 
     }
 
     //공지사항 대댓글 작성하기
+    @Transactional
     public void createCommentChildren(Long announcementCommentParentId, Long memberId, CommentChildDto commentChildDto){
         AnnouncementComment parentComment = announcementCommentRepository.findById(announcementCommentParentId)
                 .orElseThrow(() -> new RuntimeException("해당 부모 댓글을 찾을 수 없습니다."));
@@ -65,6 +67,7 @@ public class AnnouncementCommentService {
 
          //새롭게 만들어진 comment
         parentComment.getReplies().add(childComment);
+        childComment.setParentComment(parentComment);
 
         announcementCommentRepository.save(childComment);
     }
