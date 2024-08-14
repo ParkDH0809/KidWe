@@ -17,6 +17,7 @@ import yeomeong.common.dto.auth.LoginResponseDto;
 import yeomeong.common.entity.member.Kid;
 import yeomeong.common.entity.member.KidMember;
 import yeomeong.common.entity.member.Member;
+import yeomeong.common.entity.member.atype;
 import yeomeong.common.repository.MemberRepository;
 import yeomeong.common.security.jwt.JwtService;
 import yeomeong.common.security.jwt.JwtUtil;
@@ -36,7 +37,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     @Transactional
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-            Authentication authentication) throws IOException {
+        Authentication authentication) throws IOException {
         String accessToken = JwtUtil.createAccessToken(memberRepository.findByEmail(authentication.getName()));
         String refreshToken = JwtUtil.createRefreshToken(authentication.getName());
         jwtService.saveRefreshToken(authentication.getName(), refreshToken);
@@ -62,7 +63,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
             loginResponseDto.setBanId(member.getBan().getId());
         }
 
-        if (member.getKidMember() != null) {
+        if (member.getKidMember() != null && member.getMemberStatus() == atype.ACCEPT) {
             List<KidMember> kidMembers = member.getKidMember();
             for (KidMember kidMember : kidMembers) {
                 Kid kid = kidMember.getKid();
@@ -71,16 +72,6 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
                 loginResponseDto.setBanId(kid.getBan().getId());
             }
         }
-
-//        if(member.getKidMember() != null) {
-//            List<KidMember> kidMembers = member.getKidMember();
-//            List<Long> kidIds = new ArrayList<>();
-//            for(KidMember kidMember : kidMembers) {
-//                Kid kid = kidMember.getKid();
-//                kidIds.add(kid.getId());
-//            }
-//            loginResponseDto.setKidIds(member.getKidMember());
-//        }
 
         objectMapper.writeValue(response.getWriter(), loginResponseDto);
     }
