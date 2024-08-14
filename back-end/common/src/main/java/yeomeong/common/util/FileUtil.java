@@ -101,7 +101,7 @@ public class FileUtil {
     }
 
 
-    public static String uploadOriginalAndThumbnailToS3(AmazonS3 s3Client, String bucketName, MultipartFile file, int width, int height) throws Exception {
+    public static String uploadOriginalAndThumbnailToS3(AmazonS3 s3Client, String bucketName, MultipartFile file) throws Exception {
         if(file == null) return null;
 
 

@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static yeomeong.common.util.FileUtil.uploadFileToS3;
+import static yeomeong.common.util.FileUtil.uploadOriginalAndThumbnailToS3;
 
 @Service
 @RequiredArgsConstructor
@@ -61,7 +62,7 @@ public class AnnouncementService {
         if(images != null ){
             for( MultipartFile image : images){
 
-                String fileName = uploadFileToS3(s3Client, bucketName, image);
+                String fileName = uploadOriginalAndThumbnailToS3(s3Client, bucketName, image);
 
                 AnnouncementImage announcementImage =new AnnouncementImage(
                         s3Client.getUrl(bucketName, fileName).toString(),
