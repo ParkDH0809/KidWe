@@ -52,8 +52,7 @@ public class DailyNoteController {
         @PathVariable("month") String month) {
         int monthInt = Integer.parseInt(month);
         String yearAndMonth = year + "-" + String.format("%02d", monthInt);
-        DailyNoteListResponseDto dailyNoteListResponseDto = dailyNoteService.getDailyNotesByBanId(writerId, banId, yearAndMonth);
-        return ResponseEntity.ok(dailyNoteListResponseDto);
+        return ResponseEntity.ok(dailyNoteService.getDailyNotesByBanId(writerId, banId, yearAndMonth));
     }
 
     @Operation(summary = "특정 알림장 상세정보 조회 API", description = "특정 알림장의 상세정보를 반환합니다.")
