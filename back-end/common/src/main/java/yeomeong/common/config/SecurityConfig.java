@@ -115,6 +115,7 @@ public class SecurityConfig  {
                 .logout((logout) -> logout
                         .permitAll()
                         .logoutSuccessHandler(((request, response, authentication) -> {
+                            memberService.deleteNotificationToken(request.getHeader("Authorization"));
                             jwtService.saveLogoutAccessToken(request.getHeader("Authorization"));
                             jwtService.deleteRefreshToken(JwtUtil.getLoginEmail(request.getHeader("Authorization")));
                         }))

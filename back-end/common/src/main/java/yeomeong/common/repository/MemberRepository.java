@@ -52,4 +52,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("SELECT m.email FROM Member m WHERE m.id = :id")
     String getEmailByMemberId(Long id);
 
+    @Modifying
+    @Transactional
+    @Query("UPDATE Member m SET m.notificationToken = null WHERE m.email = :email")
+    void deleteNotificationTokenByEmail(@Param("email") String email);
+
 }
