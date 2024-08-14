@@ -20,19 +20,19 @@ public class AnnouncementCommentDto {
     private String content;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "M.d HH:mm")
-    private LocalDateTime dateTimeWritten;
+    private LocalDateTime createdTime;
 
     private boolean canDelete;
     private List<AnnouncementCommentChildDto> childs = new ArrayList<>();
 
 
-    public AnnouncementCommentDto(Long id, String picture, rtype role, String name, String content, LocalDateTime dateTimeWritten, boolean canDelete) {
+    public AnnouncementCommentDto(Long id, String picture, rtype role, String name, String content, LocalDateTime createdTime, boolean canDelete) {
         this.id = id;
         this.picture = picture;
         this.role = role;
         this.name = name;
         this.content = content;
-        this.dateTimeWritten = dateTimeWritten;
+        this.createdTime = createdTime;
         this.canDelete = canDelete;
     }
 }
