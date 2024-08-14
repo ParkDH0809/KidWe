@@ -1,7 +1,8 @@
 spring:
   data:
     mongodb:
-      host: 43.203.245.97
+      # host : ip address -> ec2 name으로
+      host: i11a808.p.ssafy.io
       port: 27017
       authentication-database: admin
       username: ssafy
