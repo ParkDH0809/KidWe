@@ -58,12 +58,47 @@ public class SecurityConfig  {
                                 .requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/*", "/api-docs", "/api-docs/*", "/v3/api-docs/*").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/login", "/signup").permitAll()
                                 .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-//                                .requestMatchers("/directors/**").hasAuthority("DIRECTOR")
-//                                .requestMatchers("/teachers/**").hasAuthority("TEACHER")
-//                                .requestMatchers("/guardians/**").hasAuthority("GUARDIAN")
+                                .anyRequest().permitAll()
+
+//                                // swagger
+//                                .requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/*", "/api-docs", "/api-docs/*", "/v3/api-docs/*").permitAll()
+//                                // 로그인, 회원가입 API
+//                                .requestMatchers(HttpMethod.POST, "/login", "/signup").permitAll()
+//                                .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+//                                // 게시판 댓글 API
+//                                // 공지사항 API
+//                                .requestMatchers( "/announcements/*", "/announcements/storage/**", "/announcements/vote/*").hasAnyRole("DIRECTOR", "TEACHER")
+//                                // 귀가동의서 API
+//                                .requestMatchers(HttpMethod.POST,"/leaveconsents/*").hasRole("GUARDIAN")
+//                                .requestMatchers(HttpMethod.DELETE,"/leaveconsents/*").hasRole("GUARDIAN")
+//                                // 반 API
+//                                // 부모 권한 API
+//                                .requestMatchers("/guardians/**").hasRole("GUARDIAN")
+//                                // 사용자 API
+//                                // 선생 권한 API
+//                                .requestMatchers("/teachers/**").hasRole("TEACHER")
+//                                // 식단 API
+//                                .requestMatchers("/menus/*").hasAnyRole("DIRECTOR", "TEACHER")
+//                                // 아이 API
+//                                // 알림 API
+//                                // 알림장 댓글 API
+//                                // 알림장 API
+//                                .requestMatchers("/dailynotes/*/*", "/dailynotes/ban/**").hasAnyRole("DIRECTOR", "TEACHER")
+//                                .requestMatchers("/dailynotes/kid/**").hasRole("GUARDIAN")
+//                                // 원장 권한 API
+//                                .requestMatchers("/directors/**").hasRole("DIRECTOR")
+//                                // 유치원 API
+//                                // 일정 관리 API
+//                                .requestMatchers("/schedules/*").hasAnyRole("DIRECTOR", "TEACHER")
+//                                //출석 API
+//                                .requestMatchers("/attendances").hasAnyRole("DIRECTOR", "TEACHER")
+//                                //투약의뢰서 API
+//                                .requestMatchers(HttpMethod.POST,"/medications/*").hasRole("GUARDIAN")
+//                                .requestMatchers(HttpMethod.DELETE,"/medications/*").hasRole("GUARDIAN")
+//                                .requestMatchers("/medications/ban/**").hasAnyRole("DIRECTOR", "TEACHER")
+//                                .requestMatchers("/medications/kid/**").hasRole("GUARDIAN")
+//
 //                                .anyRequest().authenticated()
-                            .requestMatchers("/attendances/**").authenticated()
-                            .anyRequest().permitAll()
                 );
 
         http
@@ -90,7 +125,6 @@ public class SecurityConfig  {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        log.info("[CORS] Loading CorsConfigurationSource");
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOriginPattern("*");
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
