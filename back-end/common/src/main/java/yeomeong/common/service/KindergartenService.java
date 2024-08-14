@@ -1,6 +1,7 @@
 package yeomeong.common.service;
 
 import com.querydsl.core.BooleanBuilder;
+import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,7 @@ public class KindergartenService {
         this.memberRepository = memberRepository;
     }
 
+    @Transactional
     public void createKindergarten(KindergartenSaveRequestDto kindergartenSaveRequestDto) {
         long kindergartenId = kindergartenRepository.save(KindergartenSaveRequestDto.toKindergartenEntity(kindergartenSaveRequestDto)).getId();
         memberRepository.updateMemberKindergarten(kindergartenSaveRequestDto.getMemberId(),
