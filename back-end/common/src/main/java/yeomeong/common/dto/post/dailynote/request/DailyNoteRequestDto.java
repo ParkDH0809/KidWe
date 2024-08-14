@@ -20,11 +20,16 @@ public class DailyNoteRequestDto {
 
     public DailyNote toEntity(Kid kid,
                                 Member writer){
+
+        LocalDateTime sendTimeInKorea = this.sendTime != null
+            ? this.sendTime
+            : LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+
         return DailyNote.builder()
             .kid(kid)
             .writer(writer)
             .content(this.content)
-            .sendTime(this.sendTime == null ? LocalDateTime.now().atZone(ZoneId.of("Asia/Seoul")).toLocalDateTime() : this.sendTime)
+            .sendTime(this.sendTime == null ? sendTimeInKorea : this.sendTime)
             .build();
     }
 }
