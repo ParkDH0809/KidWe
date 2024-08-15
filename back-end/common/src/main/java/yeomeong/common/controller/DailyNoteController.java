@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import yeomeong.common.dto.post.dailynote.request.DailyNoteRequestDto;
+import yeomeong.common.dto.post.dailynote.request.DailyNoteUpdateRequestDto;
 import yeomeong.common.dto.post.dailynote.response.AutoCreateDailyNoteResponseDto;
 import yeomeong.common.dto.post.dailynote.response.DailyNoteListResponseDto;
 import yeomeong.common.dto.post.dailynote.response.DailyNoteResponseDto;
@@ -65,9 +66,9 @@ public class DailyNoteController {
     @Operation(summary = "알림장 수정 API", description = "전송시간이 지나지 않은 알림장에 한정해 알림장을 수정합니다.")
     @PutMapping("/{member_id}/{dailynote_id}")
     public ResponseEntity<DailyNoteResponseDto> updateDailyNote(@PathVariable("member_id") Long writerId,
-                                                                        @PathVariable("dailynote_id") Long id,
-                                                                        @RequestBody DailyNoteRequestDto dailyNoteRequestDto) {
-        return ResponseEntity.ok(dailyNoteService.updateDailyNote(writerId, id, dailyNoteRequestDto));
+                                                                @PathVariable("dailynote_id") Long id,
+                                                                @RequestBody DailyNoteUpdateRequestDto dailyNoteUpdateRequestDto) {
+        return ResponseEntity.ok(dailyNoteService.updateDailyNote(writerId, id, dailyNoteUpdateRequestDto));
     }
 
     @Operation(summary = "알림장 삭제 API", description = "알림장을 삭제합니다.")

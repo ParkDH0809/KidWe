@@ -5,11 +5,9 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.ZoneId;
 import lombok.Getter;
-import org.springframework.lang.Nullable;
 import yeomeong.common.entity.member.Kid;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.post.DailyNote;
-import yeomeong.common.entity.post.Post;
 
 @Getter
 public class DailyNoteRequestDto {

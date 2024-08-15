@@ -70,7 +70,7 @@ public class DailyNoteParentCommentResponseDto {
             childs.add(new DailyNoteChildCommentResponseDto(memberId, dailyNoteChildComment));
         }
         Collections.sort(childs, (a, b) -> {
-            return a.getCreatedTime().isEqual(b.getCreatedTime()) ? 1 : -1;
+            return a.getCreatedTime().isBefore(b.getCreatedTime()) ? 1 : -1;
         });
         this.createdTime = dailyNoteComment.getCreatedTime();
     }
