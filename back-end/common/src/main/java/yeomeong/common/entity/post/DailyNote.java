@@ -33,7 +33,7 @@ public class DailyNote {
     @JoinColumn(name = "kid_id")
     private Kid kid;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "member_id")
     private Member writer;
     private String content;

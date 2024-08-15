@@ -72,7 +72,7 @@ public class DailyNoteService {
         }
         // 선생님이라면
         else if (writer.getRole() == rtype.ROLE_TEACHER){
-            return new DailyNoteResponseDto(writerId, dailyNoteRepository.findByDailyNoteId(createdDailyNote.getId()), writer);
+            return new DailyNoteResponseDto(writerId, dailyNoteRepository.findByDailyNoteId(createdDailyNote.getId()));
         }
         // 원장님이라면
         else {
@@ -132,10 +132,10 @@ public class DailyNoteService {
             }
             // 선생님이라면
             else if(dailyNote.getWriter().getRole() == rtype.ROLE_TEACHER){
-                return new DailyNoteResponseDto(memberId, dailyNote, member);
+                return new DailyNoteResponseDto(memberId, dailyNote);
             }
             else{
-                return new DailyNoteResponseDto(memberId, dailyNote, dailyNote.getWriter());
+                return new DailyNoteResponseDto(memberId, dailyNote);
             }
         }
         // 전송시간이 지난 수신자인 경우
@@ -151,7 +151,7 @@ public class DailyNoteService {
                 if(dailyNote.getWriter().getRole() != rtype.ROLE_GUARDIAN || dailyNote.getSendTime().isAfter(LocalDateTime.now())){
                     throw new CustomException(ErrorCode.UNAUTHORIZED_RECEIVER);
                 }
-                return new DailyNoteResponseDto(memberId, dailyNote, member);
+                return new DailyNoteResponseDto(memberId, dailyNote);
             }
         }
     }
@@ -162,27 +162,28 @@ public class DailyNoteService {
         DailyNote oldDailyNote = dailyNoteRepository.findById(id).orElseThrow(
             () -> new CustomException(ErrorCode.NOT_FOUND_DAILYNOTE_ID)
         );
-        if(oldDailyNote.getWriter().getId() != writerId){
+
+        Member writer = oldDailyNote.getWriter();
+        if(writer.getId() != writerId){
+            System.out.println(oldDailyNote.getWriter().getId());
+            System.out.println(writerId);
             throw new CustomException(ErrorCode.UNAUTHORIZED_WRITER);
         }
+
         oldDailyNote.setNewContent(dailyNoteUpdateRequestDto.getContent());
         if(dailyNoteUpdateRequestDto.getSendTime() != null) {
             oldDailyNote.setNewSendTime(dailyNoteUpdateRequestDto.getSendTime());
         }
-
-        Member writer = memberRepository.findById(writerId).orElseThrow(
-            () -> new CustomException(ErrorCode.NOT_FOUND_WRITER)
-        );
 
         if(writer.getRole() == rtype.ROLE_GUARDIAN){
             return new DailyNoteResponseDto(writerId, oldDailyNote, oldDailyNote.getKid());
         }
 
         else{
-            if(oldDailyNote.getWriter().getRole() != rtype.ROLE_GUARDIAN ){
-                throw new CustomException(ErrorCode.UNAUTHORIZED_RECEIVER);
-            }
-            return new DailyNoteResponseDto(writerId, oldDailyNote, writer);
+//            if(oldDailyNote.getWriter().getRole() != rtype.ROLE_GUARDIAN ){
+//                throw new CustomException(ErrorCode.UNAUTHORIZED_RECEIVER);
+//            }
+            return new DailyNoteResponseDto(writerId, oldDailyNote);
         }
     }
 
