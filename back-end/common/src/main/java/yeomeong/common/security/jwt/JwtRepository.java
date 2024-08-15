@@ -1,6 +1,8 @@
 package yeomeong.common.security.jwt;
 
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
@@ -13,7 +15,7 @@ public class JwtRepository {
 
     private final RedisTemplate<String, String> redisTemplate;
 
-    public JwtRepository(RedisTemplate<String, String> redisTemplate) {
+    public JwtRepository(@Qualifier("redisTemplate") RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
