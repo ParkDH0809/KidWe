@@ -226,7 +226,7 @@ public class AnnouncementService {
          Announcement announcement = announcementRepository.findById(announcementId)
                  .orElseThrow(() -> new RuntimeException("해당 공지사항을 수정할 수 없습니다."));
 
-        Post post =new Post(announcementCreateDto.getCreatedDateTime(),
+        Post post =new Post(
                 announcementCreateDto.getTitle(),
                 announcementCreateDto.getContent());
 

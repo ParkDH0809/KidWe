@@ -25,7 +25,7 @@ public class Vote {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Announcement announcement;
 
     @OneToMany(mappedBy = "vote")
