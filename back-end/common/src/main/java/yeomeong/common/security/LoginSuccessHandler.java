@@ -1,7 +1,6 @@
 package yeomeong.common.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
@@ -75,16 +74,16 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         objectMapper.writeValue(response.getWriter(), loginResponseDto);
     }
 
-    private Cookie createCookie(String userName) {
-        String cookieName = "refreshToken";
-        String cookieValue = JwtUtil.createRefreshToken((userName));
-        Cookie cookie = new Cookie(cookieName, cookieValue);
-        cookie.setHttpOnly(false);
-        cookie.setSecure(true);
-        cookie.setPath("/");
-        cookie.setAttribute("SameSite", "None");
-        cookie.setMaxAge(60 * 60 * 24 * 14);
-        return cookie;
-    }
+    // private Cookie createCookie(String userName) {
+    //     String cookieName = "refreshToken";
+    //     String cookieValue = JwtUtil.createRefreshToken((userName));
+    //     Cookie cookie = new Cookie(cookieName, cookieValue);
+    //     cookie.setHttpOnly(false);
+    //     cookie.setSecure(true);
+    //     cookie.setPath("/");
+    //     cookie.setAttribute("SameSite", "None");
+    //     cookie.setMaxAge(60 * 60 * 24 * 14);
+    //     return cookie;
+    // }
 
 }
