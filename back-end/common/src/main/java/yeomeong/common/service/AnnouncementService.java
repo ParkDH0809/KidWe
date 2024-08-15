@@ -146,7 +146,6 @@ public class AnnouncementService {
          Announcement announcement = announcementRepository.findById(announcementId)
                  .orElseThrow(() -> new RuntimeException("해당 공지사항을 찾을 수 없습니다."));
 
-//        Member member = memberRepository.findById(announcement.getMember().getId()).orElseThrow(() -> new RuntimeException("해당 맴버가 없어요."));
         List<AnnouncementCommentDto> announcementCommentDto = new ArrayList<>();
 
         for(AnnouncementComment announcementComment : announcement.getCommentList()) {
@@ -160,7 +159,7 @@ public class AnnouncementService {
                     announcementComment.getMember().getRole() != rtype.ROLE_DIRECTOR ? announcementComment.getMember().getBan().getName() : null,
                     announcementComment.getContent(),
                     announcementComment.getLocalDateTime(),
-                    memberId.equals(announcement.getMember().getId())
+                    memberId.equals(announcementComment.getMember().getId())
             );
 
             List<AnnouncementCommentChildDto> childCommentDto = new ArrayList<>();
