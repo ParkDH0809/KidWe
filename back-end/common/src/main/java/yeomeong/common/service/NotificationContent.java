@@ -11,11 +11,11 @@ public enum NotificationContent {
     TEST("테스트", "테스트 알림입니다.");
 
     private String title;
-    private String body;
+    private String content;
 
     NotificationContent(String title, String body) {
         this.title = title;
-        this.body = body;
+        this.content = body;
     }
 
 }

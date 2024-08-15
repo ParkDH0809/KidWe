@@ -26,7 +26,7 @@ public class AnnouncementDetailDto {
 
     private Post post;
 
-    private List<AnnouncementImageDto> images;
+    private List<String> images;
 
     private Long voteId;
 

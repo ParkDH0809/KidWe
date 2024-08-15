@@ -154,6 +154,7 @@ public class AnnouncementService {
                     member.getRole(),
                     announcementComment.getMember().getRole() == rtype.ROLE_GUARDIAN ?
                             announcementComment.getMember().getKidMember().get(0).getKid().getName(): announcementComment.getMember().getName(),
+                    announcementComment.getMember().getRole() != rtype.ROLE_DIRECTOR ? announcementComment.getMember().getBan().getName() : null,
                     announcementComment.getContent(),
                     announcementComment.getLocalDateTime(),
                     memberId.equals(announcement.getMember().getId())
@@ -168,6 +169,7 @@ public class AnnouncementService {
                         member.getRole(),
                         childComment.getMember().getRole() == rtype.ROLE_GUARDIAN ?
                         childComment.getMember().getKidMember().get(0).getKid().getName() : childComment.getMember().getName(),
+                        childComment.getMember().getRole() != rtype.ROLE_DIRECTOR ? childComment.getMember().getBan().getName() : null,
                         childComment.getContent(),
                         childComment.getLocalDateTime(),
                         memberId.equals(childComment.getMember().getId())
@@ -191,11 +193,11 @@ public class AnnouncementService {
 
         List<AnnouncementImage> announcementImages = announcement.getAnnouncementImages();
 
-        List<AnnouncementImageDto> images = new ArrayList<>();
+        List<String> images = new ArrayList<>();
 
         if(announcementImages != null) {
             for (AnnouncementImage image : announcementImages) {
-                images.add(new AnnouncementImageDto(image.getImageUrl()));
+                images.add(image.getImageUrl());
             }
         }
 

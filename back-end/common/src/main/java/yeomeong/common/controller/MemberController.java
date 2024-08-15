@@ -56,4 +56,12 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(memberService.getChildrenByMember(authentication.getName()));
     }
 
+
+    @GetMapping("/test")
+    @Operation(summary = "알림 테스트")
+    public ResponseEntity<Void> getNotificationInfo(Authentication authentication) {
+        memberService.testNotification(authentication.getName());
+        return ResponseEntity.ok().build();
+    }
+
 }
