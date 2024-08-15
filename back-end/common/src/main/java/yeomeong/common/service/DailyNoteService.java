@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import yeomeong.common.dto.post.dailynote.request.DailyNoteRequestDto;
+import yeomeong.common.dto.post.dailynote.request.DailyNoteUpdateRequestDto;
 import yeomeong.common.dto.post.dailynote.response.AutoCreateDailyNoteResponseDto;
 import yeomeong.common.dto.post.dailynote.response.DailyNoteListResponseDto;
 import yeomeong.common.dto.post.dailynote.response.DailyNoteResponseDto;
@@ -157,15 +158,17 @@ public class DailyNoteService {
 
     // 알림장 수정하기
     @Transactional
-    public DailyNoteResponseDto updateDailyNote(Long writerId, Long id, DailyNoteRequestDto updatedDailyNoteRequsetDto) {
+    public DailyNoteResponseDto updateDailyNote(Long writerId, Long id, DailyNoteUpdateRequestDto dailyNoteUpdateRequestDto) {
         DailyNote oldDailyNote = dailyNoteRepository.findById(id).orElseThrow(
             () -> new CustomException(ErrorCode.NOT_FOUND_DAILYNOTE_ID)
         );
         if(oldDailyNote.getWriter().getId() != writerId){
             throw new CustomException(ErrorCode.UNAUTHORIZED_WRITER);
         }
-        oldDailyNote.setNewContent(updatedDailyNoteRequsetDto.getContent());
-        oldDailyNote.setNewSendTime(updatedDailyNoteRequsetDto.getSendTime());
+        oldDailyNote.setNewContent(dailyNoteUpdateRequestDto.getContent());
+        if(dailyNoteUpdateRequestDto.getSendTime() != null) {
+            oldDailyNote.setNewSendTime(dailyNoteUpdateRequestDto.getSendTime());
+        }
 
         Member writer = memberRepository.findById(writerId).orElseThrow(
             () -> new CustomException(ErrorCode.NOT_FOUND_WRITER)
