@@ -27,7 +27,7 @@ public class JwtService {
         if(savedToken == null) {
             return false;
         }
-        return savedToken.equals(JwtUtil.removeJwtPrefix(token));
+        return savedToken.equals(token);
     }
 
     public boolean isLogoutAccessToken(String accessToken) {
