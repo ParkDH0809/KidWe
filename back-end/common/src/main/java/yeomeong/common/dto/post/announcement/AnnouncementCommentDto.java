@@ -21,7 +21,7 @@ public class AnnouncementCommentDto {
 
     private String content;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "M.d HH:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "M.d HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime createdTime;
 
     private boolean canDelete;
