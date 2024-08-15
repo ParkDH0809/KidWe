@@ -24,8 +24,9 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
             "   m.snack, m.snackAllergies, " +
             "   m.dinner, m.dinnerAllergies) " +
             "FROM Menu m " +
+            " Join m.kindergarten k " +
             "WHERE m.menuDate = :menuDate " +
-            "  AND m.kindergarten.id = :kindergartenId " +
+            "  AND k.id = :kindergartenId " +
             " AND m.isDeleted = false ")
     MenuByDayResponseDto getMenuByDay(@Param("menuDate") LocalDate menuDate, @Param("kindergartenId") Long kindergartenId);
 

@@ -17,7 +17,6 @@ import yeomeong.common.dto.post.dailynote.response.AutoCreateDailyNoteResponseDt
 import yeomeong.common.dto.post.dailynote.response.DailyNoteListResponseDto;
 import yeomeong.common.dto.post.dailynote.response.DailyNoteResponseDto;
 import yeomeong.common.entity.Schedule;
-import yeomeong.common.entity.kindergarten.Ban;
 import yeomeong.common.entity.member.Kid;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.member.rtype;

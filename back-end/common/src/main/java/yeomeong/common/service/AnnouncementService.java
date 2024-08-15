@@ -64,7 +64,7 @@ public class AnnouncementService {
                 String fileName = uploadOriginalAndThumbnailToS3(s3Client, bucketName, image);
 
                 AnnouncementImage announcementImage =new AnnouncementImage(
-                        s3Client.getUrl(bucketName, fileName).toString(),
+                        fileName,
                         announcement
                 );
                 announcementImageRepository.save(announcementImage);
