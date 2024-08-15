@@ -3,14 +3,11 @@ package yeomeong.common.service;
 import com.amazonaws.services.s3.AmazonS3;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import yeomeong.common.dto.post.announcement.*;
 
-import yeomeong.common.entity.member.Kid;
-import yeomeong.common.entity.member.KidMember;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.member.rtype;
 import yeomeong.common.entity.post.*;
@@ -21,7 +18,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static yeomeong.common.util.FileUtil.uploadFileToS3;
 import static yeomeong.common.util.FileUtil.uploadOriginalAndThumbnailToS3;
 
 @Service
@@ -125,7 +121,7 @@ public class AnnouncementService {
 
          for(AnnouncementListDto announcementOne : announcementDtoList){
              if(announcementOne.getMemberBan() == null){
-                 announcementOne.setMemberBan("전체 공지");
+                 announcementOne.setMemberBan("전체");
              }
          }
          if(announcementDtoList.size() > 1)
