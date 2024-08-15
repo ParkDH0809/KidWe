@@ -1,7 +1,5 @@
 package yeomeong.common.entity.post;
 
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +8,6 @@ import org.hibernate.annotations.ColumnDefault;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.post.comment.AnnouncementComment;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +20,7 @@ public class  Announcement {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Member member;
 
     @Embedded

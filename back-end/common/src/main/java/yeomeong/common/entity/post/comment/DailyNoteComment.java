@@ -22,7 +22,7 @@ public class DailyNoteComment {
     @ManyToOne(fetch = FetchType.LAZY)
     private DailyNote dailyNote;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "member_id")
     private Member member;
 
@@ -61,4 +61,5 @@ public class DailyNoteComment {
     public void delete(){
         this.isDeleted = true;
     }
+
 }
