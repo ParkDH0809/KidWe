@@ -17,6 +17,7 @@ import yeomeong.common.repository.ScheduleRepository;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,7 +48,8 @@ public class ScheduleService {
     //반 별 스케줄 가져오기
     public List<ScheduleByDayListDto> getScheduleByBanAndDayList(Long banId, LocalDate localdate) {
 
-        List<Schedule> allByBanIdAndEventDateAndScheduleType = scheduleRepository.findAllByBan_IdAndEventDateAndScheduleTypeOrScheduleTypeOrderByCreatedTimeDesc(banId, localdate, Schedule.ScheduleType.CLASS, Schedule.ScheduleType.EVENT);
+
+        List<Schedule> allByBanIdAndEventDateAndScheduleType = scheduleRepository.findSchedules(banId, localdate, Schedule.ScheduleType.CLASS, Schedule.ScheduleType.EVENT);
 
         return getScheduleByDayListDtos(allByBanIdAndEventDateAndScheduleType);
 
