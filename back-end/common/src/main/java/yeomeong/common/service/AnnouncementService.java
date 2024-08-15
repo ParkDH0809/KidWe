@@ -48,14 +48,13 @@ public class AnnouncementService {
 
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("해당 맴버가 없어용"));
 
-        Post post =new Post(announcementCreateDto.getCreatedDateTime(),
+        Post post =new Post(LocalDateTime.now(),
                 announcementCreateDto.getTitle(),
                 announcementCreateDto.getContent());
 
         Announcement announcement =new Announcement(
                 post,
-                member,
-                LocalDateTime.now());
+                member);
 
         announcement.setStored(false);
 
@@ -147,6 +146,7 @@ public class AnnouncementService {
 
         for(AnnouncementComment announcementComment : announcement.getCommentList()) {
 
+            if(announcementComment.getParentComment() != null ) continue;
 
             AnnouncementCommentDto parentComment = new AnnouncementCommentDto(
                     announcementComment.getId(),
@@ -163,6 +163,7 @@ public class AnnouncementService {
             List<AnnouncementCommentChildDto> childCommentDto = new ArrayList<>();
 
             for(AnnouncementComment childComment : announcementComment.getReplies()) {
+
                 childCommentDto.add(new AnnouncementCommentChildDto(
                         childComment.getId(),
                         member.getPicture(),
@@ -254,10 +255,10 @@ public class AnnouncementService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("해당 멤버를 찾을 수 없습니다."));
 
-        Post post =new Post(announcementCreateDto.getCreatedDateTime(),
+        Post post =new Post(LocalDateTime.now(),
                 announcementCreateDto.getTitle(),
                 announcementCreateDto.getContent());
-        Announcement announcement = new Announcement(post, member,LocalDateTime.now());
+        Announcement announcement = new Announcement(post, member);
         announcement.setStored(true);
         announcementRepository.save(announcement);
     }

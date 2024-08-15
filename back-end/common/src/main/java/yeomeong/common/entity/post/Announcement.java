@@ -41,15 +41,12 @@ public class  Announcement {
     @OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL)
     private List<AnnouncementComment> commentList = new ArrayList<>(); // ??
 
-    private LocalDateTime createdTime;
-
     @ColumnDefault("false")
     private boolean isDeleted;
 
-    public Announcement( Post post ,Member member, LocalDateTime localDateTime) {
+    public Announcement( Post post ,Member member) {
         this.post = post;
         this.member = member;
-        this.createdTime = localDateTime;
     }
 
 }
