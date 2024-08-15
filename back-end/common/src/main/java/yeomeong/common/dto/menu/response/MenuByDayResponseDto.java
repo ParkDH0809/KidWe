@@ -17,15 +17,15 @@ public class MenuByDayResponseDto {
 
     private String lunch;
     private List<String> lunchAllergies;
-    private List<KidAllergyResponseDto> kidAllergyListOfLunch;
+    private List<KidAllergyResponseDto> kidAllergyListOfLunch = new ArrayList<>();
 
     private String snack;
     private List<String> snackAllergies;
-    private List<KidAllergyResponseDto> kidAllergyListOfSnack;
+    private List<KidAllergyResponseDto> kidAllergyListOfSnack = new ArrayList<>();
 
     private String dinner;
     private List<String> dinnerAllergies;
-    private List<KidAllergyResponseDto> kidAllergyListOfDinner;
+    private List<KidAllergyResponseDto> kidAllergyListOfDinner = new ArrayList<>();
 
     public MenuByDayResponseDto(Long menuId,String lunch, String lunchAllergies, String snack, String snackAllergies, String dinner, String dinnerAllergies){
         this.menuId = menuId;
