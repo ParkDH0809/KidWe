@@ -69,11 +69,12 @@ public class DailyNoteResponseDto {
     }
 
     @Builder
-    public DailyNoteResponseDto(Long memberId, DailyNote dailyNote, Member member) {
+    public DailyNoteResponseDto(Long memberId, DailyNote dailyNote) {
         this.id = dailyNote.getId();
 
-        this.name = member.getName();
-        this.picture = member.getPicture();
+        Member writer = dailyNote.getWriter();
+        this.name = writer.getName();
+        this.picture = writer.getPicture();
         this.role = rtype.ROLE_TEACHER;
 
         this.content = dailyNote.getContent();
@@ -84,7 +85,7 @@ public class DailyNoteResponseDto {
             images.add(image.getImageUrl());
         }
 
-        canDelete =memberId == dailyNote.getWriter().getId() ? true : false;
+        canDelete = memberId == dailyNote.getWriter().getId() ? true : false;
 
         this.comments = new ArrayList<>();
         for(DailyNoteComment comment : dailyNote.getComments()){
