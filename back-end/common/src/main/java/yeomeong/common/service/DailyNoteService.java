@@ -133,8 +133,8 @@ public class DailyNoteService {
             else if(dailyNote.getWriter().getRole() == rtype.ROLE_TEACHER){
                 return new DailyNoteResponseDto(memberId, dailyNote, member);
             }
-            else {
-                throw new CustomException(ErrorCode.UNAUTHORIZED_WRITER);
+            else{
+                return new DailyNoteResponseDto(memberId, dailyNote, dailyNote.getWriter());
             }
         }
         // 전송시간이 지난 수신자인 경우
