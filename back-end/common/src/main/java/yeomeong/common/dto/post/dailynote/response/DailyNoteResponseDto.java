@@ -60,7 +60,7 @@ public class DailyNoteResponseDto {
             }
         }
         Collections.sort(comments, (a, b) -> {
-            return a.getCreatedTime().isAfter(b.getCreatedTime()) ? 1 : -1;
+            return a.getCreatedTime().isBefore(b.getCreatedTime()) ? 1 : -1;
         });
         commentCount = comments.stream()
                 .filter(comment -> !comment.getIsDeleted())
@@ -93,7 +93,7 @@ public class DailyNoteResponseDto {
             }
         }
         Collections.sort(comments, (a, b) -> {
-            return a.getCreatedTime().isAfter(b.getCreatedTime()) ? 1 : -1;
+            return a.getCreatedTime().isBefore(b.getCreatedTime()) ? 1 : -1;
         });
         commentCount = comments.stream()
             .filter(comment -> !comment.getIsDeleted())
