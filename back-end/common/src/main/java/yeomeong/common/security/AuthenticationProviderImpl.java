@@ -26,6 +26,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
         UserDetailsImpl user = (UserDetailsImpl) userDetailsService.loadUserByUsername(username);
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
+//        if (!password.equals(user.getPassword())) {
             throw new CustomException(ErrorCode.INVALID_LOGIN_VALUE);
         }
 

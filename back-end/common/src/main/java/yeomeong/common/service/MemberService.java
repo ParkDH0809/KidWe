@@ -62,7 +62,7 @@ public class MemberService {
             pictureName = FileUtil.uploadFileToS3(amazonS3, bucketName, picture);
         }
         Member member = MemberSaveRequestDto.toMemberEntity(memberSaveRequestDto, pictureName);
-        member.setPassword(passwordEncoder.encode(member.getPassword()));
+//        member.setPassword(passwordEncoder.encode(member.getPassword()));
         memberRepository.save(member);
     }
 
