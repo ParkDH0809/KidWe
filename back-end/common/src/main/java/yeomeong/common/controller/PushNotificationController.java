@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import yeomeong.common.dto.notification.NotificationDeleteRequestDto;
 import yeomeong.common.dto.notification.NotificationInfoResponseDto;
-import yeomeong.common.dto.notification.NotificationSaveRequestDto;
 import yeomeong.common.service.PushNotificationService;
 
 @Slf4j
@@ -39,14 +38,6 @@ public class PushNotificationController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping
-    @Operation(summary = "알림 내용 저장", description = "회원의 알림 메시지를 저장합니다.")
-    public ResponseEntity<Void> addNotificationMessage(Authentication authentication,
-            @RequestBody NotificationSaveRequestDto notificationSaveRequestDto) {
-        pushNotificationService.addNotificationMessage(authentication.getName(), notificationSaveRequestDto);
-        return ResponseEntity.ok().build();
-    }
-
     @GetMapping
     @Operation(summary = "알림 내역 조회", description = "회원의 알림 내역을 조회합니다.")
     public ResponseEntity<List<NotificationInfoResponseDto>> getNotifications(Authentication authentication) {
@@ -64,13 +55,6 @@ public class PushNotificationController {
     @Operation(summary = "알림 내용 삭제", description = "회원의 알림 메시지를 삭제 처리합니다.")
     public ResponseEntity<Void> deleteNotificationChecked(@RequestBody NotificationDeleteRequestDto notificationDeleteRequestDto) {
         pushNotificationService.deleteNotificationChecked(notificationDeleteRequestDto);
-        return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/test")
-    @Operation(summary = "알림 테스트")
-    public ResponseEntity<Void> getNotificationInfo(Authentication authentication) {
-        pushNotificationService.testNotification(authentication.getName());
         return ResponseEntity.ok().build();
     }
 

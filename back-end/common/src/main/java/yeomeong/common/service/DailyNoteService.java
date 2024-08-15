@@ -107,9 +107,7 @@ public class DailyNoteService {
         // 발신자로 된 알림장들
         List<DailyNote> writeDailyNotes = dailyNoteRepository.findByYearAndMonthAndBanId(yearAndMonth, teacherId, banId);
         // 수신자로 된, 반 아이들의 학부모가 작성한 알림장 모두 조회
-        Ban ban = member.getBan();
-        List<DailyNote> receivedDailyNotes = dailyNoteRepository.findByYearAndMonthAndBanAndReceiverIsTeacher(yearAndMonth,
-                ban.getId());
+        List<DailyNote> receivedDailyNotes = dailyNoteRepository.findByYearAndMonthAndBanAndReceiverIsTeacher(yearAndMonth, banId);
 
         // 작성자인, 수신자인 알림장을 합쳐서 반환
         return new DailyNoteListResponseDto(writeDailyNotes, receivedDailyNotes);
@@ -135,8 +133,8 @@ public class DailyNoteService {
             else if(dailyNote.getWriter().getRole() == rtype.ROLE_TEACHER){
                 return new DailyNoteResponseDto(memberId, dailyNote, member);
             }
-            else {
-                throw new CustomException(ErrorCode.UNAUTHORIZED_WRITER);
+            else{
+                return new DailyNoteResponseDto(memberId, dailyNote, dailyNote.getWriter());
             }
         }
         // 전송시간이 지난 수신자인 경우
