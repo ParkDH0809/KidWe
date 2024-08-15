@@ -206,7 +206,7 @@ public class AnnouncementService {
         return new AnnouncementDetailDto(
                 member.getPicture(),
                 member.getRole(),
-                announcement.getMember().getBan() != null? announcement.getMember().getBan().getName() : "전체 공지",
+                announcement.getMember().getBan() != null? announcement.getMember().getBan().getName() : "전체",
                 announcement.getPost(),
                 !images.isEmpty() ? images : null,
                 vote != null ? vote.getId() : null, // Vote가 없으면 null
