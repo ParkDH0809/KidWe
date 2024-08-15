@@ -68,6 +68,7 @@ public class DailyNoteController {
     public ResponseEntity<DailyNoteResponseDto> updateDailyNote(@PathVariable("member_id") Long writerId,
                                                                 @PathVariable("dailynote_id") Long id,
                                                                 @RequestBody DailyNoteUpdateRequestDto dailyNoteUpdateRequestDto) {
+        System.out.println(dailyNoteUpdateRequestDto.getContent())
         return ResponseEntity.ok(dailyNoteService.updateDailyNote(writerId, id, dailyNoteUpdateRequestDto));
     }
 
