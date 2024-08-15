@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import yeomeong.common.dto.post.announcement.*;
 
+import yeomeong.common.entity.member.KidMember;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.member.rtype;
 import yeomeong.common.entity.post.*;
@@ -103,20 +104,30 @@ public class AnnouncementService {
          Member member = memberRepository.findById(memberId)
                  .orElseThrow(() -> new RuntimeException("해당 멤버를 찾을 수 없습니다."));
 
-         List<AnnouncementListDto> announcementByAll = announcementRepository.getAnnouncementByAll(member.getKindergarten().getId());
-         List<AnnouncementListDto> announcementDtoList = new ArrayList<>(announcementByAll);
+         List<AnnouncementListDto> announcementDtoList = new ArrayList<>();
+         if(member.getRole() != rtype.ROLE_GUARDIAN) {
+             List<AnnouncementListDto> announcementByAll = announcementRepository.getAnnouncementByAll(member.getKindergarten().getId());
+             announcementDtoList = new ArrayList<>(announcementByAll);
+         }
+
          //전체 공지사항 가져오기
-
-         if(member.getRole() == rtype.ROLE_DIRECTOR){ //원장님일 때 해당 유치원 공지사항 모두 가져오기
-
+         //원장님일 때 해당 유치원 공지사항 모두 가져오기
+         if(member.getRole() == rtype.ROLE_DIRECTOR) {
              List<AnnouncementListDto> announcementByAllBan = announcementRepository.getAnnouncementByAllBan(member.getKindergarten().getId());
              announcementDtoList.addAll(announcementByAllBan);
-
          }
-         else {//선생님이나 학부모일 땐 해당 반 + 전체 공지 다 가져오기
+         //선생님이나 학부모일 땐 해당 반 + 전체 공지 다 가져오기
+         else if(member.getRole() == rtype.ROLE_TEACHER) {
              List<AnnouncementListDto> announcementByBan = announcementRepository.getAnnouncementByBan(member.getBan().getId());
              announcementDtoList.addAll(announcementByBan);
-
+         }
+         // 학부모인 경우
+         else {
+             List<KidMember> kidMembers = member.getKidMember();
+             for (KidMember kidMember : kidMembers) {
+                 List<AnnouncementListDto> announcementByBan = announcementRepository.getAnnouncementByBan(kidMember.getKid().getBan().getId());
+                 announcementDtoList.addAll(announcementByBan);
+             }
          }
 
          for(AnnouncementListDto announcementOne : announcementDtoList){
@@ -130,24 +141,20 @@ public class AnnouncementService {
          return announcementDtoList;
      }
 
-
-    public AnnouncementDetailDto getAnnouncementDetail(Long memberId,Long announcementId) {
+    public AnnouncementDetailDto getAnnouncementDetail(Long memberId, Long announcementId) {
 
          Announcement announcement = announcementRepository.findById(announcementId)
                  .orElseThrow(() -> new RuntimeException("해당 공지사항을 찾을 수 없습니다."));
 
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("해당 맴버가 없어요."));
+//        Member member = memberRepository.findById(announcement.getMember().getId()).orElseThrow(() -> new RuntimeException("해당 맴버가 없어요."));
         List<AnnouncementCommentDto> announcementCommentDto = new ArrayList<>();
 
-
         for(AnnouncementComment announcementComment : announcement.getCommentList()) {
-
             if(announcementComment.getParentComment() != null ) continue;
-
             AnnouncementCommentDto parentComment = new AnnouncementCommentDto(
                     announcementComment.getId(),
-                    member.getPicture(),
-                    member.getRole(),
+                    announcementComment.getMember().getPicture(),
+                    announcementComment.getMember().getRole(),
                     announcementComment.getMember().getRole() == rtype.ROLE_GUARDIAN ?
                             announcementComment.getMember().getKidMember().get(0).getKid().getName(): announcementComment.getMember().getName(),
                     announcementComment.getMember().getRole() != rtype.ROLE_DIRECTOR ? announcementComment.getMember().getBan().getName() : null,
@@ -157,13 +164,11 @@ public class AnnouncementService {
             );
 
             List<AnnouncementCommentChildDto> childCommentDto = new ArrayList<>();
-
             for(AnnouncementComment childComment : announcementComment.getReplies()) {
-
                 childCommentDto.add(new AnnouncementCommentChildDto(
                         childComment.getId(),
-                        member.getPicture(),
-                        member.getRole(),
+                        childComment.getMember().getPicture(),
+                        childComment.getMember().getRole(),
                         childComment.getMember().getRole() == rtype.ROLE_GUARDIAN ?
                         childComment.getMember().getKidMember().get(0).getKid().getName() : childComment.getMember().getName(),
                         childComment.getMember().getRole() != rtype.ROLE_DIRECTOR ? childComment.getMember().getBan().getName() : null,
@@ -200,8 +205,8 @@ public class AnnouncementService {
 
         // AnnouncementDetailDto를 생성하여 반환
         return new AnnouncementDetailDto(
-                member.getPicture(),
-                member.getRole(),
+                announcement.getMember().getPicture(),
+                announcement.getMember().getRole(),
                 announcement.getMember().getBan() != null? announcement.getMember().getBan().getName() : "전체",
                 announcement.getPost(),
                 !images.isEmpty() ? images : null,
