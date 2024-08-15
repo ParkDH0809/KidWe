@@ -30,7 +30,6 @@ public class DailyNoteResponseDto {
     private LocalDateTime sendTime;
 
     private List<String> images;
-    private List<String> thumbnails;
 
     private Boolean canDelete;
 
@@ -48,15 +47,12 @@ public class DailyNoteResponseDto {
         this.content = dailyNote.getContent();
         this.sendTime = dailyNote.getSendTime();
 
-        images = new ArrayList<>();
-        thumbnails = new ArrayList<>();
-        for(DailyNoteImage image : dailyNote.getImages()){
+        this.images = new ArrayList<>();
+        for(DailyNoteImage image : dailyNote.getImages()) {
             images.add(image.getImageUrl());
-            thumbnails.add("thumb/" + image.getImageUrl());
         }
 
         canDelete = memberId == dailyNote.getWriter().getId() ? true : false;
-
         this.comments = new ArrayList<>();
         for(DailyNoteComment comment : dailyNote.getComments()){
             if(comment.getParentComment()==null){
@@ -64,7 +60,7 @@ public class DailyNoteResponseDto {
             }
         }
         Collections.sort(comments, (a, b) -> {
-            return a.getCreatedTime().isEqual(b.getCreatedTime()) ? 1 : -1;
+            return a.getCreatedTime().isAfter(b.getCreatedTime()) ? 1 : -1;
         });
         commentCount = comments.stream()
                 .filter(comment -> !comment.getIsDeleted())
@@ -84,10 +80,8 @@ public class DailyNoteResponseDto {
         this.sendTime = dailyNote.getSendTime();
 
         images = new ArrayList<>();
-        thumbnails = new ArrayList<>();
         for(DailyNoteImage image : dailyNote.getImages()){
             images.add(image.getImageUrl());
-            thumbnails.add("thumb/" + image.getImageUrl());
         }
 
         canDelete =memberId == dailyNote.getWriter().getId() ? true : false;
@@ -99,7 +93,7 @@ public class DailyNoteResponseDto {
             }
         }
         Collections.sort(comments, (a, b) -> {
-            return a.getCreatedTime().isEqual(b.getCreatedTime()) ? 1 : -1;
+            return a.getCreatedTime().isAfter(b.getCreatedTime()) ? 1 : -1;
         });
         commentCount = comments.stream()
             .filter(comment -> !comment.getIsDeleted())
