@@ -18,6 +18,7 @@ import yeomeong.common.repository.MenuRepository;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static yeomeong.common.dto.menu.request.MenuCreateDto.*;
 
@@ -42,25 +43,33 @@ public class MenuService {
         }
 
         //해당 유치원의 모든 아이
-        List<Kid> allKidsByKindergarten = kidRepository.findAllById(menuByDayRequestDto.getKindergartenId());
+        List<Kid> allKidsByKindergarten = kidRepository.findAllByKindergarten_Id(menuByDayRequestDto.getKindergartenId());
 
         for (Kid kid : allKidsByKindergarten) { //모든 아이들에 대해서 검사
             addKidAllergiesToMenu(menuByDay.getLunchAllergies(), kid, menuByDay.getKidAllergyListOfLunch());
             addKidAllergiesToMenu(menuByDay.getSnackAllergies(), kid, menuByDay.getKidAllergyListOfSnack());
             addKidAllergiesToMenu(menuByDay.getDinnerAllergies(), kid, menuByDay.getKidAllergyListOfDinner());
         }
+
         return menuByDay;
     }
 
-    private void addKidAllergiesToMenu(List<String> menuAllergies, Kid kid, List<KidAllergyResponseDto> kidAllergyList){
-        for(String allergy : menuAllergies){
-            if(kid.getAllergies().contains(allergy)){
-                kidAllergyList.add(new KidAllergyResponseDto(
+    private void addKidAllergiesToMenu(List<String> menuAllergies, Kid kid, List<KidAllergyResponseDto> kidAllergyListDto){
+
+        List<String> kidAllergyLists = Arrays.stream(kid.getAllergies().split(","))
+                .toList();
+
+        for(String menuAllergy : menuAllergies){
+
+            for(String kidAllergy : kidAllergyLists)
+                if(kidAllergy.contains(menuAllergy)){
+                    kidAllergyListDto.add(new KidAllergyResponseDto(
                         kid.getName(),
                         kid.getBan().getName(),
                         kid.getPicture())
-                );
-            }
+                    );
+                    return;
+                }
         }
     }
 

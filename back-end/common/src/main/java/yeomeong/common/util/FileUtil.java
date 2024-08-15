@@ -60,7 +60,12 @@ public class FileUtil {
     public static String uploadOriginalAndThumbnailToS3(AmazonS3 s3Client, String bucketName, MultipartFile file) throws Exception {
         if(file == null) return null;
 
-        return uploadFileToS3(s3Client, bucketName, file);
+        String fileName = uploadFileToS3(s3Client, bucketName, file);
+
+        uploadFileToS3(s3Client,bucketName,file, "thumbnail_" + fileName);
+
+        return  fileName;
+
     }
 
     // uploadFileToS3 메소드 오버로딩 (파일 이름 추가)

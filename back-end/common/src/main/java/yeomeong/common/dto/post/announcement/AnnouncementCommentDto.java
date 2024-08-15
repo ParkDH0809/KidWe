@@ -17,6 +17,8 @@ public class AnnouncementCommentDto {
     private String picture;
     private rtype role;
     private String name;
+    private String banName;
+
     private String content;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "M.d HH:mm")
@@ -26,11 +28,12 @@ public class AnnouncementCommentDto {
     private List<AnnouncementCommentChildDto> childs = new ArrayList<>();
 
 
-    public AnnouncementCommentDto(Long id, String picture, rtype role, String name, String content, LocalDateTime createdTime, boolean canDelete) {
+    public AnnouncementCommentDto(Long id, String picture, rtype role, String name, String banName,String content, LocalDateTime createdTime, boolean canDelete) {
         this.id = id;
         this.picture = picture;
         this.role = role;
         this.name = name;
+        this.banName = banName;
         this.content = content;
         this.createdTime = createdTime;
         this.canDelete = canDelete;

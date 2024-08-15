@@ -48,14 +48,13 @@ public class AnnouncementService {
 
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("해당 맴버가 없어용"));
 
-        Post post =new Post(announcementCreateDto.getCreatedDateTime(),
+        Post post =new Post(LocalDateTime.now(),
                 announcementCreateDto.getTitle(),
                 announcementCreateDto.getContent());
 
         Announcement announcement =new Announcement(
                 post,
-                member,
-                LocalDateTime.now());
+                member);
 
         announcement.setStored(false);
 
@@ -65,7 +64,7 @@ public class AnnouncementService {
                 String fileName = uploadOriginalAndThumbnailToS3(s3Client, bucketName, image);
 
                 AnnouncementImage announcementImage =new AnnouncementImage(
-                        s3Client.getUrl(bucketName, fileName).toString(),
+                        fileName,
                         announcement
                 );
                 announcementImageRepository.save(announcementImage);
@@ -147,6 +146,7 @@ public class AnnouncementService {
 
         for(AnnouncementComment announcementComment : announcement.getCommentList()) {
 
+            if(announcementComment.getParentComment() != null ) continue;
 
             AnnouncementCommentDto parentComment = new AnnouncementCommentDto(
                     announcementComment.getId(),
@@ -154,6 +154,7 @@ public class AnnouncementService {
                     member.getRole(),
                     announcementComment.getMember().getRole() == rtype.ROLE_GUARDIAN ?
                             announcementComment.getMember().getKidMember().get(0).getKid().getName(): announcementComment.getMember().getName(),
+                    announcementComment.getMember().getRole() != rtype.ROLE_DIRECTOR ? announcementComment.getMember().getBan().getName() : null,
                     announcementComment.getContent(),
                     announcementComment.getLocalDateTime(),
                     memberId.equals(announcement.getMember().getId())
@@ -162,12 +163,14 @@ public class AnnouncementService {
             List<AnnouncementCommentChildDto> childCommentDto = new ArrayList<>();
 
             for(AnnouncementComment childComment : announcementComment.getReplies()) {
+
                 childCommentDto.add(new AnnouncementCommentChildDto(
                         childComment.getId(),
                         member.getPicture(),
                         member.getRole(),
                         childComment.getMember().getRole() == rtype.ROLE_GUARDIAN ?
                         childComment.getMember().getKidMember().get(0).getKid().getName() : childComment.getMember().getName(),
+                        childComment.getMember().getRole() != rtype.ROLE_DIRECTOR ? childComment.getMember().getBan().getName() : null,
                         childComment.getContent(),
                         childComment.getLocalDateTime(),
                         memberId.equals(childComment.getMember().getId())
@@ -191,11 +194,11 @@ public class AnnouncementService {
 
         List<AnnouncementImage> announcementImages = announcement.getAnnouncementImages();
 
-        List<AnnouncementImageDto> images = new ArrayList<>();
+        List<String> images = new ArrayList<>();
 
         if(announcementImages != null) {
             for (AnnouncementImage image : announcementImages) {
-                images.add(new AnnouncementImageDto(image.getImageUrl()));
+                images.add(image.getImageUrl());
             }
         }
 
@@ -223,7 +226,7 @@ public class AnnouncementService {
          Announcement announcement = announcementRepository.findById(announcementId)
                  .orElseThrow(() -> new RuntimeException("해당 공지사항을 수정할 수 없습니다."));
 
-        Post post =new Post(announcementCreateDto.getCreatedDateTime(),
+        Post post =new Post(
                 announcementCreateDto.getTitle(),
                 announcementCreateDto.getContent());
 
@@ -252,10 +255,10 @@ public class AnnouncementService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("해당 멤버를 찾을 수 없습니다."));
 
-        Post post =new Post(announcementCreateDto.getCreatedDateTime(),
+        Post post =new Post(LocalDateTime.now(),
                 announcementCreateDto.getTitle(),
                 announcementCreateDto.getContent());
-        Announcement announcement = new Announcement(post, member,LocalDateTime.now());
+        Announcement announcement = new Announcement(post, member);
         announcement.setStored(true);
         announcementRepository.save(announcement);
     }
