@@ -18,7 +18,8 @@ public interface AnnouncementRepository extends JpaRepository<Announcement,Long>
     @Query("SELECT new yeomeong.common.dto.post.announcement.AnnouncementListDto(" +
             "a.id, " +
             "a.post.title, " +
-            " m.name, " +
+            " m.name," +
+            " m.role,  " +
             " a.post.createdDateTime," +
             "size(a.commentList)) " +
             " FROM Announcement a " +
@@ -34,6 +35,7 @@ public interface AnnouncementRepository extends JpaRepository<Announcement,Long>
             "a.post.title, " +
             "m.name, " +
             "m.ban.name," +
+            " m.role, " +
             "a.post.createdDateTime," +
             "size(a.commentList)) " +
             " FROM Announcement a" +
@@ -49,7 +51,8 @@ public interface AnnouncementRepository extends JpaRepository<Announcement,Long>
             "a.id, " +
             "a.post.title," +
             "m.name," +
-            "m.ban.name," +
+            "m.ban.name, " +
+            " m.role, " +
             "a.post.createdDateTime," +
             "size(a.commentList))" +
             "FROM Announcement a " +

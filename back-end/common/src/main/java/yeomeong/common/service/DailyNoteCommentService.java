@@ -18,7 +18,6 @@ import yeomeong.common.repository.MemberRepository;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class DailyNoteCommentService {
     private final MemberRepository memberRepository;
     private final DailyNoteRepository dailyNoteRepository;
@@ -28,10 +27,10 @@ public class DailyNoteCommentService {
     @Transactional
     public DailyNoteCommentResponseDto createDailyNoteComment(Long writerId, Long dailyNoteId, DailyNoteCommentRequestDto dailyNoteCommentCreateRequestDto){
         // 존재하는 알림장인지 확인
-        DailyNote dailyNote = dailyNoteRepository.findByDailyNoteId(writerId);
+        DailyNote dailyNote = dailyNoteRepository.findByDailyNoteId(dailyNoteId);
         if(dailyNote == null) throw new CustomException(ErrorCode.NOT_FOUND_DAILYNOTE_ID);
         // 존재하는 사용자인지 확인
-        Member member =  memberRepository.findById(dailyNoteId).orElseThrow(
+        Member member =  memberRepository.findById(writerId).orElseThrow(
             () -> new CustomException(ErrorCode.NOT_FOUND_ID)
         );
         if(member == null) throw new CustomException(ErrorCode.NOT_FOUND_ID);

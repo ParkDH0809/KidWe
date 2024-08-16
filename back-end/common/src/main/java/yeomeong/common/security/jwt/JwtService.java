@@ -23,7 +23,7 @@ public class JwtService {
     }
 
     public boolean isTokenStored(String token) {
-        String savedToken = refreshTokenRepository.findByKey(JwtUtil.getLoginEmail(token));
+        String savedToken = refreshTokenRepository.findByKey(JwtUtil.getLoginEmail(JwtUtil.removeJwtPrefix(token)));
         if(savedToken == null) {
             return false;
         }

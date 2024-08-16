@@ -10,25 +10,26 @@ import java.time.LocalDateTime;
 @Data
 public class AnnouncementCommentChildDto {
 
-    private Long commentId;
-    private String memberProfile;
-    private rtype memberRole;
-
-    private String memberName;
+    private Long id;
+    private String picture;
+    private rtype role;
+    private String name;
+    private String banName;
     private String content;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "M.d HH:mm")
-    private LocalDateTime dateTimeWritten;
+    private LocalDateTime createdTime;
 
     private boolean canDelete;
 
-    public AnnouncementCommentChildDto(Long commentId, String memberProfile, rtype memberRole, String memberName, String content, LocalDateTime dateTimeWritten, boolean canDelete) {
-        this.commentId = commentId;
-        this.memberProfile = memberProfile;
-        this.memberRole = memberRole;
-        this.memberName = memberName;
+    public AnnouncementCommentChildDto(Long id, String picture, rtype role, String writerName,String banName, String content, LocalDateTime createdTime, boolean canDelete) {
+        this.id = id;
+        this.picture = picture;
+        this.role = role;
+        this.name = writerName;
+        this.banName = banName;
         this.content = content;
-        this.dateTimeWritten = dateTimeWritten;
+        this.createdTime = createdTime;
         this.canDelete = canDelete;
     }
 }

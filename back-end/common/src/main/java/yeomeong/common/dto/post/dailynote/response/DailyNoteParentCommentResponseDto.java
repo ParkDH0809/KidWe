@@ -26,6 +26,7 @@ public class DailyNoteParentCommentResponseDto {
     private rtype role;
     private String name;
     private String picture;
+    private String banName;
 
     private Boolean canDelete;
     private Boolean isDeleted;
@@ -48,6 +49,7 @@ public class DailyNoteParentCommentResponseDto {
         else{
             this.role = rtype.ROLE_TEACHER;
             Member teacher = dailyNoteComment.getMember();
+            this.banName = dailyNoteComment.getMember().getBan().getName();
             this.name = teacher.getName();
             this.picture = teacher.getPicture()==null?"": teacher.getPicture();
         }

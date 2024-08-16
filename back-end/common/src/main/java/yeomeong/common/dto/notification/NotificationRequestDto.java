@@ -13,6 +13,7 @@ import yeomeong.common.service.NotificationContent;
 @AllArgsConstructor
 public class NotificationRequestDto {
 
+    private List<String> email;
     private List<String> token;
     private NotificationContent notificationContent;
 

@@ -57,7 +57,7 @@ public class DailyNoteService {
 
         if(images != null && !images.isEmpty()) {
             for (MultipartFile image : images) {
-                String imageUrl = uploadOriginalAndThumbnailToS3(s3Client, bucketName, image, 100, 100);
+                String imageUrl = uploadOriginalAndThumbnailToS3(s3Client, bucketName, image);
                 if(imageUrl != null) {
                     DailyNoteImage dailyNoteImage = new DailyNoteImage(imageUrl, createdDailyNote);
                     dailyNoteImageRepository.save(dailyNoteImage);

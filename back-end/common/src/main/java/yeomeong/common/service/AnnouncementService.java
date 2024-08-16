@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import yeomeong.common.dto.post.announcement.*;
 
+import yeomeong.common.entity.member.Kid;
+import yeomeong.common.entity.member.KidMember;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.member.rtype;
 import yeomeong.common.entity.post.*;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static yeomeong.common.util.FileUtil.uploadFileToS3;
+import static yeomeong.common.util.FileUtil.uploadOriginalAndThumbnailToS3;
 
 @Service
 @RequiredArgsConstructor
@@ -59,7 +62,7 @@ public class AnnouncementService {
         if(images != null ){
             for( MultipartFile image : images){
 
-                String fileName = uploadFileToS3(s3Client, bucketName, image);
+                String fileName = uploadOriginalAndThumbnailToS3(s3Client, bucketName, image);
 
                 AnnouncementImage announcementImage =new AnnouncementImage(
                         s3Client.getUrl(bucketName, fileName).toString(),
@@ -141,13 +144,17 @@ public class AnnouncementService {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("해당 맴버가 없어요."));
         List<AnnouncementCommentDto> announcementCommentDto = new ArrayList<>();
 
+
         for(AnnouncementComment announcementComment : announcement.getCommentList()) {
+
 
             AnnouncementCommentDto parentComment = new AnnouncementCommentDto(
                     announcementComment.getId(),
                     member.getPicture(),
                     member.getRole(),
-                    announcement.getMember().getName(),
+                    announcementComment.getMember().getRole() == rtype.ROLE_GUARDIAN ?
+                            announcementComment.getMember().getKidMember().get(0).getKid().getName(): announcementComment.getMember().getName(),
+                    announcementComment.getMember().getRole() != rtype.ROLE_DIRECTOR ? announcementComment.getMember().getBan().getName() : null,
                     announcementComment.getContent(),
                     announcementComment.getLocalDateTime(),
                     memberId.equals(announcement.getMember().getId())
@@ -160,14 +167,16 @@ public class AnnouncementService {
                         childComment.getId(),
                         member.getPicture(),
                         member.getRole(),
-                        childComment.getMember().getName(),
+                        childComment.getMember().getRole() == rtype.ROLE_GUARDIAN ?
+                        childComment.getMember().getKidMember().get(0).getKid().getName() : childComment.getMember().getName(),
+                        childComment.getMember().getRole() != rtype.ROLE_DIRECTOR ? childComment.getMember().getBan().getName() : null,
                         childComment.getContent(),
                         childComment.getLocalDateTime(),
                         memberId.equals(childComment.getMember().getId())
                 ));
             }
 
-            parentComment.setChildren(childCommentDto);
+            parentComment.setChilds(childCommentDto);
             announcementCommentDto.add(parentComment);
         }
 
@@ -184,11 +193,11 @@ public class AnnouncementService {
 
         List<AnnouncementImage> announcementImages = announcement.getAnnouncementImages();
 
-        List<AnnouncementImageDto> images = new ArrayList<>();
+        List<String> images = new ArrayList<>();
 
         if(announcementImages != null) {
             for (AnnouncementImage image : announcementImages) {
-                images.add(new AnnouncementImageDto(image.getImageUrl()));
+                images.add(image.getImageUrl());
             }
         }
 

@@ -44,13 +44,14 @@ public class ApprovalService {
     private final KidMemberRepository kidMemberRepository;
     private final AmazonS3 amazonS3;
     private final AttendanceRepository attendanceRepository;
+    private final NotificationUtil notificationUtil;
 
     @Value("${aws.s3.bucket-name}")
     private String bucketName;
 
     public ApprovalService(ApprovalRepository approvalRepository, MemberRepository memberRepository, BanRepository banRepository,
             KidRepository kidRepository, KindergartenRepository kindergartenRepository, KidMemberRepository kidMemberRepository,
-            AmazonS3 amazonS3, AttendanceRepository attendanceRepository) {
+            AmazonS3 amazonS3, AttendanceRepository attendanceRepository, NotificationUtil notificationUtil) {
         this.approvalRepository = approvalRepository;
         this.memberRepository = memberRepository;
         this.banRepository = banRepository;
@@ -59,6 +60,7 @@ public class ApprovalService {
         this.kidMemberRepository = kidMemberRepository;
         this.amazonS3 = amazonS3;
         this.attendanceRepository = attendanceRepository;
+        this.notificationUtil = notificationUtil;
     }
 
     @Transactional
@@ -193,9 +195,10 @@ public class ApprovalService {
     private void sendAcceptMessage(Long memberId) {
         log.info("[Notification] 승인 알림 전송 시작");
         try {
-            NotificationUtil.sendMessages(NotificationRequestDto.builder()
-                    .token(List.of(memberRepository.getNotificationTokenBayMemberId(memberId)
+            notificationUtil.sendMessages(NotificationRequestDto.builder()
+                    .token(List.of(memberRepository.getNotificationTokenByMemberId(memberId)
                             .orElseThrow(() -> new CustomException(ErrorCode.NOTIFICATION_TOKEN_MISSING))))
+                    .email(List.of(memberRepository.getEmailByMemberId(memberId)))
                     .notificationContent(NotificationContent.JOIN_APPROVAL)
                     .build());
         } catch (CustomException e) {
@@ -207,9 +210,10 @@ public class ApprovalService {
     private void sendDeclineMessage(Long memberId) {
         log.info("[Notification] 거절 알림 전송 시작");
         try {
-            NotificationUtil.sendMessages(NotificationRequestDto.builder()
-                    .token(List.of(memberRepository.getNotificationTokenBayMemberId(memberId)
+            notificationUtil.sendMessages(NotificationRequestDto.builder()
+                    .token(List.of(memberRepository.getNotificationTokenByMemberId(memberId)
                             .orElseThrow(() -> new CustomException(ErrorCode.NOTIFICATION_TOKEN_MISSING))))
+                    .email(List.of(memberRepository.getEmailByMemberId(memberId)))
                     .notificationContent(NotificationContent.JOIN_DECLINE)
                     .build());
         } catch (CustomException e) {
