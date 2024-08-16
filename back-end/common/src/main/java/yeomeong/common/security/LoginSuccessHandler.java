@@ -1,6 +1,7 @@
 package yeomeong.common.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
@@ -39,14 +40,14 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         Authentication authentication) throws IOException {
         String accessToken = JwtUtil.createAccessToken(memberRepository.findByEmail(authentication.getName()));
         String refreshToken = JwtUtil.createRefreshToken(authentication.getName());
-        jwtService.saveRefreshToken(authentication.getName(), refreshToken);
-        log.info("refresh token: {}", refreshToken);
-        // Cookie refreshTokenCookie = createCookie(authentication.getName());
-        // jwtService.saveRefreshToken(authentication.getName(), refreshTokenCookie.getValue());
-        // log.debug("redis store data: {}", refreshTokenCookie.getValue());
+//        jwtService.saveRefreshToken(authentication.getName(), refreshToken);
+//        log.info("refresh token: {}", refreshToken);
+        Cookie refreshTokenCookie = createCookie(authentication.getName());
+        jwtService.saveRefreshToken(authentication.getName(), refreshTokenCookie.getValue());
+        log.debug("redis store data: {}", refreshTokenCookie.getValue());
 
         response.setStatus(HttpStatus.OK.value());
-        // response.addCookie(refreshTokenCookie);
+        response.addCookie(refreshTokenCookie);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 
@@ -74,16 +75,16 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         objectMapper.writeValue(response.getWriter(), loginResponseDto);
     }
 
-    // private Cookie createCookie(String userName) {
-    //     String cookieName = "refreshToken";
-    //     String cookieValue = JwtUtil.createRefreshToken((userName));
-    //     Cookie cookie = new Cookie(cookieName, cookieValue);
-    //     cookie.setHttpOnly(false);
-    //     cookie.setSecure(true);
-    //     cookie.setPath("/");
-    //     cookie.setAttribute("SameSite", "None");
-    //     cookie.setMaxAge(60 * 60 * 24 * 14);
-    //     return cookie;
-    // }
+     private Cookie createCookie(String userName) {
+         String cookieName = "refreshToken";
+         String cookieValue = JwtUtil.createRefreshToken((userName));
+         Cookie cookie = new Cookie(cookieName, cookieValue);
+         cookie.setHttpOnly(false);
+         cookie.setSecure(true);
+         cookie.setPath("/");
+         cookie.setAttribute("SameSite", "None");
+         cookie.setMaxAge(60 * 60 * 24 * 14);
+         return cookie;
+     }
 
 }
