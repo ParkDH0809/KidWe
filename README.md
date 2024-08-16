@@ -1,6 +1,6 @@
 # 유치원 통합 관리 서비스, KidWe 🥝
 
-![KidWe](image/KidWe_logo.png)
+![KidWe](images/KidWe_logo.png)
 
 ## 📅 프로젝트 진행 기간
 
