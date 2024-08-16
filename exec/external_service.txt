@@ -1,5 +1,9 @@
 1. OpenAI API
-회원가입 -> API Key 생성(결제수단 필수 등록) -> text-devinch-3.5 사용
+회원가입 -> API Key 생성(결제수단 필수 등록) -> text-devinch-3.5 사용  
+
 2. Baerun API
 [참고 링크 : https://bareun.ai/docs]
-회원가입 -> API Key -> docker pull 후 image container로 실행시킨 뒤 해당 api 경로로 요청
+회원가입 -> API Key -> docker pull 후 image container로 실행시킨 뒤 해당 api 경로로 요청  
+
+3. 유치원알리미 API
+회원가입 -> API Key 생성 -> 일반 현황 API 요청 및 활용
