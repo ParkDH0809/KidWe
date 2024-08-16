@@ -1,0 +1,25 @@
+spring:
+  data:
+    mongodb:
+      # host : ip address -> ec2 name으로
+      host: i11a808.p.ssafy.io
+      port: 27017
+      authentication-database: admin
+      username: ssafy
+      password: ssafy
+      database: kidwe
+
+  ai:
+    openai:
+      api-key: "sk-qZXVNo6LvuaFwpmrS6IjnoXw9brInxVlwvtRh2MtDsT3BlbkFJOABm6kbNBmfMjzaACTXPxnpE2XiN3ZYpnNCLMj6a0A"
+      url : "https://api.openai.com/v1/chat/completions"
+
+resttemplate:
+  connection:
+    timeout: 5000
+  read:
+    timeout: 5000
+
+bareun:
+  url: "http://i11a808.p.ssafy.io:5757/bareun/api/v1/analyze"
+  api-key: "koba-ZARQV7A-HRKUDOY-V6U7LJY-YEE7ZFI"
