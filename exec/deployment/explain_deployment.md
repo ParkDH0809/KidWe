@@ -1,5 +1,8 @@
 How can you build and deployment our service? 
 
+common, mongo-back, front-end를 각 방식으로 build 한 후,
+Dockerfile(Back-JPA-Docker, Back-MongoDB-Docker)가 들어있는 build_filds로 .jar, /dist로 copy한 뒤 docker-compose로 container 실행(jenkins, nginx, bareun은 개별적으로 실행)
+
 [Version]  
 nginx: 1.27.0
 
