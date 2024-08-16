@@ -37,6 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         throws ServletException, IOException, ExpiredJwtException {
         if (request.getRequestURI().equals("/login") ||
             request.getRequestURI().equals("/logout") ||
+            request.getRequestURI().equals("/refresh") ||
             request.getRequestURI().equals("/signup")) {
             filterChain.doFilter(request, response);
             return;
