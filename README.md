@@ -1,4 +1,4 @@
-bㅠ# 유치원 통합 관리 서비스, KidWe 🥝
+# 유치원 통합 관리 서비스, KidWe 🥝
 
 ![KidWe](image/KidWe_logo.png)
 
