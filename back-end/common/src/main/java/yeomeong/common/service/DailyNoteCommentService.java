@@ -1,6 +1,8 @@
 package yeomeong.common.service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,23 +36,9 @@ public class DailyNoteCommentService {
             () -> new CustomException(ErrorCode.NOT_FOUND_ID)
         );
         if(member == null) throw new CustomException(ErrorCode.NOT_FOUND_ID);
-        /////////////////////////////////////////////////////////////////////
-        // 알림장을 열람할 수 있는 사람인가?
-        // 작성자이거나
-        if(!dailyNote.getWriter().getId().equals(member.getId())) {
-            if(member.getRole() == rtype.ROLE_TEACHER){
-                if(dailyNote.getWriter().getRole() != rtype.ROLE_GUARDIAN || dailyNote.getSendTime().isBefore(
-                    LocalDateTime.now())){
-                    throw new CustomException(ErrorCode.UNAUTHORIZED_WRITER);
-                }
-            }
-            else if(member.getRole() == rtype.ROLE_GUARDIAN){
-                if(dailyNote.getWriter().getRole() != rtype.ROLE_TEACHER || dailyNote.getSendTime().isBefore(LocalDateTime.now())){
-                    throw new CustomException(ErrorCode.UNAUTHORIZED_WRITER);
-                }
-            }
-        }
-        /////////////////////////////////////////////////////////////////////
+        // 알림장 발송자이거나
+        // 알림장 수신자인 경우 조회 가능할 때 보여줘야 하는데
+        // 현재 해당 조건은 알림장 조회에서 가능하니 생략하자
         DailyNoteComment parentDailyNoteComment = null;
         //대댓글이면
         if(dailyNoteCommentCreateRequestDto.getParentCommentId() > 0){
