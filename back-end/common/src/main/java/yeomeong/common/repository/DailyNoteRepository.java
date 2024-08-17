@@ -12,9 +12,9 @@ public interface DailyNoteRepository extends JpaRepository<DailyNote, Long>{
 
     //삭제되지 않은 알림장 상세조회
     @Query("SELECT dn "
-        + "FROM DailyNote dn "
-        + "WHERE dn.id = :id "
-        + "AND dn.isDeleted = false")
+            + "FROM DailyNote dn "
+            + "WHERE dn.id = :id "
+            + "AND dn.isDeleted = false")
     DailyNote findByDailyNoteId(@Param("id") Long id);
 
     // 학부모 발신 기준 알림장 목록 조회 : 학부모가 쓴 아이별 - 날짜별 알림장 (전송되지 않은 알림장까지 모두 보여줘야 한다)
