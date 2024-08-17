@@ -24,7 +24,7 @@ public interface DailyNoteRepository extends JpaRepository<DailyNote, Long>{
         + "AND dn.kid.id = :kidId "
         + "AND dn.writer.id = :writerId "
         + "AND dn.isDeleted = false")
-    List<DailyNote> findByYearAndMonthIsGuardian(@Param("date") String date,
+    List<DailyNote> findByYearAndMonthAndWriterIsGuardian(@Param("date") String date,
         @Param("writerId") Long writerId,
         @Param("kidId") Long kidId);
 
@@ -35,7 +35,7 @@ public interface DailyNoteRepository extends JpaRepository<DailyNote, Long>{
         + "AND dn.kid.ban.id = :banId "
         + "AND dn.writer.id = :writerId "
         + "AND dn.isDeleted = false")
-    List<DailyNote> findByYearAndMonthIsTeacher(@Param("date") String date,
+    List<DailyNote> findByYearAndMonthAndWriterIsTeacher(@Param("date") String date,
         @Param("writerId") Long writerId,
         @Param("banId") Long banId);
 
@@ -45,7 +45,8 @@ public interface DailyNoteRepository extends JpaRepository<DailyNote, Long>{
         + "WHERE FUNCTION('DATE_FORMAT', dn.sendTime, '%Y-%m') = :date "
         + "AND dn.kid.id = :kidId "
         + "AND dn.writer.role = 'ROLE_TEACHER' "
-        + "AND dn.sendTime <= CURRENT_TIMESTAMP "
+    // 한국시간으로 비교하기
+        + "AND dn.sendTime <= CONVERT_TZ(CURRENT_TIMESTAMP, 'UTC', 'Asia/Seoul') "
         + "AND dn.isDeleted = false")
     List<DailyNote> findBYearAndMonthAndKidIdAndReceiverIsGuardian(@Param("date") String date,
         @Param("kidId") Long kidId);
@@ -56,19 +57,21 @@ public interface DailyNoteRepository extends JpaRepository<DailyNote, Long>{
         + "WHERE FUNCTION('DATE_FORMAT', dn.sendTime, '%Y-%m') = :date "
         + "AND dn.kid.ban.id = :banId "
         + "AND dn.writer.role = 'ROLE_GUARDIAN' "
-        + "AND dn.sendTime <= CURRENT_TIMESTAMP "
+        // 한국시간으로 비교하기
+        + "AND dn.sendTime <= CONVERT_TZ(CURRENT_TIMESTAMP, 'UTC', 'Asia/Seoul') "
         + "AND dn.isDeleted = false")
     List<DailyNote> findByYearAndMonthAndBanAndReceiverIsTeacher(@Param("date") String date,
         @Param("banId") Long banId);
-
 
     // 원장님 기준 알림장 목록 조회 : 담당 반별 - 날짜별 알림장
     @Query("SELECT dn "
             + "FROM DailyNote dn "
             + "WHERE FUNCTION('DATE_FORMAT', dn.sendTime, '%Y-%m') = :date "
             + "AND dn.kid.ban.id = :banId "
+            // 한국시간으로 비교하기
+            + "AND dn.sendTime <= CONVERT_TZ(CURRENT_TIMESTAMP, 'UTC', 'Asia/Seoul') "
             + "AND dn.isDeleted = false")
-    List<DailyNote> findByYearAndMonthIsDirector(@Param("date") String date,
+    List<DailyNote> findByYearAndMonthAndIsDirector(@Param("date") String date,
                                                  @Param("banId") Long banId);
 
 }
