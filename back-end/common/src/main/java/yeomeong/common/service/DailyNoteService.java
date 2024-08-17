@@ -2,6 +2,7 @@ package yeomeong.common.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 import com.amazonaws.services.s3.AmazonS3;
@@ -152,14 +153,14 @@ public class DailyNoteService {
         // 전송시간이 지난 수신자인 경우
         else{
             if(member.getRole() == rtype.ROLE_GUARDIAN){
-                if(dailyNote.getWriter().getRole() != rtype.ROLE_TEACHER || dailyNote.getSendTime().isAfter(LocalDateTime.now())){
+                if(dailyNote.getWriter().getRole() != rtype.ROLE_TEACHER || dailyNote.getSendTime().isAfter(LocalDateTime.now(ZoneId.of("Asia/Seoul")))){
                     throw new CustomException(ErrorCode.UNAUTHORIZED_RECEIVER);
                 }
                 return new DailyNoteResponseDto(memberId, dailyNote, dailyNote.getKid());
             }
 
             else{
-                if(dailyNote.getWriter().getRole() != rtype.ROLE_GUARDIAN || dailyNote.getSendTime().isAfter(LocalDateTime.now())){
+                if(dailyNote.getWriter().getRole() != rtype.ROLE_GUARDIAN || dailyNote.getSendTime().isAfter(LocalDateTime.now(ZoneId.of("Asia/Seoul")))){
                     throw new CustomException(ErrorCode.UNAUTHORIZED_RECEIVER);
                 }
                 return new DailyNoteResponseDto(memberId, dailyNote);
@@ -176,8 +177,6 @@ public class DailyNoteService {
 
         Member writer = oldDailyNote.getWriter();
         if(writer.getId() != writerId){
-            System.out.println(oldDailyNote.getWriter().getId());
-            System.out.println(writerId);
             throw new CustomException(ErrorCode.UNAUTHORIZED_WRITER);
         }
 
