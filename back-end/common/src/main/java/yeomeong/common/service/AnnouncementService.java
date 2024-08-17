@@ -16,6 +16,7 @@ import yeomeong.common.entity.post.comment.AnnouncementComment;
 import yeomeong.common.repository.*;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class AnnouncementService {
 
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("해당 맴버가 없어용"));
 
-        Post post =new Post(LocalDateTime.now(),
+        Post post =new Post(LocalDateTime.now(ZoneId.of("Asia/Seoul")),
                 announcementCreateDto.getTitle(),
                 announcementCreateDto.getContent());
 
@@ -105,30 +106,29 @@ public class AnnouncementService {
                  .orElseThrow(() -> new RuntimeException("해당 멤버를 찾을 수 없습니다."));
 
          List<AnnouncementListDto> announcementDtoList = new ArrayList<>();
-         if(member.getRole() != rtype.ROLE_GUARDIAN) {
-             List<AnnouncementListDto> announcementByAll = announcementRepository.getAnnouncementByAll(member.getKindergarten().getId());
-             announcementDtoList = new ArrayList<>(announcementByAll);
-         }
+
+         List<AnnouncementListDto> announcementByAllNotice = announcementRepository.getAnnouncementByAllNotice(member.getKindergarten().getId());
+         announcementDtoList.addAll(announcementByAllNotice);
 
          //전체 공지사항 가져오기
-         //원장님일 때 해당 유치원 공지사항 모두 가져오기
+         //원장님일 때 해당 유치원 반 공지사항 모두 가져오기
          if(member.getRole() == rtype.ROLE_DIRECTOR) {
              List<AnnouncementListDto> announcementByAllBan = announcementRepository.getAnnouncementByAllBan(member.getKindergarten().getId());
              announcementDtoList.addAll(announcementByAllBan);
          }
-         //선생님이나 학부모일 땐 해당 반 + 전체 공지 다 가져오기
-         else if(member.getRole() == rtype.ROLE_TEACHER) {
+         //선생님일 땐 해당 반 가져오기
+         else {
              List<AnnouncementListDto> announcementByBan = announcementRepository.getAnnouncementByBan(member.getBan().getId());
              announcementDtoList.addAll(announcementByBan);
          }
          // 학부모인 경우
-         else {
-             List<KidMember> kidMembers = member.getKidMember();
-             for (KidMember kidMember : kidMembers) {
-                 List<AnnouncementListDto> announcementByBan = announcementRepository.getAnnouncementByBan(kidMember.getKid().getBan().getId());
-                 announcementDtoList.addAll(announcementByBan);
-             }
-         }
+         // else {
+         //    List<KidMember> kidMembers = member.getKidMember();
+         //    for (KidMember kidMember : kidMembers) {
+         //        List<AnnouncementListDto> announcementByBan = announcementRepository.getAnnouncementByBan(kidMember.getKid().getBan().getId());
+         //        announcementDtoList.addAll(announcementByBan);
+         //    }
+         //}
 
          for(AnnouncementListDto announcementOne : announcementDtoList){
              if(announcementOne.getMemberBan() == null){
