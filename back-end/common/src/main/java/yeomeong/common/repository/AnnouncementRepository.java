@@ -27,7 +27,7 @@ public interface AnnouncementRepository extends JpaRepository<Announcement,Long>
             "join m.kindergarten k " +
             "WHERE k.id = :kindergartenId AND m.ban is null AND a.isDeleted = false " +
             "AND a.stored = false ")
-    List<AnnouncementListDto> getAnnouncementByAll(@Param("kindergartenId") Long kindergartenId);
+    List<AnnouncementListDto> getAnnouncementByAllNotice(@Param("kindergartenId") Long kindergartenId);
 
     //유치원 반 전체 공지사항 가져오기
     @Query("SELECT new yeomeong.common.dto.post.announcement.AnnouncementListDto(" +

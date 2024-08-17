@@ -18,7 +18,7 @@ public class AnnouncementListDto {
     private String memberName;
     private String memberBan;
     private rtype writerRole;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.M.d HH:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.M.d HH:mm", timezone = "A")
     private LocalDateTime createdDate;
     private int commentCnt;
 
