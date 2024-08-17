@@ -153,7 +153,7 @@ public class DailyNoteService {
         // 전송시간이 지난 수신자인 경우
         else{
             if(member.getRole() == rtype.ROLE_GUARDIAN){
-                if(dailyNote.getWriter().getRole() != rtype.ROLE_TEACHER || dailyNote.getSendTime().isAfter(LocalDateTime.now(ZoneId.of("Asia/Seoul")))){
+                if(dailyNote.getWriter().getRole() == rtype.ROLE_GUARDIAN || dailyNote.getSendTime().isAfter(LocalDateTime.now(ZoneId.of("Asia/Seoul")))){
                     throw new CustomException(ErrorCode.UNAUTHORIZED_RECEIVER);
                 }
                 return new DailyNoteResponseDto(memberId, dailyNote, dailyNote.getKid());
