@@ -10,34 +10,36 @@ import yeomeong.common.entity.post.DailyNote;
 @Repository
 public interface DailyNoteRepository extends JpaRepository<DailyNote, Long>{
 
+    //삭제되지 않은 알림장 상세조회
     @Query("SELECT dn "
         + "FROM DailyNote dn "
         + "WHERE dn.id = :id "
         + "AND dn.isDeleted = false")
     DailyNote findByDailyNoteId(@Param("id") Long id);
 
-    // 전송 기준 : 작성자가 쓴 아이별 - 날짜별 알림장 (전송되지 않은 알림장까지 모두 보여줘야 한다)
+    // 학부모 발신 기준 알림장 목록 조회 : 학부모가 쓴 아이별 - 날짜별 알림장 (전송되지 않은 알림장까지 모두 보여줘야 한다)
     @Query("SELECT dn "
         + "FROM DailyNote dn "
         + "WHERE FUNCTION('DATE_FORMAT', dn.sendTime, '%Y-%m') = :date "
         + "AND dn.kid.id = :kidId "
         + "AND dn.writer.id = :writerId "
         + "AND dn.isDeleted = false")
-    List<DailyNote> findByYearAndMonthAndKidId(@Param("date") String date,
+    List<DailyNote> findByYearAndMonthIsGuardian(@Param("date") String date,
         @Param("writerId") Long writerId,
         @Param("kidId") Long kidId);
 
+    // 선생님 발신 기준 알림장 목록 조회 : 담당 반별 - 날짜별 알림장 (전송되지 않은 알림장까지 모두 보여줘야 한다)
     @Query("SELECT dn "
         + "FROM DailyNote dn "
         + "WHERE FUNCTION('DATE_FORMAT', dn.sendTime, '%Y-%m') = :date "
         + "AND dn.kid.ban.id = :banId "
         + "AND dn.writer.id = :writerId "
         + "AND dn.isDeleted = false")
-    List<DailyNote> findByYearAndMonthAndBanId(@Param("date") String date,
+    List<DailyNote> findByYearAndMonthIsTeacher(@Param("date") String date,
         @Param("writerId") Long writerId,
         @Param("banId") Long banId);
 
-    // 학부모 수신 : 학부모의 아이에게 선생님이 작성한 알림장을 조회
+    // 학부모 수신 기준 알림장 목록 조회 : 학부모의 아이에게 선생님이 작성한 알림장을 조회
     @Query("SELECT dn "
         + "FROM DailyNote dn "
         + "WHERE FUNCTION('DATE_FORMAT', dn.sendTime, '%Y-%m') = :date "
@@ -48,7 +50,7 @@ public interface DailyNoteRepository extends JpaRepository<DailyNote, Long>{
     List<DailyNote> findBYearAndMonthAndKidIdAndReceiverIsGuardian(@Param("date") String date,
         @Param("kidId") Long kidId);
 
-    // 선생님 수신 : 담당반 아이들에게 학부모가 작성한 알림장을 조회
+    // 선생님 수신 기준 알림장 목록 조회 : 담당반 아이들에게 학부모가 작성한 알림장을 조회
     @Query("SELECT dn "
         + "FROM DailyNote dn "
         + "WHERE FUNCTION('DATE_FORMAT', dn.sendTime, '%Y-%m') = :date "
@@ -58,4 +60,15 @@ public interface DailyNoteRepository extends JpaRepository<DailyNote, Long>{
         + "AND dn.isDeleted = false")
     List<DailyNote> findByYearAndMonthAndBanAndReceiverIsTeacher(@Param("date") String date,
         @Param("banId") Long banId);
+
+
+    // 원장님 기준 알림장 목록 조회 : 담당 반별 - 날짜별 알림장
+    @Query("SELECT dn "
+            + "FROM DailyNote dn "
+            + "WHERE FUNCTION('DATE_FORMAT', dn.sendTime, '%Y-%m') = :date "
+            + "AND dn.kid.ban.id = :banId "
+            + "AND dn.isDeleted = false")
+    List<DailyNote> findByYearAndMonthIsDirector(@Param("date") String date,
+                                                 @Param("banId") Long banId);
+
 }

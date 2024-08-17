@@ -179,9 +179,6 @@ public class DailyNoteService {
         }
 
         else{
-//            if(oldDailyNote.getWriter().getRole() != rtype.ROLE_GUARDIAN ){
-//                throw new CustomException(ErrorCode.UNAUTHORIZED_RECEIVER);
-//            }
             return new DailyNoteResponseDto(writerId, oldDailyNote);
         }
     }
