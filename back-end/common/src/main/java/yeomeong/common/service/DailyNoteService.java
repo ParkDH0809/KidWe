@@ -153,7 +153,7 @@ public class DailyNoteService {
         // 수신자인 경우
         else{
             // 전송시간이 지난 경우만 확인 가능
-            if(dailyNote.getSendTime().isAfter(LocalDateTime.now(ZoneId.of("Asia/Seoul")))){
+            if(dailyNote.getSendTime().isBefore(LocalDateTime.now(ZoneId.of("Asia/Seoul")))){
                 // 발신자가 학부모인 경우
                 if(dailyNote.getWriter().getRole() == rtype.ROLE_GUARDIAN){
                     return new DailyNoteResponseDto(memberId, dailyNote, dailyNote.getKid());
