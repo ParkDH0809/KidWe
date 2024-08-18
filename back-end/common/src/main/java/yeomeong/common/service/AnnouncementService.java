@@ -170,7 +170,7 @@ public class AnnouncementService {
                         childComment.getMember().getRole(),
                         childComment.getMember().getRole() == rtype.ROLE_GUARDIAN ?
                         childComment.getMember().getKidMember().get(0).getKid().getName() : childComment.getMember().getName(),
-                        childComment.getMember().getRole() != rtype.ROLE_DIRECTOR ? childComment.getMember().getBan().getName() : null,
+                        childComment.getMember().getRole() != rtype.ROLE_DIRECTOR ? childComment.getMember().getKidMember().get(0).getKid().getName() : null,
                         childComment.getContent(),
                         childComment.getLocalDateTime(),
                         memberId.equals(childComment.getMember().getId())
@@ -206,7 +206,7 @@ public class AnnouncementService {
         return new AnnouncementDetailDto(
                 announcement.getMember().getPicture(),
                 announcement.getMember().getRole(),
-                announcement.getMember().getBan() != null? announcement.getMember().getBan().getName() : "전체",
+                announcement.getMember().getBan() != null? announcement.getMember().getKidMember().get(0).getKid().getName() : "전체",
                 announcement.getPost(),
                 !images.isEmpty() ? images : null,
                 vote != null ? vote.getId() : null, // Vote가 없으면 null
