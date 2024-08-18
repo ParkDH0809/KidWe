@@ -156,7 +156,7 @@ public class AnnouncementService {
                     announcementComment.getMember().getRole(),
                     announcementComment.getMember().getRole() == rtype.ROLE_GUARDIAN ?
                             announcementComment.getMember().getKidMember().get(0).getKid().getName(): announcementComment.getMember().getName(),
-                    announcementComment.getMember().getRole() != rtype.ROLE_DIRECTOR ? announcementComment.getMember().getBan().getName() : null,
+                    announcementComment.getMember().getRole() != rtype.ROLE_DIRECTOR ? announcementComment.getMember().getKidMember().get(0).getKid().getName() : null,
                     announcementComment.getContent(),
                     announcementComment.getLocalDateTime(),
                     memberId.equals(announcementComment.getMember().getId())
