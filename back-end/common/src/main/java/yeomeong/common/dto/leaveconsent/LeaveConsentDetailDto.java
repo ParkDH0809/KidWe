@@ -28,7 +28,7 @@ public class LeaveConsentDetailDto {
     private String emergencyRelationship;
     private String emergencyContact;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy년 M월 d일")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy년 M월 d일", timezone = "Asia/")
     private LocalDate signDate;
     private String parentName;
     private String signUrl;
