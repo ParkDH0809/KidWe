@@ -101,19 +101,19 @@ public class AnnouncementService {
      * 반별 공지사항 조회하기
      * 공지사항 조회하기
      */
-     public List<AnnouncementListDto> getAnnouncementList(Long memberId){
+     public List<AnnouncementListDto> getAnnouncementList(Long memberId, Long kindergartenId){
          Member member = memberRepository.findById(memberId)
                  .orElseThrow(() -> new RuntimeException("해당 멤버를 찾을 수 없습니다."));
 
          List<AnnouncementListDto> announcementDtoList = new ArrayList<>();
 
-         List<AnnouncementListDto> announcementByAllNotice = announcementRepository.getAnnouncementByAllNotice(member.getKindergarten().getId());
+         List<AnnouncementListDto> announcementByAllNotice = announcementRepository.getAnnouncementByAllNotice(kindergartenId);
          announcementDtoList.addAll(announcementByAllNotice);
 
          //전체 공지사항 가져오기
          //원장님일 때 해당 유치원 반 공지사항 모두 가져오기
          if(member.getRole() == rtype.ROLE_DIRECTOR) {
-             List<AnnouncementListDto> announcementByAllBan = announcementRepository.getAnnouncementByAllBan(member.getKindergarten().getId());
+             List<AnnouncementListDto> announcementByAllBan = announcementRepository.getAnnouncementByAllBan(kindergartenId);
              announcementDtoList.addAll(announcementByAllBan);
          }
          //선생님일 땐 해당 반 가져오기
