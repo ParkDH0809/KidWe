@@ -41,7 +41,7 @@ public interface AnnouncementRepository extends JpaRepository<Announcement,Long>
             " FROM Announcement a" +
             " join a.member m " +
             "join m.kindergarten k " +
-            "WHERE k.id = :kindergartenId AND m.ban != null AND a.isDeleted = false " +
+            "WHERE k.id = :kindergartenId AND m.ban is not null AND a.isDeleted = false " +
             " and a.stored = false")
     List<AnnouncementListDto> getAnnouncementByAllBan(@Param("kindergartenId") Long kindergartenId);
 
