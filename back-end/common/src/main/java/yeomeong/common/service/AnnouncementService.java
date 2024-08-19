@@ -161,30 +161,31 @@ public class AnnouncementService {
         for(AnnouncementComment announcementComment : announcement.getCommentList()) {
             if(announcementComment.getParentComment() != null ) continue;
             AnnouncementCommentDto parentComment = new AnnouncementCommentDto(
-                    announcementComment.getId(),
-                    announcementComment.getMember().getPicture(),
-                    announcementComment.getMember().getRole(),
-                    announcementComment.getMember().getRole() == rtype.ROLE_GUARDIAN ?
+                    announcementComment.getId(), // id
+                    announcementComment.getMember().getPicture(), // picture
+                    announcementComment.getMember().getRole(), // role
+                    announcementComment.getMember().getRole() == rtype.ROLE_GUARDIAN ? // name
                             announcementComment.getMember().getKidMember().get(0).getKid().getName(): announcementComment.getMember().getName(),
-                    announcementComment.getMember().getRole() != rtype.ROLE_DIRECTOR ?
+                    announcementComment.getMember().getRole() != rtype.ROLE_TEACHER ? // banName
                             announcementComment.getMember().getKidMember().get(0).getKid().getName() : null,
-                    announcementComment.getContent(),
-                    announcementComment.getLocalDateTime(),
-                    memberId.equals(announcementComment.getMember().getId())
+                    announcementComment.getContent(), // content
+                    announcementComment.getLocalDateTime(), // createdTime
+                    memberId.equals(announcementComment.getMember().getId()) // canDelete
             );
 
             List<AnnouncementCommentChildDto> childCommentDto = new ArrayList<>();
             for(AnnouncementComment childComment : announcementComment.getReplies()) {
                 childCommentDto.add(new AnnouncementCommentChildDto(
-                        childComment.getId(),
-                        childComment.getMember().getPicture(),
-                        childComment.getMember().getRole(),
-                        childComment.getMember().getRole() == rtype.ROLE_GUARDIAN ?
+                        childComment.getId(), // id
+                        childComment.getMember().getPicture(), // picture
+                        childComment.getMember().getRole(), // role
+                        childComment.getMember().getRole() == rtype.ROLE_GUARDIAN ? // writerName
                         childComment.getMember().getKidMember().get(0).getKid().getName() : childComment.getMember().getName(),
-                        childComment.getMember().getRole() != rtype.ROLE_DIRECTOR ? childComment.getMember().getKidMember().get(0).getKid().getName() : null,
-                        childComment.getContent(),
-                        childComment.getLocalDateTime(),
-                        memberId.equals(childComment.getMember().getId())
+                        childComment.getMember().getRole() != rtype.ROLE_TEACHER ? // banName
+                                childComment.getMember().getKidMember().get(0).getKid().getName() : null,
+                        childComment.getContent(), // content
+                        childComment.getLocalDateTime(), // createTime
+                        memberId.equals(childComment.getMember().getId()) // canDelete
                 ));
             }
 
@@ -217,7 +218,7 @@ public class AnnouncementService {
         return new AnnouncementDetailDto(
                 announcement.getMember().getPicture(),
                 announcement.getMember().getRole(),
-                announcement.getMember().getBan() != null? announcement.getMember().getKidMember().get(0).getKid().getName() : "전체",
+                announcement.getMember().getBan() != null? announcement.getMember().getBan().getName() : "전체",
                 announcement.getPost(),
                 !images.isEmpty() ? images : null,
                 vote != null ? vote.getId() : null, // Vote가 없으면 null
