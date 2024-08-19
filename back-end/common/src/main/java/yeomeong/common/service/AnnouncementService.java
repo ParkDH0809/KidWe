@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import yeomeong.common.dto.post.announcement.*;
 
-import yeomeong.common.entity.member.Kid;
 import yeomeong.common.entity.member.KidMember;
 import yeomeong.common.entity.member.Member;
 import yeomeong.common.entity.member.rtype;
@@ -166,8 +165,10 @@ public class AnnouncementService {
                     announcementComment.getMember().getRole(), // role
                     announcementComment.getMember().getRole() == rtype.ROLE_GUARDIAN ? // name
                             announcementComment.getMember().getKidMember().get(0).getKid().getName(): announcementComment.getMember().getName(),
-                    announcementComment.getMember().getRole() != rtype.ROLE_TEACHER ? // banName
-                            announcementComment.getMember().getKidMember().get(0).getKid().getName() : null,
+                    announcementComment.getMember().getRole() == rtype.ROLE_TEACHER ? // banName
+                            announcementComment.getMember().getBan().getName() :
+                            (announcementComment.getMember().getRole() == rtype.ROLE_GUARDIAN ?
+                    announcementComment.getMember().getKidMember().get(0).getKid().getBan().getName() : null),
                     announcementComment.getContent(), // content
                     announcementComment.getLocalDateTime(), // createdTime
                     memberId.equals(announcementComment.getMember().getId()) // canDelete
@@ -181,8 +182,10 @@ public class AnnouncementService {
                         childComment.getMember().getRole(), // role
                         childComment.getMember().getRole() == rtype.ROLE_GUARDIAN ? // writerName
                         childComment.getMember().getKidMember().get(0).getKid().getName() : childComment.getMember().getName(),
-                        childComment.getMember().getRole() != rtype.ROLE_TEACHER ? // banName
-                                childComment.getMember().getKidMember().get(0).getKid().getName() : null,
+                        announcementComment.getMember().getRole() == rtype.ROLE_TEACHER ? // banName
+                                announcementComment.getMember().getBan().getName() :
+                                (announcementComment.getMember().getRole() == rtype.ROLE_GUARDIAN ?
+                                        announcementComment.getMember().getKidMember().get(0).getKid().getBan().getName() : null),
                         childComment.getContent(), // content
                         childComment.getLocalDateTime(), // createTime
                         memberId.equals(childComment.getMember().getId()) // canDelete
