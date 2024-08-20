@@ -2,6 +2,8 @@ package yeomeong.common.entity.post.comment;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Builder;
