@@ -45,7 +45,7 @@ public class DailyNoteComment {
         this.content = content;
         this.parentComment = parentComment;
         this.replies = new ArrayList<>();
-        this.createdTime = LocalDateTime.now();
+        this.createdTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
         this.updatedTime = this.createdTime;
         this.isDeleted = false;
     }

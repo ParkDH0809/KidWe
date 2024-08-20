@@ -69,8 +69,6 @@ public class DailyNoteChildCommentResponseDto {
             this.content = dailyNoteComment.getContent();
         }
 
-        this.createdTime = ZonedDateTime.of(dailyNoteComment.getCreatedTime(), ZoneId.of("UTC"))
-                            .withZoneSameInstant(ZoneId.of("Asia/Seoul"))
-                            .toLocalDateTime();
+        this.createdTime = dailyNoteComment.getCreatedTime();
     }
 }

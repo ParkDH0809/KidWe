@@ -81,8 +81,6 @@ public class DailyNoteParentCommentResponseDto {
         Collections.sort(childs, (a, b) -> {
             return a.getCreatedTime().isAfter(b.getCreatedTime()) ? 1 : -1;
         });
-        this.createdTime = ZonedDateTime.of(dailyNoteComment.getCreatedTime(), ZoneId.of("UTC"))
-                            .withZoneSameInstant(ZoneId.of("Asia/Seoul"))
-                            .toLocalDateTime();
+        this.createdTime = dailyNoteComment.getCreatedTime();
     }
 }
