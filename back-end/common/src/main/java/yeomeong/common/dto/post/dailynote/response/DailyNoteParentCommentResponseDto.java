@@ -43,6 +43,7 @@ public class DailyNoteParentCommentResponseDto {
         if(dailyNoteComment.getMember().getRole() == rtype.ROLE_GUARDIAN) {
             this.role = rtype.ROLE_GUARDIAN;
             Kid kid = dailyNoteComment.getDailyNote().getKid();
+            this.banName = kid.getBan().getName();
             this.name = kid.getName();
             this.picture = kid.getPicture()==null?"": kid.getPicture();
         }
