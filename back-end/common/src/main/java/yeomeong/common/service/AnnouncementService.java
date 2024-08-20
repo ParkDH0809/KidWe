@@ -16,6 +16,7 @@ import yeomeong.common.entity.post.comment.AnnouncementComment;
 import yeomeong.common.repository.*;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class AnnouncementService {
 
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("해당 맴버가 없어용"));
 
-        Post post =new Post(LocalDateTime.now(),
+        Post post =new Post(LocalDateTime.now(ZoneId.of("Asia/Seoul")),
                 announcementCreateDto.getTitle(),
                 announcementCreateDto.getContent());
 
@@ -100,34 +101,42 @@ public class AnnouncementService {
      * 반별 공지사항 조회하기
      * 공지사항 조회하기
      */
-     public List<AnnouncementListDto> getAnnouncementList(Long memberId){
+     public List<AnnouncementListDto> getAnnouncementList(Long memberId, Long kindergartenId){
          Member member = memberRepository.findById(memberId)
                  .orElseThrow(() -> new RuntimeException("해당 멤버를 찾을 수 없습니다."));
 
-         List<AnnouncementListDto> announcementDtoList = new ArrayList<>();
-         if(member.getRole() != rtype.ROLE_GUARDIAN) {
-             List<AnnouncementListDto> announcementByAll = announcementRepository.getAnnouncementByAll(member.getKindergarten().getId());
-             announcementDtoList = new ArrayList<>(announcementByAll);
-         }
+         // 전체 유치원 공지사항 가져오기
+         List<AnnouncementListDto> announcementByAllNotice = announcementRepository.getAnnouncementByAllNotice(kindergartenId);
+         System.out.println("Test: " + announcementByAllNotice.size());
+         List<AnnouncementListDto> announcementDtoList = new ArrayList<>(announcementByAllNotice);
+         System.out.println("Test: " + announcementDtoList.size());
 
          //전체 공지사항 가져오기
-         //원장님일 때 해당 유치원 공지사항 모두 가져오기
+         //원장님일 때 해당 유치원 반 공지사항 모두 가져오기
          if(member.getRole() == rtype.ROLE_DIRECTOR) {
-             List<AnnouncementListDto> announcementByAllBan = announcementRepository.getAnnouncementByAllBan(member.getKindergarten().getId());
+             List<AnnouncementListDto> announcementByAllBan = announcementRepository.getAnnouncementByAllBan(kindergartenId);
              announcementDtoList.addAll(announcementByAllBan);
          }
-         //선생님이나 학부모일 땐 해당 반 + 전체 공지 다 가져오기
-         else if(member.getRole() == rtype.ROLE_TEACHER) {
+         //선생님일 땐 해당 반 가져오기
+         else if(member.getRole() == rtype.ROLE_TEACHER){
              List<AnnouncementListDto> announcementByBan = announcementRepository.getAnnouncementByBan(member.getBan().getId());
              announcementDtoList.addAll(announcementByBan);
          }
          // 학부모인 경우
-         else {
+          else {
              List<KidMember> kidMembers = member.getKidMember();
              for (KidMember kidMember : kidMembers) {
                  List<AnnouncementListDto> announcementByBan = announcementRepository.getAnnouncementByBan(kidMember.getKid().getBan().getId());
                  announcementDtoList.addAll(announcementByBan);
              }
+
+//             List<KidMember> kidMembers = member.getKidMember();
+//             for (KidMember kidMember : kidMembers) {
+//                 Kid kid = kidMember.getKid();
+//                 loginResponseDto.setKidId(kid.getId());
+//                 loginResponseDto.setKindergartenId(kid.getKindergarten().getId());
+//                 loginResponseDto.setBanId(kid.getBan().getId());
+//             }
          }
 
          for(AnnouncementListDto announcementOne : announcementDtoList){
@@ -151,29 +160,35 @@ public class AnnouncementService {
         for(AnnouncementComment announcementComment : announcement.getCommentList()) {
             if(announcementComment.getParentComment() != null ) continue;
             AnnouncementCommentDto parentComment = new AnnouncementCommentDto(
-                    announcementComment.getId(),
-                    announcementComment.getMember().getPicture(),
-                    announcementComment.getMember().getRole(),
-                    announcementComment.getMember().getRole() == rtype.ROLE_GUARDIAN ?
+                    announcementComment.getId(), // id
+                    announcementComment.getMember().getPicture(), // picture
+                    announcementComment.getMember().getRole(), // role
+                    announcementComment.getMember().getRole() == rtype.ROLE_GUARDIAN ? // name
                             announcementComment.getMember().getKidMember().get(0).getKid().getName(): announcementComment.getMember().getName(),
-                    announcementComment.getMember().getRole() != rtype.ROLE_DIRECTOR ? announcementComment.getMember().getBan().getName() : null,
-                    announcementComment.getContent(),
-                    announcementComment.getLocalDateTime(),
-                    memberId.equals(announcementComment.getMember().getId())
+                    announcementComment.getMember().getRole() == rtype.ROLE_TEACHER ? // banName
+                            announcementComment.getMember().getBan().getName() :
+                            (announcementComment.getMember().getRole() == rtype.ROLE_GUARDIAN ?
+                    announcementComment.getMember().getKidMember().get(0).getKid().getBan().getName() : null),
+                    announcementComment.getContent(), // content
+                    announcementComment.getLocalDateTime(), // createdTime
+                    memberId.equals(announcementComment.getMember().getId()) // canDelete
             );
 
             List<AnnouncementCommentChildDto> childCommentDto = new ArrayList<>();
             for(AnnouncementComment childComment : announcementComment.getReplies()) {
                 childCommentDto.add(new AnnouncementCommentChildDto(
-                        childComment.getId(),
-                        childComment.getMember().getPicture(),
-                        childComment.getMember().getRole(),
-                        childComment.getMember().getRole() == rtype.ROLE_GUARDIAN ?
+                        childComment.getId(), // id
+                        childComment.getMember().getPicture(), // picture
+                        childComment.getMember().getRole(), // role
+                        childComment.getMember().getRole() == rtype.ROLE_GUARDIAN ? // writerName
                         childComment.getMember().getKidMember().get(0).getKid().getName() : childComment.getMember().getName(),
-                        childComment.getMember().getRole() != rtype.ROLE_DIRECTOR ? childComment.getMember().getBan().getName() : null,
-                        childComment.getContent(),
-                        childComment.getLocalDateTime(),
-                        memberId.equals(childComment.getMember().getId())
+                        announcementComment.getMember().getRole() == rtype.ROLE_TEACHER ? // banName
+                                announcementComment.getMember().getBan().getName() :
+                                (announcementComment.getMember().getRole() == rtype.ROLE_GUARDIAN ?
+                                        announcementComment.getMember().getKidMember().get(0).getKid().getBan().getName() : null),
+                        childComment.getContent(), // content
+                        childComment.getLocalDateTime(), // createTime
+                        memberId.equals(childComment.getMember().getId()) // canDelete
                 ));
             }
 

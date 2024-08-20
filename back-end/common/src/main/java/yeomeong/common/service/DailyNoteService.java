@@ -2,6 +2,7 @@ package yeomeong.common.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 import com.amazonaws.services.s3.AmazonS3;
@@ -88,7 +89,7 @@ public class DailyNoteService {
         );
 
         // 발신자로 된 알림장들
-        List<DailyNote> writeDailyNotes = dailyNoteRepository.findByYearAndMonthAndKidId(yearAndMonth, guardianId, kidId);
+        List<DailyNote> writeDailyNotes = dailyNoteRepository.findByYearAndMonthAndWriterIsGuardian(yearAndMonth, guardianId, kidId);
         // 수신자로 된, 해당 아이의 선생님이 작성한 알림장 모두 조회
         List<DailyNote> receivedDailyNotes = dailyNoteRepository.findBYearAndMonthAndKidIdAndReceiverIsGuardian(yearAndMonth, kidId);
 
@@ -104,13 +105,25 @@ public class DailyNoteService {
             () -> new CustomException(ErrorCode.NOT_FOUND_ID)
         );
 
-        // 발신자로 된 알림장들
-        List<DailyNote> writeDailyNotes = dailyNoteRepository.findByYearAndMonthAndBanId(yearAndMonth, teacherId, banId);
-        // 수신자로 된, 반 아이들의 학부모가 작성한 알림장 모두 조회
-        List<DailyNote> receivedDailyNotes = dailyNoteRepository.findByYearAndMonthAndBanAndReceiverIsTeacher(yearAndMonth, banId);
+        if(member.getRole() == rtype.ROLE_TEACHER){
+            // 발신자로 된 알림장들
+            List<DailyNote> writeDailyNotes = dailyNoteRepository.findByYearAndMonthAndWriterIsTeacher(yearAndMonth, teacherId, banId);
+            // 수신자로 된, 반 아이들의 학부모가 작성한 알림장 모두 조회
+            List<DailyNote> receivedDailyNotes = dailyNoteRepository.findByYearAndMonthAndBanAndReceiverIsTeacher(yearAndMonth, banId);
 
-        // 작성자인, 수신자인 알림장을 합쳐서 반환
-        return new DailyNoteListResponseDto(writeDailyNotes, receivedDailyNotes);
+            // 작성자인, 수신자인 알림장을 합쳐서 반환
+            return new DailyNoteListResponseDto(writeDailyNotes, receivedDailyNotes);
+        }
+
+        else if(member.getRole() == rtype.ROLE_DIRECTOR){
+            List<DailyNote> canReadDailyNotes = dailyNoteRepository.findByYearAndMonthAndIsDirector(yearAndMonth, banId);
+
+            return new DailyNoteListResponseDto(canReadDailyNotes);
+        }
+
+        else {
+            throw new CustomException(ErrorCode.UNAUTHORIZED_RECEIVER);
+        }
     }
 
     // 알림장 상세정보 조회하기
@@ -137,20 +150,22 @@ public class DailyNoteService {
                 return new DailyNoteResponseDto(memberId, dailyNote);
             }
         }
-        // 전송시간이 지난 수신자인 경우
+        // 수신자인 경우
         else{
-            if(member.getRole() == rtype.ROLE_GUARDIAN){
-                if(dailyNote.getWriter().getRole() != rtype.ROLE_TEACHER || dailyNote.getSendTime().isAfter(LocalDateTime.now())){
-                    throw new CustomException(ErrorCode.UNAUTHORIZED_RECEIVER);
+            // 전송시간이 지난 경우만 확인 가능
+            if(dailyNote.getSendTime().isBefore(LocalDateTime.now(ZoneId.of("Asia/Seoul")))){
+                // 발신자가 학부모인 경우
+                if(dailyNote.getWriter().getRole() == rtype.ROLE_GUARDIAN){
+                    return new DailyNoteResponseDto(memberId, dailyNote, dailyNote.getKid());
                 }
-                return new DailyNoteResponseDto(memberId, dailyNote, dailyNote.getKid());
+                // 발신자가 학부모가 아닌 경우
+                else{
+                    return new DailyNoteResponseDto(memberId, dailyNote);
+                }
             }
-
+            // 전송시간이 지나지 않았다면
             else{
-                if(dailyNote.getWriter().getRole() != rtype.ROLE_GUARDIAN || dailyNote.getSendTime().isAfter(LocalDateTime.now())){
-                    throw new CustomException(ErrorCode.UNAUTHORIZED_RECEIVER);
-                }
-                return new DailyNoteResponseDto(memberId, dailyNote);
+                throw new CustomException(ErrorCode.UNAUTHORIZED_RECEIVER);
             }
         }
     }
@@ -164,8 +179,6 @@ public class DailyNoteService {
 
         Member writer = oldDailyNote.getWriter();
         if(writer.getId() != writerId){
-            System.out.println(oldDailyNote.getWriter().getId());
-            System.out.println(writerId);
             throw new CustomException(ErrorCode.UNAUTHORIZED_WRITER);
         }
 
@@ -179,9 +192,6 @@ public class DailyNoteService {
         }
 
         else{
-//            if(oldDailyNote.getWriter().getRole() != rtype.ROLE_GUARDIAN ){
-//                throw new CustomException(ErrorCode.UNAUTHORIZED_RECEIVER);
-//            }
             return new DailyNoteResponseDto(writerId, oldDailyNote);
         }
     }

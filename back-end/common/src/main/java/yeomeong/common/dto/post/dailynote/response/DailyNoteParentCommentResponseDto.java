@@ -46,12 +46,20 @@ public class DailyNoteParentCommentResponseDto {
             this.name = kid.getName();
             this.picture = kid.getPicture()==null?"": kid.getPicture();
         }
-        else{
+        else if(dailyNoteComment.getMember().getRole() == rtype.ROLE_TEACHER) {
             this.role = rtype.ROLE_TEACHER;
             Member teacher = dailyNoteComment.getMember();
             this.banName = dailyNoteComment.getMember().getBan().getName();
             this.name = teacher.getName();
             this.picture = teacher.getPicture()==null?"": teacher.getPicture();
+        }
+        // 원장님은 반 이름이 없어요!!!
+        else {
+            this.role = rtype.ROLE_DIRECTOR;
+            Member director = dailyNoteComment.getMember();
+            this.banName = null;
+            this.name = director.getName();
+            this.picture = director.getPicture()==null?"": director.getPicture();
         }
 
         this.canDelete = memberId == dailyNoteComment.getMember().getId() ? true : false;
