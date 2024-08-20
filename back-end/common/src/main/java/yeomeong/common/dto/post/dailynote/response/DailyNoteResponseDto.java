@@ -36,7 +36,6 @@ public class DailyNoteResponseDto {
     private Long commentCount;
     private List<DailyNoteParentCommentResponseDto> comments;
 
-    // 작성자가 학부모인 경우
     @Builder
     public DailyNoteResponseDto(Long memberId, DailyNote dailyNote, Kid kid) {
         this.id = dailyNote.getId();

@@ -38,13 +38,14 @@ public class DailyNoteChildCommentResponseDto {
         if(dailyNoteComment.getMember().getRole() == rtype.ROLE_GUARDIAN) {
             this.role = rtype.ROLE_GUARDIAN;
             Kid kid = dailyNoteComment.getDailyNote().getKid();
+            this.banName = kid.getBan().getName();
             this.name = kid.getName();
             this.picture = kid.getPicture()==null?"": kid.getPicture();
         }
         else if(dailyNoteComment.getMember().getRole() == rtype.ROLE_TEACHER) {
             this.role = rtype.ROLE_TEACHER;
             Member teacher = dailyNoteComment.getMember();
-            this.banName = dailyNoteComment.getMember().getBan().getName();
+            this.banName = teacher.getBan().getName();
             this.name = teacher.getName();
             this.picture = teacher.getPicture()==null?"": teacher.getPicture();
         }
