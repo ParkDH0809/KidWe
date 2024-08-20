@@ -49,7 +49,7 @@ public class DailyNoteParentCommentResponseDto {
         else if(dailyNoteComment.getMember().getRole() == rtype.ROLE_TEACHER) {
             this.role = rtype.ROLE_TEACHER;
             Member teacher = dailyNoteComment.getMember();
-            this.banName = dailyNoteComment.getMember().getBan().getName();
+            this.banName = teacher.getBan().getName();
             this.name = teacher.getName();
             this.picture = teacher.getPicture()==null?"": teacher.getPicture();
         }
