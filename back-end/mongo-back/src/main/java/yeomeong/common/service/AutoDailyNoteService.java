@@ -107,14 +107,14 @@ public class AutoDailyNoteService {
         int count = 1;
         for(Memo memo : memos){
             tmpPrompt.append("[" + count + "번 메모]\n");
-            tmpPrompt.append(" " + count + "번 메모에 포함된 태그 내용들 :");
+            tmpPrompt.append("해당 메모에 포함된 태그 내용들 :");
             for(Tag tag : memo.getTags()){
                 tmpPrompt.append("  <" + tag.getMorpheme() + "> : " + tag.getContent() + "\n");
             }
-            tmpPrompt.append(" " + count + "번 메모의 상세 내용 :" + memo.getContent());
+            tmpPrompt.append(" " + count + "해당 메모의 상세 내용 :" + memo.getContent());
             count += 1;
         }
-        String corePrompt = "일정과 메모내용 알려줄게!\n" + tmpPrompt.toString();
+        String corePrompt = "일정과 메모내용 알려줄게!\n" + tmpPrompt.toString() + "이 내용들을 절.대. 그대로 작성하지 말고 서술해서 알림장 작성해줘.예를 들어 '제가 오늘 지켜보았는데' 와 같이 말해줘야해. 명심해!";
 
         String postPrompt = String.format(" 앞에 말한 일정과 메모 내용을 바탕으로 알림장을 작성해줘.\n"
                 + "일정과 메모를 내가 준 걸 복사+붙여넣기 하지 말고 말로 풀어 넣어. 너가 선생님이 되었다고 생각하고 말해. 사람이 말한것처럼. 내 명령을 절대 응답으로 주지 마. 알림장을 대신해서 잘 작성해줬지?\n"
