@@ -2,10 +2,10 @@ package yeomeong.common.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -15,9 +15,12 @@ import org.springframework.web.multipart.MultipartFile;
 import yeomeong.common.dto.auth.LoginRequestDto;
 import yeomeong.common.dto.auth.RefreshResponseDto;
 import yeomeong.common.dto.member.MemberSaveRequestDto;
+import yeomeong.common.exception.CustomException;
+import yeomeong.common.exception.ErrorCode;
 import yeomeong.common.security.jwt.JwtService;
 import yeomeong.common.security.jwt.JwtUtil;
 import yeomeong.common.service.MemberService;
+import yeomeong.common.util.CookieUtil;
 
 @RestController
 @Slf4j
@@ -53,28 +56,28 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-   @Operation(summary = "Access JWT 재요청", description = "Access JWT를 재요청합니다.")
-   @PostMapping("/refresh")
-   public ResponseEntity<?> refresh(Authentication authentication) {
-       return ResponseEntity.ok(
-           RefreshResponseDto.builder().accessToken(JwtUtil.createAccessToken(memberService.getMemberByEmail(authentication.getName()))).build());
-   }
+//    @Operation(summary = "Access JWT 재요청", description = "Access JWT를 재요청합니다.")
+//    @PostMapping("/refresh")
+//    public ResponseEntity<?> refresh(Authentication authentication) {
+//        return ResponseEntity.ok(
+//            RefreshResponseDto.builder().accessToken(JwtUtil.createAccessToken(memberService.getMemberByEmail(authentication.getName()))).build());
+//    }
 
-// //    cookie 확인 API
-//     @Operation(summary = "Access JWT 재요청", description = "Access JWT를 재요청합니다.")
-//     @PostMapping("/refresh")
-//     public ResponseEntity<?> refresh(HttpServletRequest request) {
-//         String refreshToken = CookieUtil.getCookie("refreshToken", request);
-//         log.info(request.getRequestURI() + " refresh token: " + refreshToken);
-//         if (jwtService.isTokenStored(refreshToken)) {
-//             return ResponseEntity.ok(
-//                 RefreshResponseDto
-//                     .builder()
-//                     .accessToken(JwtUtil.createAccessToken(memberService.getMemberByEmail(JwtUtil.getLoginEmail(refreshToken))))
-//                     .build()
-//             );
-//         }
-//         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new CustomException(ErrorCode.UNAUTHENTICATED_EXPIRED_REFRESH_TOKEN));
-//     }
+//    cookie 확인 API
+    @Operation(summary = "Access JWT 재요청", description = "Access JWT를 재요청합니다.")
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refresh(HttpServletRequest request) {
+        String refreshToken = CookieUtil.getCookie("refreshToken", request);
+        log.info(request.getRequestURI() + " refresh token: " + refreshToken);
+        if (jwtService.isTokenStored(refreshToken)) {
+            return ResponseEntity.ok(
+                RefreshResponseDto
+                    .builder()
+                    .accessToken(JwtUtil.createAccessToken(memberService.getMemberByEmail(JwtUtil.getLoginEmail(refreshToken))))
+                    .build()
+            );
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new CustomException(ErrorCode.UNAUTHENTICATED_EXPIRED_REFRESH_TOKEN));
+    }
 
 }

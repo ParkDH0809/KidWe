@@ -73,7 +73,7 @@ public class DailyNoteResponseDto {
         this.id = dailyNote.getId();
 
         Member writer = dailyNote.getWriter();
-        this.name = writer.getName();
+        this.name = writer.getBan().getName();
         this.picture = writer.getPicture();
         this.role = rtype.ROLE_TEACHER;
 

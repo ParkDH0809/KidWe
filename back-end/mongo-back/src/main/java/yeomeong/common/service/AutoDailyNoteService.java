@@ -89,7 +89,7 @@ public class AutoDailyNoteService {
                 + "내가 오늘의 일정들과 작성해 놓은 메모가 있다면 이를 바탕으로 알림장을 대신 작성해줘.\n"
                 + "형식은 '%s : %s 부모님께' 로 시작하는 알림장을 작성해줘.\n"
                 + "원생의 부모님에게 작성하는 알림장이기 때문에 공손한 말투로 정성스럽게 작성해줘.\n"
-                + "알림장 내용이 없다면, 허위사실은 작성하지 말고 적당히 꾸며서 알림장 작성해줘.\n",
+                + "알림장 내용이 없다면 괜찮아, 그대신 허위사실은 작성하지 말고 오늘 일정이나 수업을 바탕으로 알림장 작성해줘.\n",
             autoDailyNoteRequestDto.getKindergartenName(),
             autoDailyNoteRequestDto.getBanName(),
             autoDailyNoteRequestDto.getTeacherName(),
@@ -107,23 +107,23 @@ public class AutoDailyNoteService {
         int count = 1;
         for(Memo memo : memos){
             tmpPrompt.append("[" + count + "번 메모]\n");
-            tmpPrompt.append(" " + count + "번 메모에 포함된 태그 내용들 :");
+            tmpPrompt.append("해당 메모에 포함된 태그 내용들 :");
             for(Tag tag : memo.getTags()){
                 tmpPrompt.append("  <" + tag.getMorpheme() + "> : " + tag.getContent() + "\n");
             }
-            tmpPrompt.append(" " + count + "번 메모의 상세 내용 :" + memo.getContent());
+            tmpPrompt.append(" " + count + "해당 메모의 상세 내용 :" + memo.getContent());
             count += 1;
         }
-        String corePrompt = "일정과 메모내용 알려줄게!\n" + tmpPrompt.toString();
+        String corePrompt = "일정과 메모내용 알려줄게!\n" + tmpPrompt.toString() + "이 내용들을 절.대. 그대로 작성하지 말고 서술해서 알림장 작성해줘.예를 들어 '제가 오늘 지켜보았는데' 와 같이 말해줘야해. 명심해!";
 
         String postPrompt = String.format(" 앞에 말한 일정과 메모 내용을 바탕으로 알림장을 작성해줘.\n"
-                + "일정과 메모를 내가 준 걸 복사+붙여넣기 하지 말고 말로 풀어 넣어. 안그러면 혼나. 알림장을 대신해서 잘 작성해줬지?\n"
+                + "일정과 메모를 내가 준 걸 복사+붙여넣기 하지 말고 말로 풀어 넣어. 너가 선생님이 되었다고 생각하고 말해. 사람이 말한것처럼. 내 명령을 절대 응답으로 주지 마. 알림장을 대신해서 잘 작성해줬지?\n"
                 + "나에게 사족 절대 없이 '%s : %s 부모님께' 로 시작하는 부분부터 너가 생성한 알림장 끝까지 '알림장 내용'만 추출해줘.\n"
                 + "나는 너가 주는 데이터를 바로 알림장으로 넣어서 보낼거기 때문에 무조건 '%s : %s 부모님께' 여기부터 알림장 내용만 추출해서 줘.\n"
                 + "대답도 필요없고 바로 작성해줘.\n"
                 + "형식은 html 형식으로 작성해줘.\n"
                 + "html 형식이기 때문에 태그를 사용해야 할텐데, <script> 태그를 제외하고 작성해줘. 처음과 끝은 무조건 <p> 태르고 해줘.\n"
-                + "알림장 내용이 없다면, 허위사실은 작성하지 말고 적당히 꾸며서 알림장 작성해줘.\n",
+                + "알림장 내용이 없다면 괜찮아, 그대신 허위사실은 작성하지 말고 오늘 일정이나 수업을 바탕으로 알림장 작성해줘. 우리는 과거의 일을 메모해 놓은거에 대해 알림장을 쓰는거야. 현재와 미래 관련 용어는 절대 쓰지 말아줘.\n",
             today,
             autoDailyNoteRequestDto.getKidName(),
             today,
