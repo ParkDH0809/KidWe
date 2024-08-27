@@ -12,10 +12,10 @@ const KindergartenManagement = () => {
   useLoading(isLoading);
   return (
     <div
-      className={`${containerNavigatorClass} flex flex-col items-center h-screen w-screen max-w-screen`}
+      className={`${containerNavigatorClass} flex flex-col items-center h-screen w-full max-w-screen`}
     >
       <Header title="유치원 설정" buttonType="back" />
-      <div className="flex flex-col space-y-4 p-10 items-center justify-center content-center">
+      <div className="flex flex-col items-center content-center justify-center p-10 space-y-4">
         <p className="text-4xl">{data?.name}</p>
         <p>{data?.address}</p>
         <p>{data?.addressDetail}</p>

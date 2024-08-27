@@ -14,6 +14,6 @@ export const patchKidInfoState = atom<PatchKidInfo>({
       banId: 0,
       kindergartenId: 0,
     },
-    picture: '',
+    picture: undefined,
   },
 });

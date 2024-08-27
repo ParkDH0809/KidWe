@@ -8,5 +8,5 @@ export interface PatchKidInfo {
     banId: number;
     kindergartenId: number;
   };
-  picture: string;
+  picture: undefined | string;
 }

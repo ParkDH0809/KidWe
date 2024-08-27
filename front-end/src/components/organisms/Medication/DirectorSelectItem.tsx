@@ -22,7 +22,7 @@ const DirectorSelectItem = ({
   return (
     <>
       {memberRole === RoleItem.Director && (
-        <div className="flex justify-end w-full px-3 mb-3">
+        <div className="flex justify-end w-full">
           <Select size="medium" label="반선택" onChange={handleBanChange}>
             {bans &&
               bans.map(ban => (

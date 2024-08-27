@@ -136,7 +136,7 @@ const KindergartenBan: React.FC = () => {
   ]);
 
   return (
-    <div className="flex flex-col items-center w-full h-full min-h-screen px-5 py-6 pt-20 space-y-16">
+    <div className="flex flex-col items-center w-full h-full min-h-full px-5 py-6 pt-20 space-y-16">
       <ToastContainer
         position="top-center"
         autoClose={1000}

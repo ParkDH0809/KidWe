@@ -12,7 +12,7 @@ const axiosInstance = axios.create({
     'Content-Type': 'application/json',
   },
   withCredentials: true, // Cross Origin
-  timeout: 3000,
+  timeout: 10000,
 });
 
 axiosInstance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
@@ -43,11 +43,15 @@ axiosInstance.interceptors.response.use(
       (status === 400 && code === 'TOKEN_MISSING')
     ) {
       console.log('Access Token 재발급 시작');
-      const {accessToken} = await getAccessToken();
-      setToken(accessToken);
+      try {
+        const {accessToken} = await getAccessToken();
+        setToken(accessToken);
 
-      console.log('Access Token 재발급 완료');
-      return axiosInstance(error.config);
+        console.log('Access Token 재발급 완료');
+        return axiosInstance(error.config);
+      } catch (error) {
+        window.location.replace('/auth/login');
+      }
     }
     throw error;
   }

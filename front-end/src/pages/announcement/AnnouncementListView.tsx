@@ -1,10 +1,11 @@
 import {useNavigate} from 'react-router-dom';
-
 import {useAnnouncementList} from '@/hooks/announcement/useAnnouncementList';
-import {getMemberId} from '@/utils/userData';
 import {containerHeaderClass} from '@/styles/styles';
 
-import Spinner from '@/components/atoms/Loader/Spinner';
+import {getMemberId, getKindergartenId} from '@/utils/userData';
+import {useLoading} from '@/hooks/loading/useLoading';
+import {isGuardian} from '@/utils/auth/isGuardian';
+
 import Header from '@/components/organisms/Navigation/Header';
 import NoResult from '@/components/atoms/NoResult';
 import AnnounceItem from '@/components/molecules/Item/AnnounceItem';
@@ -14,7 +15,10 @@ import NavigationBar from '@/components/organisms/Navigation/NavigationBar';
 const AnnouncementListView = () => {
   const navigate = useNavigate();
 
-  const {data, isLoading} = useAnnouncementList(getMemberId()!);
+  const {data, isLoading} = useAnnouncementList(
+    getMemberId()!,
+    getKindergartenId()!
+  );
 
   const handleUserItemClick = (announcementId: number) => {
     navigate(`/announcements/${announcementId}`);
@@ -24,9 +28,10 @@ const AnnouncementListView = () => {
     navigate('/announcements/write');
   };
 
+  useLoading(isLoading);
+
   return (
-    <div className="flex flex-col h-screen">
-      {isLoading && <Spinner />}
+    <div className="relative flex flex-col h-screen max-h-screen">
       <Header title="공지사항" buttonType="close" />
       <div className={`${containerHeaderClass}`}>
         {data?.length === 0 ? (
@@ -50,7 +55,7 @@ const AnnouncementListView = () => {
           ))
         )}
       </div>
-      <WriteButton onClick={handleWriteButtonClick} />
+      {!isGuardian() && <WriteButton onClick={handleWriteButtonClick} />}
       <NavigationBar />
     </div>
   );

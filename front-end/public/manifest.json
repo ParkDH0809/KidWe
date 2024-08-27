@@ -1,11 +1,11 @@
 {
-  "name": "Yeomyeong808",
-  "short_name": "808",
+  "name": "KidWe",
+  "short_name": "KidWe",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#FFFFFF",
   "theme_color": "#FFF1A7",
-  "description": "PWA with Vite.js, React.js and TypeScript",
+  "description": "유치원 통합 관리 서비스",
   "icons": [
     {
       "src": "icons/favicon.ico",

@@ -6,7 +6,7 @@ const ModalBackground = ({onClick}: ModalBackgroundProps) => {
   return (
     <div
       onClick={onClick}
-      className="fixed w-screen h-screen bg-gray-300 opacity-40"
+      className="fixed w-screen h-screen bg-gray-300 modal opacity-40"
     ></div>
   );
 };

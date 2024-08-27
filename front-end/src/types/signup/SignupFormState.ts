@@ -7,5 +7,5 @@ export interface SignupFormState {
     role: string;
   };
   // picture: string | ArrayBuffer | null;
-  picture: string;
+  picture: string | undefined;
 }

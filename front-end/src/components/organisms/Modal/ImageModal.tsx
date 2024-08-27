@@ -17,13 +17,13 @@ const ImageModal = ({images, selectedImage, onClose}: ImageModalProps) => {
   const [currentIndex, setCurrentIndex] = useState(selectedImage);
 
   return (
-    <div className="fixed inset-0 z-20 flex items-center justify-center bg-black">
-      <div className="absolute top-0 z-20 flex items-center justify-between w-full px-5 py-3 bg-black bg-opacity-50">
+    <div className="fixed inset-0 z-40 flex items-center justify-center bg-black modal">
+      <div className="absolute top-0 z-40 flex items-center justify-between w-full px-5 py-3 bg-black bg-opacity-50">
         <CloseButton color="white" onClick={onClose} />
         <span className="text-xl text-white">
           {currentIndex + 1}/{images.length}
         </span>
-        <DownloadButton imageUrl={images[currentIndex]} />
+        <DownloadButton imageUrl={getFullImageSource(images[currentIndex])} />
       </div>
       <div className="absolute inset-0 w-full h-full">
         <Swiper

@@ -1,8 +1,11 @@
 import {useEffect} from 'react';
 import {useNavigate, useLocation, useParams} from 'react-router-dom';
+
 import {useLeaveConsentDetail} from '@/hooks/leave-consent/useLeaveConsentDetail';
 import {useDeleteLeaveConsent} from '@/hooks/leave-consent/useDeleteLeaveConsent';
 import {containerHeaderClass} from '@/styles/styles';
+import {getFullImageSource} from '@/utils/getFullImageSource';
+
 import Spinner from '@/components/atoms/Loader/Spinner';
 import Header from '@/components/organisms/Navigation/Header';
 import UserCardItem from '@/components/molecules/Item/UserCardItem';
@@ -51,7 +54,7 @@ const LeaveConsentDetail = () => {
       <Header title="귀가동의서" buttonType="back" />
       <div className={containerHeaderClass}>
         <UserCardItem
-          profile=""
+          profile={getFullImageSource(data?.kidPicture)}
           userName={userInfo.kidName}
           banName={userInfo.banName}
           cardType="detail"

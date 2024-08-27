@@ -9,10 +9,12 @@ import {getBanId} from '@/utils/userData';
 import {useGetDateBySearchParam} from '@/hooks/useGetDateBySearchParam';
 import {toast} from 'react-toastify';
 import {getFullImageSource} from '@/utils/getFullImageSource';
+import {isDirector} from '@/utils/auth/isDirector';
 
 interface AttendedKidsSelectViewProps {
   attendances?: GetAttendance[];
   onClickButton?: () => void;
+  ban: number | null;
 }
 
 interface CheckedGetAttendance extends GetAttendance {
@@ -22,6 +24,7 @@ interface CheckedGetAttendance extends GetAttendance {
 const AttendedKidsSelectView = ({
   attendances,
   onClickButton: onClickTabChangeButton,
+  ban,
 }: AttendedKidsSelectViewProps) => {
   const date = useGetDateBySearchParam();
 
@@ -64,7 +67,7 @@ const AttendedKidsSelectView = ({
     setIsPositiveModalOpen(true);
   };
 
-  const submitMutate = usePutAttendanceInfo(getBanId()!);
+  const submitMutate = usePutAttendanceInfo(isDirector() ? ban : getBanId()!);
   const submitCheckedList = () => {
     if (checkedAttendances !== undefined) {
       const [year, month, day] = date

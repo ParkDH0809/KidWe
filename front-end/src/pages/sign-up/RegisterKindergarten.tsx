@@ -61,7 +61,7 @@ const RegisterKindergarten: React.FC = () => {
     if (isStateUpdated) {
       const updateKindergarten = async () => {
         try {
-          await signupKindergartenMutate.mutate();
+          await signupKindergartenMutate.mutateAsync();
           console.log('원장님 가입 완료');
           navigate('/auth/signup/complete');
         } catch (error) {
@@ -119,7 +119,7 @@ const RegisterKindergarten: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-full ">
       <div className="flex flex-col items-center w-full h-full px-10 py-6 space-y-8 main-container">
         <div className="flex items-center justify-center text-lg">
           <p>유치원을 등록해주세요</p>
@@ -179,9 +179,7 @@ const RegisterKindergarten: React.FC = () => {
           />
         </div>
       </div>
-      <div
-        className={`${isShort ? 'absolute bottom-0' : 'relative mt-8'} w-full flex justify-center px-4`}
-      >
+      <div className={`py-10 w-full flex items-center justify-center px-4`}>
         <Button
           label="유치원 등록"
           onClick={handleRegisterKindergartenButtonClick}

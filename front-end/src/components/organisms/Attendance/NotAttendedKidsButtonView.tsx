@@ -3,7 +3,6 @@ import {useRef, useState} from 'react';
 import Modal from '@/components/organisms/Modal/Modal';
 import ModalPortal from '@/components/organisms/Modal/ModalPortal';
 import TextArea from '@/components/atoms/Input/TextArea';
-import Select from '@/components/molecules/DropdownButton/Select';
 import XSmallButton from '@/components/atoms/Button/XSmallButton';
 import type {GetAttendance} from '@/types/attendance/GetAttendance';
 import {usePutAttendanceInfo} from '@/hooks/attendance/usePutAttendanceInfo';
@@ -12,15 +11,21 @@ import {useGetDateBySearchParam} from '@/hooks/useGetDateBySearchParam';
 import {getBanId} from '@/utils/userData';
 import {toast} from 'react-toastify';
 import {getFullImageSource} from '@/utils/getFullImageSource';
+import DirectorSelectItem from '@/components/organisms/Medication/DirectorSelectItem';
+import {RoleItem} from '@/enum/roleItem';
 
 interface AttendedKidsButtonViewProps {
   attendances?: GetAttendance[];
   onClickSelect?: () => void;
+  memberRole: RoleItem;
+  onBanChange: (value: number) => void;
 }
 
 const AttendedKidsButtonView = ({
   attendances,
   onClickSelect,
+  memberRole,
+  onBanChange,
 }: AttendedKidsButtonViewProps) => {
   const date = useGetDateBySearchParam();
 
@@ -94,25 +99,26 @@ const AttendedKidsButtonView = ({
   return (
     <>
       <div className="flex items-center justify-between px-8 py-2 border-b border-gray-200 min-h-14">
-        <div>
-          <Select label="반 이름" size="small">
-            <Select.Option text="장미반" />
-          </Select>
+        <div className="flex items-center justify-between w-full">
+          <XSmallButton
+            label="선택"
+            onClick={() => {
+              onClickSelect?.();
+            }}
+            variant="negative"
+          />
+          <DirectorSelectItem
+            memberRole={memberRole}
+            onBanChange={onBanChange}
+          />
         </div>
-        <XSmallButton
-          label="선택"
-          onClick={() => {
-            onClickSelect?.();
-          }}
-          variant="negative"
-        />
       </div>
       <div className="flex flex-col items-center justify-center w-full h-fit">
         {attendances &&
           attendances.map(attendance => (
             <UserCardItemWithButton
               key={attendance.attendanceId}
-              profile={getFullImageSource(attendance.image)}
+              profile={attendance?.image}
               userName={attendance.kidName}
               negativeLabel="결석"
               onClickNegative={() => {

@@ -4,6 +4,8 @@ import {useNavigate, useLocation, useParams} from 'react-router-dom';
 import {useMedicationDetail} from '@/hooks/medication/useMedicationDetail';
 import {useDeleteMedication} from '@/hooks/medication/useDeleteMedication';
 import {containerHeaderClass} from '@/styles/styles';
+import {useLoading} from '@/hooks/loading/useLoading';
+import {getFullImageSource} from '@/utils/getFullImageSource';
 
 import Header from '@/components/organisms/Navigation/Header';
 import UserCardItem from '@/components/molecules/Item/UserCardItem';
@@ -19,6 +21,7 @@ const MedicationDetail = () => {
   const deleteMutation = useDeleteMedication();
 
   const {data, isLoading} = useMedicationDetail(medicationId ?? '');
+  useLoading(isLoading);
 
   useEffect(() => {
     if (!isLoading && !data) {
@@ -42,7 +45,12 @@ const MedicationDetail = () => {
         },
         {title: '보관', content: data.storageMethod, color: '#FFEC9E'},
         {title: '비고', content: data.others, color: '#FFEC9E'},
-        {title: '사진', imageUrl: data.medicineUrl, color: '#FFEC9E'},
+        {
+          title: '사진',
+          content: 'image',
+          imageUrl: data.medicineUrl,
+          color: '#FFEC9E',
+        },
       ].filter(item => item.content && item.content.trim() !== '')
     : [];
 
@@ -68,7 +76,7 @@ const MedicationDetail = () => {
       <Header title={'투약의뢰서'} buttonType="back" />
       <div className={containerHeaderClass}>
         <UserCardItem
-          profile=""
+          profile={getFullImageSource(data?.kidPicture)}
           userName={userInfo.kidName}
           banName={userInfo.banName}
           cardType="detail"
@@ -80,12 +88,11 @@ const MedicationDetail = () => {
               key={index}
               color={item.color}
               title={item.title}
-              content={item.content}
+              content={item.content === 'image' ? '' : item.content}
               imageUrl={item.imageUrl}
             />
           ))}
         </div>
-        {/* 서명 */}
         <ConsentSignatureCard
           text="학부모가 요청한 투약의뢰서에 따른 책임은\n 학부모에게 있습니다."
           date={data?.medicationExecuteDate || ''}

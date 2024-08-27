@@ -16,6 +16,7 @@ import DailyNoteEdit from '@/pages/daily-note/DailyNoteEdit';
 import AnnouncementListView from '@/pages/announcement/AnnouncementListView';
 import AnnouncementDetail from '@/pages/announcement/AnnouncementDetail';
 import AnnouncementWrite from '@/pages/announcement/AnnouncementWrite';
+import AnnouncementEdit from '@/pages/announcement/AnnouncementEdit';
 
 import MedicationListView from '@/pages/medication/MedicationListView';
 import MedicationDetail from '@/pages/medication/MedicationDetail';
@@ -73,12 +74,12 @@ const onlyGuardian = () => {
   return null;
 };
 
-const onlyTeacher = () => {
-  if (!isTeacher()) {
-    return redirect('/');
-  }
-  return null;
-};
+// const onlyTeacher = () => {
+//   if (!isTeacher()) {
+//     return redirect('/');
+//   }
+//   return null;
+// };
 
 const onlyDirector = () => {
   if (!isDirector()) {
@@ -173,6 +174,10 @@ export const router = createBrowserRouter([
         path: 'write',
         element: <AnnouncementWrite />,
       },
+      {
+        path: ':announcementId/edit',
+        element: <AnnouncementEdit />,
+      },
     ],
   },
   {
@@ -226,7 +231,23 @@ export const router = createBrowserRouter([
   },
   {
     path: '/memos',
-    loader: onlyTeacher,
+    loader: async () => {
+      if (!isTeacher()) {
+        return redirect('/');
+      }
+
+      // try {
+      //   const result = await getAccessToken();
+      //   const {accessToken} = result;
+      //   setAccessToken(accessToken);
+      // } catch (error) {
+      //   deleteAccessToken();
+      //   deleteRefreshToken();
+      //   deleteUserData();
+      //   return redirect('/auth/login');
+      // }
+      return null;
+    },
     element: <MemoView />,
     children: [
       {
@@ -252,7 +273,6 @@ export const router = createBrowserRouter([
       {
         path: 'setting',
         element: <KindergartenManagement />,
-        loader: onlyDirector,
       },
       {path: 'child', element: <ChildManagement />},
       {path: 'teacher', element: <TeacherManagement />, loader: onlyDirector},

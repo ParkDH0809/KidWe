@@ -61,7 +61,7 @@ const MoreButton = ({
       </button>
 
       <div
-        className={`${positionClass} ${upClass} bg-white absolute w-full min-w-fit z-20`}
+        className={`${positionClass} ${upClass} bg-white absolute w-full min-w-fit z-10`}
       >
         <Dropdown isOpen={isOpen}>{addedChilds}</Dropdown>
       </div>

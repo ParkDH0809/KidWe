@@ -4,7 +4,7 @@ import {useRecoilState, useResetRecoilState} from 'recoil';
 
 import {useDailyNoteDetail} from '@/hooks/daily-note/useDailyNoteDetail';
 import {usePutDailyNote} from '@/hooks/daily-note/usePutDailyNote';
-import {dailyNoteFormState} from '@/recoil/atoms/daily-note/dailyNoteFormState';
+import {dailyNoteEditFormState} from '@/recoil/atoms/daily-note/dailyNoteEditFormState';
 import {getMemberId} from '@/utils/userData';
 import {containerHeaderClass} from '@/styles/styles';
 
@@ -17,8 +17,8 @@ const DailyNoteEdit = () => {
   const navigate = useNavigate();
   const {data} = useDailyNoteDetail(getMemberId()!, dailyNoteId!);
   const {mutate} = usePutDailyNote();
-  const [formState, setFormState] = useRecoilState(dailyNoteFormState);
-  const resetFormState = useResetRecoilState(dailyNoteFormState);
+  const [formState, setFormState] = useRecoilState(dailyNoteEditFormState);
+  const resetFormState = useResetRecoilState(dailyNoteEditFormState);
   const EMPTY = '<p><br></p>';
 
   useEffect(() => {

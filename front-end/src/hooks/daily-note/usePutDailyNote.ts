@@ -9,11 +9,7 @@ export const usePutDailyNote = () => {
     onSuccess: (_, variables) => {
       // 캐시 무효화
       queryClient.invalidateQueries({
-        queryKey: [
-          'dailyNoteDetail',
-          variables.memberId,
-          variables.dailyNoteId,
-        ],
+        queryKey: ['dailyNoteList', variables.memberId, variables.dailyNoteId],
       });
     },
     onError: (error: Error) => {

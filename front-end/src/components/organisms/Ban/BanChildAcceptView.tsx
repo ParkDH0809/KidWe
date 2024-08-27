@@ -7,6 +7,7 @@ import {getChildAccept} from '@/apis/management/getChildAccept';
 import {ChildInfo} from '@/types/management/ChildInfo';
 import {getKindergartenId} from '@/utils/userData';
 import {putChildDecline} from '@/apis/management/putChildDecline';
+import {getFullImageSource} from '@/utils/getFullImageSource';
 const BanChildAcceptView = () => {
   const [childAcceptList, setChildAcceptList] = useState<ChildInfo[]>([]);
   const [kindergartenId, setKindergartenId] = useState(getKindergartenId());
@@ -56,7 +57,7 @@ const BanChildAcceptView = () => {
         <UserCardItem
           key={child.kidId}
           cardType="detail"
-          profile=""
+          profile={getFullImageSource(undefined)}
           userName={child.name}
           options={[
             {

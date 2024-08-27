@@ -12,7 +12,7 @@ export interface Comment {
   childs: Child[];
 }
 
-interface Child {
+export interface Child {
   id: string;
   picture: string;
   role: RoleItem;

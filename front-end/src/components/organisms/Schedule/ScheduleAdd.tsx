@@ -15,6 +15,7 @@ import {teacherScheduleOptionKeys} from '@/enum/kindergarten/schedule';
 import {useWriteKindergartenSchedule} from '@/hooks/schedule/useWriteKindergartenSchedule';
 import XSmallButton from '@/components/atoms/Button/XSmallButton';
 import {getMemberId, getMemberRole} from '@/utils/userData';
+import {toast} from 'react-toastify';
 
 interface ScheduleAddProps {
   defaultDate: Dayjs;
@@ -77,6 +78,7 @@ const ScheduleAdd = ({defaultDate}: ScheduleAddProps) => {
       {
         onSuccess: () => {
           // refetch();
+          toast.info('일정이 등록되었습니다.');
           setSelected(undefined);
           setKeyword('');
           setContent('');

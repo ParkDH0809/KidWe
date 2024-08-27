@@ -16,10 +16,10 @@ const useApiHandler = () => {
         deleteAccessToken();
         deleteRefreshToken();
         deleteUserData();
-        toast.error('세션이 만료되었습니다. 다시 로그인 해주세요.');
+        // toast.error('세션이 만료되었습니다. 다시 로그인 해주세요.');
         window.location.replace('/login');
       } else {
-        defaultMessage(status);
+        // defaultMessage(status);
       }
     }
   }, []);

@@ -3,5 +3,5 @@ export interface MedicationItem {
   kidName: string;
   banName?: string;
   medicationExecuteDate: string;
-  profileImage?: string;
+  kidPicture?: string;
 }

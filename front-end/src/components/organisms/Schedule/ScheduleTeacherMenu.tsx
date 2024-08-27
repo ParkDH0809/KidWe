@@ -22,7 +22,7 @@ export const ScheduleTeacherMenu = ({
           <div>
             {getMemberRole() === 'ROLE_DIRECTOR' && (
               <>
-                <Select label="반" size="small" onChange={onBanChange}>
+                <Select label="반" size="medium" onChange={onBanChange}>
                   {bans &&
                     bans.map(ban => (
                       <Select.Option

@@ -75,7 +75,7 @@ const SelectMain = ({
   }, [label]);
 
   return (
-    <div ref={selectRef} className={`${sizeClass} box-border relative`}>
+    <div ref={selectRef} className={`${sizeClass} box-border relative z-10`}>
       <SelectButton
         onClick={handleButtonClick}
         label={selectedOption === undefined ? label : selectedOption}

@@ -91,7 +91,7 @@ const MemoTagSelect = () => {
         value={input}
         onChange={handleInputChange}
       />
-      <div className="box-border h-40 px-3 py-3 overflow-y-auto border border-gray-200 rounded-md text-wrap">
+      <div className="box-border h-40 px-3 py-3 overflow-y-auto border border-gray-200 rounded-md text-wrap scrollbar-hide">
         <div className="flex flex-wrap w-full gap-2 h-fit">
           {filteredTags && filteredTags.length !== 0 ? (
             filteredTags.map((tag, idx) => (

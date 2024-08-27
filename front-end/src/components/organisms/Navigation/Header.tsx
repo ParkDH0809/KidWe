@@ -15,7 +15,7 @@ const Header = ({title, buttonType}: HeaderProps) => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-10 flex items-center justify-between w-full p-3.5 bg-secondary">
+    <header className="fixed top-0 left-0 right-0 z-20 flex items-center justify-between w-full p-3.5 bg-secondary">
       <div className="flex items-center w-6">
         {buttonType === 'back' && <BackButton />}
         {buttonType === 'close' && <CloseButton onClick={handleGoHome} />}

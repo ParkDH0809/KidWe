@@ -1,13 +1,13 @@
 import Header from '@/components/organisms/Navigation/Header';
 import NavigationBar from '@/components/organisms/Navigation/NavigationBar';
-import {containerNavigatorClass} from '@/styles/styles';
+import {containerHeaderClass} from '@/styles/styles';
 import Tabs from '@/components/organisms/Navigation/Tabs';
 import BanChildPendingView from '@/components/organisms/Ban/BanChildPendingView';
 import BanChildAcceptView from '@/components/organisms/Ban/BanChildAcceptView';
 const ChildManagement = () => {
   return (
     <div
-      className={`${containerNavigatorClass} flex flex-col h-screen w-screen max-w-screen`}
+      className={`${containerHeaderClass} flex flex-col h-screen w-full max-w-full`}
     >
       <Header title="원생 관리" buttonType="back" />
       <Tabs

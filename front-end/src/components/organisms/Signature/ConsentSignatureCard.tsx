@@ -1,3 +1,5 @@
+import {getFullImageSource} from '@/utils/getFullImageSource';
+
 interface ConsentSignatureCardProps {
   text: string;
   date: string;
@@ -26,7 +28,10 @@ const ConsentSignatureCard = ({
         <p className="text-sm ">
           {date} {parentName}
         </p>
-        <img className="object-contain w-20" src={signatureUrl} />
+        <img
+          className="object-contain w-20"
+          src={getFullImageSource(signatureUrl)}
+        />
       </div>
     </div>
   );

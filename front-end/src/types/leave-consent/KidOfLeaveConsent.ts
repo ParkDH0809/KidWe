@@ -1,4 +1,5 @@
 export interface KidOfLeaveConsent {
+  kidPicture: string; // 아이 사진
   leaveDate: string; // 귀가일
   leaveTime: string; // 귀가 시간
   leaveMethod: string; // 귀가 방법

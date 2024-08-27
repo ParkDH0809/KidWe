@@ -7,41 +7,53 @@ import {useGetKindergartenSchedules} from '@/hooks/schedule/useGetKindergartenSc
 import {getBanId, getKindergartenId} from '@/utils/userData';
 import {GetSchedule} from '@/types/schedule/GetSchedule';
 import {useGetBanSchedule} from '@/hooks/schedule/useGetBanSchedule';
-import {getMemberRole} from '@/utils/userData';
 import {directorBanState} from '@/recoil/atoms/schedule/directorBan';
 import {useRecoilValue} from 'recoil';
+import {useLoading} from '@/hooks/loading/useLoading';
+import {isDirector} from '@/utils/auth/isDirector';
 
 interface ScheduleInfoProps {
   date: Dayjs;
 }
-
-const isDirector = getMemberRole() === 'ROLE_DIRECTOR';
 
 const ScheduleInfo = ({date}: ScheduleInfoProps) => {
   const [isShowBan, setIsShowBan] = useState(false);
   const [data, setData] = useState<GetSchedule[]>();
   const banState = useRecoilValue(directorBanState);
 
-  const {data: allScheduleData, refetch: allRefetch} =
-    useGetKindergartenSchedules(
-      getKindergartenId()!,
-      date.format('YYYY-MM-DD')
-    );
-
-  const {data: banScheduleData, refetch: banRefetch} = useGetBanSchedule(
-    isDirector ? banState! : getBanId()!,
+  const {
+    data: allScheduleData,
+    isLoading: isAllLoading,
+    // refetch: allRefetch,
+  } = useGetKindergartenSchedules(
+    getKindergartenId()!,
     date.format('YYYY-MM-DD')
   );
+  useLoading(isAllLoading);
+
+  const {
+    data: banScheduleData,
+    isLoading: isBanLoading,
+    // refetch: banRefetch,
+  } = useGetBanSchedule(
+    isDirector() ? banState : getBanId(),
+    date.format('YYYY-MM-DD')
+  );
+  useLoading(isBanLoading);
 
   useEffect(() => {
     if (isShowBan) {
-      banRefetch();
       setData(banScheduleData);
     } else {
-      allRefetch();
       setData(allScheduleData);
     }
-  }, [isShowBan, allScheduleData, banScheduleData, allRefetch, banRefetch]);
+  }, [isShowBan, setData, banScheduleData, allScheduleData]);
+
+  // useEffect(() => {
+  //   if (!isShowBan) {
+  //     setData(allScheduleData);
+  //   }
+  // }, [isShowBan, setData, allScheduleData]);
 
   const handleToggle = () => {
     setIsShowBan(!isShowBan);

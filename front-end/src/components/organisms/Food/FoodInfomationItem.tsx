@@ -1,10 +1,11 @@
+import {KidAllergy} from '@/types/food/KidAllergy';
+import {getFullImageSource} from '@/utils/getFullImageSource';
+
 import sun from '@/assets/icons/sun-with-face.svg';
 import moon from '@/assets/icons/full-moon-face.svg';
 import hotDog from '@/assets/icons/hot-dog.svg';
 import Tag from '@/components/atoms/Tag/Tag';
-import {KidAllergy} from '@/types/food/KidAllergy';
 import ProfileImage from '@/components/atoms/Image/ProfileImage';
-import NoImage from '@/assets/no-profile.png';
 
 interface FoodInfomationItemProps {
   variant?: 'lunch' | 'snack' | 'dinner';
@@ -53,7 +54,7 @@ const FoodInfomationItem = ({
   return (
     <div
       onClick={onClick}
-      className={`w-[21rem] ${colorClass} flex items-center justify-between shadow-sm min-h-28 h-fit px-5 py-5 box-border rounded-md border text-gray-300`}
+      className={`w-[21rem] ${colorClass} flex items-center justify-between shadow-sm min-h-fit px-5 py-5 box-border rounded-md border text-gray-300`}
     >
       <div className="flex flex-col items-center justify-center h-full gap-2 w-14">
         <img src={src} />
@@ -64,7 +65,7 @@ const FoodInfomationItem = ({
           backgroundColor={color}
         />
       </div>
-      <div className="flex flex-col justify-center w-56 h-full">
+      <div className="flex flex-col justify-center w-56">
         <p className="text-xs">식단</p>
         <p className="mb-3 text-md">{menu}</p>
         {allergies?.length !== 0 && (
@@ -77,16 +78,19 @@ const FoodInfomationItem = ({
             </div>
           </>
         )}
-        {kidAllergies && (
+        {kidAllergies?.length !== 0 && (
           <>
             <p className="text-xs">주의 학생</p>
             <div className="flex flex-wrap gap-1 mb-3">
               {kidAllergies?.map(kid => (
-                <ProfileImage
-                  src={kid.kidImageUrl || NoImage}
-                  key={kid.kidName}
-                  size="1rem"
-                />
+                <div className="flex flex-col items-center justify-center gap-1 w-fit h-fit">
+                  <ProfileImage
+                    src={getFullImageSource(kid.kidImageUrl)}
+                    key={kid.kidName}
+                    size="2rem"
+                  />
+                  <p className="text-xxs">{kid.kidName}</p>
+                </div>
               ))}
             </div>
           </>

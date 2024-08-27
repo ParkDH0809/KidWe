@@ -9,10 +9,12 @@ import {useGetDateBySearchParam} from '@/hooks/useGetDateBySearchParam';
 import {getBanId} from '@/utils/userData';
 import {toast} from 'react-toastify';
 import {getFullImageSource} from '@/utils/getFullImageSource';
+import {isDirector} from '@/utils/auth/isDirector';
 
 interface AttendedKidsSelectViewProps {
   attendances?: GetAttendance[];
   onClickButton?: () => void;
+  ban: number | null;
 }
 
 interface CheckedGetAttendance extends GetAttendance {
@@ -22,6 +24,7 @@ interface CheckedGetAttendance extends GetAttendance {
 const AttendedKidsSelectView = ({
   attendances,
   onClickButton,
+  ban,
 }: AttendedKidsSelectViewProps) => {
   const date = useGetDateBySearchParam();
   // checked attendances
@@ -63,7 +66,7 @@ const AttendedKidsSelectView = ({
     setIsModalOpen(true);
   };
 
-  const putMutate = usePutAttendanceInfo(getBanId()!);
+  const putMutate = usePutAttendanceInfo(isDirector() ? ban : getBanId()!);
 
   const handleSubmit = () => {
     if (date !== undefined) {
@@ -71,7 +74,7 @@ const AttendedKidsSelectView = ({
         ?.filter(value => value.isChecked)
         .map(value => value.kidId);
       if (selectedKids !== undefined) {
-        if (selectedKids.length !== 0) {
+        if (selectedKids.length === 0) {
           toast.info('선택된 학생이 없습니다.');
           onClickButton?.();
         } else {

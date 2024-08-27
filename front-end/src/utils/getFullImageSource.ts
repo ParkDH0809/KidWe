@@ -1,4 +1,4 @@
-import noProfile from '@/assets/no-profile.png';
+import noProfile from '@/assets/image/no-profile.png';
 
 export const getFullImageSource = (img: string | undefined) => {
   if (img) {

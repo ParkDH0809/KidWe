@@ -3,7 +3,7 @@ export const scheduleKeys = {
   kindergartenInfo: (kindergartenId: number) =>
     [...scheduleKeys.all, kindergartenId] as const,
   allSchedules: (kindergartenId: number, date: string) =>
-    [...scheduleKeys.kindergartenInfo(kindergartenId), date] as const,
+    [...scheduleKeys.kindergartenInfo(kindergartenId), 'all', date] as const,
   banSchedules: (banId: number, date: string) =>
-    [...scheduleKeys.all, banId, date] as const,
+    [...scheduleKeys.all, 'ban', banId, date] as const,
 };

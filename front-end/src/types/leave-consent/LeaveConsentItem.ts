@@ -3,5 +3,5 @@ export interface LeaveConsentItem {
   kidName: string;
   banName: string;
   leaveDate: string;
-  profileImage?: string;
+  kidPicture?: string;
 }

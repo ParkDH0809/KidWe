@@ -25,7 +25,7 @@ const TextArea = forwardRef(
 
     return (
       <textarea
-        className="box-border w-full h-full p-3 text-xs font-normal text-gray-300 transition-colors border border-gray-200 rounded-md focus:outline-none focus:border-gray-200 focus:shadow-sm focus:shadow-gray-200"
+        className="box-border w-full h-full p-3 text-xs font-normal text-gray-300 transition-all border border-gray-200 rounded-md outline-none focus:outline-none focus:border-gray-200 focus:shadow-sm focus:shadow-gray-200"
         onChange={handleChange}
         onKeyDown={keyDownHandle}
         {...props}

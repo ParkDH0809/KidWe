@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {getRefreshToken} from '@/utils/userRefreshToken';
+// import {getRefreshToken} from '@/utils/userRefreshToken';
 
 export const getAccessToken = async (): Promise<{accessToken: string}> => {
   const result = await axios.post(
@@ -7,7 +7,7 @@ export const getAccessToken = async (): Promise<{accessToken: string}> => {
     {},
     {
       headers: {
-        Authorization: `Bearer ${getRefreshToken()}`,
+        // Authorization: `Bearer ${getRefreshToken()}`,
         'Content-Type': 'application/json',
       },
       timeout: 3000,

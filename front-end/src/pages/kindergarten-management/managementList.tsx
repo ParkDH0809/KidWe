@@ -7,7 +7,6 @@ import KindergartenCard from '@/components/atoms/KindergartenCard';
 import {useGetKindergartenInfo} from '@/hooks/schedule/useGetKindergartenInfo';
 import {useLoading} from '@/hooks/loading/useLoading';
 
-import {useState} from 'react';
 import {getMemberRole, getKindergartenId} from '@/utils/userData';
 
 const ManagementList = () => {
@@ -32,7 +31,7 @@ const ManagementList = () => {
     navigate('/kindergarten/ban');
   };
   return (
-    <div className={`${containerHeaderClass} w-screen h-screen`}>
+    <div className={`${containerHeaderClass} w-full h-screen`}>
       <Header title="유치원 관리" buttonType="close" />
       <div className="h-full overflow-y-auto bg-[#F8F8F8]">
         <div className="p-5 mb-5 bg-white">

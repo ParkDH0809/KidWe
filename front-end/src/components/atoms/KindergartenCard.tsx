@@ -1,4 +1,4 @@
-import Icon from '@/assets/sunflower.png';
+import Icon from '@/assets/image/sunflower.png';
 
 interface KindergartenCardProps {
   kindergartenName: string;

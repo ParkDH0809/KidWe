@@ -4,8 +4,9 @@ import {useParams} from 'react-router-dom';
 import {useAnnouncementDetail} from '@/hooks/announcement/useAnnouncementDetail';
 import {usePostAnnouncementComment} from '@/hooks/announcement/usePostAnnouncementComment';
 import {usePostAnnouncementReply} from '@/hooks/announcement/usePostAnnouncementReply';
-import {getFullImageSource} from '@/utils/getFullImageSource';
 import {getMemberId} from '@/utils/userData';
+import {RoleItem} from '@/enum/roleItem';
+import {ROLE_NAMES} from '@/constants/roleNames';
 import {containerHeaderClass} from '@/styles/styles';
 
 import Header from '@/components/organisms/Navigation/Header';
@@ -14,11 +15,16 @@ import ArticleTitle from '@/components/molecules/Board/ArticleTitle';
 import ArticleSection from '@/components/organisms/Board/ArticleSection';
 import CommentSection from '@/components/organisms/Board/CommentSection';
 import InputBar from '@/components/organisms/Navigation/InputBar';
-import noProfile from '@/assets/no-profile.png';
+import {useLoading} from '@/hooks/loading/useLoading';
 
 const AnnounementDetail = () => {
   const {announcementId} = useParams();
-  const {data} = useAnnouncementDetail(announcementId!, getMemberId()!);
+  const {data, isLoading} = useAnnouncementDetail(
+    announcementId!,
+    getMemberId()!
+  );
+  useLoading(isLoading);
+
   const postCommentMutation = usePostAnnouncementComment();
   const postReplyMutation = usePostAnnouncementReply();
   const [parentCommentId, setParentCommentId] = useState<number>(0);
@@ -46,17 +52,29 @@ const AnnounementDetail = () => {
     setParentCommentId(commentId);
   };
 
+  const writerName = (() => {
+    if (data?.role === RoleItem.Director) {
+      return '유치원 원장님';
+    }
+
+    const banName = data?.banName || '';
+    const roleName = ROLE_NAMES[data?.role as RoleItem] || '';
+
+    return `${banName} ${roleName}`.trim();
+  })();
+
   return (
     <div className="flex flex-col h-screen">
       <Header title="공지사항" buttonType="back" />
       <div className={containerHeaderClass}>
         <Author
-          profile={getFullImageSource(data?.picture) || noProfile}
-          writer="햄스터반 선생님"
+          profile={data?.picture ?? ''}
+          writer={writerName}
           date={data?.post.createdDateTime || ''}
           isEdit={data?.canDelete}
+          isAnnouncement
         />
-        <ArticleTitle title={data?.post.title || ''} />
+        <ArticleTitle title={data?.post.title || ''} banName={data?.banName} />
         <ArticleSection
           content={data?.post.content || ''}
           images={data?.images || []}

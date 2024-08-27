@@ -7,31 +7,43 @@ interface FoodListViewProps {
 }
 
 const FoodListView = ({food}: FoodListViewProps) => {
+  const isShowLunch = food?.lunch;
+  const isShowSnack = food?.snack;
+  const isShowDinner = food?.dinner;
+
   return (
     <>
       {food ? (
-        <>
-          <FoodInfomationItem
-            variant="lunch"
-            menu={food.lunch}
-            allergies={food.lunchAllergies}
-            kidAllergies={food.kidAllergyListOfLunch}
-          />
-          <FoodInfomationItem
-            variant="snack"
-            menu={food.snack}
-            allergies={food.snackAllergies}
-            kidAllergies={food.kidAllergyListOfSnack}
-          />
-          <FoodInfomationItem
-            variant="dinner"
-            menu={food.dinner}
-            allergies={food.dinnerAllergies}
-            kidAllergies={food.kidAllergyListOfDinner}
-          />
-        </>
+        <div className="flex flex-col items-center justify-center w-full gap-3 h-fit">
+          {isShowLunch && (
+            <FoodInfomationItem
+              variant="lunch"
+              menu={food.lunch}
+              allergies={food.lunchAllergies}
+              kidAllergies={food.kidAllergyListOfLunch}
+            />
+          )}
+          {isShowSnack && (
+            <FoodInfomationItem
+              variant="snack"
+              menu={food.snack}
+              allergies={food.snackAllergies}
+              kidAllergies={food.kidAllergyListOfSnack}
+            />
+          )}
+          {isShowDinner && (
+            <FoodInfomationItem
+              variant="dinner"
+              menu={food.dinner}
+              allergies={food.dinnerAllergies}
+              kidAllergies={food.kidAllergyListOfDinner}
+            />
+          )}
+        </div>
       ) : (
-        <NoResult text="등록된 식단이 없습니다" />
+        <div className="flex items-center justify-center w-full h-full">
+          <NoResult text="등록된 식단이 없습니다" />
+        </div>
       )}
     </>
   );

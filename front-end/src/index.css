@@ -17,6 +17,7 @@ body {
   body,
   .container,
   .content,
+  .modal,
   header,
   nav {
     max-width: 600px;

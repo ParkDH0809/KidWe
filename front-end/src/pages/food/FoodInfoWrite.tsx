@@ -42,6 +42,15 @@ const FoodInfoWrite = () => {
   useLoading(isLoading);
 
   useEffect(() => {
+    if (food && !isUpdate) {
+      navigate({
+        pathname: '/foods',
+        search: `?date=${date}`,
+      });
+    }
+  }, [food, isUpdate, navigate]);
+
+  useEffect(() => {
     if (isUpdate && food !== undefined) {
       const {
         lunch,

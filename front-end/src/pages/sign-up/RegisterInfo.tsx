@@ -11,6 +11,8 @@ import {toast} from 'react-toastify';
 import ImageUploadButton from '@/components/molecules/Button/ImageUploadButton';
 import {SignupFormState} from '@/types/signup/SignupFormState';
 import {signupPictureState} from '@/recoil/atoms/signup/signupPicture';
+import noProfile from '@/assets/image/no-profile.png';
+
 const RegisterInfo = () => {
   const [signupregister, setSignupRegister] =
     useRecoilState<SignupFormState>(Signup);
@@ -20,8 +22,7 @@ const RegisterInfo = () => {
   const [userpassword, setUserpassword] = useState('');
   const [userpassword2, setUserpassword2] = useState('');
   const [usertel, setUsertel] = useState('');
-  const [userpicture, setPicture] = useState<string>('');
-  // const [imageFile, setImageFile] = useState<File | null>(null);
+  const [userpicture, setPicture] = useState<string | undefined>();
   const [imageFile, setImageFile] = useRecoilState(signupPictureState);
   const [iswrongpasswordtype, setIsWrongPasswordType] = useState(false);
   const [iswrongemailtype, setIsWrongEmailType] = useState(false);
@@ -33,7 +34,13 @@ const RegisterInfo = () => {
   const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   const signupMutate = useMutation({
-    mutationFn: async () => {
+    mutationFn: async ({
+      signupregister,
+      imageFile,
+    }: {
+      signupregister: SignupFormState;
+      imageFile: File | null;
+    }) => {
       return postSignup(signupregister, imageFile);
     },
     onSuccess: () => {
@@ -79,18 +86,32 @@ const RegisterInfo = () => {
       }
     }
 
-    setSignupRegister(prevState => ({
-      ...prevState,
-      dto: {
-        ...prevState.dto,
-        name: username,
-        tel: usertel,
-        email: useremail,
-        password: userpassword,
+    signupMutate.mutate({
+      signupregister: {
+        ...signupregister,
+        dto: {
+          ...signupregister.dto,
+          name: username,
+          tel: usertel,
+          email: useremail,
+          password: userpassword,
+        },
       },
-      picture: userpicture,
-    }));
-    setIsStateUpdated(true);
+      imageFile,
+    });
+
+    // setSignupRegister(prevState => ({
+    //   ...prevState,
+    //   dto: {
+    //     ...prevState.dto,
+    //     name: username,
+    //     tel: usertel,
+    //     email: useremail,
+    //     password: userpassword,
+    //   },
+    //   picture: userpicture,
+    // }));
+    // setIsStateUpdated(true);
   };
 
   // const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -119,18 +140,18 @@ const RegisterInfo = () => {
         onClose: () => navigate('/auth/signup/role'),
       });
     }
-    if (isStateUpdated) {
-      // 여기서 info랑 pircture 타입 맞춰서 인수로 주기@@@@@@@@@@@@@@@@@@@@
-      // 0813 19:10 기준으로 하기
-      // 다시 보니 여기서는 인수를 넘기는게 없고, 어차피 api 에서 인수 바꿔줄거임
-      signupMutate.mutate();
-      setIsStateUpdated(false);
-    }
+    // if (isStateUpdated) {
+    //   // 여기서 info랑 pircture 타입 맞춰서 인수로 주기@@@@@@@@@@@@@@@@@@@@
+    //   // 0813 19:10 기준으로 하기
+    //   // 다시 보니 여기서는 인수를 넘기는게 없고, 어차피 api 에서 인수 바꿔줄거임
+    //   signupMutate.mutate();
+    //   setIsStateUpdated(false);
+    // }
   }, [isStateUpdated, navigate, signupMutate, signupregister]);
 
   return (
     <div>
-      <div className="flex flex-col items-center w-full h-full min-h-screen px-10 py-6 space-y-8 main-container">
+      <div className="flex flex-col items-center w-full h-full min-h-full px-10 py-6 space-y-8 main-container">
         <div className="flex items-center justify-center">
           <div className="flex items-center justify-center ">
             <img src="/icons/kidwe.png" alt="Kidwe Icon" />
@@ -159,7 +180,7 @@ const RegisterInfo = () => {
           </div>
         </div> */}
         <ImageUploadButton
-          userPicture={userpicture}
+          userPicture={userpicture === undefined ? noProfile : userpicture}
           onChangeFile={handleFileChange}
           onChangePreview={handlePreviewChange}
         />

@@ -109,14 +109,14 @@ const KindergartenSearch: React.FC = () => {
 
   useEffect(() => {
     if (role !== 'ROLE_TEACHER' && role !== 'ROLE_GUARDIAN') {
-      toast.error('당신은 원장님입니다.', {onClose: () => navigate('/')});
-      // navigate('/');
+      toast.error('당신은 원장님입니다.', {
+        onClose: () => navigate('/auth/login'),
+      });
     }
-    console.log('지금 role', role);
   }, [role, navigate]);
 
   return (
-    <div className="flex flex-col items-center w-full h-full min-h-screen px-5 py-6 space-y-8">
+    <div className="flex flex-col items-center w-full h-full max-h-full px-5 py-6 space-y-8">
       <ToastContainer
         position="top-center"
         autoClose={1000}

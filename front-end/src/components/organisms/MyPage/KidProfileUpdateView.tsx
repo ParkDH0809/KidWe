@@ -3,14 +3,16 @@ import ImageUploadButton from '@/components/molecules/Button/ImageUploadButton';
 import {patchKidPictureState} from '@/recoil/atoms/my-page/kidPicture';
 import {kidInfoPicture} from '@/recoil/selectors/my-page/kidInfoPicture';
 import {getFullImageSource} from '@/utils/getFullImageSource';
+import {useState} from 'react';
 import {useRecoilState, useSetRecoilState} from 'recoil';
 
 const KidProfileUpdateView = () => {
   const [kidProfile, setKidProfile] = useRecoilState(kidInfoPicture);
   const setKidProfileFile = useSetRecoilState(patchKidPictureState);
+  const [preview, setPreview] = useState<string | null>(null);
 
   const handleChangePicture = (value: string) => {
-    setKidProfile(value);
+    setPreview(value);
   };
 
   const handleChangeFile = (value: File) => {
@@ -18,7 +20,8 @@ const KidProfileUpdateView = () => {
   };
 
   const handleDeletePicture = () => {
-    setKidProfile('');
+    setKidProfile(undefined);
+    setPreview(null);
     setKidProfileFile(null);
   };
 
@@ -27,7 +30,9 @@ const KidProfileUpdateView = () => {
       <p>자녀 이미지</p>
       <div className="flex flex-col items-center justify-center w-full gap-1">
         <ImageUploadButton
-          userPicture={getFullImageSource(kidProfile)}
+          userPicture={
+            preview === null ? getFullImageSource(kidProfile) : preview
+          }
           onChangePreview={handleChangePicture}
           onChangeFile={handleChangeFile}
         />

@@ -7,11 +7,12 @@ import RegisterComplete from '@/pages/sign-up/RegisterComplete';
 import KindergartenSearch from '@/pages/sign-up/KindergartenSearch';
 import KindergartenBan from '@/pages/sign-up/KindergartenBan';
 import KindergartenChild from '@/pages/sign-up/KindergartenChild';
+import Pending from '@/pages/sign-up/Pending';
 const SignUp: React.FC = () => {
   // const {headerTitle} = useHeader();
 
   return (
-    <div className="h-screen">
+    <div className="h-full max-h-full">
       <div className={containerHeaderClass}>
         <Routes>
           <Route path="/role" element={<RoleSelect />}></Route>
@@ -30,6 +31,7 @@ const SignUp: React.FC = () => {
             element={<KindergartenChild />}
           ></Route>
           <Route path="/complete" element={<RegisterComplete />}></Route>
+          <Route path="/pending" element={<Pending />}></Route>
         </Routes>
       </div>
     </div>

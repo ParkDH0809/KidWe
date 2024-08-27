@@ -7,7 +7,7 @@ import BanTeacherAcceptView from '@/components/organisms/Ban/BanTeacherAcceptVie
 const TeacherManagement = () => {
   return (
     <div
-      className={`${containerNavigatorClass} flex flex-col h-screen w-screen max-w-screen`}
+      className={`${containerNavigatorClass} flex flex-col h-screen w-full max-w-full`}
     >
       <Header title="교사 관리" buttonType="back" />
       <Tabs

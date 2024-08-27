@@ -7,7 +7,7 @@ import {useLogin} from '@/hooks/login/useLogin';
 import {useLoading} from '@/hooks/loading/useLoading';
 import {useSetRecoilState} from 'recoil';
 import {loadingState} from '@/recoil/atoms/axios/loading';
-
+import {getMemberStatus, getMemberRole, getMemberId} from '@/utils/userData';
 const LoginMain: React.FC = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
@@ -31,7 +31,24 @@ const LoginMain: React.FC = () => {
       {email, password},
       {
         onSuccess: async () => {
-          navigate('/');
+          const memberStatus = getMemberStatus();
+          const memberRole = getMemberRole();
+          console.log('LoginMain page에서 상태,역할', memberRole, memberStatus);
+          if (memberStatus === 'ACCEPT') {
+            navigate('/');
+          } else if (memberStatus === 'NOTHING') {
+            if (
+              memberRole === 'ROLE_GUARDIAN' ||
+              memberRole === 'ROLE_TEACHER'
+            ) {
+              navigate('/auth/signup/kindergarten/search');
+            } else if (memberRole === 'ROLE_DIRECTOR') {
+              navigate('/auth/signup/kindergarten/register');
+            }
+          } else if (memberStatus === 'PENDING') {
+            console.log('너는 아직 PENDING이다');
+            navigate('/auth/signup/pending');
+          }
         },
         onSettled: () => setisLoaded(false),
       }
@@ -90,5 +107,3 @@ const LoginMain: React.FC = () => {
 };
 
 export default LoginMain;
-
-// 해결해볼게

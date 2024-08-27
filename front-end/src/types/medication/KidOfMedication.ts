@@ -1,4 +1,5 @@
 export interface KidOfMedication {
+  kidPicture: string; // 아이 사진
   medicineName: string; // 약 이름
   symptom: string; // 증상
   type: string; // 종류

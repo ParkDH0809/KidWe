@@ -1,11 +1,16 @@
 import {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import dayjs from 'dayjs';
+
 import {groupByDate} from '@/utils/groupByDate';
 import {useMedicationList} from '@/hooks/medication/useMedicationList';
 import type {MedicationItem} from '@/types/medication/MedicationItem';
 import {RoleItem} from '@/enum/roleItem';
 import {containerNavigatorClass} from '@/styles/styles';
+import {isGuardian} from '@/utils/auth/isGuardian';
+import {getMemberRole, getKidId, getBanId} from '@/utils/userData';
+import {getFullImageSource} from '@/utils/getFullImageSource';
+
 import Spinner from '@/components/atoms/Loader/Spinner';
 import Header from '@/components/organisms/Navigation/Header';
 import DateNavigator from '@/components/organisms/Navigation/DateNavigator';
@@ -14,9 +19,7 @@ import MonthDivider from '@/components/atoms/Divider/MonthDivider';
 import UserCardItem from '@/components/molecules/Item/UserCardItem';
 import WriteButton from '@/components/atoms/Button/WriteButton';
 import NavigationBar from '@/components/organisms/Navigation/NavigationBar';
-import {getMemberRole, getKidId, getBanId} from '@/utils/userData';
 import DirectorSelectItem from '@/components/organisms/Medication/DirectorSelectItem';
-import {isGuardian} from '@/utils/auth/isGuardian';
 
 const MedicationListView = () => {
   const [currentMonth, setCurrentMonth] = useState(dayjs().startOf('month'));
@@ -77,10 +80,12 @@ const MedicationListView = () => {
         onClickRight={handleRightClick}
       />
       <div className={`${containerNavigatorClass} pt-[6.5rem] flex flex-col`}>
-        <DirectorSelectItem
-          memberRole={memberRole}
-          onBanChange={handleIdChange}
-        />
+        <div className="w-full px-3">
+          <DirectorSelectItem
+            memberRole={memberRole}
+            onBanChange={handleIdChange}
+          />
+        </div>
         {(data && data.length === 0) || !id ? (
           <div className="flex items-center justify-center flex-grow">
             <NoResult text="등록된 의뢰서가 없어요" />
@@ -95,7 +100,7 @@ const MedicationListView = () => {
                   onClick={() => handleUserItemClick(item.medicationId, item)}
                 >
                   <UserCardItem
-                    profile={item.profileImage || ''}
+                    profile={getFullImageSource(item?.kidPicture)}
                     userName={item.kidName}
                     banName={item.banName}
                     cardType="basic"

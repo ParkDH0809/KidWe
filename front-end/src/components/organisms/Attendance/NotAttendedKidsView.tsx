@@ -1,19 +1,24 @@
 import NotAttendedKidsButtonView from '@/components/organisms/Attendance/NotAttendedKidsButtonView';
 import NotAttendedKidsSelectView from '@/components/organisms/Attendance/NotAttendedKidsSelectView';
 import {useGetAttendanceInfo} from '@/hooks/attendance/useGetAttendanceInfo';
-// import {useGetAttendanceInfoHook} from '@/hooks/attendance/useGetAttendanceInfoHook';
 import {GetAttendance} from '@/types/attendance/GetAttendance';
 import {useEffect, useState} from 'react';
 import {useLoading} from '@/hooks/loading/useLoading';
-import {getBanId} from '@/utils/userData';
+import {getBanId, getMemberRole} from '@/utils/userData';
 import {useGetDateBySearchParam} from '@/hooks/useGetDateBySearchParam';
+import {RoleItem} from '@/enum/roleItem';
+import {isDirector} from '@/utils/auth/isDirector';
 
 const AttendedKidsView = () => {
   const date = useGetDateBySearchParam();
 
+  const memberRole = getMemberRole() as RoleItem;
+  const [ban, setBan] = useState<number | null>(null);
+  const handleBanChange = (value: number) => setBan(value);
+
   const [isShowSelect, setIsShowSelect] = useState(false);
   const {data, isLoading} = useGetAttendanceInfo(
-    getBanId()!,
+    isDirector() ? ban : getBanId()!,
     date.get('year'),
     date.get('month') + 1,
     date.get('date')
@@ -42,9 +47,12 @@ const AttendedKidsView = () => {
           <NotAttendedKidsSelectView
             attendances={absenceKids}
             onClickButton={handleClickButtonButton}
+            ban={ban}
           />
         ) : (
           <NotAttendedKidsButtonView
+            memberRole={memberRole}
+            onBanChange={handleBanChange}
             attendances={absenceKids}
             onClickSelect={handleClickSelectButton}
           />

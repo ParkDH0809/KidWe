@@ -37,7 +37,7 @@ const Tag = ({
       style={{backgroundColor}}
       onClick={handleClick}
     >
-      <p className="font-medium">{text}</p>
+      <p className="font-medium whitespace-nowrap">{text}</p>
     </div>
   );
 };

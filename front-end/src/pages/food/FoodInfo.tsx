@@ -98,7 +98,7 @@ const FoodInfo = () => {
   return (
     <>
       <div
-        className={`${containerNavigatorClass} relative flex flex-col items-center justify-center box-border h-screen px-5 overflow-y-auto`}
+        className={`${containerNavigatorClass} max-h-screen relative flex flex-col items-center justify-center box-border h-screen px-5 overflow-y-auto`}
       >
         <Header title="급식 정보" buttonType="close" />
         <DateNavigator
@@ -110,7 +110,7 @@ const FoodInfo = () => {
         <div className="flex justify-center gap-2 mb-4 w-fit h-fit">
           <FoodDateNavigator date={date} onClick={handleDateChange} />
         </div>
-        <div className="flex justify-end w-full">
+        <div className="flex justify-end w-full mb-3">
           {!isGuardian() && food && (
             <FoodModifyButton
               onOpenModalClick={handleOpenModal}
@@ -118,15 +118,12 @@ const FoodInfo = () => {
             />
           )}
         </div>
-        <div className="flex flex-col items-center justify-center flex-grow mb-20 space-y-3">
+        <div className="flex-grow mb-20 space-y-3 overflow-y-auto scrollbar-hide">
           <FoodListView food={food} />
         </div>
         <NavigationBar />
-        {getMemberRole() !== 'ROLE_GUARDIAN' && (
-          <WriteButton
-            onClick={() => moveToWrite()}
-            disabled={food?.menuId !== undefined}
-          />
+        {getMemberRole() !== 'ROLE_GUARDIAN' && !food && (
+          <WriteButton onClick={() => moveToWrite()} />
         )}
       </div>
       <FoodModal

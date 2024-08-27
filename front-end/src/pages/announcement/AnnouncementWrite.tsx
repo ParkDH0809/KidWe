@@ -5,6 +5,8 @@ import {toast} from 'react-toastify';
 
 import {announcementFormState} from '@/recoil/atoms/announcement/announcementFormState';
 import {usePostAnnouncement} from '@/hooks/announcement/usePostAnnouncement';
+import {usePostTempStorage} from '@/hooks/announcement/usePostTempStorage';
+import {useGetTempStorageDetail} from '@/hooks/announcement/useGetTempStorageDetail';
 import {getMemberId} from '@/utils/userData';
 import type {VoteInfo} from '@/types/announcement/VoteInfo';
 import {containerHeaderClass} from '@/styles/styles';
@@ -16,14 +18,36 @@ import ArticleImageList from '@/components/molecules/List/ArticleImageList';
 import ImageIcon from '@/assets/icons/pic_line.svg?react';
 import ButtonBar from '@/components/organisms/Navigation/ButtonBar';
 import VoteModal from '@/components/organisms/Modal/VoteModal';
+import TempStorageModal from '@/components/organisms/Modal/TempStorageModal ';
 
 const AnnouncementWrite = () => {
   const navigate = useNavigate();
-  const {mutate} = usePostAnnouncement();
+  const {mutate: postAnnouncement} = usePostAnnouncement();
+  const {mutate: postTempStorage} = usePostTempStorage();
   const [formState, setFormState] = useRecoilState(announcementFormState);
   const resetFormState = useResetRecoilState(announcementFormState);
   const [files, setFiles] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [isTempStorageModalOpen, setIsTempStorageModalOpen] = useState(false);
+  const [selectedAnnouncementId, setSelectedAnnouncementId] = useState<
+    string | null
+  >(null);
+  const memberId = getMemberId();
+
+  const {data: tempStorageData} = useGetTempStorageDetail(
+    selectedAnnouncementId || ''
+  );
+
+  useEffect(() => {
+    if (tempStorageData) {
+      setFormState(prev => ({
+        ...prev,
+        title: tempStorageData.title,
+        content: tempStorageData.content,
+      }));
+      toast.success('임시 저장된 항목을 불러왔습니다.');
+    }
+  }, [tempStorageData, setFormState]);
 
   useEffect(() => {
     return () => {
@@ -77,18 +101,42 @@ const AnnouncementWrite = () => {
       );
     }
 
-    mutate({memberId: getMemberId()!, formData});
+    postAnnouncement({memberId: memberId!, formData});
     navigate('/announcements');
-  }, [formState, files, mutate, navigate]);
+  }, [formState, files, postAnnouncement, navigate, memberId]);
+
+  const handleTempStorageSelect = (announcementId: string) => {
+    setSelectedAnnouncementId(announcementId);
+  };
+
+  const handleTempStorageSave = () => {
+    if (formState.vote) {
+      toast.error('투표는 임시 저장할 수 없어요.');
+      return;
+    }
+
+    const tempStorageData = {
+      title: formState.title,
+      content: formState.content,
+    };
+
+    postTempStorage({
+      memberId: memberId!,
+      data: tempStorageData,
+    });
+
+    toast.success('임시 저장이 완료되었습니다.');
+  };
 
   const options = [
     {
       text: '임시 저장',
-      onClick: () => {},
+      onClick: handleTempStorageSave,
+      disabled: !!formState.vote,
     },
     {
       text: '임시 보관함',
-      onClick: () => {},
+      onClick: () => setIsTempStorageModalOpen(true),
     },
   ];
 
@@ -115,7 +163,7 @@ const AnnouncementWrite = () => {
           />
         </div>
         <div className="px-6 pb-10">
-          <VoteModal onVoteChange={handleVoteChange} />
+          {/* <VoteModal onVoteChange={handleVoteChange} /> */}
         </div>
       </div>
       <ButtonBar
@@ -123,6 +171,11 @@ const AnnouncementWrite = () => {
         disabled={false}
         onClick={handleFormSubmit}
         options={options}
+      />
+      <TempStorageModal
+        isOpen={isTempStorageModalOpen}
+        onClose={() => setIsTempStorageModalOpen(false)}
+        onSelect={handleTempStorageSelect}
       />
     </div>
   );
