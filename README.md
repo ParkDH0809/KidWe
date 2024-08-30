@@ -14,7 +14,9 @@
 
 2024.07.02(화) ~ 2024.08.16(금) [7주]
 
-[![UCC](https://img.youtube.com/vi/UK8QitpMgXs/0.jpg)](https://youtu.be/UK8QitpMgXs)
+<a href="https://youtu.be/UK8QitpMgXs">
+  <img src="https://img.youtube.com/vi/UK8QitpMgXs/0.jpg" width="250px" />
+</a>
 
 </div>
 </br>
