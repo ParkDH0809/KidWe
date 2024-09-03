@@ -1,7 +1,7 @@
 # 유치원 통합 관리 서비스, KidWe 🥝
 
 <div align=center>
-  <img src="assets/KidWe.png" width="500px" />
+  <img src="assets/KidWe.png" width="90%" />
 </div>
 
 ## 📅 프로젝트 정보
