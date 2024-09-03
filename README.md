@@ -1,7 +1,7 @@
 # 유치원 통합 관리 서비스, KidWe 🥝
 
 <div align=center>
-  <img src='images/KidWe_logo.png' width='500' />
+  <img src="assets/KidWe.png" width="500px" />
 </div>
 
 ## 📅 프로젝트 정보
@@ -23,11 +23,7 @@
 
 ## 🐣 주제
 
-아이 돌봄, 관찰, 학부모와의 소통 등 여러 업무로 야근에 시달리는 선생님에게 도움의 손길을 내미는 **유치원 통합 관리 서비스**   
-
-<div align="center">
-  <img src='images/KidWe.png' width="400px" />
-</div>
+아이 돌봄, 관찰, 학부모와의 소통 등 여러 업무로 야근에 시달리는 선생님에게 도움의 손길을 내미는 **유치원 통합 관리 서비스**
 
 </br>
 
@@ -181,12 +177,12 @@
 
 ## 📱 서비스 화면
 
-|                                                              |                                                          |                                                      |                                                      |
-| :----------------------------------------------------------: | :------------------------------------------------------: | :--------------------------------------------------: | :--------------------------------------------------: |
-| <img src="images/KidWe_메인화면.jpg" width="250px" /> | <img src="images/KidWe_일정.GIF" width="250px" /> | <img src="images/KidWe_공지사항.jpg" width="250px" /> | <img src="images/KidWe_식단.GIF" width="250px" /> |
-|                       메인 화면                        |                      일정 관리                       |                      공지사항 관리                       |                      식단 관리                       |
-| <img src="images/KidWe_메모.GIF" width="250px" /> | <img src="images/KidWe_알림장.GIF" width="250px" /> | <img src="images/KidWe_투약의뢰서.GIF" width="250px" /> | <img src="images/KidWe_귀가동의서.GIF" width="250px" /> |
-|                       메모 등록                        |                      알림장 자동 생성                       |                      투약의뢰서                       |                      귀가동의서                      |
+|                                                                                                  |                                                                                                    |                                                                                                        |                                                                                                        |
+| :----------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------: |
+|            <img src="assets/screenshots/images//KidWe_메인화면.jpg" width="250px" />             |  <video src="assets/screenshots/videos/KidWe_일정.mp4" width="250px" autoplay loop muted></video>  |                <img src="assets/screenshots/images/KidWe_공지사항.jpg" width="250px" />                |    <video src="assets/screenshots/videos/KidWe_식단.mp4" width="250px" autoplay loop muted></video>    |
+|                                            메인 화면                                             |                                             일정 관리                                              |                                                공지사항                                                |                                                  식단                                                  |
+| <video src="assets/screenshots/videos/KidWe_메모.mp4" width="250px" autoplay loop muted></video> | <video src="assets/screenshots/videos/KidWe_알림장.mp4" width="250px" autoplay loop muted></video> | <video src="assets/screenshots/videos/KidWe_투약의뢰서.mp4" width="250px" autoplay loop muted></video> | <video src="assets/screenshots/videos/KidWe_귀가동의서.mp4" width="250px" autoplay loop muted></video> |
+|                                            메모 등록                                             |                                          알림장 자동 생성                                          |                                               투약의뢰서                                               |                                               귀가동의서                                               |
 
 </br>
 
@@ -258,13 +254,13 @@
 
 ## 🧩 ERD
 
-![ERD](images/ERD.png)
+![ERD](assets/ERD.png)
 
 </br>
 
 ## 🗃️ 아키텍처
 
-![시스템 아키텍처](images/시스템아키텍처.png)
+![시스템 아키텍처](assets/시스템아키텍처.png)
 
 > 주요 아키텍처
 
@@ -272,7 +268,7 @@
   - 데이터의 특성에 맞는 DB를 사용하기 위해 2개로 나누어서 관리하였다.
   - MySQL은 관계형 데이터베이스로서 회원, 일정, 급식, 공지사항, 투약의뢰서, 귀가동의서와 같은 구조화된 데이터를 관리하는데 적합하다.
   - MongoDB는 비정형 데이터인 알림장, 메모 데이터를 저장하기에 적합하다.
-  -  회원, 일정, 급식, 공지사항, 투약의뢰서, 귀가동의서 서비스와 알림장, 메모 서비스는 각각 사용하는 데이터가 철저하게 분리되어 있고, 2개의 DB를 모두 사용하는 요청하는 횟수가 매우 적어 두 개의 서버로 분리해 보다 효율적으로 관리하였다.
+  - 회원, 일정, 급식, 공지사항, 투약의뢰서, 귀가동의서 서비스와 알림장, 메모 서비스는 각각 사용하는 데이터가 철저하게 분리되어 있고, 2개의 DB를 모두 사용하는 요청하는 횟수가 매우 적어 두 개의 서버로 분리해 보다 효율적으로 관리하였다.
 - **PWA**
   - Kidwe 서비스는 유치원 선생님이 일과 중 사용하기에 모바일 환경이 더욱 편리하다 생각했다.
 
@@ -282,7 +278,7 @@
 
 [🔗 Figma](<https://www.figma.com/design/oip92RdSlprizyyOvtJ4OB/%ED%82%A4%EC%9C%84-(KidWe)?node-id=0-1&t=k3nqVD3Do1tuyns0-1>)
 
-![Wireframe](images/Wireframe.png)
+![Wireframe](assets/Wireframe.png)
 
 </br>
 
@@ -290,13 +286,13 @@
 
 > MySQL
 
- <img src="images/API명세서_MySQL.png" alt="API명세서 - MySQL" width="50%">
+ <img src="assets/API명세서_MySQL.png" alt="API명세서 - MySQL" width="60%">
 
 </br>
 
 > MongoDB
 
- <img src="images/API명세서_MongoDB.png" alt="API명세서 - MongoDB" width="50%">
+ <img src="assets/API명세서_MongoDB.png" alt="API명세서 - MongoDB" width="60%">
 
 </br>
 
