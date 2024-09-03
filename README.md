@@ -182,7 +182,7 @@
 | :----------------------------------------------------------: | :------------------------------------------------------: | :--------------------------------------------------: | :--------------------------------------------------: |
 | <img src="images/KidWe_메인화면.jpg" width="250px" /> | <img src="images/KidWe_일정.GIF" width="250px" /> | <img src="images/선생_공지사항등록.gif" width="250px" /> | <img src="images/KidWe_식단.GIF" width="250px" /> |
 |                       메인 화면                        |                      일정 관리                       |                      공지사항 관리                       |                      식단 관리                       |
-| <img src="images/선생_메모입력.gif" width="250px" /> | <img src="images/KidWe_알림장.GIF" width="250px" /> | <img src="images/선생_투약의뢰서.gif" width="250px" /> | <img src="images/KidWe_귀가동의서.GIF" width="250px" /> |
+| <img src="images/선생_메모입력.gif" width="250px" /> | <img src="images/KidWe_알림장.GIF" width="250px" /> | <img src="images/KidWe_투약의뢰서.GIF" width="250px" /> | <img src="images/KidWe_귀가동의서.GIF" width="250px" /> |
 |                       메모 등록                        |                      알림장 자동 생성                       |                      투약의뢰서                       |                      귀가동의서                      |
 
 </br>
