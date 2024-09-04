@@ -179,9 +179,9 @@
 
 |                                                                   |                                                                 |                                                                     |                                                                     |
 | :---------------------------------------------------------------: | :-------------------------------------------------------------: | :-----------------------------------------------------------------: | :-----------------------------------------------------------------: |
-| <img src="assets/screenshots/KidWe_메인화면.jpg" width="250px" /> |  <img src="assets/screenshots/KidWe_일정.gif" width="250px" />  |  <img src="assets/screenshots/KidWe_공지사항.jpg" width="250px" />  |    <img src="assets/screenshots/KidWe_식단.gif" width="250px" />    |
+| <img src="assets/screenshots/KidWe_메인화면.jpg" width="175px" /> |  <img src="assets/screenshots/KidWe_일정.gif" width="175px" />  |  <img src="assets/screenshots/KidWe_공지사항.jpg" width="175px" />  |    <img src="assets/screenshots/KidWe_식단.gif" width="175px" />    |
 |                             메인 화면                             |                            일정 관리                            |                              공지사항                               |                                식단                                 |
-|   <img src="assets/screenshots/KidWe_메모.gif" width="250px" />   | <img src="assets/screenshots/KidWe_알림장.gif" width="250px" /> | <img src="assets/screenshots/KidWe_투약의뢰서.gif" width="250px" /> | <img src="assets/screenshots/KidWe_귀가동의서.gif" width="250px" /> |
+|   <img src="assets/screenshots/KidWe_메모.gif" width="175px" />   | <img src="assets/screenshots/KidWe_알림장.gif" width="175px" /> | <img src="assets/screenshots/KidWe_투약의뢰서.gif" width="175px" /> | <img src="assets/screenshots/KidWe_귀가동의서.gif" width="175px" /> |
 |                             메모 등록                             |                        알림장 자동 생성                         |                             투약의뢰서                              |                             귀가동의서                              |
 
 </br>
