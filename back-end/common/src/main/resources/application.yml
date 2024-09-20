@@ -15,8 +15,6 @@ spring:
 
   datasource:
     url: jdbc:mysql://i11a808.p.ssafy.io:3306/kidwe
-    username: ssafy
-    password: ssafy
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -30,8 +28,6 @@ spring:
   data:
     redis:
       host: i11a808.p.ssafy.io
-      port: 6379
-      password: ssafy
 
   mvc:
     pathmatch:
@@ -44,19 +40,13 @@ logging.level:
 jwt:
   token:
     header: Authorization
-    secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
     access-expired-time: 18000000 #300m
-#    access-expired-time: 3000 #10s
     refresh-expired-time: 1209600000 #14d
-#    refresh-expired-time: 6000 #10s
 
 aws:
   s3:
     bucket-name: common-kidwe-image
     region: ap-northeast-2
-    credentials:
-      access-key-id: AKIA4MTWI3VODQI6FXFK
-      secret-access-key: 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
     stack:
       auto: false
 
