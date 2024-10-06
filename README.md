@@ -260,7 +260,7 @@
 
 ## 🗃️ 아키텍처
 
-![시스템 아키텍처](assets/시스템아키텍처.png)
+![시스템 아키텍처](https://github.com/user-attachments/assets/f2f79d69-eac4-4d96-9962-be4aa24be823)
 
 > 주요 아키텍처
 
